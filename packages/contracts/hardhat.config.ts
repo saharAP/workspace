@@ -12,6 +12,7 @@ import deploy from "./scripts/deployWithValues";
 import deployTestnet from "./scripts/deployWithValuesTestnet";
 import finalizeElection from "./scripts/finalizeElection";
 import { GrantElectionAdapter } from "./adapters/GrantElection/GrantElectionAdapter";
+import "@float-capital/solidity-coverage"
 
 task("accounts", "Prints the list of accounts", async (args, hre) => {
   const accounts = await hre.ethers.getSigners();
