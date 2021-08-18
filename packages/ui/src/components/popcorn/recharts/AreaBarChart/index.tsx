@@ -26,7 +26,7 @@ export const AreaBarChart: React.FC<AreaChartProps> = ({
     <div className="w-screen grid justify-items-stretch">
       <ResponsiveContainer
         className="justify-self-start ml-3"
-        width="85%"
+        width="87%"
         height={height}
       >
         <ComposedChart data={data}>

@@ -1,7 +1,11 @@
 import React from 'react';
-import { MiniStatCard } from '../MiniStatCard';
 import { AreaBarChart } from '../recharts/AreaBarChart';
 import { getDummyEmissionData } from '../recharts/dummyEmissionsData';
+import { StatsRow } from '../StatsRow/index';
+
+function classNames(...classes) {
+  return classes.filter(Boolean).join(' ');
+}
 
 export const TotalStatsStackedRows = ({ emissionSummaryStats }) => {
   return (
@@ -19,7 +23,7 @@ export const TotalStatsStackedRows = ({ emissionSummaryStats }) => {
         </div>
       </div>
 
-      <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
+      <div className="max-w-7xl mx-auto">
         <div className="grid grid-cols-1 gap-4 lg:col-span-2">
           <div className="rounded-lg bg-white overflow-hidden shadow py-6">
             <AreaBarChart data={getDummyEmissionData()} height={224} />
@@ -27,16 +31,8 @@ export const TotalStatsStackedRows = ({ emissionSummaryStats }) => {
         </div>
       </div>
 
-      <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 gap-4 lg:col-span-2">
-          <div className="rounded-lg bg-white overflow-hidden shadow">
-            <div className="p-6">
-              {emissionSummaryStats.map((item) => (
-                <MiniStatCard item={item} />
-              ))}
-            </div>
-          </div>
-        </div>
+      <div className="max-w-7xl mx-auto">
+        <StatsRow />
       </div>
     </div>
   );
