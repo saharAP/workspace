@@ -6,11 +6,11 @@ import {
 import { Meta, Story } from '@storybook/react/types-6-0';
 import React from 'react';
 import { AddContractButton } from '../../../AddContractButton';
-import Container from '../../../Container';
-import { ContractStatsRow } from '../../../ContractStatsRow';
+import { ContractContainer } from '../../../ContractContainer';
 import { DateRangePicker } from '../../../DateRangePicker';
 import { Divider } from '../../../Divider';
-import { TotalStatsStackedRows } from '../../../TotalStatsStackedRows';
+import { NavBar } from '../../../NavBar';
+import { TotalsContainer } from '../../../TotalsContainer';
 
 const totalStatsEmissionsData = [
   {
@@ -71,24 +71,16 @@ const EmissionsDashboardPage = () => {
         </header>
       </div>
       <DateRangePicker />
-      <TotalStatsStackedRows emissionSummaryStats={totalStatsEmissionsData} />
+      <TotalsContainer emissionSummaryStats={totalStatsEmissionsData} />
       <Divider />
-      <ContractStatsRow
-        emissionSummaryStats={contractStats}
-        contractName={'Popcorn HYSI Staking Pool'}
-      />
-      <ContractStatsRow
-        emissionSummaryStats={contractStats}
-        contractName={'Popcorn HYSI Staking Pool'}
-      />
-      <ContractStatsRow
-        emissionSummaryStats={contractStats}
-        contractName={'Popcorn HYSI Staking Pool'}
-      />
-      <ContractStatsRow
-        emissionSummaryStats={contractStats}
-        contractName={'Popcorn HYSI Staking Pool'}
-      />
+      {new Array(4).fill(undefined).map((x) => {
+        return (
+          <ContractContainer
+            emissionSummaryStats={contractStats}
+            contractName={'Popcorn HYSI Staking Pool'}
+          />
+        );
+      })}
       <AddContractButton />
     </div>
   );
@@ -100,7 +92,7 @@ export default {
   decorators: [
     (Story) => (
       <div className="bg-gray-100">
-        <Container title={'Smart Contract Emissions Dashboard'} />
+        <NavBar title={'Smart Contract Emissions Dashboard'} />
         <Story />
       </div>
     ),

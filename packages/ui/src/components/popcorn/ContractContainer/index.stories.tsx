@@ -2,7 +2,7 @@ import { CloudIcon, TrendingUpIcon } from '@heroicons/react/outline';
 import { Meta, Story } from '@storybook/react/types-6-0';
 import React from 'react';
 import { EmissionSummaryStats } from '../TotalStats';
-import { ContractStatsRow } from './index';
+import { ContractContainer } from './index';
 
 const emissionSummaryStats: EmissionSummaryStats[] = [
   {
@@ -35,7 +35,7 @@ export default {
   ],
 } as Meta;
 
-const Template: Story = (args) => <ContractStatsRow {...args} />;
+const Template: Story = (args) => <ContractContainer {...args} />;
 export const Primary = Template.bind({});
 Primary.args = {
   emissionSummaryStats: emissionSummaryStats,

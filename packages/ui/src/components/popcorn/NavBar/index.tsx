@@ -25,7 +25,7 @@ function classNames(...classes) {
   return classes.filter(Boolean).join(' ');
 }
 
-export default function Container({ title }) {
+export const NavBar = () => {
   return (
     <div className="bg-gray-100">
       <Disclosure as="nav" className="bg-white shadow-sm">
@@ -183,4 +183,4 @@ export default function Container({ title }) {
       </Disclosure>
     </div>
   );
-}
+};

@@ -6,7 +6,7 @@ import {
 import { Meta, Story } from '@storybook/react/types-6-0';
 import React from 'react';
 import { EmissionSummaryStats } from '../TotalStats';
-import { TotalStatsStackedRows } from './index';
+import { TotalsContainer } from './index';
 
 const emissionSummaryStats: EmissionSummaryStats[] = [
   {
@@ -74,7 +74,7 @@ export default {
   ],
 } as Meta;
 
-const Template: Story = (args) => <TotalStatsStackedRows {...args} />;
+const Template: Story = (args) => <TotalsContainer {...args} />;
 export const Increase = Template.bind({});
 Increase.args = { emissionSummaryStats: emissionSummaryStats };
 
