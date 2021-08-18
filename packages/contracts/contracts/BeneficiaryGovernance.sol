@@ -136,6 +136,15 @@ contract BeneficiaryGovernance is ParticipationReward {
   }
 
   /**
+   * @notice gets status
+   * @param  proposalId id of the proposal
+   * @return status of proposal
+   */
+  function getStatus(uint256 proposalId) external view returns (uint256) {
+    return proposals[proposalId].status;
+  }
+
+  /**
    * @notice checks if someone has voted to a specific proposal or not
    * @param  proposalId id of the proposal
    * @param  voter address opf voter
