@@ -17,7 +17,7 @@ contract MockYearnV2Vault is MockERC20 {
     return token.balanceOf(address(this));
   }
 
-  function getPricePerFullShare() external view returns (uint256) {
+  function pricePerShare() external view returns (uint256) {
     return _shareValue(10**this.decimals());
   }
 

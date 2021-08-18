@@ -340,9 +340,7 @@ contract Pool is ERC20, Ownable, ReentrancyGuard, Pausable, Defended {
   }
 
   function _yearnShareValue(uint256 yvShares) internal view returns (uint256) {
-    uint256 crvLPTokens = yearnVault.getPricePerFullShare().mul(yvShares).div(
-      1e18
-    );
+    uint256 crvLPTokens = yearnVault.pricePerShare().mul(yvShares).div(1e18);
     uint256 virtualPrice = curveMetapool.get_virtual_price();
     return crvLPTokens.mul(virtualPrice).div(1e18);
   }

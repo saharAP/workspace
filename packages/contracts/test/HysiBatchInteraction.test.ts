@@ -21,7 +21,7 @@ interface Contracts {
   hysiBatchInteraction: HysiBatchInteraction;
 }
 
-enum BatchType {
+export enum BatchType {
   Mint,
   Redeem,
 }

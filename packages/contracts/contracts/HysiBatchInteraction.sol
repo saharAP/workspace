@@ -9,14 +9,12 @@ import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 import "@openzeppelin/contracts/math/SafeMath.sol";
 import "./Owned.sol";
 import "./Interfaces/Integrations/YearnVault.sol";
-import "./Interfaces/Integrations/CurveContracts.sol";
+import "./Interfaces/Integrations/CurveMetapool.sol";
 import "./Interfaces/Integrations/BasicIssuanceModule.sol";
 import "./Interfaces/Integrations/ISetToken.sol";
 
 contract HysiBatchInteraction is Owned {
   using SafeMath for uint256;
-  using SafeERC20 for ThreeCrv;
-  using SafeERC20 for CrvLPToken;
   using SafeERC20 for YearnVault;
   using SafeERC20 for ISetToken;
   using SafeERC20 for IERC20;
@@ -29,7 +27,7 @@ contract HysiBatchInteraction is Owned {
   struct Underlying {
     IERC20 crvToken;
     YearnVault yToken;
-    CurveMetapool curveMetaPool;
+    address curveMetaPool;
   }
 
   struct Batch {
@@ -42,7 +40,7 @@ contract HysiBatchInteraction is Owned {
 
   /* ========== STATE VARIABLES ========== */
 
-  ThreeCrv public threeCrv;
+  IERC20 public threeCrv;
   BasicIssuanceModule public setBasicIssuanceModule;
   ISetToken public setToken;
   Underlying[] public underlying;
@@ -70,7 +68,7 @@ contract HysiBatchInteraction is Owned {
   /* ========== CONSTRUCTOR ========== */
 
   constructor(
-    ThreeCrv threeCrv_,
+    IERC20 threeCrv_,
     ISetToken setToken_,
     BasicIssuanceModule basicIssuanceModule_,
     uint256 batchCooldown_,
@@ -94,50 +92,44 @@ contract HysiBatchInteraction is Owned {
 
   /* ========== VIEWS ========== */
 
-  function getExpectedHysi(uint256 threeCrvAmount_)
-    public
-    view
-    returns (uint256)
-  {
-    (
-      address[] memory tokenAddresses,
-      uint256[] memory quantities
-    ) = setBasicIssuanceModule.getRequiredComponentUnitsForIssue(
-        setToken,
-        1e18
-      );
+  // function getExpectedHysi(uint256 threeCrvAmount_)
+  //   public
+  //   view
+  //   returns (uint256)
+  // {
+  //   (
+  //     address[] memory tokenAddresses,
+  //     uint256[] memory quantities
+  //   ) = setBasicIssuanceModule.getRequiredComponentUnitsForIssue(
+  //       setToken,
+  //       1e18
+  //     );
 
-    //Amount of 3crv needed to mint 1 hysi
-    uint256 hysiIn3Crv;
+  //   //Amount of 3crv needed to mint 1 hysi
+  //   uint256 hysiIn3Crv;
 
-    //Amount of 3crv needed to mint the necessary quantity of yToken for hysi
-    uint256[] memory quantitiesIn3Crv = new uint256[](quantities.length);
+  //   for (uint256 i; i < underlying.length; i++) {
+  //     //Check how many crvToken are needed to mint one yToken
+  //     uint256 yTokenInCrvToken = underlying[i].yToken.pricePerShare();
 
-    for (uint256 i; i < underlying.length; i++) {
-      //Check how many crvToken are needed to mint one yToken
-      uint256 yTokenInCrvToken = underlying[i].yToken.getPricePerFullShare();
+  //     //Check how many 3crv are needed to mint one crvToken
+  //     uint256 crvTokenIn3Crv = underlying[i]
+  //       .curveMetaPool
+  //       .calc_withdraw_one_coin(1e18, 1);
 
-      //Check how many 3crv are needed to mint one crvToken
-      uint256 crvTokenIn3Crv = underlying[i]
-        .curveMetaPool
-        .calc_withdraw_one_coin(1e18, 1);
+  //     //Calc how many 3crv are needed to mint one yToken
+  //     uint256 yTokenIn3Crv = yTokenInCrvToken.mul(crvTokenIn3Crv).div(1e18);
 
-      //Calc how many 3crv are needed to mint one yToken
-      uint256 yTokenIn3Crv = yTokenInCrvToken.mul(crvTokenIn3Crv).div(1e18);
+  //     //Calc how many 3crv are needed to mint the quantity in yToken
+  //     uint256 quantityIn3Crv = yTokenIn3Crv.mul(quantities[i]).div(1e18);
 
-      //Calc how many 3crv are needed to mint the quantity in yToken
-      uint256 quantityIn3Crv = yTokenIn3Crv.mul(quantities[i]).div(1e18);
+  //     //Calc total price of 1 HYSI in 3crv
+  //     hysiIn3Crv = hysiIn3Crv.add(quantityIn3Crv);
+  //   }
 
-      //Calc total price of 1 HYSI in 3crv
-      hysiIn3Crv = hysiIn3Crv.add(quantityIn3Crv);
-
-      //Save allocation in 3crv for later
-      quantitiesIn3Crv[i] = quantityIn3Crv;
-    }
-
-    //Calc max amount of Hysi mintable
-    return threeCrvAmount_.div(hysiIn3Crv).mul(1e18);
-  }
+  //   //Calc max amount of Hysi mintable
+  //   return threeCrvAmount_.div(hysiIn3Crv).mul(1e18);
+  // }
 
   /* ========== MUTATIVE FUNCTIONS ========== */
 
@@ -218,11 +210,10 @@ contract HysiBatchInteraction is Owned {
 
     for (uint256 i; i < underlying.length; i++) {
       //Check how many crvToken are needed to mint one yToken
-      uint256 yTokenInCrvToken = underlying[i].yToken.getPricePerFullShare();
+      uint256 yTokenInCrvToken = underlying[i].yToken.pricePerShare();
 
       //Check how many 3crv are needed to mint one crvToken
-      uint256 crvTokenIn3Crv = underlying[i]
-        .curveMetaPool
+      uint256 crvTokenIn3Crv = CurveMetapool(underlying[i].curveMetaPool)
         .calc_withdraw_one_coin(1e18, 1);
 
       //Calc how many 3crv are needed to mint one yToken
@@ -246,26 +237,31 @@ contract HysiBatchInteraction is Owned {
         quantitiesIn3Crv[i].mul(hysiAmount).div(1e18),
         underlying[i].curveMetaPool
       );
-      _sendToYearn(
-        underlying[i].crvToken.balanceOf(address(this)),
-        underlying[i].crvToken,
-        underlying[i].yToken
-      );
-      underlying[i].yToken.safeIncreaseAllowance(
-        address(setBasicIssuanceModule),
-        underlying[i].yToken.balanceOf(address(this))
-      );
+      // _sendToYearn(
+      //   underlying[i].crvToken.balanceOf(address(this)),
+      //   underlying[i].crvToken,
+      //   underlying[i].yToken
+      // );
+      // underlying[i].yToken.safeIncreaseAllowance(
+      //   address(setBasicIssuanceModule),
+      //   underlying[i].yToken.balanceOf(address(this))
+      // );
     }
-    uint256 oldBalance = setToken.balanceOf(address(this));
-    setBasicIssuanceModule.issue(setToken, hysiAmount, address(this));
-    batch.claimableToken = setToken.balanceOf(address(this)).sub(oldBalance);
-    batch.suppliedToken = 0;
-    batch.claimable = true;
+    // uint256 oldBalance = setToken.balanceOf(address(this));
+    // setBasicIssuanceModule.issue(setToken, hysiAmount, address(this));
+    // batch.claimableToken = setToken.balanceOf(address(this)).sub(oldBalance);
+    // batch.suppliedToken = 0;
+    // batch.claimable = true;
 
-    lastMintedAt = block.timestamp;
-    currentMintBatchId = _generateNextBatchId(currentMintBatchId);
+    // lastMintedAt = block.timestamp;
+    // currentMintBatchId = _generateNextBatchId(currentMintBatchId);
 
     emit BatchMinted(hysiAmount);
+  }
+
+  function sendToCurve(uint256 amount_, address curveMetapool_) external {
+    //threeCrv.safeIncreaseAllowance(curveMetapool_, amount_);
+    CurveMetapool(curveMetapool_).add_liquidity([0, amount_], 0);
   }
 
   function batchRedeem() external {
@@ -324,25 +320,21 @@ contract HysiBatchInteraction is Owned {
     emit Deposit(msg.sender, amount_);
   }
 
-  function _sendToCurve(uint256 amount_, CurveMetapool curveMetapool_)
+  function _sendToCurve(uint256 amount_, address curveMetapool_)
     internal
     returns (uint256)
   {
     threeCrv.safeIncreaseAllowance(address(curveMetapool_), amount_);
-    uint256[2] memory curveDepositAmounts = [
-      0, // USDX
-      amount_ // 3Crv
-    ];
-    return curveMetapool_.add_liquidity(curveDepositAmounts, 0);
+    CurveMetapool(curveMetapool_).add_liquidity([0, amount_], 0);
   }
 
   function _withdrawFromCurve(
     uint256 amount_,
     IERC20 lpToken_,
-    CurveMetapool curveMetapool_
+    address curveMetapool_
   ) internal returns (uint256) {
-    lpToken_.safeIncreaseAllowance(address(curveMetapool_), amount_);
-    return curveMetapool_.remove_liquidity_one_coin(amount_, 1, 0);
+    lpToken_.safeIncreaseAllowance(curveMetapool_, amount_);
+    CurveMetapool(curveMetapool_).remove_liquidity_one_coin(amount_, 1, 0);
   }
 
   function _sendToYearn(

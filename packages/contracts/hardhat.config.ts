@@ -229,7 +229,7 @@ module.exports = {
         process.env.FORKING_ENABLED == "true"
           ? {
               url: process.env.FORKING_RPC_URL,
-              blockNumber: 12724811,
+              blockNumber: 12780680,
             }
           : undefined,
     },
@@ -249,9 +249,9 @@ module.exports = {
     gasPrice: 100,
     enabled: false,
   },
-  /*contractSizer: {
-    alphaSort: true,
-    runOnCompile: true,
-    disambiguatePaths: false,
-  },*/
+  // contractSizer: {
+  //   alphaSort: true,
+  //   runOnCompile: true,
+  //   disambiguatePaths: false,
+  // },
 };
