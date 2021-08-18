@@ -6,7 +6,9 @@ import { deployContract } from "ethereum-waffle";
 import { Contract, utils } from "ethers";
 import { parseEther } from "ethers/lib/utils";
 import getCreatedProposalId from "../adapters/GrantElection/getCreatedProposalId";
-import { ShareType } from "../adapters/GrantElection/GrantElectionAdapter";
+import GrantElectionAdapter, {
+  ShareType,
+} from "../adapters/GrantElection/GrantElectionAdapter";
 import * as addressCidMap from "./addressCidMap.json";
 
 const UniswapV2FactoryJSON = require("../artifactsUniswap/UniswapV2Factory.json");
@@ -621,9 +623,9 @@ export default async function deploy(ethers): Promise<void> {
       2,
       5,
       false, // VRF
-      14 * SECONDS_IN_DAY,
-      14 * SECONDS_IN_DAY,
-      83 * SECONDS_IN_DAY,
+      7 * SECONDS_IN_DAY, // Registration period - default
+      7 * SECONDS_IN_DAY, // Voting period - default
+      21 * SECONDS_IN_DAY, // cooldown period - default
       parseEther("100"),
       true,
       parseEther("2000"),
@@ -643,21 +645,23 @@ export default async function deploy(ethers): Promise<void> {
   const initializeQuarterlyElection = async (): Promise<void> => {
     const electionTerm = ElectionTerm.Quarterly;
     console.log(`setting election config for: ${electionTerm} ...`);
+    console.log(
+      `Reducing reg period to 1s, voting to 120s and cooldown to 100s`
+    );
     await contracts.grantElections.connect(accounts[0]).setConfiguration(
       electionTerm,
       2,
       5,
       false, // VRF
-      2 * SECONDS_IN_DAY,
-      2 * SECONDS_IN_DAY,
-      83 * SECONDS_IN_DAY,
+      10, // Registration period - reduced
+      20, // Voting period - reduced
+      83 * SECONDS_IN_DAY, // cooldown period - default
       parseEther("100"),
       true,
       parseEther("2000"),
       true,
       ShareType.EqualWeight
     );
-
     console.log(`initializing election : ${electionTerm} ...`);
     const activeBeneficiaryAddresses = await getActiveBeneficiaries();
     await contracts.grantElections.initialize(electionTerm, DEFAULT_REGION);
@@ -675,9 +679,9 @@ export default async function deploy(ethers): Promise<void> {
       2,
       5,
       false, // VRF
-      7 * SECONDS_IN_DAY,
-      7 * SECONDS_IN_DAY,
-      358 * SECONDS_IN_DAY,
+      10, // Registration period - reduced
+      30 * SECONDS_IN_DAY, // Voting period - default
+      358 * SECONDS_IN_DAY, // cooldown period - default
       parseEther("100"),
       true,
       parseEther("2000"),
@@ -695,14 +699,26 @@ export default async function deploy(ethers): Promise<void> {
   };
 
   const voteInQuarterlyElection = async (): Promise<void> => {
-    const electionTerm = ElectionTerm.Quarterly;
-    console.log(`opening quarterly election...`);
-    await increaseEvmTimeAndMine(3);
-    await refreshElectionState(electionTerm);
-    console.log(`voting in quarterly election...`);
+    console.log("Getting quarterly election meta data");
+    let electionMetadata = await GrantElectionAdapter(
+      contracts.grantElections
+    ).getElectionMetadata(ElectionTerm.Quarterly);
+
+    console.log("Refreshing election state");
+    while (electionMetadata.electionState != 1) {
+      await new Promise((r) => setTimeout(r, 1000));
+      await contracts.grantElections.refreshElectionState(
+        ElectionTerm.Quarterly
+      );
+      electionMetadata = await GrantElectionAdapter(
+        contracts.grantElections
+      ).getElectionMetadata(ElectionTerm.Quarterly);
+      console.log("Waiting for quarterly election to enter voting period...");
+    }
+    console.log("Quarterly election in voting period. Voting...");
     const electionId = await contracts.grantElections.activeElections(
       DEFAULT_REGION,
-      electionTerm
+      ElectionTerm.Quarterly
     );
     const activeBeneficiaryAddresses = await getActiveBeneficiaries();
     await bluebird.map(
@@ -722,18 +738,57 @@ export default async function deploy(ethers): Promise<void> {
         );
       },
       { concurrency: 1 }
+    );
+
+    while (electionMetadata.votes.length < 4) {
+      await new Promise((r) => setTimeout(r, 1000));
+      electionMetadata = await GrantElectionAdapter(
+        contracts.grantElections
+      ).getElectionMetadata(ElectionTerm.Quarterly);
+      console.log(
+        "Waiting for confirmation of all votes in quarterly election..."
+      );
+    }
+
+    console.log("Refreshing election state");
+    while (electionMetadata.electionState != 2) {
+      await contracts.grantElections.refreshElectionState(
+        ElectionTerm.Quarterly
+      );
+      electionMetadata = await GrantElectionAdapter(
+        contracts.grantElections
+      ).getElectionMetadata(ElectionTerm.Quarterly);
+      await new Promise((r) => setTimeout(r, 1000));
+      console.log("Waiting for quarterly election to close...");
+    }
+
+    console.log(
+      `Quarterly Election metadata: `,
+      await GrantElectionAdapter(contracts.grantElections).getElectionMetadata(
+        ElectionTerm.Quarterly
+      )
     );
   };
 
   const voteInYearlyElection = async (): Promise<void> => {
-    const electionTerm = ElectionTerm.Yearly;
-    console.log(`opening yearly election...`);
-    await increaseEvmTimeAndMine(8);
-    await refreshElectionState(electionTerm);
-    console.log(`voting in yearly election...`);
+    console.log("Getting yearly election meta data");
+    let electionMetadata = await GrantElectionAdapter(
+      contracts.grantElections
+    ).getElectionMetadata(ElectionTerm.Yearly);
+
+    console.log("Refreshing election state");
+    while (electionMetadata.electionState != 1) {
+      await new Promise((r) => setTimeout(r, 1000));
+      await contracts.grantElections.refreshElectionState(ElectionTerm.Yearly);
+      electionMetadata = await GrantElectionAdapter(
+        contracts.grantElections
+      ).getElectionMetadata(ElectionTerm.Yearly);
+      console.log("Waiting for Yearly election to enter voting period...");
+    }
+    console.log("Yearly election in voting period. Voting...");
     const electionId = await contracts.grantElections.activeElections(
       DEFAULT_REGION,
-      electionTerm
+      ElectionTerm.Yearly
     );
     const activeBeneficiaryAddresses = await getActiveBeneficiaries();
     await bluebird.map(
@@ -754,6 +809,16 @@ export default async function deploy(ethers): Promise<void> {
       },
       { concurrency: 1 }
     );
+
+    while (electionMetadata.votes.length < 4) {
+      await new Promise((r) => setTimeout(r, 1000));
+      electionMetadata = await GrantElectionAdapter(
+        contracts.grantElections
+      ).getElectionMetadata(ElectionTerm.Yearly);
+      console.log(
+        "Waiting for confirmation of all votes in yearly election..."
+      );
+    }
   };
 
   const closeQuarterlyElectionState = async (): Promise<void> => {
