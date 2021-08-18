@@ -1,7 +1,7 @@
 import { CloudIcon, TrendingUpIcon } from '@heroicons/react/outline';
 import { Meta, Story } from '@storybook/react/types-6-0';
 import React from 'react';
-import { EmissionSummaryStats } from '../TotalStats';
+import { EmissionSummaryStats } from '../../../interfaces/index';
 import { ContractContainer } from './index';
 
 const emissionSummaryStats: EmissionSummaryStats[] = [
@@ -24,8 +24,8 @@ const emissionSummaryStats: EmissionSummaryStats[] = [
 ];
 
 export default {
-  title: 'Popcorn/ContractStatsRow',
-  component: ContractStatsRow,
+  title: 'Popcorn/ContractContainer',
+  component: ContractContainer,
   decorators: [
     (Story) => (
       <div className="flex flex-row justify-center ">

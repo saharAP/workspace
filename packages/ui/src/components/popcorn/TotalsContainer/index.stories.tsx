@@ -5,7 +5,7 @@ import {
 } from '@heroicons/react/outline';
 import { Meta, Story } from '@storybook/react/types-6-0';
 import React from 'react';
-import { EmissionSummaryStats } from '../TotalStats';
+import { EmissionSummaryStats } from '../../../interfaces/index';
 import { TotalsContainer } from './index';
 
 const emissionSummaryStats: EmissionSummaryStats[] = [
@@ -63,8 +63,8 @@ const emissionSummaryStatDecrease: EmissionSummaryStats[] = [
 ];
 
 export default {
-  title: 'Popcorn/TotalStatsStackedRows',
-  component: TotalStatsStackedRows,
+  title: 'Popcorn/TotalsContainer',
+  component: TotalsContainer,
   decorators: [
     (Story) => (
       <div className="flex flex-row justify-center ">
