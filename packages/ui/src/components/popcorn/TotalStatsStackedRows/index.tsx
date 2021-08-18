@@ -51,7 +51,7 @@ export const TotalStatsStackedRows = ({ emissionSummaryStats }) => {
         </div>
       </div>
 
-      <div className="max-w-7xl mx-auto">
+      <div className="max-w-7xl">
         <div className="grid grid-cols-1 gap-4 lg:col-span-2">
           <div className="rounded-lg bg-white overflow-hidden shadow py-6">
             <AreaBarChart data={getDummyEmissionData()} height={224} />
@@ -59,7 +59,7 @@ export const TotalStatsStackedRows = ({ emissionSummaryStats }) => {
         </div>
       </div>
 
-      <div className="max-w-7xl mx-auto">
+      <div className="max-w-7xl">
         <StatsRow stats={stats} />
       </div>
     </div>
