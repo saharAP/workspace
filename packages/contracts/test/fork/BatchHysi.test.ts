@@ -13,6 +13,8 @@ import {
   HysiBatchInteraction,
   MockERC20,
   MockYearnV2Vault,
+  Test,
+  Test2,
 } from "../../typechain";
 import { BatchType } from "../HysiBatchInteraction.test";
 
@@ -36,6 +38,8 @@ interface Contracts {
   basicIssuanceModule: BasicIssuanceModule;
   hysiBatchInteraction: HysiBatchInteraction;
   faucet: Faucet;
+  test: Test;
+  test2: Test2;
 }
 
 const DepositorInitial = parseEther("100000");
@@ -209,6 +213,20 @@ async function deployContracts(): Promise<Contracts> {
 
   await hysiBatchInteraction.connect(owner).setUnderylingToken(underlying);
 
+  const Test = await ethers.getContractFactory("Test");
+  const test = await (
+    await Test.deploy(THREE_CRV_TOKEN_ADDRESS, USDN_METAPOOL_ADDRESS)
+  ).deployed();
+
+  const Test2 = await ethers.getContractFactory("Test2");
+  const test2 = await (
+    await Test2.deploy(
+      THREE_CRV_TOKEN_ADDRESS,
+      USDN_METAPOOL_ADDRESS,
+      test.address
+    )
+  ).deployed();
+
   return {
     threeCrv,
     crvDUSD,
@@ -227,6 +245,8 @@ async function deployContracts(): Promise<Contracts> {
     basicIssuanceModule,
     hysiBatchInteraction,
     faucet,
+    test,
+    test2,
   };
 }
 
@@ -361,18 +381,33 @@ describe("HysiBatchInteraction Network Test", function () {
       });
       context("success", function () {
         it.only("batch mints", async function () {
-          await contracts.threeCrv
-            .connect(depositor)
-            .approve(contracts.hysiBatchInteraction.address, parseEther("100"));
-          await contracts.threeCrv
-            .connect(depositor)
-            .approve(contracts.usdnMetapool.address, parseEther("100"));
-          await contracts.usdnMetapool
-            .connect(depositor)
-            .add_liquidity([0, parseEther("100")], 0);
-          await contracts.hysiBatchInteraction
-            .connect(depositor)
-            .sendToCurve(parseEther("100"), contracts.usdnMetapool.address);
+          console.log((await contracts.test2.tester()).toString());
+          // console.log(
+          //   (await contracts.threeCrv.balanceOf(depositor.address)).toString()
+          // );
+          // console.log((await contracts.test.totalSupply()).toString());
+          // await contracts.threeCrv
+          //   .connect(depositor)
+          //   .approve(contracts.test.address, parseEther("100"));
+
+          // await contracts.test.connect(depositor).take3Crv(parseEther("100"));
+
+          // console.log(
+          //   await contracts.threeCrv.balanceOf(contracts.test.address)
+          // );
+          // await contracts.threeCrv
+          //   .connect(depositor)
+          //   .approve(contracts.test.address, parseEther("100"));
+          // await contracts.test.connect(depositor).sendToCurve(parseEther("10"));
+          // await contracts.threeCrv
+          //   .connect(depositor)
+          //   .approve(contracts.usdnMetapool.address, parseEther("100"));
+          // // await contracts.usdnMetapool
+          // //   .connect(depositor)
+          // //   .add_liquidity([0, parseEther("100")], 0);
+          // await contracts.hysiBatchInteraction
+          //   .connect(depositor)
+          //   .sendToCurve(parseEther("100"), contracts.usdnMetapool.address);
           // console.log((await provider.getBlock("latest")).timestamp);
           // await provider.send("evm_increaseTime", [1800]);
           // await provider.send("evm_mine", []);
