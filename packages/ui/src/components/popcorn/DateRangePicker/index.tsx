@@ -28,7 +28,7 @@ const CalenderInput = ({ isStart }) => {
 
 export const DateRangePicker = () => {
   return (
-    <div className="grid justify-items-stretch mr-24">
+    <div className="grid justify-items-stretch md:mr-24">
       <div className="md:flex md:items-center md:justify-between justify-self-end">
         <div className="mt-4 flex md:mt-0 md:ml-4">
           <CalenderInput isStart={true} />
