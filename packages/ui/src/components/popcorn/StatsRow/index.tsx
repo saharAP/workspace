@@ -1,42 +1,10 @@
-import {
-  CursorClickIcon,
-  MailOpenIcon,
-  UsersIcon,
-} from '@heroicons/react/outline';
 import { ArrowSmDownIcon, ArrowSmUpIcon } from '@heroicons/react/solid';
-
-const stats = [
-  {
-    id: 1,
-    name: 'CO2 Emissions (kg)',
-    stat: '71,897',
-    icon: UsersIcon,
-    change: '122',
-    changeType: 'increase',
-  },
-  {
-    id: 2,
-    name: 'Transactions',
-    stat: '58.16%',
-    icon: MailOpenIcon,
-    change: '5.4%',
-    changeType: 'increase',
-  },
-  {
-    id: 3,
-    name: 'Average Gas Price',
-    stat: '24.57%',
-    icon: CursorClickIcon,
-    change: '3.2%',
-    changeType: 'decrease',
-  },
-];
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(' ');
 }
 
-export const StatsRow = () => {
+export const StatsRow = ({ stats }) => {
   return (
     <div className="w-screen grid justify-items-stretch">
       <dl className="justify-self-start mt-5 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">

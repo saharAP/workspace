@@ -2,7 +2,7 @@ import { CloudIcon, TrendingUpIcon } from '@heroicons/react/outline';
 import { Meta, Story } from '@storybook/react/types-6-0';
 import React from 'react';
 import { EmissionSummaryStats } from '../TotalStats';
-import { ContractStatsStackedLayout } from './index';
+import { ContractStatsRow } from './index';
 
 const emissionSummaryStats: EmissionSummaryStats[] = [
   {
@@ -24,19 +24,18 @@ const emissionSummaryStats: EmissionSummaryStats[] = [
 ];
 
 export default {
-  title: 'Popcorn/ContractStatsStackedLayout',
-  component: ContractStatsStackedLayout,
+  title: 'Popcorn/ContractStatsRow',
+  component: ContractStatsRow,
   decorators: [
     (Story) => (
-      <div className="flex flex-row justify-center">
+      <div className="flex flex-row justify-center ">
         <Story></Story>
       </div>
     ),
   ],
 } as Meta;
 
-const Template: Story = (args) => <ContractStatsStackedLayout {...args} />;
-
+const Template: Story = (args) => <ContractStatsRow {...args} />;
 export const Primary = Template.bind({});
 Primary.args = {
   emissionSummaryStats: emissionSummaryStats,
