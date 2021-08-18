@@ -1,27 +1,7 @@
-import { MailOpenIcon, UsersIcon } from '@heroicons/react/solid';
 import React from 'react';
 import { AreaBarChart } from '../recharts/AreaBarChart';
 import { getDummyEmissionData } from '../recharts/dummyEmissionsData';
 import { StatsRow } from '../StatsRow/index';
-
-const stats = [
-  {
-    id: 1,
-    name: 'CO2 Emissions (kg)',
-    stat: '71,897',
-    icon: UsersIcon,
-    change: '122',
-    changeType: 'increase',
-  },
-  {
-    id: 2,
-    name: 'Transactions',
-    stat: '58.16%',
-    icon: MailOpenIcon,
-    change: '5.4%',
-    changeType: 'increase',
-  },
-];
 
 export const ContractContainer = ({ emissionSummaryStats, contractName }) => {
   return (
@@ -48,7 +28,7 @@ export const ContractContainer = ({ emissionSummaryStats, contractName }) => {
       </div>
 
       <div className="max-w-7xl">
-        <StatsRow stats={stats} />
+        <StatsRow stats={emissionSummaryStats} />
       </div>
     </div>
   );

@@ -7,7 +7,7 @@ import { ContractContainer } from './index';
 const emissionSummaryStats: EmissionSummaryStats[] = [
   {
     id: 1,
-    name: 'co2Emissions',
+    name: 'CO2 Emissions (kg)',
     stat: '71kg',
     icon: CloudIcon,
     change: '12.38%',

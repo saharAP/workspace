@@ -10,7 +10,7 @@ export const AddContractButton = () => {
         >
           <PlusIconOutline className="h-8 w-8" aria-hidden="true" />
         </button>
-        <p className="my-auto text-base text-xl text-gray-900">Add Contract</p>
+        <p className="my-auto text-xl text-gray-900">Add Contract</p>
       </div>
     </div>
   );

@@ -31,33 +31,6 @@ const emissionSummaryStats: EmissionSummaryStats[] = [
     stat: '45',
     icon: CursorClickIcon,
     change: '3.2%',
-    changeType: 'increase',
-  },
-];
-
-const emissionSummaryStatDecrease: EmissionSummaryStats[] = [
-  {
-    id: 1,
-    name: 'co2Emissions',
-    stat: '71kg',
-    icon: CloudIcon,
-    change: '12.38%',
-    changeType: 'decrease',
-  },
-  {
-    id: 2,
-    name: 'Transactions',
-    stat: '23',
-    icon: TrendingUpIcon,
-    change: '5.4%',
-    changeType: 'decrease',
-  },
-  {
-    id: 3,
-    name: 'Average Gas Price',
-    stat: '45',
-    icon: CursorClickIcon,
-    change: '3.2%',
     changeType: 'decrease',
   },
 ];
@@ -77,6 +50,3 @@ export default {
 const Template: Story = (args) => <TotalsContainer {...args} />;
 export const Increase = Template.bind({});
 Increase.args = { emissionSummaryStats: emissionSummaryStats };
-
-export const Decrease = Template.bind({});
-Decrease.args = { emissionSummaryStats: emissionSummaryStatDecrease };
