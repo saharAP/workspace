@@ -381,9 +381,9 @@ export default async function deploy(ethers): Promise<void> {
       `adding ${proposalType === 0 ? "nomination" : "takedown"} proposals...`
     );
     console.log(`Reducing proposal voting period and veto period to 20s`);
-    await contracts.beneficiaryGovernance
-      .connect(accounts[0])
-      .setConfiguration(20, 20, parseEther("2000"));
+    // await contracts.beneficiaryGovernance
+    //   .connect(accounts[0])
+    //   .setConfiguration(20, 20, parseEther("2000"));
     const proposalIds = await bluebird.map(
       beneficiaries,
       async (beneficiary) => {
