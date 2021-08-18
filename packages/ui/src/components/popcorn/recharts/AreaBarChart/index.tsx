@@ -50,14 +50,14 @@ export const AreaBarChart: React.FC<AreaChartProps> = ({
           <Area
             type="monotone"
             dataKey="co2Emissions"
-            stroke="#34D399"
+            stroke="#C7D2FE"
             yAxisId="left"
           />
           <Bar
             yAxisId="right"
             dataKey="numTransactions"
             barSize={20}
-            fill="#818CF8"
+            fill="#4F46E5"
           />
         </ComposedChart>
       </ResponsiveContainer>
