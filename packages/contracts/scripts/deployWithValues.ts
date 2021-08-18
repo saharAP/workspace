@@ -5,6 +5,7 @@ import bluebird from "bluebird";
 import { deployContract } from "ethereum-waffle";
 import { Contract, utils } from "ethers";
 import { parseEther } from "ethers/lib/utils";
+import getCreatedProposalId from "../adapters/GrantElection/getCreatedProposalId";
 import { ShareType } from "../adapters/GrantElection/GrantElectionAdapter";
 import * as addressCidMap from "./addressCidMap.json";
 
@@ -77,33 +78,37 @@ export default async function deploy(ethers): Promise<void> {
     console.log("deploying contracts ...");
 
     const mockPop = await (
-      await (
-        await ethers.getContractFactory("MockERC20")
-      ).deploy("TestPOP", "TPOP", 18)
+      await (await ethers.getContractFactory("MockERC20")).deploy(
+        "TestPOP",
+        "TPOP",
+        18
+      )
     ).deployed();
 
     const beneficiaryVaults = await (
-      await (
-        await ethers.getContractFactory("BeneficiaryVaults")
-      ).deploy(mockPop.address)
+      await (await ethers.getContractFactory("BeneficiaryVaults")).deploy(
+        mockPop.address
+      )
     ).deployed();
 
     const region = await (
-      await (
-        await ethers.getContractFactory("Region")
-      ).deploy(beneficiaryVaults.address)
+      await (await ethers.getContractFactory("Region")).deploy(
+        beneficiaryVaults.address
+      )
     ).deployed();
 
     const beneficiaryRegistry = await (
-      await (
-        await ethers.getContractFactory("BeneficiaryRegistry")
-      ).deploy(region.address)
+      await (await ethers.getContractFactory("BeneficiaryRegistry")).deploy(
+        region.address
+      )
     ).deployed();
 
     const mock3CRV = await (
-      await (
-        await ethers.getContractFactory("MockERC20")
-      ).deploy("3CURVE", "3CRV", 18)
+      await (await ethers.getContractFactory("MockERC20")).deploy(
+        "3CURVE",
+        "3CRV",
+        18
+      )
     ).deployed();
 
     const WETH = await (
@@ -111,15 +116,16 @@ export default async function deploy(ethers): Promise<void> {
     ).deployed();
 
     const rewardsEscrow = await (
-      await (
-        await ethers.getContractFactory("RewardsEscrow")
-      ).deploy(mockPop.address)
+      await (await ethers.getContractFactory("RewardsEscrow")).deploy(
+        mockPop.address
+      )
     ).deployed();
 
     const staking = await (
-      await (
-        await ethers.getContractFactory("Staking")
-      ).deploy(mockPop.address, rewardsEscrow.address)
+      await (await ethers.getContractFactory("Staking")).deploy(
+        mockPop.address,
+        rewardsEscrow.address
+      )
     ).deployed();
 
     const uniswapFactory = await deployContract(
@@ -146,9 +152,7 @@ export default async function deploy(ethers): Promise<void> {
     );
 
     const rewardsManager = await (
-      await (
-        await ethers.getContractFactory("RewardsManager")
-      ).deploy(
+      await (await ethers.getContractFactory("RewardsManager")).deploy(
         mockPop.address,
         staking.address,
         treasuryFund.address,
@@ -161,9 +165,7 @@ export default async function deploy(ethers): Promise<void> {
     await staking.connect(accounts[0]).init(rewardsManager.address);
 
     const randomNumberConsumer = await (
-      await (
-        await ethers.getContractFactory("RandomNumberConsumer")
-      ).deploy(
+      await (await ethers.getContractFactory("RandomNumberConsumer")).deploy(
         process.env.ADDR_CHAINLINK_VRF_COORDINATOR,
         process.env.ADDR_CHAINLINK_LINK_TOKEN,
         process.env.ADDR_CHAINLINK_KEY_HASH
@@ -171,9 +173,7 @@ export default async function deploy(ethers): Promise<void> {
     ).deployed();
 
     const beneficiaryGovernance = await (
-      await (
-        await ethers.getContractFactory("BeneficiaryGovernance")
-      ).deploy(
+      await (await ethers.getContractFactory("BeneficiaryGovernance")).deploy(
         staking.address,
         beneficiaryRegistry.address,
         mockPop.address,
@@ -183,9 +183,7 @@ export default async function deploy(ethers): Promise<void> {
     ).deployed();
 
     const grantElections = await (
-      await (
-        await ethers.getContractFactory("GrantElections")
-      ).deploy(
+      await (await ethers.getContractFactory("GrantElections")).deploy(
         staking.address,
         beneficiaryRegistry.address,
         randomNumberConsumer.address,
@@ -382,7 +380,7 @@ export default async function deploy(ethers): Promise<void> {
     const proposalIds = await bluebird.map(
       beneficiaries,
       async (beneficiary) => {
-        const result = await contracts.beneficiaryGovernance
+        const tx = await contracts.beneficiaryGovernance
           .connect(beneficiary)
           .createProposal(
             beneficiary.address,
@@ -391,6 +389,13 @@ export default async function deploy(ethers): Promise<void> {
             proposalType,
             { gasLimit: 3000000 }
           );
+        const receipt = await tx.wait(1);
+        console.log(receipt);
+        const id = await getCreatedProposalId(
+          receipt.transactionHash,
+          ethers.provider
+        );
+        return id;
       },
       { concurrency: 1 }
     );
@@ -773,8 +778,7 @@ ADDR_3CRV=${contracts.mock3CRV.address}
   };
 
   const getActiveBeneficiaries = async (): Promise<string[]> => {
-    const beneficiaryAddresses =
-      await contracts.beneficiaryRegistry.getBeneficiaryList();
+    const beneficiaryAddresses = await contracts.beneficiaryRegistry.getBeneficiaryList();
     // Remove revoked beneficiaries
     return beneficiaryAddresses.filter(
       (address) => address !== "0x0000000000000000000000000000000000000000"
