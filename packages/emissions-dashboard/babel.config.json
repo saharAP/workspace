@@ -9,7 +9,8 @@
           "@popcorn/utils": "../utils",
           "@popcorn/contracts": "../contracts",
           "@popcorn/app": "./app",
-          "containers": "./containers"
+          "containers": "./containers",
+          "emissions-dashboard": "./emissions-dashboard"
         }
       }
     ]
