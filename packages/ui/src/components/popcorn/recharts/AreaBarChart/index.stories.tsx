@@ -3,7 +3,7 @@ import { getDummyEmissionData } from '../dummyEmissionsData';
 import { AreaBarChart } from './index';
 
 export default {
-  title: 'Popcorn/Charts/AreaBarChart',
+  title: 'Emissions Dashboard / Components / Charts / AreaBarChart',
   component: AreaBarChart,
   decorators: [
     (Story) => (

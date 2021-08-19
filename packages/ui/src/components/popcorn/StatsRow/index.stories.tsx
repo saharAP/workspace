@@ -19,7 +19,7 @@ const dummyItem: EmissionSummaryStats = {
 };
 
 export default {
-  title: 'Popcorn/StatsRow',
+  title: 'Emissions Dashboard / Components / StatsRow',
   component: StatsRow,
   decorators: [
     (Story) => (

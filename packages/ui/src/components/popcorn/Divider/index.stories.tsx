@@ -4,7 +4,7 @@ import React from 'react';
 import { Divider } from './index';
 
 export default {
-  title: 'Popcorn/Divider',
+  title: 'Emissions Dashboard / Components / Divider',
   component: Divider,
   decorators: [
     (Story) => (

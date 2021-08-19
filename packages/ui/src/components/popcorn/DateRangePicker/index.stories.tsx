@@ -4,7 +4,7 @@ import React from 'react';
 import { DateRangePicker } from './index';
 
 export default {
-  title: 'Popcorn/DateRangePicker',
+  title: 'Emissions Dashboard / Components / DateRangePicker',
   component: DateRangePicker,
 } as Meta;
 
