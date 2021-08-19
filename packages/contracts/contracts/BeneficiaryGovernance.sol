@@ -140,7 +140,11 @@ contract BeneficiaryGovernance is ParticipationReward {
    * @param  proposalId id of the proposal
    * @return status of proposal
    */
-  function getStatus(uint256 proposalId) external view returns (uint256) {
+  function getStatus(uint256 proposalId)
+    external
+    view
+    returns (ProposalStatus)
+  {
     return proposals[proposalId].status;
   }
 

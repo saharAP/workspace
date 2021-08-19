@@ -364,7 +364,7 @@ export default async function deploy(ethers): Promise<void> {
     console.log(`Reducing proposal voting period and veto period to 20s`);
     await contracts.beneficiaryGovernance
       .connect(accounts[0])
-      .setConfiguration(60, 20, parseEther("2000"));
+      .setConfiguration(30, 30, parseEther("2000"));
   };
 
   const addClosedProposalsAndBeneficiariesToRegistry =
@@ -380,7 +380,7 @@ export default async function deploy(ethers): Promise<void> {
       const allProposalIds = nominationProposalIds.concat(takedownProposalIds);
       await voteOnNominationProposals(nominationProposalIds);
       await voteOnTakedownProposals(takedownProposalIds);
-      await finalizeProposals();
+      await finalizeProposals(allProposalIds);
     };
 
   const addProposals = async (
@@ -423,32 +423,32 @@ export default async function deploy(ethers): Promise<void> {
     // These nomination proposals will pass
     await bluebird.map(
       proposalIds.slice(0, 4),
-      async (x, i) => {
+      async (proposalId) => {
         await contracts.beneficiaryGovernance
           .connect(voters[0])
-          .vote(i, Vote.Yes);
+          .vote(proposalId, Vote.Yes);
         await contracts.beneficiaryGovernance
           .connect(voters[1])
-          .vote(i, Vote.Yes);
+          .vote(proposalId, Vote.Yes);
         await contracts.beneficiaryGovernance
           .connect(voters[2])
-          .vote(i, Vote.No);
+          .vote(proposalId, Vote.No);
       },
       { concurrency: 1 }
     );
     // These nomination proposals will fail
     await bluebird.map(
       proposalIds.slice(4, 6),
-      async (x, i) => {
+      async (proposalId) => {
         await contracts.beneficiaryGovernance
           .connect(voters[0])
-          .vote(i + 4, Vote.No);
+          .vote(proposalId, Vote.No);
         await contracts.beneficiaryGovernance
           .connect(voters[1])
-          .vote(i + 4, Vote.No);
+          .vote(proposalId, Vote.No);
         await contracts.beneficiaryGovernance
           .connect(voters[2])
-          .vote(i + 4, Vote.No);
+          .vote(proposalId, Vote.No);
       },
       { concurrency: 1 }
     );
@@ -457,51 +457,75 @@ export default async function deploy(ethers): Promise<void> {
   const voteOnTakedownProposals = async (
     proposalIds: number[]
   ): Promise<void> => {
-    console.log("voting on takedown proposals");
+    console.log("Voting on takedown proposals");
     // These takedown proposals will pass
     await bluebird.map(
       proposalIds.slice(0, 4),
-      async (x, i) => {
+      async (proposalId) => {
         await contracts.beneficiaryGovernance
           .connect(voters[0])
-          .vote(i, Vote.Yes);
+          .vote(proposalId, Vote.Yes);
         await contracts.beneficiaryGovernance
           .connect(voters[1])
-          .vote(i, Vote.Yes);
+          .vote(proposalId, Vote.Yes);
         await contracts.beneficiaryGovernance
           .connect(voters[2])
-          .vote(i, Vote.No);
+          .vote(proposalId, Vote.No);
       },
       { concurrency: 1 }
     );
     // These takedown proposals will fail
     await bluebird.map(
-      beneficiaries.slice(4, 6),
-      async (x, i) => {
+      proposalIds.slice(4, 6),
+      async (proposalId) => {
         await contracts.beneficiaryGovernance
           .connect(voters[0])
-          .vote(i + 4, Vote.No);
+          .vote(proposalId, Vote.No);
         await contracts.beneficiaryGovernance
           .connect(voters[1])
-          .vote(i + 4, Vote.No);
+          .vote(proposalId, Vote.No);
         await contracts.beneficiaryGovernance
           .connect(voters[2])
-          .vote(i + 4, Vote.No);
+          .vote(proposalId, Vote.No);
       },
       { concurrency: 1 }
     );
   };
 
-  const finalizeProposals = async (): Promise<void> => {
+  const isPendingFinalization = (status: number) => status === 2;
+
+  const finalizeProposals = async (proposalIds: number[]): Promise<void> => {
     console.log("finalizing nomination/takedown proposals");
     console.log("adding beneficiaries to registry");
-
+    let allProposalsPendingFinalization = false;
     // For each Proposal
     // Create a local variable - proposalStatus
+    while (!allProposalsPendingFinalization) {
+      await new Promise((r) => setTimeout(r, 1000));
+      const proposalStatuses: number[] = await bluebird.map(
+        proposalIds,
+        async (proposalId) => {
+          const proposalStatus =
+            await contracts.beneficiaryGovernance.getStatus(proposalId);
+          console.log({ proposalId, proposalStatus });
+          return proposalStatus;
+        },
+        { concurrency: 1 }
+      );
+      console.log(
+        proposalStatuses,
+        allProposalsPendingFinalization,
+        proposalStatuses.every(isPendingFinalization)
+      );
+      allProposalsPendingFinalization = proposalStatuses.every(
+        isPendingFinalization
+      );
+      console.log("Waiting for all proposals to be pending finalization...");
+    }
+    console.log("All proposals pending finalisation");
 
-    await increaseEvmTimeAndMine(4);
     await bluebird.map(
-      beneficiaries.slice(0, 12),
+      proposalIds,
       async (x, i) => {
         await contracts.beneficiaryGovernance.connect(accounts[0]).finalize(i);
       },
