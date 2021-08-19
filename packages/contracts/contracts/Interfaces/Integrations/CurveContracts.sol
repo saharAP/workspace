@@ -20,6 +20,12 @@ interface CurveMetapool {
     external
     returns (uint256);
 
+  function add_liquidity(
+    uint256[2] calldata _amounts,
+    uint256 _min_mint_amounts,
+    address _receiver
+  ) external returns (uint256);
+
   function remove_liquidity_one_coin(
     uint256 amount,
     int128 i,
