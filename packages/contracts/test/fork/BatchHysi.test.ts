@@ -262,7 +262,7 @@ describe("HysiBatchInteraction Network Test", function () {
     });
   });
   describe.only("test", function () {
-    it("tests", async function () {
+    it("tests dynamic amounts", async function () {
       console.log("approve");
       await contracts.threeCrv
         .connect(depositor)
@@ -272,9 +272,35 @@ describe("HysiBatchInteraction Network Test", function () {
         .connect(depositor)
         .depositForMint(parseEther("100"));
       console.log("get quantities");
-      // const [quantities, pools] =
-      //   await contracts.hysiBatchInteraction.getPoolAllocations();
-      // console.log(quantities);
+      const [quantities, pools] =
+        await contracts.hysiBatchInteraction.getPoolAllocations();
+      console.log(quantities);
+      // quantities.forEach((e) =>
+      //   console.log(e.div(parseEther("1")).mul(parseEther("1")).toString())
+      // );
+      console.log("send to curve");
+      await contracts.hysiBatchInteraction.sendToCurve(quantities);
+      console.log(
+        await (
+          await contracts.crvDUSD.balanceOf(
+            contracts.hysiBatchInteraction.address
+          )
+        ).toString()
+      );
+    });
+    it("tests fixed amounts", async function () {
+      console.log("approve");
+      await contracts.threeCrv
+        .connect(depositor)
+        .approve(contracts.hysiBatchInteraction.address, parseEther("100"));
+      console.log("deposit");
+      await contracts.hysiBatchInteraction
+        .connect(depositor)
+        .depositForMint(parseEther("100"));
+      console.log("get quantities");
+      const [quantities, pools] =
+        await contracts.hysiBatchInteraction.getPoolAllocations();
+      quantities.forEach((e) => console.log(e.toString()));
       console.log("send to curve");
       await contracts.hysiBatchInteraction.sendToCurve([
         parseEther("25"),

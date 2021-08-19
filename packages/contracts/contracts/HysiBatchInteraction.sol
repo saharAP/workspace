@@ -293,7 +293,8 @@ contract HysiBatchInteraction is Owned {
     uint256[] memory returnValues = new uint256[](quantities.length);
     address[] memory metapools = new address[](quantities.length);
     for (uint256 i; i < underlying.length; i++) {
-      returnValues[i] = quantitiesIn3Crv[i].mul(hysiAmount).div(1e18);
+      uint256 test = quantitiesIn3Crv[i].mul(hysiAmount).div(1e18);
+      returnValues[i] = test.div(1e18).mul(1e8);
       metapools[i] = address(underlying[i].curveMetaPool);
     }
     return (returnValues, metapools);
@@ -409,25 +410,29 @@ contract HysiBatchInteraction is Owned {
 
     for (uint256 i; i < underlying.length; i++) {
       uint256 poolAllocation = quantitiesIn3Crv[i].mul(hysiAmount).div(1e18);
-      _sendToCurve(poolAllocation, underlying[i].curveMetaPool);
-      // _sendToYearn(
-      //   underlying[i].crvToken.balanceOf(address(this)),
-      //   underlying[i].crvToken,
-      //   underlying[i].yToken
-      // );
-      // underlying[i].yToken.safeIncreaseAllowance(
-      //   address(setBasicIssuanceModule),
-      //   underlying[i].yToken.balanceOf(address(this))
-      // );
+      //These amounts need to be rounded for some reason
+      _sendToCurve(
+        poolAllocation.div(1e18).mul(1e18),
+        underlying[i].curveMetaPool
+      );
+      _sendToYearn(
+        underlying[i].crvToken.balanceOf(address(this)),
+        underlying[i].crvToken,
+        underlying[i].yToken
+      );
+      underlying[i].yToken.safeIncreaseAllowance(
+        address(setBasicIssuanceModule),
+        underlying[i].yToken.balanceOf(address(this))
+      );
     }
-    // uint256 oldBalance = setToken.balanceOf(address(this));
-    // setBasicIssuanceModule.issue(setToken, hysiAmount, address(this));
-    // batch.claimableToken = setToken.balanceOf(address(this)).sub(oldBalance);
-    // batch.suppliedToken = 0;
-    // batch.claimable = true;
+    uint256 oldBalance = setToken.balanceOf(address(this));
+    setBasicIssuanceModule.issue(setToken, hysiAmount, address(this));
+    batch.claimableToken = setToken.balanceOf(address(this)).sub(oldBalance);
+    batch.suppliedToken = 0;
+    batch.claimable = true;
 
-    // lastMintedAt = block.timestamp;
-    // currentMintBatchId = _generateNextBatchId(currentMintBatchId);
+    lastMintedAt = block.timestamp;
+    currentMintBatchId = _generateNextBatchId(currentMintBatchId);
 
     emit BatchMinted(hysiAmount);
   }
