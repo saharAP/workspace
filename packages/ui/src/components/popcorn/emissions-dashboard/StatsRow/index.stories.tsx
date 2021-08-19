@@ -6,7 +6,7 @@ import {
 } from '@heroicons/react/solid';
 import { Meta, Story } from '@storybook/react/types-6-0';
 import React from 'react';
-import { EmissionSummaryStats } from '../../../interfaces/index';
+import { EmissionSummaryStats } from '../../../../interfaces/index';
 import { StatsRow } from './index';
 
 const dummyItem: EmissionSummaryStats = {

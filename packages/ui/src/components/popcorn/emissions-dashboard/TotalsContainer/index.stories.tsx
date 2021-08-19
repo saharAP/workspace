@@ -5,7 +5,7 @@ import {
 } from '@heroicons/react/outline';
 import { Meta, Story } from '@storybook/react/types-6-0';
 import React from 'react';
-import { EmissionSummaryStats } from '../../../interfaces/index';
+import { EmissionSummaryStats } from '../../../../interfaces/index';
 import { TotalsContainer } from './index';
 
 const emissionSummaryStats: EmissionSummaryStats[] = [

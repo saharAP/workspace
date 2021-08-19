@@ -5,12 +5,12 @@ import {
 } from '@heroicons/react/outline';
 import { Meta, Story } from '@storybook/react/types-6-0';
 import React from 'react';
-import { AddContractButton } from '../../../AddContractButton';
-import { ContractContainer } from '../../../ContractContainer';
-import { DateRangePicker } from '../../../DateRangePicker';
-import { Divider } from '../../../Divider';
-import { NavBar } from '../../../NavBar';
-import { TotalsContainer } from '../../../TotalsContainer';
+import { AddContractButton } from '../../AddContractButton';
+import { ContractContainer } from '../../ContractContainer';
+import { DateRangePicker } from '../../DateRangePicker';
+import { Divider } from '../../Divider';
+import { NavBar } from '../../NavBar';
+import { TotalsContainer } from '../../TotalsContainer';
 
 const totalStatsEmissionsData = [
   {

@@ -4,7 +4,7 @@ import React from 'react';
 import { Tooltip, TooltipProps } from '.';
 
 export default {
-  title: 'Emissions Dashboard / Components / Tooltip',
+  title: 'Popcorn/Tooltip',
   component: Tooltip,
   decorators: [
     (Story) => (
