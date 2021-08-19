@@ -18,6 +18,9 @@ const UniswapV2PairJSON = require("../artifactsUniswap/UniswapV2Pair.json");
 // This script creates two beneficiaries and one quarterly grant that they are both eligible for. Run this
 // Run this instead of the normal deploy.js script
 const DEFAULT_REGION = "0x5757";
+
+const VOTE_PERIOD_IN_SECONDS = 30;
+
 interface Contracts {
   beneficiaryRegistry: Contract;
   mockPop: Contract;
@@ -361,10 +364,16 @@ export default async function deploy(ethers): Promise<void> {
   };
 
   const updateProposalSettings = async (): Promise<void> => {
-    console.log(`Reducing proposal voting period and veto period to 20s`);
+    console.log(
+      `Reducing proposal voting period and veto period to ${VOTE_PERIOD_IN_SECONDS}s`
+    );
     await contracts.beneficiaryGovernance
       .connect(accounts[0])
-      .setConfiguration(30, 30, parseEther("2000"));
+      .setConfiguration(
+        VOTE_PERIOD_IN_SECONDS,
+        VOTE_PERIOD_IN_SECONDS,
+        parseEther("2000")
+      );
   };
 
   const addClosedProposalsAndBeneficiariesToRegistry =
@@ -496,34 +505,27 @@ export default async function deploy(ethers): Promise<void> {
 
   const finalizeProposals = async (proposalIds: number[]): Promise<void> => {
     console.log("finalizing nomination/takedown proposals");
-    console.log("adding beneficiaries to registry");
     let allProposalsPendingFinalization = false;
-    // For each Proposal
-    // Create a local variable - proposalStatus
+    console.log("Waiting for proposals to be in finalisation period");
+    await new Promise((r) => setTimeout(r, VOTE_PERIOD_IN_SECONDS * 1000));
     while (!allProposalsPendingFinalization) {
       await new Promise((r) => setTimeout(r, 1000));
       const proposalStatuses: number[] = await bluebird.map(
         proposalIds,
         async (proposalId) => {
+          await contracts.beneficiaryGovernance.refreshState(proposalId);
           const proposalStatus =
             await contracts.beneficiaryGovernance.getStatus(proposalId);
-          console.log({ proposalId, proposalStatus });
           return proposalStatus;
         },
         { concurrency: 1 }
-      );
-      console.log(
-        proposalStatuses,
-        allProposalsPendingFinalization,
-        proposalStatuses.every(isPendingFinalization)
       );
       allProposalsPendingFinalization = proposalStatuses.every(
         isPendingFinalization
       );
       console.log("Waiting for all proposals to be pending finalization...");
     }
-    console.log("All proposals pending finalisation");
-
+    console.log("Finalising nomination and takedown proposals");
     await bluebird.map(
       proposalIds,
       async (x, i) => {
