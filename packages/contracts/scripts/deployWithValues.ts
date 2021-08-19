@@ -364,12 +364,6 @@ export default async function deploy(ethers): Promise<void> {
     await addProposals(beneficiaries.slice(0, 6), 0);
     await addProposals(beneficiaries.slice(6, 12), 1);
     console.log("getting number of proposals...");
-    const numNominationProposals = await contracts.beneficiaryGovernance
-      .connect(accounts[0])
-      .getNumberOfProposals(0);
-    const numTakedownProposals = await contracts.beneficiaryGovernance
-      .connect(accounts[0])
-      .getNumberOfProposals(1);
     await voteOnNominationProposals();
     await voteOnTakedownProposals();
     await finalizeProposals();
@@ -383,9 +377,9 @@ export default async function deploy(ethers): Promise<void> {
       `adding ${proposalType === 0 ? "nomination" : "takedown"} proposals...`
     );
     console.log(`Reducing proposal voting period and veto period to 20s`);
-    // await contracts.beneficiaryGovernance
-    //   .connect(accounts[0])
-    //   .setConfiguration(20, 20, parseEther("2000"));
+    await contracts.beneficiaryGovernance
+      .connect(accounts[0])
+      .setConfiguration(60, 20, parseEther("2000"));
     const proposalIds = await bluebird.map(
       beneficiaries,
       async (beneficiary) => {
@@ -412,57 +406,75 @@ export default async function deploy(ethers): Promise<void> {
   };
 
   const voteOnNominationProposals = async (): Promise<void> => {
-    console.log("voting on nomination proposals");
-    // These nomination proposals will pass
-    await bluebird.map(beneficiaries.slice(0, 4), async (x, i) => {
-      await contracts.beneficiaryGovernance
-        .connect(voters[0])
-        .vote(i, Vote.Yes);
-      await contracts.beneficiaryGovernance
-        .connect(voters[1])
-        .vote(i, Vote.Yes);
-      await contracts.beneficiaryGovernance.connect(voters[2]).vote(i, Vote.No);
-    });
-    // These nomination proposals will fail
-    await bluebird.map(beneficiaries.slice(4, 6), async (x, i) => {
-      await contracts.beneficiaryGovernance
-        .connect(voters[0])
-        .vote(i + 4, Vote.No);
-      await contracts.beneficiaryGovernance
-        .connect(voters[1])
-        .vote(i + 4, Vote.No);
-      await contracts.beneficiaryGovernance
-        .connect(voters[2])
-        .vote(i + 4, Vote.No);
-    });
+    console.log("Voting on nomination proposals...");
+    console.log("These nomination proposals will pass...");
+    await bluebird.map(
+      beneficiaries.slice(0, 4),
+      async (x, i) => {
+        await contracts.beneficiaryGovernance
+          .connect(voters[0])
+          .vote(i, Vote.Yes);
+        await contracts.beneficiaryGovernance
+          .connect(voters[1])
+          .vote(i, Vote.Yes);
+        await contracts.beneficiaryGovernance
+          .connect(voters[2])
+          .vote(i, Vote.No);
+      },
+      { concurrency: 1 }
+    );
+    console.log("These nomination proposals will fail...");
+    await bluebird.map(
+      beneficiaries.slice(4, 6),
+      async (x, i) => {
+        await contracts.beneficiaryGovernance
+          .connect(voters[0])
+          .vote(i + 4, Vote.No);
+        await contracts.beneficiaryGovernance
+          .connect(voters[1])
+          .vote(i + 4, Vote.No);
+        await contracts.beneficiaryGovernance
+          .connect(voters[2])
+          .vote(i + 4, Vote.No);
+      },
+      { concurrency: 1 }
+    );
   };
 
   const voteOnTakedownProposals = async (): Promise<void> => {
     console.log("voting on takedown proposals");
     // These takedown proposals will pass
-    await bluebird.map(beneficiaries.slice(6, 10), async (x, i) => {
-      await contracts.beneficiaryGovernance
-        .connect(voters[0])
-        .vote(i + 6, Vote.Yes);
-      await contracts.beneficiaryGovernance
-        .connect(voters[1])
-        .vote(i + 6, Vote.Yes);
-      await contracts.beneficiaryGovernance
-        .connect(voters[2])
-        .vote(i + 6, Vote.No);
-    });
+    await bluebird.map(
+      beneficiaries.slice(6, 10),
+      async (x, i) => {
+        await contracts.beneficiaryGovernance
+          .connect(voters[0])
+          .vote(i + 6, Vote.Yes);
+        await contracts.beneficiaryGovernance
+          .connect(voters[1])
+          .vote(i + 6, Vote.Yes);
+        await contracts.beneficiaryGovernance
+          .connect(voters[2])
+          .vote(i + 6, Vote.No);
+      },
+      { concurrency: 1 }
+    );
     // These takedown proposals will fail
-    await bluebird.map(beneficiaries.slice(10, 12), async (x, i) => {
-      await contracts.beneficiaryGovernance
-        .connect(voters[0])
-        .vote(i + 10, Vote.No);
-      await contracts.beneficiaryGovernance
-        .connect(voters[1])
-        .vote(i + 10, Vote.No);
-      await contracts.beneficiaryGovernance
-        .connect(voters[2])
-        .vote(i + 10, Vote.No);
-    });
+    await bluebird.map(
+      beneficiaries.slice(10, 12),
+      async (x, i) => {
+        await contracts.beneficiaryGovernance
+          .connect(voters[0])
+          .vote(i + 10, Vote.No);
+        await contracts.beneficiaryGovernance
+          .connect(voters[1])
+          .vote(i + 10, Vote.No);
+        await contracts.beneficiaryGovernance
+          .connect(voters[2])
+          .vote(i + 10, Vote.No);
+      },
+      { concurrency: 1 }
+    );
   };
 
   const finalizeProposals = async (): Promise<void> => {
@@ -511,28 +523,36 @@ export default async function deploy(ethers): Promise<void> {
       { concurrency: 1 }
     );
     console.log("voting on nomination and takedown proposals");
-    await bluebird.map(beneficiaries.slice(12, 16), async (x, i) => {
-      await contracts.beneficiaryGovernance
-        .connect(beneficiaries[0])
-        .vote(i + 12, Vote.Yes);
-      await contracts.beneficiaryGovernance
-        .connect(beneficiaries[1])
-        .vote(i + 12, Vote.Yes);
-      await contracts.beneficiaryGovernance
-        .connect(beneficiaries[2])
-        .vote(i + 12, Vote.No);
-    });
+    await bluebird.map(
+      beneficiaries.slice(12, 16),
+      async (x, i) => {
+        await contracts.beneficiaryGovernance
+          .connect(beneficiaries[0])
+          .vote(i + 12, Vote.Yes);
+        await contracts.beneficiaryGovernance
+          .connect(beneficiaries[1])
+          .vote(i + 12, Vote.Yes);
+        await contracts.beneficiaryGovernance
+          .connect(beneficiaries[2])
+          .vote(i + 12, Vote.No);
+      },
+      { concurrency: 1 }
+    );
 
     await increaseEvmTimeAndMine(2);
 
-    await bluebird.map(beneficiaries.slice(12, 16), async (x, i) => {
-      await contracts.beneficiaryGovernance
-        .connect(beneficiaries[3])
-        .vote(i + 12, Vote.No);
-      await contracts.beneficiaryGovernance
-        .connect(beneficiaries[4])
-        .vote(i + 12, Vote.No);
-    });
+    await bluebird.map(
+      beneficiaries.slice(12, 16),
+      async (x, i) => {
+        await contracts.beneficiaryGovernance
+          .connect(beneficiaries[3])
+          .vote(i + 12, Vote.No);
+        await contracts.beneficiaryGovernance
+          .connect(beneficiaries[4])
+          .vote(i + 12, Vote.No);
+      },
+      { concurrency: 1 }
+    );
   };
 
   const addOpenProposals = async (): Promise<void> => {
@@ -569,17 +589,21 @@ export default async function deploy(ethers): Promise<void> {
       { concurrency: 1 }
     );
     console.log("voting on nomination and takedown proposals");
-    await bluebird.map(beneficiaries.slice(16), async (x, i) => {
-      await contracts.beneficiaryGovernance
-        .connect(beneficiaries[0])
-        .vote(i + 16, Vote.Yes);
-      await contracts.beneficiaryGovernance
-        .connect(beneficiaries[1])
-        .vote(i + 16, Vote.Yes);
-      await contracts.beneficiaryGovernance
-        .connect(beneficiaries[2])
-        .vote(i + 16, Vote.No);
-    });
+    await bluebird.map(
+      beneficiaries.slice(16),
+      async (x, i) => {
+        await contracts.beneficiaryGovernance
+          .connect(beneficiaries[0])
+          .vote(i + 16, Vote.Yes);
+        await contracts.beneficiaryGovernance
+          .connect(beneficiaries[1])
+          .vote(i + 16, Vote.Yes);
+        await contracts.beneficiaryGovernance
+          .connect(beneficiaries[2])
+          .vote(i + 16, Vote.No);
+      },
+      { concurrency: 1 }
+    );
   };
 
   const registerBeneficiariesForElection = async (
