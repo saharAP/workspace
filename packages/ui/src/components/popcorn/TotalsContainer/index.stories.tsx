@@ -36,7 +36,7 @@ const emissionSummaryStats: EmissionSummaryStats[] = [
 ];
 
 export default {
-  title: 'Popcorn/TotalsContainer',
+  title: 'Emissions Dashboard / Components / TotalsContainer',
   component: TotalsContainer,
   decorators: [
     (Story) => (

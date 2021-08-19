@@ -4,7 +4,7 @@ import React from 'react';
 import { AddContractButton } from './index';
 
 export default {
-  title: 'Popcorn/AddContractButton',
+  title: 'Emissions Dashboard / Components / AddContractButton',
   component: AddContractButton,
   decorators: [
     (Story) => (
