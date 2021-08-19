@@ -501,6 +501,7 @@ export default async function deploy(ethers): Promise<void> {
     );
   };
 
+  const isInChallengePeriod = (status: number) => status === 1;
   const isPendingFinalization = (status: number) => status === 2;
 
   const finalizeProposals = async (proposalIds: number[]): Promise<void> => {
@@ -568,15 +569,23 @@ export default async function deploy(ethers): Promise<void> {
       },
       { concurrency: 1 }
     );
-    console.log("Waiting for proposals to be in veto period...");
-    await new Promise((r) => setTimeout(r, 30 * 1000));
-    await bluebird.map(
-      allProposalIds,
-      async (proposalId) => {
-        await contracts.beneficiaryGovernance.refreshState(proposalId);
-      },
-      { concurrency: 1 }
-    );
+    let allProposalsInChallengePeriod = false;
+    while (!allProposalsInChallengePeriod) {
+      await new Promise((r) => setTimeout(r, 1000));
+      const proposalStatuses: number[] = await bluebird.map(
+        allProposalIds,
+        async (proposalId) => {
+          await contracts.beneficiaryGovernance.refreshState(proposalId);
+          const proposalStatus =
+            await contracts.beneficiaryGovernance.getStatus(proposalId);
+          return proposalStatus;
+        },
+        { concurrency: 1 }
+      );
+      allProposalsInChallengePeriod =
+        proposalStatuses.every(isInChallengePeriod);
+      console.log("Waiting for all proposals to be in challenge period...");
+    }
     console.log(
       "Voting in challenge period on nomination and takedown proposals..."
     );
