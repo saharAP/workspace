@@ -199,7 +199,7 @@ const IpfsUpload: React.FC<IpfsProps> = ({
           uploadSingleFile(acceptedFiles, setLocalState);
         } else if (fileType === 'video/*') {
           uploadSingleFile(acceptedFiles, setLocalState, setUploadProgress);
-        } else if (fileType === 'video/*') {
+        } else if (fileType === 'image/*') {
           uploadMultipleFiles(acceptedFiles, setLocalState, fileType);
         } else if (fileType === '.pdf') {
           uploadMultiplePDFs(acceptedFiles, setLocalState, fileType);
