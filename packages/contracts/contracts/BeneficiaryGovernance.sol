@@ -231,12 +231,10 @@ contract BeneficiaryGovernance is ParticipationReward {
   /**
    * @notice refresh status
    * @param  proposalId id of the proposal
-   * @return status of proposal
    */
-  function refreshState(uint256 proposalId) external returns (ProposalStatus) {
+  function refreshState(uint256 proposalId) external {
     Proposal storage proposal = proposals[proposalId];
     _refreshState(proposal);
-    return proposals[proposalId].status;
   }
 
   /**
