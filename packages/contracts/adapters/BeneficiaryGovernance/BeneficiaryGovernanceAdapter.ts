@@ -19,6 +19,11 @@ export interface BeneficiaryImage {
   image: string;
   description: string;
 }
+
+export interface ImpactReport {
+  fileName: string;
+  reportCid: string;
+}
 export interface BeneficiaryApplication {
   organizationName: string;
   projectName?: string;
@@ -27,7 +32,7 @@ export interface BeneficiaryApplication {
   files: {
     profileImage: BeneficiaryImage;
     headerImage?: BeneficiaryImage;
-    impactReports?: string[];
+    impactReports?: ImpactReport[];
     additionalImages?: BeneficiaryImage[];
     video: string;
   };

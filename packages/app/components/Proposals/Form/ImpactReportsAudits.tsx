@@ -16,19 +16,23 @@ const HeaderImage: React.FC<FormStepProps> = ({
       ...formData,
       files: {
         ...formData.files,
-        impactReports: formData.files.impactReports.concat(impactReports),
+        impactReports: formData.files.impactReports.concat(
+          impactReports.map((impactReport) => JSON.parse(impactReport)),
+        ),
       },
     });
   }
 
-  function removeFile(index) {
+  function removeImpactReport(index) {
     setFormData({
       ...formData,
       files: {
         ...formData.files,
-        impactReports: formData.files.impactReports.filter((file, i) => {
-          return i !== index;
-        }),
+        impactReports: formData.files.impactReports.filter(
+          (impactReport, i) => {
+            return i !== index;
+          },
+        ),
       },
     });
   }
@@ -48,7 +52,9 @@ const HeaderImage: React.FC<FormStepProps> = ({
       <>
         <IpfsUpload
           stepName={`${navigation.currentStep} - Upload Impact Reports`}
-          localState={formData?.files?.impactReports}
+          localState={formData?.files?.impactReports.map(
+            (impactReport) => impactReport.reportCid,
+          )}
           setLocalState={updateImpactReports}
           fileDescription={'Impact Reports'}
           fileInstructions={`Impact reports should be PDFs and limited to 5mb.`}
@@ -57,18 +63,18 @@ const HeaderImage: React.FC<FormStepProps> = ({
           maxFileSizeMB={10}
         />
         <div className="mx-auto">
-          {formData?.files?.impactReports.map((IpfsHash, i) => {
+          {formData?.files?.impactReports.map(({ fileName, reportCid }, i) => {
             return (
-              <div key={IpfsHash} className="flex flex-row items-center">
+              <div key={reportCid} className="flex flex-row items-center">
                 <a
                   className="justify-self-center mx-auto mt-4 inline-flex py-1"
-                  href={'https://gateway.pinata.cloud/ipfs/' + IpfsHash}
+                  href={'https://gateway.pinata.cloud/ipfs/' + reportCid}
                 >
-                  {`Impact Report/Audit ${i + 1}: `}
+                  {`${fileName}: `}
                   <DocumentReportIcon className="ml-2 h-5 w-5" />
                 </a>
                 <button
-                  onClick={() => removeFile(i)}
+                  onClick={() => removeImpactReport(i)}
                   className="mt-4 border border-transparent text-sm font-medium rounded-full text-red-700 bg-red-100 hover:bg-red-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
                 >
                   <XIcon className="h-5 w-5" aria-hidden="true" />
