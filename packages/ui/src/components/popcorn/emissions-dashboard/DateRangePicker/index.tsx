@@ -22,14 +22,20 @@ function classNames(...classes) {
   return classes.filter(Boolean).join(' ');
 }
 
-export const CalendarInput = ({ label, defaultDate, onChange }) => {
+interface CalendarInputProps  {
+  label: string,
+  defaultDate?: Date,
+  onChange?: Function
+}
+
+export const CalendarInput: React.FC<CalendarInputProps> = ({label, defaultDate, onChange}) => {
   const [showCalendar, setShowCalendar] = useState(false);
   const [daysList, setDaysList] = useState([]);
   const [blankDaysList, setBlankDaysList] = useState([]);
-  const [date, setDate] = useState(defaultDate ? DateTime.fromISO(defaultDate): DateTime.fromISO(new Date().toISOString()));
+  const [date, setDate] = useState(defaultDate ? DateTime.fromJSDate(defaultDate): DateTime.fromJSDate(new Date()));
   const dateRef = useRef(null);
   const defaultValue =
-    defaultDate && new Date(defaultDate).toLocaleDateString();
+    defaultDate && DateTime.fromJSDate(defaultDate);
 
   const handleKeyDown = (event) => {
     if (event.keyCode == ESCAPE_KEY) {
@@ -37,18 +43,20 @@ export const CalendarInput = ({ label, defaultDate, onChange }) => {
     }
   };
 
-  const getDateValue = (date) => {
+  const getDateValue = (day) => {
     const year = date.year;
     const month = date.month;
-    let selectedDate = `${date}/${month}/${year}`;
-    dateRef.current.value = selectedDate;
+    let selectedDate = DateTime.fromFormat(`${year}-${month}-${day}`, 'yyyy-m-d');
+    dateRef.current.value =`${defaultValue.year}/${defaultValue.month}/${defaultValue.day}`;
     setShowCalendar(false);
-    onChange(date);
+    if(onChange){
+      onChange(selectedDate.toJSDate());
+    }
   };
 
-  const isToday = (date, CurrenDate) => {
-    const year = CurrenDate.year;
-    const month = CurrenDate.month - 1;
+  const isToday = (date, currenDate) => {
+    const year = currenDate.year;
+    const month = currenDate.month - 1;
     const today = new Date();
     const newDate = new Date(year, month, date);
     return today.toDateString() === newDate.toDateString();
@@ -104,7 +112,7 @@ export const CalendarInput = ({ label, defaultDate, onChange }) => {
             readOnly
             onClick={() => setShowCalendar(!showCalendar)}
             onKeyDown={(e) => handleKeyDown(e)}
-            defaultValue={defaultDate && defaultValue}
+            defaultValue={defaultDate && `${defaultValue.year}/${defaultValue.month}/${defaultValue.day}`}
             ref={dateRef}
             className="w-full pl-4 pr-10 py-3 leading-none rounded-lg shadow-sm focus:outline-none focus:shadow-outline text-gray-600 font-medium"
             placeholder="Select date"
@@ -132,7 +140,6 @@ export const CalendarInput = ({ label, defaultDate, onChange }) => {
             <div
               className="bg-white mt-12 rounded-lg shadow p-4 absolute top-0 left-0 z-10"
               style={{ width: '17rem' }}
-              // TODO: Implement click away to close calendar
             >
               <div className="flex justify-between items-center mb-2">
                 <div>
@@ -211,26 +218,24 @@ export const CalendarInput = ({ label, defaultDate, onChange }) => {
                     key={day}
                     style={{ width: '14.28%' }}
                     className="text-center border p-1 border-transparent text-sm"
-                  >
-                    {day}
-                  </div>
+                  />
                 ))}
-                {daysList.map((date) => (
+                {daysList.map((dateItem) => (
                   <div
                     style={{ width: '14.28%' }}
                     className="px-1 mb-1"
-                    key={date}
+                    key={dateItem}
                   >
                     <div
-                      onClick={() => getDateValue(date)}
+                      onClick={() => getDateValue(dateItem)}
                       className={classNames(
-                        isToday(date, date)
+                        isToday(dateItem, date)
                           ? 'bg-blue-500 text-white'
                           : 'text-gray-700 hover:bg-blue-200',
                         'cursor-pointer text-center text-sm leading-none rounded-full leading-loose transition ease-in-out duration-100',
                       )}
                     >
-                      {date}
+                      {dateItem}
                     </div>
                   </div>
                 ))}
@@ -248,11 +253,11 @@ export const DateRangePicker = () => {
     <div className="grid justify-items-stretch md:mr-24">
       <div className="md:flex md:items-center md:justify-between justify-self-end">
         <div className="mt-4 flex md:mt-0 md:ml-4">
-          <CalendarInput label="Start Date" />
-          <CalendarInput label="End Date" />
+          <CalendarInput label="Start Date" defaultDate={new Date("03-04-2021")}/>
+          <CalendarInput label="End Date" defaultDate={new Date("12-12-2021")}/>
           <button
             type="button"
-            className="ml-2 inline-flex items-center px-2.5 py-1.5 border border-transparent text-xs font-medium rounded shadow-sm text-indigo-600 bg-indigo-300 hover:text-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 h-10 self-center"
+            className="ml-2 inline-flex items-center px-2.5 py-1.5 border border-transparent text-xs font-medium rounded shadow-sm text-indigo-600 bg-indigo-300 hover:text-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 h-10 self-end mb-2"
           >
             Filter
           </button>
