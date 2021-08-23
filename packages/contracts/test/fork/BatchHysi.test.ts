@@ -1,8 +1,6 @@
 import { SignerWithAddress } from "@nomiclabs/hardhat-ethers/signers";
-import { match } from "assert/strict";
 import { expect } from "chai";
-import { parse } from "dotenv";
-import { BigNumber, Signer } from "ethers";
+import { BigNumber } from "ethers";
 import { parseEther } from "ethers/lib/utils";
 import { ethers, network, waffle } from "hardhat";
 import CurveMetapoolAbi from "../../lib/Curve/CurveMetapoolAbi.json";
@@ -15,11 +13,7 @@ import {
   ERC20,
   Faucet,
   HysiBatchInteraction,
-  MockERC20,
   MockYearnV2Vault,
-  Test,
-  Test2,
-  ThreeCrv,
 } from "../../typechain";
 
 const provider = waffle.provider;

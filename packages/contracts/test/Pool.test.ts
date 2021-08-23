@@ -867,8 +867,7 @@ describe("Pool", function () {
         let managementTokenBalance = await contracts.pool.balanceOf(
           contracts.pool.address
         );
-        const yearnSharePrice =
-          await contracts.mockYearnVault.getPricePerFullShare();
+        const yearnSharePrice = await contracts.mockYearnVault.pricePerShare();
         const crvVirtualPrice =
           await contracts.mockCurveMetapool.get_virtual_price();
 
