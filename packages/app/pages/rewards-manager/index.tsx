@@ -3,14 +3,14 @@ import { ArrowRightIcon } from '@heroicons/react/outline';
 import { formatAndRoundBigNumber } from '@popcorn/utils';
 import { useWeb3React } from '@web3-react/core';
 import MainActionButton from 'components/MainActionButton';
+import Navbar from 'components/NavBar/NavBar';
+import { connectors } from 'context/Web3/connectors';
 import { ContractsContext } from 'context/Web3/contracts';
 import { BigNumber } from 'ethers';
 import { parseEther } from 'ethers/lib/utils';
 import { useContext, useEffect, useState } from 'react';
 import toast, { Toaster } from 'react-hot-toast';
 import RewardDestination from '../../components/RewardsManager/RewardDestination';
-import Navbar from 'components/NavBar/NavBar';
-import { connectors } from 'context/Web3/connectors';
 
 export default function Register(): JSX.Element {
   const context = useWeb3React<Web3Provider>();
@@ -51,8 +51,8 @@ export default function Register(): JSX.Element {
     return rewardSplits === undefined || popBalance === undefined
       ? '0'
       : formatAndRoundBigNumber(
-        rewardSplits[index].mul(popBalance).div(parseEther('100')),
-      );
+          rewardSplits[index].mul(popBalance).div(parseEther('100')),
+        );
   }
 
   async function swapToken(): Promise<void> {
@@ -64,25 +64,23 @@ export default function Register(): JSX.Element {
         [contracts.threeCrv.address, contracts.pop.address],
         swapOutput,
       )
+      .then((res) => toast.success('Funds swapped!'))
       .catch((err) => {
-        console.log('err', err);
-        toast.error('Swap failed');
+        toast.error(err.data.message.split("'")[1]);
       });
-    toast.success('Funds swapped!');
     setWait(false);
   }
 
   async function distributeRewards(): Promise<void> {
     setWait(true);
-    toast.loading("Distributing funds...")
+    toast.loading('Distributing funds...');
     await contracts.rewardsManager
       .connect(library.getSigner())
       .distributeRewards()
+      .then((res) => toast.success('Funds distributed!'))
       .catch((err) => {
-        console.log('err', err);
-        toast.error('Couldnt distribute funds');
+        toast.error(err.data.message.split("'")[1]);
       });
-    toast.success("Funds distributed!")
     setWait(false);
   }
 

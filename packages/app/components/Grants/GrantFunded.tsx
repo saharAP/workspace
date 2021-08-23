@@ -1,5 +1,5 @@
 import { BeneficiaryApplication } from '@popcorn/contracts/adapters';
-import { useContext, useEffect, useState } from 'react';
+import { useContext, useState } from 'react';
 import { Check } from 'react-feather';
 import { ContractsContext } from '../../context/Web3/contracts';
 import { ElectionProps } from './ElectionProps';

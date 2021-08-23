@@ -11,6 +11,7 @@ import { BigNumber, utils } from 'ethers';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import React, { useContext, useEffect, useState } from 'react';
+import toast from 'react-hot-toast';
 import NavBar from '../../components/NavBar/NavBar';
 import {
   setDualActionModal,
@@ -131,6 +132,7 @@ export default function AllGrants() {
     }
   }, [contracts, account]);
 
+  //TODO this functions in not implemented, should this be here?
   function registerForElection(grant_term) {
     // Register for selected election
     let connected = contracts.election.connect(library.getSigner());
@@ -267,40 +269,14 @@ export default function AllGrants() {
     );
 
     try {
+      toast.loading('Submitting Votes...');
       await contracts.election
         .connect(library.getSigner())
         .vote(txArgs[0], txArgs[1], txArgs[2]);
-
-      dispatch(setDualActionModal(false));
-      dispatch(
-        setSingleActionModal({
-          title: 'Success!',
-          content: 'You have successfully voted in this election. Thank you!',
-          visible: true,
-          onConfirm: {
-            label: 'Close',
-            onClick: () => {
-              dispatch(setSingleActionModal(false));
-            },
-          },
-        }),
-      );
-      // todo: set succesful tx notification
+      toast.success('Voted sucessfully!');
       // setup listener for confirmation
     } catch (err) {
-      dispatch(setDualActionModal(false));
-      dispatch(
-        setSingleActionModal({
-          content: `There was an error processing this transaction: ${err.message}`,
-          title: 'Transaction Failed',
-          visible: true,
-          type: 'error',
-          onConfirm: {
-            label: 'Close',
-            onClick: () => dispatch(setSingleActionModal(false)),
-          },
-        }),
-      );
+      toast.error(err.data.message.split("'")[1]);
     }
   };
 

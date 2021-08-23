@@ -1,16 +1,14 @@
 import { Web3Provider } from '@ethersproject/providers';
 import { useWeb3React } from '@web3-react/core';
-import { ContractsContext } from '../../context/Web3/contracts';
-import Navbar from 'components/NavBar/NavBar';
-import { connectors } from '../../context/Web3/connectors';
-import { useEffect, useState, useContext } from 'react';
-import SingleActionModal, {
-  DefaultSingleActionModalProps,
-} from 'components/Modal/SingleActionModal';
 import Icon from 'components/Icon';
-import { ElectionsContext } from '../../context/Web3/elections';
+import SingleActionModal from 'components/Modal/SingleActionModal';
+import Navbar from 'components/NavBar/NavBar';
+import { useContext, useEffect, useState } from 'react';
+import toast from 'react-hot-toast';
 import { store } from '../../context/store';
-import { setSingleActionModal } from '../../context/actions';
+import { connectors } from '../../context/Web3/connectors';
+import { ContractsContext } from '../../context/Web3/contracts';
+import { ElectionsContext } from '../../context/Web3/elections';
 
 export default function Register(): JSX.Element {
   const context = useWeb3React<Web3Provider>();
@@ -31,43 +29,16 @@ export default function Register(): JSX.Element {
   function registerForElection(grant_term) {
     // Register for selected election
     setWait(true);
+    toast.loading('Registering for election...');
     let connected = contracts.election.connect(library.getSigner());
     connected
       .registerForElection(account, grant_term)
       .then((res) => {
-        dispatch(
-          setSingleActionModal({
-            content: `You have successfully registered for this grant election`,
-            title: 'Success!',
-            visible: true,
-            type: 'info',
-            onConfirm: {
-              label: 'Done',
-              onClick: () =>
-                dispatch(
-                  setSingleActionModal({ ...DefaultSingleActionModalProps }),
-                ),
-            },
-          }),
-        );
+        toast.success('You are registered!');
         setWait(false);
       })
       .catch((err) => {
-        dispatch(
-          setSingleActionModal({
-            content: `There was an error registering you for this election: ${err.message}`,
-            title: 'Error',
-            visible: true,
-            type: 'error',
-            onConfirm: {
-              label: 'Go Back',
-              onClick: () =>
-                dispatch(
-                  setSingleActionModal({ ...DefaultSingleActionModalProps }),
-                ),
-            },
-          }),
-        );
+        toast.error(err.data.message.split("'")[1]);
         setWait(false);
       });
   }

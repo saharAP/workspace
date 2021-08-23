@@ -52,6 +52,7 @@ const ProposalGrid: React.FC<ProposalGridProps> = ({ proposalType }) => {
         .then((res) => setProposals(res));
     }
   }, [contracts]);
+
   return (
     <div className="w-full bg-gray-900 pb-16">
       <Navbar />
@@ -135,13 +136,15 @@ const ProposalGrid: React.FC<ProposalGridProps> = ({ proposalType }) => {
                   setStatusFilter(ProposalStatus[status]);
                 }}
               >
-                {new Array(6).fill(undefined).map((x, status) => {
-                  return (
-                    <option value={ProposalStatus[status]}>
-                      {ProposalStatus[status]}
-                    </option>
-                  );
-                })}
+                {Object.keys(ProposalStatus)
+                  .slice(0, Object.keys(ProposalStatus).length / 2)
+                  .map((status) => {
+                    return (
+                      <option value={ProposalStatus[status]}>
+                        {ProposalStatus[status]}
+                      </option>
+                    );
+                  })}
               </select>
               <div className="pointer-events-none absolute inset-y-0 right-0 px-2 flex items-center">
                 <ChevronDownIcon

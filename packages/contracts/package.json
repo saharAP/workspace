@@ -11,9 +11,11 @@
     "clean": "rimraf ./cache & rimraf ./artifacts",
     "compile": "yarn clean && hardhat compile ",
     "test": "yarn hardhat test",
+    "coverage": "yarn hardhat coverage",
     "postinstall": "yarn compile"
   },
   "devDependencies": {
+    "@float-capital/solidity-coverage": "^0.7.17",
     "@nomiclabs/hardhat-ethers": "^2.0.1",
     "@types/chai": "^4.2.16",
     "@types/mocha": "^8.2.2",

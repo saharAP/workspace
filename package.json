@@ -12,6 +12,7 @@
     "start": "yarn lerna run --scope @popcorn/app start",
     "pretify": "prettier --write .",
     "test": "yarn lerna run test",
+    "coverage": "yarn lerna run coverage",
     "netlify-build": "lerna run --scope @popcorn/contracts compile; cd packages/app; yarn next build"
   },
   "dependencies": {

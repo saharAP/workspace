@@ -7,8 +7,8 @@ import "./Interfaces/IStaking.sol";
 import "./Interfaces/IBeneficiaryRegistry.sol";
 import "./Interfaces/IRandomNumberConsumer.sol";
 import "./Interfaces/IBeneficiaryVaults.sol";
-import "./Governed.sol";
 import "./Interfaces/IRegion.sol";
+import "./Governed.sol";
 import "./ParticipationReward.sol";
 
 contract GrantElections is ParticipationReward {

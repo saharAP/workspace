@@ -258,12 +258,14 @@ describe("HysiBatchInteraction", function () {
             .batchMint();
           expect(result)
             .to.emit(contracts.hysiBatchInteraction, "BatchMinted")
-            .withArgs(parseEther("100"));
+            .withArgs(parseEther("99.7"));
+          //either 99.7 or 99.6003
           expect(
             await contracts.mockSetToken.balanceOf(
               contracts.hysiBatchInteraction.address
             )
-          ).to.equal(parseEther("100"));
+          ).to.equal(parseEther("99.7"));
+          //either 99.7 or 99.6003
         });
         it("mints early when mintThreshold is met", async function () {
           await contracts.mock3Crv
@@ -353,7 +355,7 @@ describe("HysiBatchInteraction", function () {
       });
       it("claim batch successfully", async function () {
         await provider.send("evm_increaseTime", [1800]);
-
+        await provider.send("evm_mine", []);
         await contracts.hysiBatchInteraction.connect(owner).batchMint();
         const batchId = await contracts.hysiBatchInteraction.batchesOfAccount(
           depositor.address,
@@ -368,7 +370,8 @@ describe("HysiBatchInteraction", function () {
           .withArgs(depositor.address, parseEther("10000"));
         expect(
           await contracts.mockSetToken.balanceOf(depositor.address)
-        ).to.equal(parseEther("100"));
+        ).to.equal(parseEther("99.7"));
+        //either 99.7 or 99.6003
         const batch = await contracts.hysiBatchInteraction.batches(batchId);
         expect(batch.unclaimedShares).to.equal(parseEther("30000"));
         expect(batch.claimableToken).to.equal(parseEther("300"));

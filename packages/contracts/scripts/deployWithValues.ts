@@ -1,10 +1,11 @@
 import { SignerWithAddress } from "@nomiclabs/hardhat-ethers/signers";
+import { GrantElectionAdapter } from "@popcorn/contracts";
 import { getBytes32FromIpfsHash } from "@popcorn/utils";
 import bluebird from "bluebird";
 import { deployContract } from "ethereum-waffle";
 import { BigNumber, Contract, utils } from "ethers";
 import { parseEther } from "ethers/lib/utils";
-import { GrantElectionAdapter } from "../adapters";
+import { ShareType } from "../adapters/GrantElection/GrantElectionAdapter";
 const UniswapV2FactoryJSON = require("../artifactsUniswap/UniswapV2Factory.json");
 const UniswapV2Router02JSON = require("../artifactsUniswap/UniswapV2Router.json");
 const UniswapV2PairJSON = require("../artifactsUniswap/UniswapV2Pair.json");
@@ -36,7 +37,6 @@ const beneficiaryApplicationCids = [
 
 interface Contracts {
   beneficiaryRegistry: Contract;
-  grantRegistry: Contract;
   mockPop: Contract;
   staking: Contract;
   randomNumberConsumer: Contract;
@@ -79,12 +79,6 @@ export default async function deploy(ethers): Promise<void> {
 
     const beneficiaryRegistry = await (
       await (await ethers.getContractFactory("BeneficiaryRegistry")).deploy()
-    ).deployed();
-
-    const grantRegistry = await (
-      await (
-        await ethers.getContractFactory("GrantRegistry")
-      ).deploy(beneficiaryRegistry.address)
     ).deployed();
 
     const mockPop = await (
@@ -169,7 +163,7 @@ export default async function deploy(ethers): Promise<void> {
       ).deploy(
         staking.address,
         beneficiaryRegistry.address,
-        grantRegistry.address,
+        beneficiaryVaults.address,
         randomNumberConsumer.address,
         mockPop.address,
         accounts[0].address
@@ -189,7 +183,6 @@ export default async function deploy(ethers): Promise<void> {
 
     contracts = {
       beneficiaryRegistry,
-      grantRegistry,
       mockPop,
       staking,
       randomNumberConsumer,
@@ -435,15 +428,18 @@ export default async function deploy(ethers): Promise<void> {
       `initializing ${GrantTermMap[grantTerm]} election with fast voting enabled ...`
     );
     await contracts.grantElections.setConfiguration(
-      grantTerm,
-      10,
-      10,
+      GrantTerm.Quarter,
+      1, // 1 awardee
+      3, // 3 qualifying
       true,
-      false,
-      0,
-      86400 * 30,
+      10, // secs for voting period
+      120, // secs for registration period,
       10,
-      100
+      0,
+      false,
+      30680,
+      true,
+      ShareType.EqualWeight
     );
 
     await contracts.grantElections.initialize(grantTerm);
@@ -559,11 +555,14 @@ export default async function deploy(ethers): Promise<void> {
       1, // 1 awardee
       3, // 3 qualifying
       true,
-      false,
+      1, // secs for voting period
+      120, // secs for registration period,
+      100,
       0,
-      120, // secs for voting period
-      1, // secs for registration period
-      100
+      false,
+      30680,
+      true,
+      ShareType.EqualWeight
     );
     await contracts.grantElections.initialize(GrantTerm.Quarter);
     console.log(

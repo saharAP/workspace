@@ -10,6 +10,7 @@ import {
   IUniswapV2Pair,
   MockERC20,
   Region,
+  RewardsEscrow,
   RewardsManager,
   Staking,
   UniswapV2Router02,
@@ -44,6 +45,7 @@ interface Contracts {
   UniswapRouter: UniswapV2Router02;
   WETHPair: IUniswapV2Pair;
   TestERC20Pair: IUniswapV2Pair;
+  RewardsEscrow: RewardsEscrow;
 }
 
 async function deployContracts(): Promise<Contracts> {
@@ -93,9 +95,15 @@ async function deployContracts(): Promise<Contracts> {
     BeneficiaryRegistry.address
   );
 
-  const Staking = await (
-    await (await ethers.getContractFactory("Staking")).deploy(POP.address)
-  ).deployed();
+  const RewardsEscrow = (await (
+    await (await ethers.getContractFactory("RewardsEscrow")).deploy(POP.address)
+  ).deployed()) as RewardsEscrow;
+
+  const Staking = (await (
+    await (
+      await ethers.getContractFactory("Staking")
+    ).deploy(POP.address, RewardsEscrow.address)
+  ).deployed()) as Staking;
 
   const factoryV2 = await deployContract(owner, UniswapV2FactoryJSON, [
     owner.address,
@@ -121,7 +129,7 @@ async function deployContracts(): Promise<Contracts> {
     )
   ).deployed()) as RewardsManager;
 
-  await Staking.setRewardsManager(RewardsManager.address);
+  await Staking.init(RewardsManager.address);
 
   await factoryV2.createPair(WETH.address, POP.address);
   await factoryV2.createPair(TestERC20.address, POP.address);
@@ -156,6 +164,7 @@ async function deployContracts(): Promise<Contracts> {
     UniswapRouter,
     WETHPair,
     TestERC20Pair,
+    RewardsEscrow,
   };
 }
 
@@ -342,9 +351,9 @@ describe("Integration", function () {
       const newStaking = await (
         await (
           await ethers.getContractFactory("Staking")
-        ).deploy(contracts.POP.address)
+        ).deploy(contracts.POP.address, contracts.RewardsEscrow.address)
       ).deployed();
-      await newStaking.setRewardsManager(contracts.RewardsManager.address);
+      await newStaking.init(contracts.RewardsManager.address);
 
       await contracts.RewardsManager.distributeRewards();
       expect(await contracts.POP.balanceOf(contracts.Staking.address)).to.equal(

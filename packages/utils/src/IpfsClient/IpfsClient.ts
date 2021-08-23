@@ -74,7 +74,7 @@ export const IpfsClient: IIpfsClient = {
           headers,
         };
     return await axios
-      .post('https://api.pinata.cloud/pinning/pinFileToIPFS', data, config)
+      .post(`${process.env.IPFS_GATEWAY_PIN}`, data, config)
       .then((result) => {
         return { hash: result.data.IpfsHash, status: result.status };
       })

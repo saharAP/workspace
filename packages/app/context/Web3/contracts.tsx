@@ -1,31 +1,29 @@
 import { Web3Provider } from '@ethersproject/providers';
-import { useWeb3React, UnsupportedChainIdError } from '@web3-react/core';
-import React, { useContext, useEffect } from 'react';
-import { createContext, useState } from 'react';
-import { connectors, networkMap } from './connectors';
+import { UnsupportedChainIdError, useWeb3React } from '@web3-react/core';
 import {
   NoEthereumProviderError,
   UserRejectedRequestError as UserRejectedRequestErrorInjected,
 } from '@web3-react/injected-connector';
-import { store } from '../store';
-import { setSingleActionModal } from '../actions';
-
+import React, { createContext, useContext, useEffect, useState } from 'react';
 import {
-  GrantElections,
-  GrantElections__factory,
-  Staking,
-  Staking__factory,
+  BeneficiaryGovernance,
+  BeneficiaryGovernance__factory,
   BeneficiaryRegistry,
   BeneficiaryRegistry__factory,
   ERC20,
   ERC20__factory,
-  RewardsManager__factory,
+  GrantElections,
+  GrantElections__factory,
   RewardsManager,
-  UniswapV2Router02__factory,
+  RewardsManager__factory,
+  Staking,
+  Staking__factory,
   UniswapV2Router02,
-  BeneficiaryGovernance,
-  BeneficiaryGovernance__factory,
+  UniswapV2Router02__factory,
 } from '../../../contracts/typechain';
+import { setSingleActionModal } from '../actions';
+import { store } from '../store';
+import { connectors, networkMap } from './connectors';
 
 export interface Contracts {
   staking: Staking;
