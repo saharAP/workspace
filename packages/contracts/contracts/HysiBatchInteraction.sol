@@ -64,6 +64,7 @@ contract HysiBatchInteraction is Owned {
   event BatchRedeemed(uint256 amount);
   event Claimed(address account, uint256 amount);
   event TokenSetAdded(ISetToken setToken);
+  event WithdrawnFromQueue(bytes32 batchId, uint256 amount, address to);
 
   /* ========== CONSTRUCTOR ========== */
 
@@ -114,12 +115,38 @@ contract HysiBatchInteraction is Owned {
 
   /**
    * @notice deposits funds for batch reedeming of a set
-   * @param  amount_ amount of setToken to be redeemed
+   * @param  amount_ amount of hysi-token to be redeemed
    */
   function depositForRedeem(uint256 amount_) external {
     require(setToken.balanceOf(msg.sender) > 0, "insufficient balance");
     setToken.transferFrom(msg.sender, address(this), amount_);
     _deposit(amount_, currentRedeemBatchId);
+  }
+
+  /**
+   * @notice This function allows a user to withdraw their funds from a batch before that batch has been processed
+   * @param amount_ amount of either hysi-token or 3crv to be withdrawn from the queue (depending on mintBatch / redeemBatch)
+   */
+  function withdrawFromQueue(
+    bytes32 batchId_,
+    BatchType batchType_,
+    uint256 amount_
+  ) external {
+    Batch storage batch = batches[batchId_];
+    require(batch.claimable == false, "already processed");
+    require(batch.shareBalance[msg.sender] >= amount_, "not enough shares");
+
+    batch.shareBalance[msg.sender] = batch.shareBalance[msg.sender].sub(
+      amount_
+    );
+    batch.suppliedToken = batch.suppliedToken.sub(amount_);
+    batch.unclaimedShares = batch.unclaimedShares.sub(amount_);
+    if (batchType_ == BatchType.Mint) {
+      threeCrv.safeTransfer(msg.sender, amount_);
+    } else {
+      setToken.safeTransfer(msg.sender, amount_);
+    }
+    emit WithdrawnFromQueue(batchId_, amount_, msg.sender);
   }
 
   /**
