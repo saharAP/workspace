@@ -25,7 +25,7 @@ function classNames(...classes) {
 interface CalendarInputProps  {
   label: string,
   defaultDate?: Date,
-  onChange?: Function
+  onChange?: (selectedDate: Date) => void
 }
 
 export const CalendarInput: React.FC<CalendarInputProps> = ({label, defaultDate, onChange}) => {
@@ -47,7 +47,7 @@ export const CalendarInput: React.FC<CalendarInputProps> = ({label, defaultDate,
     const year = date.year;
     const month = date.month;
     let selectedDate = DateTime.fromFormat(`${year}-${month}-${day}`, 'yyyy-m-d');
-    dateRef.current.value =`${defaultValue.year}/${defaultValue.month}/${defaultValue.day}`;
+    dateRef.current.value =`${year}/${month}/${day}`;
     setShowCalendar(false);
     if(onChange){
       onChange(selectedDate.toJSDate());
@@ -64,8 +64,8 @@ export const CalendarInput: React.FC<CalendarInputProps> = ({label, defaultDate,
 
   const getNoOfDays = (date) => {
     const year = date.year;
-    const month = date.month - 1;
-    let daysInMonth = new Date(year, month, 0).getDate();
+    const month = date.month;
+    let daysInMonth = new Date(year, month - 1, 0).getDate();
 
     // Find where to start calendar day of week
     let dayOfWeek = new Date(year, month).getDay();
@@ -119,7 +119,7 @@ export const CalendarInput: React.FC<CalendarInputProps> = ({label, defaultDate,
           />
 
           <div
-            className="absolute top-0 right-0 px-3 py-2"
+            className="absolute top-0.5 right-0 px-3 py-2 border-l"
             onClick={() => setShowCalendar(!showCalendar)}
           >
             <svg
@@ -253,11 +253,11 @@ export const DateRangePicker = () => {
     <div className="grid justify-items-stretch md:mr-24">
       <div className="md:flex md:items-center md:justify-between justify-self-end">
         <div className="mt-4 flex md:mt-0 md:ml-4">
-          <CalendarInput label="Start Date" defaultDate={new Date("03-04-2021")}/>
+          <CalendarInput label="Start Date" defaultDate={new Date("03-04-2021")} onChange={(d) => console.log(d)} />
           <CalendarInput label="End Date" defaultDate={new Date("12-12-2021")}/>
           <button
             type="button"
-            className="ml-2 inline-flex items-center px-2.5 py-1.5 border border-transparent text-xs font-medium rounded shadow-sm text-indigo-600 bg-indigo-300 hover:text-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 h-10 self-end mb-2"
+            className="ml-2 inline-flex items-center px-2.5 py-1.5 border-8 border-transparent text-xs font-medium rounded shadow-sm text-indigo-600 bg-indigo-300 hover:text-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 h-10 self-end mb-2"
           >
             Filter
           </button>
