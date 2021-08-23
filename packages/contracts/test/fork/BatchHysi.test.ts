@@ -404,6 +404,81 @@ describe("HysiBatchInteraction Network Test", function () {
         ).to.equal(currentMintBatchId);
       });
     });
+    context("withdraw from queue", function () {
+      beforeEach(async function () {
+        await contracts.threeCrv
+          .connect(depositor)
+          .approve(contracts.hysiBatchInteraction.address, parseEther("100"));
+        await contracts.hysiBatchInteraction
+          .connect(depositor)
+          .depositForMint(parseEther("100"));
+      });
+      context("revert", function () {
+        it("reverts when the batch was already minted", async function () {
+          const batchId = await contracts.hysiBatchInteraction.batchesOfAccount(
+            depositor.address,
+            0
+          );
+          await provider.send("evm_increaseTime", [1800]);
+          await provider.send("evm_mine", []);
+          await contracts.hysiBatchInteraction.batchMint();
+          await expect(
+            contracts.hysiBatchInteraction
+              .connect(depositor)
+              .withdrawFromQueue(batchId, BatchType.Mint, parseEther("10"))
+          ).to.be.revertedWith("already processed");
+        });
+        it("reverts when trying to withdraw more than deposited", async function () {
+          const batchId = await contracts.hysiBatchInteraction.batchesOfAccount(
+            depositor.address,
+            0
+          );
+
+          await expect(
+            contracts.hysiBatchInteraction
+              .connect(depositor)
+              .withdrawFromQueue(batchId, BatchType.Mint, parseEther("101"))
+          ).to.be.revertedWith("not enough shares");
+        });
+      });
+      context("sucess", function () {
+        it("withdraws the deposit", async function () {
+          const batchId = await contracts.hysiBatchInteraction.batchesOfAccount(
+            depositor.address,
+            0
+          );
+          const balance = await contracts.threeCrv.balanceOf(depositor.address);
+          expect(
+            await contracts.hysiBatchInteraction
+              .connect(depositor)
+              .withdrawFromQueue(batchId, BatchType.Mint, parseEther("100"))
+          )
+            .to.emit(contracts.hysiBatchInteraction, "WithdrawnFromQueue")
+            .withArgs(batchId, parseEther("100"), depositor.address);
+          expect(
+            await contracts.threeCrv.balanceOf(depositor.address)
+          ).to.equal(balance.add(parseEther("100")));
+        });
+        it("withdraws part of the deposit and continues to mint the rest", async function () {
+          const batchId = await contracts.hysiBatchInteraction.batchesOfAccount(
+            depositor.address,
+            0
+          );
+          expect(
+            await contracts.hysiBatchInteraction
+              .connect(depositor)
+              .withdrawFromQueue(batchId, BatchType.Mint, parseEther("50"))
+          ).to.emit(contracts.hysiBatchInteraction, "WithdrawnFromQueue");
+          await provider.send("evm_increaseTime", [1800]);
+          await provider.send("evm_mine", []);
+          await contracts.hysiBatchInteraction.batchMint();
+          expect(
+            (await contracts.hysiBatchInteraction.batches(batchId))
+              .claimableToken
+          ).to.equal(parseEther("0.203265918367346937"));
+        });
+      });
+    });
     context("batch minting", function () {
       context("reverts", function () {
         it("reverts when minting too early", async function () {
@@ -626,6 +701,66 @@ describe("HysiBatchInteraction Network Test", function () {
         ).to.equal(currentRedeemBatchId);
       });
     });
+    context("withdraw from queue", function () {
+      beforeEach(async function () {
+        await contracts.hysiBatchInteraction
+          .connect(depositor)
+          .depositForRedeem(hysiBalance);
+      });
+      context("revert", function () {
+        it("reverts when the batch was already redeemed", async function () {
+          const batchId = await contracts.hysiBatchInteraction.batchesOfAccount(
+            depositor.address,
+            1
+          );
+          await provider.send("evm_increaseTime", [1800]);
+          await provider.send("evm_mine", []);
+          await contracts.hysiBatchInteraction.batchRedeem();
+          await expect(
+            contracts.hysiBatchInteraction
+              .connect(depositor)
+              .withdrawFromQueue(batchId, BatchType.Redeem, hysiBalance)
+          ).to.be.revertedWith("already processed");
+        });
+      });
+      context("sucess", function () {
+        it("withdraws the deposit", async function () {
+          const batchId = await contracts.hysiBatchInteraction.batchesOfAccount(
+            depositor.address,
+            1
+          );
+          expect(
+            await contracts.hysiBatchInteraction
+              .connect(depositor)
+              .withdrawFromQueue(batchId, BatchType.Redeem, hysiBalance)
+          )
+            .to.emit(contracts.hysiBatchInteraction, "WithdrawnFromQueue")
+            .withArgs(batchId, hysiBalance, depositor.address);
+          expect(await contracts.hysi.balanceOf(depositor.address)).to.equal(
+            hysiBalance
+          );
+        });
+        it("withdraws part of the deposit and continues to redeem the rest", async function () {
+          const batchId = await contracts.hysiBatchInteraction.batchesOfAccount(
+            depositor.address,
+            1
+          );
+          expect(
+            await contracts.hysiBatchInteraction
+              .connect(depositor)
+              .withdrawFromQueue(batchId, BatchType.Redeem, hysiBalance.div(2))
+          ).to.emit(contracts.hysiBatchInteraction, "WithdrawnFromQueue");
+          await provider.send("evm_increaseTime", [1800]);
+          await provider.send("evm_mine", []);
+          await contracts.hysiBatchInteraction.batchRedeem();
+          expect(
+            (await contracts.hysiBatchInteraction.batches(batchId))
+              .claimableToken
+          ).to.equal(parseEther("100.041281290634714725"));
+        });
+      });
+    });
+
     context("batch redeeming", function () {
       context("reverts", function () {
         it("reverts when redeeming too early", async function () {

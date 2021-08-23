@@ -601,7 +601,7 @@ describe("HysiBatchInteraction", function () {
             0
           );
           expect(
-            contracts.hysiBatchInteraction
+            await contracts.hysiBatchInteraction
               .connect(depositor)
               .withdrawFromQueue(batchId, BatchType.Redeem, parseEther("100"))
           )
