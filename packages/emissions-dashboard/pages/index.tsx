@@ -1,6 +1,8 @@
 import { useRouter } from 'next/router';
 import React, { useEffect } from 'react';
 
+import { NavBar } from '@popcorn/ui/components/popcorn/emissions-dashboard/NavBar/index'
+
 const IndexPage = () => {
   const router = useRouter();
   useEffect(() => {
@@ -10,19 +12,20 @@ const IndexPage = () => {
   }, [router.pathname]);
 
   return (
-    <div
-      className="w-full h-screen flex flex-col justify-center font-landing"
-      style={{ backgroundColor: '#F8F8FB' }}
-    >
-      <div className="flex-row w-full h-5/6">
-        <div className="w-1/2 h-full">
-          <div className="flex flex-col justify-between ml-24 md:w-8/12 2xl:mx-auto xl:w-1/2 h-full">
-            Smart Contract Carbon Emissions Dashboard
-          </div>
+      <div className="bg-gray-50">
+        <div className="py-10">
+          <header>
+            <div className="max-w-7xl px-4 sm:px-6 lg:px-8">
+              <h1 className="text-3xl font-bold leading-tight text-gray-900">
+                Smart Contract Carbon Emissions Dashboard
+              </h1>
+            </div>
+          </header>
         </div>
+        <NavBar />
+        {/* <DateRangePicker /> */}
       </div>
-    </div>
-  );
+    );
 };
 
 export default IndexPage;
