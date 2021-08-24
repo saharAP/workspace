@@ -47,7 +47,7 @@ export const CalendarInput: React.FC<CalendarInputProps> = ({label, defaultDate,
     const year = date.year;
     const month = date.month;
     let selectedDate = DateTime.fromFormat(`${year}-${month}-${day}`, 'yyyy-m-d');
-    dateRef.current.value =`${year}/${month}/${day}`;
+    dateRef.current.value = selectedDate.toFormat('yyyy/MM/dd');
     setShowCalendar(false);
     if(onChange){
       onChange(selectedDate.toJSDate());
@@ -112,7 +112,7 @@ export const CalendarInput: React.FC<CalendarInputProps> = ({label, defaultDate,
             readOnly
             onClick={() => setShowCalendar(!showCalendar)}
             onKeyDown={(e) => handleKeyDown(e)}
-            defaultValue={defaultDate && `${defaultValue.year}/${defaultValue.month}/${defaultValue.day}`}
+            defaultValue={defaultDate && defaultValue.toFormat('yyyy/MM/dd')}
             ref={dateRef}
             className="w-full pl-4 pr-10 py-3 leading-none rounded-lg shadow-sm focus:outline-none focus:shadow-outline text-gray-600 font-medium"
             placeholder="Select date"
@@ -253,8 +253,8 @@ export const DateRangePicker = () => {
     <div className="grid justify-items-stretch md:mr-24">
       <div className="md:flex md:items-center md:justify-between justify-self-end">
         <div className="mt-4 flex md:mt-0 md:ml-4">
-          <CalendarInput label="Start Date" defaultDate={new Date("03-04-2021")} onChange={(d) => console.log(d)} />
-          <CalendarInput label="End Date" defaultDate={new Date("12-12-2021")}/>
+          <CalendarInput label="Start Date" defaultDate={new Date("03/04/2021")} />
+          <CalendarInput label="End Date" defaultDate={new Date("02/12/2021")} />
           <button
             type="button"
             className="ml-2 inline-flex items-center px-2.5 py-1.5 border-8 border-transparent text-xs font-medium rounded shadow-sm text-indigo-600 bg-indigo-300 hover:text-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 h-10 self-end mb-2"
