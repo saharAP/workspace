@@ -97,7 +97,7 @@ export const CalendarInput: React.FC<CalendarInputProps> = ({label, defaultDate,
 
   return (
     <div className="container mx-auto px-4 py-2">
-      <div className="w-64">
+      <div className="w-72">
         {label && (
           <label
             htmlFor="datepicker"
@@ -138,8 +138,8 @@ export const CalendarInput: React.FC<CalendarInputProps> = ({label, defaultDate,
           </div>
           {showCalendar && (
             <div
-              className="bg-white mt-12 rounded-lg shadow p-4 absolute top-0 left-0 z-10"
-              style={{ width: '17rem' }}
+              className="bg-white mt-12 rounded-lg shadow p-4 absolute top-0 left-0 z-10 w-72"
+              // style={{ width: '17rem' }}
             >
               <div className="flex justify-between items-center mb-2">
                 <div>
@@ -257,7 +257,7 @@ export const DateRangePicker = () => {
           <CalendarInput label="End Date" defaultDate={new Date("02/12/2021")} />
           <button
             type="button"
-            className="ml-2 inline-flex items-center px-2.5 py-1.5 border-8 border-transparent text-xs font-medium rounded shadow-sm text-indigo-600 bg-indigo-300 hover:text-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 h-10 self-end mb-2"
+            className="ml-2 inline-flex items-center px-2.5 py-1.5 border-8 border-transparent text-xs font-medium rounded shadow-sm text-indigo-600 bg-indigo-100 hover:text-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 h-10 self-end mb-2"
           >
             Filter
           </button>
