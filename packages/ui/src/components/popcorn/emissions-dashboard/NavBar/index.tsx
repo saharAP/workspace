@@ -1,7 +1,9 @@
 /* This example requires Tailwind CSS v2.0+ */
 import { Disclosure, Menu, Transition } from '@headlessui/react';
 import { BellIcon, MenuIcon, XIcon } from '@heroicons/react/outline';
+import { PlusIcon } from '@heroicons/react/solid';
 import { Fragment } from 'react';
+
 
 const user = {
   name: 'Tom Cook',
@@ -9,13 +11,15 @@ const user = {
   imageUrl:
     'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
 };
-const navigation = [
+
+export const navigation = [
   { name: 'Dashboard', href: '#', current: true },
   { name: 'Team', href: '#', current: false },
   { name: 'Projects', href: '#', current: false },
   { name: 'Calendar', href: '#', current: false },
 ];
-const userNavigation = [
+
+export const userNavigation = [
   { name: 'Your Profile', href: '#' },
   { name: 'Settings', href: '#' },
   { name: 'Sign out', href: '#' },
@@ -25,7 +29,7 @@ function classNames(...classes) {
   return classes.filter(Boolean).join(' ');
 }
 
-export const NavBar = () => {
+export const NavBar = ({ title, headerNavigation, userNavigation }) => {
   return (
     <div className="bg-gray-100">
       <Disclosure as="nav" className="bg-white shadow-sm">
@@ -47,7 +51,7 @@ export const NavBar = () => {
                     />
                   </div>
                   <div className="hidden sm:-my-px sm:ml-6 sm:flex sm:space-x-8">
-                    {navigation.map((item) => (
+                    {headerNavigation.map((item) => (
                       <a
                         key={item.name}
                         href={item.href}
@@ -65,6 +69,13 @@ export const NavBar = () => {
                   </div>
                 </div>
                 <div className="hidden sm:ml-6 sm:flex sm:items-center">
+                  <button
+                    type="button"
+                    className="inline-flex items-center px-3 py-2 border border-transparent shadow-sm text-sm leading-4 font-medium rounded-md text-white relative right-1 bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+                  >
+                    <PlusIcon className="-ml-0.5 mr-2 h-4 w-4" aria-hidden="true" />
+                    Add Contract
+                  </button>
                   <button className="bg-white p-1 rounded-full text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
                     <span className="sr-only">View notifications</span>
                     <BellIcon className="h-6 w-6" aria-hidden="true" />
@@ -127,7 +138,7 @@ export const NavBar = () => {
 
             <Disclosure.Panel className="sm:hidden">
               <div className="pt-2 pb-3 space-y-1">
-                {navigation.map((item) => (
+                {headerNavigation.map((item) => (
                   <a
                     key={item.name}
                     href={item.href}
@@ -181,6 +192,15 @@ export const NavBar = () => {
           </>
         )}
       </Disclosure>
+      <div className="py-10">
+          <header>
+            <div className="max-w-7xl px-4 sm:px-6 lg:px-8">
+              <h1 className="text-3xl font-medium leading-tight text-gray-700">
+                {title}
+              </h1>
+            </div>
+          </header>
+        </div>
     </div>
   );
 };
