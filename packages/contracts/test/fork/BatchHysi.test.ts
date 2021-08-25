@@ -1,4 +1,5 @@
 import { SignerWithAddress } from "@nomiclabs/hardhat-ethers/signers";
+import bluebird from "bluebird";
 import { expect } from "chai";
 import { BigNumber } from "ethers";
 import { parseEther } from "ethers/lib/utils";
@@ -732,6 +733,258 @@ describe("HysiBatchInteraction Network Test", function () {
         );
         const batch = await contracts.hysiBatchInteraction.batches(batchId);
         expect(batch.unclaimedShares).to.equal(0);
+      });
+    });
+  });
+  context.only("moveUnclaimedDepositsIntoCurrentBatch", function () {
+    context("error", function () {
+      it("reverts when length of batchIds and shares are not matching", async function () {
+        await expect(
+          contracts.hysiBatchInteraction
+            .connect(depositor)
+            .moveUnclaimedDepositsIntoCurrentBatch(
+              new Array(2).fill(
+                "0xa15f699e141c27ed0edace41ff8fa7b836e3ddb658b25c811a1674e9c7a75c5c"
+              ),
+              new Array(3).fill(parseEther("10")),
+              BatchType.Mint
+            )
+        ).to.be.revertedWith("array lengths must match");
+      });
+      it("reverts when too many batches are submitted", async function () {
+        await expect(
+          contracts.hysiBatchInteraction
+            .connect(depositor)
+            .moveUnclaimedDepositsIntoCurrentBatch(
+              new Array(21).fill(
+                "0xa15f699e141c27ed0edace41ff8fa7b836e3ddb658b25c811a1674e9c7a75c5c"
+              ),
+              new Array(21).fill(parseEther("10")),
+              BatchType.Mint
+            )
+        ).to.be.revertedWith("submit less batches");
+      });
+      it("skips a batch that is not from the correct batchType", async function () {
+        await contracts.threeCrv
+          .connect(depositor)
+          .approve(contracts.hysiBatchInteraction.address, parseEther("10000"));
+        await contracts.hysiBatchInteraction
+          .connect(depositor)
+          .depositForMint(parseEther("10000"));
+
+        await provider.send("evm_increaseTime", [1800]);
+        await provider.send("evm_mine", []);
+        await contracts.hysiBatchInteraction.connect(owner).batchMint();
+        const batchId = await contracts.hysiBatchInteraction.batchesOfAccount(
+          depositor.address,
+          0
+        );
+        await expect(
+          contracts.hysiBatchInteraction.moveUnclaimedDepositsIntoCurrentBatch(
+            [batchId],
+            [parseEther("10000")],
+            BatchType.Redeem
+          )
+        ).to.be.revertedWith("totalAmount must be larger 0");
+      });
+      it("skips unclaimable batch", async function () {
+        await contracts.threeCrv
+          .connect(depositor)
+          .approve(contracts.hysiBatchInteraction.address, parseEther("10000"));
+        await contracts.hysiBatchInteraction
+          .connect(depositor)
+          .depositForMint(parseEther("10000"));
+        const batchId = await contracts.hysiBatchInteraction.batchesOfAccount(
+          depositor.address,
+          0
+        );
+        await expect(
+          contracts.hysiBatchInteraction.moveUnclaimedDepositsIntoCurrentBatch(
+            [batchId],
+            [parseEther("10000")],
+            BatchType.Mint
+          )
+        ).to.be.revertedWith("totalAmount must be larger 0");
+      });
+      it("skips a batch in which the user has not enough shares", async function () {
+        await contracts.threeCrv
+          .connect(depositor)
+          .approve(contracts.hysiBatchInteraction.address, parseEther("10000"));
+        await contracts.hysiBatchInteraction
+          .connect(depositor)
+          .depositForMint(parseEther("10000"));
+        const batchId = await contracts.hysiBatchInteraction.batchesOfAccount(
+          depositor.address,
+          0
+        );
+        await expect(
+          contracts.hysiBatchInteraction.moveUnclaimedDepositsIntoCurrentBatch(
+            [batchId],
+            [parseEther("20000")],
+            BatchType.Mint
+          )
+        ).to.be.revertedWith("totalAmount must be larger 0");
+      });
+    });
+    context("success", function () {
+      it("moves hysi into current redeemBatch", async function () {
+        await contracts.threeCrv
+          .connect(depositor)
+          .approve(contracts.hysiBatchInteraction.address, parseEther("10000"));
+        await contracts.hysiBatchInteraction
+          .connect(depositor)
+          .depositForMint(parseEther("10000"));
+        const batchId = await contracts.hysiBatchInteraction.batchesOfAccount(
+          depositor.address,
+          0
+        );
+        await provider.send("evm_increaseTime", [1800]);
+        await provider.send("evm_mine", []);
+        await contracts.hysiBatchInteraction.connect(owner).batchMint();
+        const mintedHYSI = await contracts.hysi.balanceOf(
+          contracts.hysiBatchInteraction.address
+        );
+        expect(
+          await contracts.hysiBatchInteraction
+            .connect(depositor)
+            .moveUnclaimedDepositsIntoCurrentBatch(
+              [batchId],
+              [parseEther("10000")],
+              BatchType.Mint
+            )
+        )
+          .to.emit(
+            contracts.hysiBatchInteraction,
+            "MovedUnclaimedDepositsIntoCurrentBatch"
+          )
+          .withArgs(mintedHYSI, BatchType.Mint, depositor.address);
+        const currentRedeemBatchId =
+          await contracts.hysiBatchInteraction.currentRedeemBatchId();
+        const redeemBatch = await contracts.hysiBatchInteraction.batches(
+          currentRedeemBatchId
+        );
+        expect(redeemBatch.suppliedToken).to.be.equal(mintedHYSI);
+      });
+      it("moves 3crv into current mintBatch", async function () {
+        await distributeHysiToken();
+        const hysiBalance = await contracts.hysi.balanceOf(depositor.address);
+        await contracts.hysiBatchInteraction
+          .connect(depositor)
+          .depositForRedeem(hysiBalance);
+        const batchId = await contracts.hysiBatchInteraction.batchesOfAccount(
+          depositor.address,
+          1
+        );
+        await provider.send("evm_increaseTime", [1800]);
+        await provider.send("evm_mine", []);
+        await contracts.hysiBatchInteraction.connect(owner).batchRedeem();
+        const redeemed3CRV = (
+          await contracts.hysiBatchInteraction.batches(batchId)
+        ).claimableToken;
+        expect(
+          await contracts.hysiBatchInteraction
+            .connect(depositor)
+            .moveUnclaimedDepositsIntoCurrentBatch(
+              [batchId],
+              [hysiBalance],
+              BatchType.Redeem
+            )
+        )
+          .to.emit(
+            contracts.hysiBatchInteraction,
+            "MovedUnclaimedDepositsIntoCurrentBatch"
+          )
+          .withArgs(redeemed3CRV, BatchType.Redeem, depositor.address);
+        const currentMintBatchId =
+          await contracts.hysiBatchInteraction.currentMintBatchId();
+        const redeemBatch = await contracts.hysiBatchInteraction.batches(
+          currentMintBatchId
+        );
+        expect(redeemBatch.suppliedToken).to.be.equal(redeemed3CRV);
+      });
+      it("moves only parts of the funds in a batch", async function () {
+        await contracts.threeCrv
+          .connect(depositor)
+          .approve(contracts.hysiBatchInteraction.address, parseEther("10000"));
+        await contracts.hysiBatchInteraction
+          .connect(depositor)
+          .depositForMint(parseEther("10000"));
+        const batchId = await contracts.hysiBatchInteraction.batchesOfAccount(
+          depositor.address,
+          0
+        );
+        await provider.send("evm_increaseTime", [1800]);
+        await provider.send("evm_mine", []);
+        await contracts.hysiBatchInteraction.connect(owner).batchMint();
+        const mintedHYSI = await contracts.hysi.balanceOf(
+          contracts.hysiBatchInteraction.address
+        );
+        expect(
+          await contracts.hysiBatchInteraction
+            .connect(depositor)
+            .moveUnclaimedDepositsIntoCurrentBatch(
+              [batchId],
+              [parseEther("5000")],
+              BatchType.Mint
+            )
+        )
+          .to.emit(
+            contracts.hysiBatchInteraction,
+            "MovedUnclaimedDepositsIntoCurrentBatch"
+          )
+          .withArgs(mintedHYSI.div(2), BatchType.Mint, depositor.address);
+        //can be between 20326591836734693877 and 20326591836734693876
+        const currentRedeemBatchId =
+          await contracts.hysiBatchInteraction.currentRedeemBatchId();
+        const redeemBatch = await contracts.hysiBatchInteraction.batches(
+          currentRedeemBatchId
+        );
+        expect(redeemBatch.suppliedToken).to.be.equal(mintedHYSI.div(2));
+        const mintBatch = await contracts.hysiBatchInteraction.batches(batchId);
+        expect(mintBatch.claimableToken).to.be.equal(mintedHYSI.div(2));
+      });
+      it("moves funds from up to 20 batches", async function () {
+        await contracts.threeCrv
+          .connect(depositor)
+          .approve(contracts.hysiBatchInteraction.address, parseEther("2000"));
+        await bluebird.map(
+          new Array(20).fill(0),
+          async (i) => {
+            await contracts.hysiBatchInteraction
+              .connect(depositor)
+              .depositForMint(parseEther("100"));
+            await provider.send("evm_increaseTime", [1800]);
+            await provider.send("evm_mine", []);
+            await contracts.hysiBatchInteraction.connect(owner).batchMint();
+          },
+          { concurrency: 1 }
+        );
+        const batchIds = await contracts.hysiBatchInteraction.getAccountBatches(
+          depositor.address
+        );
+        const mintedHYSI = await contracts.hysi.balanceOf(
+          contracts.hysiBatchInteraction.address
+        );
+        expect(
+          await contracts.hysiBatchInteraction
+            .connect(depositor)
+            .moveUnclaimedDepositsIntoCurrentBatch(
+              batchIds,
+              new Array(20).fill(parseEther("100")),
+              BatchType.Mint
+            )
+        )
+          .to.emit(
+            contracts.hysiBatchInteraction,
+            "MovedUnclaimedDepositsIntoCurrentBatch"
+          )
+          .withArgs(mintedHYSI, BatchType.Mint, depositor.address);
+        const currentRedeemBatchId =
+          await contracts.hysiBatchInteraction.currentRedeemBatchId();
+        const redeemBatch = await contracts.hysiBatchInteraction.batches(
+          currentRedeemBatchId
+        );
+        expect(redeemBatch.suppliedToken).to.be.equal(mintedHYSI);
       });
     });
   });
