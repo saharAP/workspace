@@ -3,12 +3,12 @@ pragma experimental ABIEncoderV2;
 
 import "@openzeppelin/contracts/math/SafeMath.sol";
 import "@openzeppelin/contracts/token/ERC20/SafeERC20.sol";
-import "./IStaking.sol";
-import "./IBeneficiaryRegistry.sol";
-import "./IRandomNumberConsumer.sol";
-import "./IBeneficiaryVaults.sol";
+import "./Interfaces/IStaking.sol";
+import "./Interfaces/IBeneficiaryRegistry.sol";
+import "./Interfaces/IBeneficiaryVaults.sol";
+import "./Interfaces/IRandomNumberConsumer.sol";
+import "./Interfaces/IRegion.sol";
 import "./Governed.sol";
-import "./IRegion.sol";
 import "./ParticipationReward.sol";
 
 contract GrantElections is ParticipationReward {
@@ -282,9 +282,9 @@ contract GrantElections is ParticipationReward {
     if (
       block.timestamp >=
       election
-        .startTime
-        .add(election.electionConfiguration.registrationPeriod)
-        .add(election.electionConfiguration.votingPeriod)
+      .startTime
+      .add(election.electionConfiguration.registrationPeriod)
+      .add(election.electionConfiguration.votingPeriod)
     ) {
       election.electionState = ElectionState.Closed;
       if (election.electionConfiguration.useChainLinkVRF) {
@@ -401,7 +401,8 @@ contract GrantElections is ParticipationReward {
 
     uint256 finalizationIncentive = electionDefaults[
       uint8(_election.electionTerm)
-    ].finalizationIncentive;
+    ]
+    .finalizationIncentive;
 
     if (
       incentiveBudget >= finalizationIncentive &&
@@ -449,8 +450,8 @@ contract GrantElections is ParticipationReward {
     onlyGovernance
   {
     electionDefaults[uint8(_term)]
-      .bondRequirements
-      .required = !electionDefaults[uint8(_term)].bondRequirements.required;
+    .bondRequirements
+    .required = !electionDefaults[uint8(_term)].bondRequirements.required;
   }
 
   function _collectRegistrationBond(Election storage _election) internal {
