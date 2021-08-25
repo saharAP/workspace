@@ -101,12 +101,12 @@ export const CalendarInput: React.FC<CalendarInputProps> = ({label, defaultDate,
         {label && (
           <label
             htmlFor="datepicker"
-            className="font-bold mb-1 text-gray-700 block"
+            className="font-medium mb-1 text-sm text-gray-700 block"
           >
             {label}
           </label>
         )}
-        <div className="relative">
+        <div className="relative border rounded-lg">
           <input
             type="text"
             readOnly
@@ -114,12 +114,12 @@ export const CalendarInput: React.FC<CalendarInputProps> = ({label, defaultDate,
             onKeyDown={(e) => handleKeyDown(e)}
             defaultValue={defaultDate && defaultValue.toFormat('yyyy/MM/dd')}
             ref={dateRef}
-            className="w-full pl-4 pr-10 py-3 leading-none rounded-lg shadow-sm focus:outline-none focus:shadow-outline text-gray-600 font-medium"
+            className="w-full pl-4 pr-10 py-3 leading-none rounded-lg shadow-sm focus:outline-none focus:shadow-outline text-gray-500 font-light"
             placeholder="Select date"
           />
 
           <div
-            className="absolute top-0.5 right-0 px-3 py-2 border-l"
+            className="absolute top-0 right-0 px-3 h-full py-2 border-l bg-gray-50 rounded-r-lg"
             onClick={() => setShowCalendar(!showCalendar)}
           >
             <svg
@@ -139,7 +139,6 @@ export const CalendarInput: React.FC<CalendarInputProps> = ({label, defaultDate,
           {showCalendar && (
             <div
               className="bg-white mt-12 rounded-lg shadow p-4 absolute top-0 left-0 z-10 w-72"
-              // style={{ width: '17rem' }}
             >
               <div className="flex justify-between items-center mb-2">
                 <div>
@@ -257,7 +256,7 @@ export const DateRangePicker = () => {
           <CalendarInput label="End Date" defaultDate={new Date("02/12/2021")} />
           <button
             type="button"
-            className="ml-2 inline-flex items-center px-2.5 py-1.5 border-8 border-transparent text-xs font-medium rounded shadow-sm text-indigo-600 bg-indigo-100 hover:text-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 h-10 self-end mb-2"
+            className="ml-2 inline-flex items-center px-2.5 py-1.5 border-8 border-transparent text-xs font-bold rounded shadow-sm text-indigo-600 bg-indigo-100 hover:text-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 h-10 self-end mb-2.5"
           >
             Filter
           </button>
