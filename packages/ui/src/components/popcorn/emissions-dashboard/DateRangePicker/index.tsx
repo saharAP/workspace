@@ -122,7 +122,7 @@ export const CalendarInput: React.FC<CalendarInputProps> = ({label, defaultDate,
           />
 
           <div
-            className="absolute top-0 right-0 px-3 h-full py-2 border-l bg-gray-50 rounded-r-lg"
+            className="absolute top-0 right-0 px-3 h-full py-2 border-l bg-gray-50 rounded-r-lg cursor-pointer"
             onClick={() => setShowCalendar(!showCalendar)}
           >
             <svg
