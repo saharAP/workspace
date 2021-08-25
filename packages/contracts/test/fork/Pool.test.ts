@@ -214,7 +214,7 @@ describe("Pool", function () {
         parseEther("0.999999993662252304")
       );
 
-      let [vault] = await contracts.pool.allVaults();
+      const [vault] = await contracts.pool.allVaults();
       await contracts.faucet.sendCurveLPTokens(
         FRAX_LP_TOKEN_ADDRESS,
         100,
