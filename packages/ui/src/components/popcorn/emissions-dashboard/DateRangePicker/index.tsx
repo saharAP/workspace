@@ -46,7 +46,7 @@ export const CalendarInput: React.FC<CalendarInputProps> = ({label, defaultDate,
   const getDateValue = (day) => {
     const year = date.year;
     const month = date.month;
-    let selectedDate = DateTime.fromFormat(`${year}-${month}-${day}`, 'yyyy-m-d');
+    let selectedDate = DateTime.fromFormat(`${year}-${month}-${day}`, 'yyyy-M-d');
     dateRef.current.value = selectedDate.toFormat('yyyy/MM/dd');
     setShowCalendar(false);
     if(onChange){
@@ -68,7 +68,7 @@ export const CalendarInput: React.FC<CalendarInputProps> = ({label, defaultDate,
     let daysInMonth = new Date(year, month - 1, 0).getDate();
 
     // Find where to start calendar day of week
-    let dayOfWeek = new Date(year, month).getDay();
+    let dayOfWeek = new Date(year, month - 1).getDay();
     let blankDays = [];
     for (var i = 1; i <= dayOfWeek; i++) {
       blankDays.push(i);
@@ -84,11 +84,14 @@ export const CalendarInput: React.FC<CalendarInputProps> = ({label, defaultDate,
   };
 
   const navigateMonth = (next: boolean) => {
+    let newDate;
     if (next) {
-      setDate(date.plus({ months: 1 }));
+      newDate = date.plus({ months: 1 });
     } else {
-      setDate(date.minus({ months: 1 }));
+      newDate = date.minus({ months: 1 })
     }
+    setDate(newDate);
+    getNoOfDays(newDate)
   };
 
   useEffect(() => {
@@ -153,10 +156,7 @@ export const CalendarInput: React.FC<CalendarInputProps> = ({label, defaultDate,
                   <button
                     type="button"
                     className="transition ease-in-out duration-100 inline-flex cursor-point p-1 rounded-full"
-                    onClick={() => {
-                      navigateMonth(false);
-                      getNoOfDays(date);
-                    }}
+                    onClick={() => navigateMonth(false)}
                   >
                     <svg
                       className="h-6 w-6 text-gray-500 inline-flex"
@@ -175,10 +175,7 @@ export const CalendarInput: React.FC<CalendarInputProps> = ({label, defaultDate,
                   <button
                     type="button"
                     className="transition ease-in-out duration-100 inline-flex cursor-point p-1 rounded-full"
-                    onClick={() => {
-                      navigateMonth(true);
-                      getNoOfDays(date);
-                    }}
+                    onClick={() => navigateMonth(true)}
                   >
                     <svg
                       className="h-6 w-6 text-gray-500 inline-flex"
