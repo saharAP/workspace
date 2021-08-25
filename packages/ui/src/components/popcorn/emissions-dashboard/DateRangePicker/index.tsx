@@ -25,10 +25,13 @@ function classNames(...classes) {
 interface CalendarInputProps  {
   label: string,
   defaultDate?: Date,
+  minDate?: Date,
+  maxDate?: Date,
+  isStartInput?: Boolean,
   onChange?: (selectedDate: Date) => void
 }
 
-export const CalendarInput: React.FC<CalendarInputProps> = ({label, defaultDate, onChange}) => {
+export const CalendarInput: React.FC<CalendarInputProps> = ({label, defaultDate, onChange, minDate, maxDate, isStartInput}) => {
   const [showCalendar, setShowCalendar] = useState(false);
   const [daysList, setDaysList] = useState([]);
   const [blankDaysList, setBlankDaysList] = useState([]);
@@ -62,6 +65,36 @@ export const CalendarInput: React.FC<CalendarInputProps> = ({label, defaultDate,
     return today.toDateString() === newDate.toDateString();
   };
 
+  const isBeforeMinDate = (date, currenDate, minDate) => {
+    if(minDate && isStartInput){
+      const year = currenDate.year;
+      const month = currenDate.month - 1;
+      const newDate = new Date(year, month, date);
+      return minDate.getTime() <= newDate.getTime();
+    }
+    if(minDate && !isStartInput){
+      const year = currenDate.year;
+      const month = currenDate.month;
+      const newDate = new Date(year, month, date);
+      return !(minDate.getTime() <= newDate.getTime());
+    }
+    return false;
+  };
+
+  const isAfterMaxDate = (date, currenDate, maxDate) => {
+    if(maxDate){
+      const year = currenDate.year;
+      const month = currenDate.month - 1;
+      const newDate = new Date(year, month, date);
+      return newDate.getTime() >= maxDate.getTime();
+    }
+    if(maxDate && !isStartInput){
+      const today = new Date();
+      return !(today.getTime() <= maxDate.getTime());
+    }
+    return false;
+  };
+
   const getNoOfDays = (date) => {
     const year = date.year;
     const month = date.month;
@@ -78,7 +111,6 @@ export const CalendarInput: React.FC<CalendarInputProps> = ({label, defaultDate,
     for (var i = 1; i <= daysInMonth; i++) {
       daysArray.push(i);
     }
-
     setDaysList(daysArray);
     setBlankDaysList(blankDays);
   };
@@ -91,8 +123,11 @@ export const CalendarInput: React.FC<CalendarInputProps> = ({label, defaultDate,
       newDate = date.minus({ months: 1 })
     }
     setDate(newDate);
-    getNoOfDays(newDate)
+    getNoOfDays(newDate);
   };
+
+  const previousMonthNavigationDisabled = isBeforeMinDate(0, date.minus({ months: 1 }), minDate);
+  const nextMonthNavigationDisabled = isAfterMaxDate(0, date.plus({ months: 1 }), maxDate);
 
   useEffect(() => {
     getNoOfDays(date);
@@ -114,7 +149,7 @@ export const CalendarInput: React.FC<CalendarInputProps> = ({label, defaultDate,
             type="text"
             readOnly
             onClick={() => setShowCalendar(!showCalendar)}
-            onKeyDown={(e) => handleKeyDown(e)}
+            onKeyDown={(event) => handleKeyDown(event)}
             defaultValue={defaultDate && defaultValue.toFormat('yyyy/MM/dd')}
             ref={dateRef}
             className="w-full pl-4 pr-10 py-3 leading-none rounded-lg shadow-sm focus:outline-none focus:shadow-outline text-gray-500 font-light"
@@ -155,8 +190,13 @@ export const CalendarInput: React.FC<CalendarInputProps> = ({label, defaultDate,
                 <div>
                   <button
                     type="button"
-                    className="transition ease-in-out duration-100 inline-flex cursor-point p-1 rounded-full"
-                    onClick={() => navigateMonth(false)}
+                    className={classNames(
+                      previousMonthNavigationDisabled
+                        ? 'cursor-not-allowed opacity-25'
+                        : 'cursor-pointer',
+                      'transition ease-in-out duration-100 inline-flex cursor-point p-1 rounded-full',
+                    )}
+                    onClick={() => previousMonthNavigationDisabled ? {} : navigateMonth(false)}
                   >
                     <svg
                       className="h-6 w-6 text-gray-500 inline-flex"
@@ -174,8 +214,13 @@ export const CalendarInput: React.FC<CalendarInputProps> = ({label, defaultDate,
                   </button>
                   <button
                     type="button"
-                    className="transition ease-in-out duration-100 inline-flex cursor-point p-1 rounded-full"
-                    onClick={() => navigateMonth(true)}
+                    className={classNames(
+                      nextMonthNavigationDisabled
+                        ? 'cursor-not-allowed opacity-25'
+                        : 'cursor-pointer',
+                      'transition ease-in-out duration-100 inline-flex cursor-point p-1 rounded-full',
+                    )}
+                    onClick={() => nextMonthNavigationDisabled ? {} :  navigateMonth(true)}
                   >
                     <svg
                       className="h-6 w-6 text-gray-500 inline-flex"
@@ -216,25 +261,40 @@ export const CalendarInput: React.FC<CalendarInputProps> = ({label, defaultDate,
                     className="text-center border p-1 border-transparent text-sm"
                   />
                 ))}
-                {daysList.map((dateItem) => (
+                {daysList.map((dateItem) => {
+                  let disabled = (
+                    (isBeforeMinDate(dateItem, date, minDate) && !isAfterMaxDate(dateItem, date, maxDate)) ||
+                  (!isBeforeMinDate(dateItem, date, minDate) && isAfterMaxDate(dateItem, date, maxDate))
+                  );
+                  if(!isStartInput
+                    && dateItem <= minDate.getDate()
+                    && (date.month - 1) === minDate.getMonth()
+                    && (date.year) === minDate.getFullYear()
+                    ){
+                    disabled = true;
+                  }
+                  return(
                   <div
                     style={{ width: '14.28%' }}
                     className="px-1 mb-1"
                     key={dateItem}
                   >
                     <div
-                      onClick={() => getDateValue(dateItem)}
+                      onClick={() => disabled ? {} : getDateValue(dateItem)}
                       className={classNames(
                         isToday(dateItem, date)
                           ? 'bg-blue-500 text-white'
                           : 'text-gray-700 hover:bg-blue-200',
-                        'cursor-pointer text-center text-sm leading-none rounded-full leading-loose transition ease-in-out duration-100',
+                        disabled
+                          ? 'cursor-not-allowed opacity-25'
+                          : 'cursor-pointer',
+                        'text-center text-sm leading-none rounded-full leading-loose transition ease-in-out duration-100',
                       )}
                     >
                       {dateItem}
                     </div>
                   </div>
-                ))}
+                );})}
               </div>
             </div>
           )}
@@ -245,12 +305,23 @@ export const CalendarInput: React.FC<CalendarInputProps> = ({label, defaultDate,
 };
 
 export const DateRangePicker = () => {
+  const [startDate, setStartDate] = useState(new Date("03/04/2021"));
+
   return (
     <div className="grid justify-items-stretch md:mr-24">
       <div className="md:flex md:items-center md:justify-between justify-self-end">
         <div className="mt-4 flex md:mt-0 md:ml-4">
-          <CalendarInput label="Start Date" defaultDate={new Date("03/04/2021")} />
-          <CalendarInput label="End Date" defaultDate={new Date("02/12/2021")} />
+          <CalendarInput
+          label="Start Date"
+          isStartInput
+          defaultDate={startDate}
+          onChange={(selected) => setStartDate(selected)}
+          maxDate={new Date()} />
+          <CalendarInput
+          label="End Date"
+          minDate={startDate}
+          maxDate={new Date()}
+          isStartInput={false} />
           <button
             type="button"
             className="ml-2 inline-flex items-center px-2.5 py-1.5 border-8 border-transparent text-xs font-bold rounded shadow-sm text-indigo-600 bg-indigo-100 hover:text-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 h-10 self-end mb-2.5"
