@@ -1,6 +1,4 @@
 import { SignerWithAddress } from "@nomiclabs/hardhat-ethers/signers";
-import { expect } from "chai";
-import { parse } from "dotenv";
 import { BigNumber } from "ethers";
 import { parseEther } from "ethers/lib/utils";
 import { ethers, network, waffle } from "hardhat";
@@ -1400,7 +1398,23 @@ describe("HysiBatchInteraction Network Test", function () {
         ).toString()
       );
     });
-    it.only("mints v2", async function () {
+    it("tests calculations for mintV2", async function () {
+      await contracts.threeCrv
+        .connect(depositor)
+        .approve(contracts.hysiBatchInteraction.address, parseEther("1000000"));
+      await contracts.hysiBatchInteraction
+        .connect(depositor)
+        .depositForMint(parseEther("1000000"));
+      const batchId1 = await contracts.hysiBatchInteraction.batchesOfAccount(
+        depositor.address,
+        0
+      );
+      await provider.send("evm_increaseTime", [1800]);
+      await provider.send("evm_mine", []);
+      const results =
+        await contracts.hysiBatchInteraction.getV2InitalCalculationResults();
+    });
+    it("mints v2", async function () {
       await contracts.threeCrv
         .connect(depositor)
         .approve(contracts.hysiBatchInteraction.address, parseEther("1000000"));

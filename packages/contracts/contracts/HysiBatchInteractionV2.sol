@@ -382,6 +382,103 @@ contract HysiBatchInteractionV2 is Owned {
     emit BatchMinted(hysiAmount);
   }
 
+  function getV2InitalCalculationResults()
+    external
+    view
+    returns (
+      uint256,
+      uint256,
+      uint256[] memory,
+      uint256[] memory,
+      uint256[] memory,
+      uint256[] memory,
+      uint256[] memory,
+      uint256[] memory
+    )
+  {
+    Batch storage batch = batches[currentMintBatchId];
+
+    //!!! its absolutely necessary that the order of underylingToken matches the order of getRequireedComponentUnitsforIssue
+    (
+      address[] memory tokenAddresses,
+      uint256[] memory quantities
+    ) = setBasicIssuanceModule.getRequiredComponentUnitsForIssue(setToken, 1);
+
+    //Amount of 3crv needed to mint 1 hysi
+    uint256 hysiIn3Crv;
+
+    uint256 totalLeftoverIn3Crv;
+
+    //Amount of 3crv needed to mint the necessary quantity of yToken for hysi
+    uint256[] memory quantitiesIn3Crv = new uint256[](quantities.length);
+
+    uint256[] memory yTokensIn3Crv = new uint256[](quantities.length);
+
+    uint256[] memory leftoversIn3Crv = new uint256[](quantities.length);
+
+    for (uint256 i; i < underlying.length; i++) {
+      //Check how many crvToken are needed to mint one yToken
+      uint256 yTokenInCrvToken = underlying[i].yToken.pricePerShare();
+
+      //Check how many 3crv are needed to mint one crvToken
+      uint256 crvTokenIn3Crv = underlying[i]
+        .curveMetaPool
+        .calc_withdraw_one_coin(1e18, 1);
+
+      //Calc how many 3crv are needed to mint one yToken
+      uint256 yTokenIn3Crv = yTokenInCrvToken.mul(crvTokenIn3Crv).div(1e18);
+
+      //Calc how many 3crv are needed to mint the quantity in yToken
+      uint256 quantityIn3Crv = yTokenIn3Crv.mul(quantities[i]);
+
+      uint256 leftoverIn3Crv = underlying[i]
+        .yToken
+        .balanceOf(address(this))
+        .mul(yTokenIn3Crv)
+        .div(1e18);
+
+      //Calc total price of 1 HYSI in 3crv
+      hysiIn3Crv = hysiIn3Crv.add(quantityIn3Crv);
+      totalLeftoverIn3Crv = totalLeftoverIn3Crv.add(leftoverIn3Crv);
+
+      //Save allocation in 3crv for later
+      quantitiesIn3Crv[i] = quantityIn3Crv;
+
+      yTokensIn3Crv[i] = yTokenIn3Crv;
+
+      leftoversIn3Crv[i] = leftoverIn3Crv;
+    }
+
+    uint256 hysiAmount1 = batch
+      .suppliedToken
+      .add(totalLeftoverIn3Crv)
+      .mul(1e18)
+      .div(hysiIn3Crv);
+
+    uint256[] memory poolAllocations = new uint256[](quantities.length);
+
+    uint256[] memory poolAllocationsAfterLeftovers = new uint256[](
+      quantities.length
+    );
+
+    for (uint256 i; i < underlying.length; i++) {
+      uint256 poolAllocation = quantitiesIn3Crv[i].mul(hysiAmount1).div(1e18);
+      poolAllocations[i] = poolAllocation;
+      poolAllocationsAfterLeftovers[i] = poolAllocation.sub(leftoversIn3Crv[i]);
+    }
+
+    return (
+      hysiIn3Crv,
+      totalLeftoverIn3Crv,
+      quantities,
+      quantitiesIn3Crv,
+      yTokensIn3Crv,
+      leftoversIn3Crv,
+      poolAllocations,
+      poolAllocationsAfterLeftovers
+    );
+  }
+
   function batchMintEven() external {
     Batch storage batch = batches[currentMintBatchId];
     require(
