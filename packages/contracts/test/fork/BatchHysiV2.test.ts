@@ -1398,7 +1398,7 @@ describe("HysiBatchInteraction Network Test", function () {
         ).toString()
       );
     });
-    it("tests calculations for mintV2", async function () {
+    it.only("tests calculations for mintV2", async function () {
       await contracts.threeCrv
         .connect(depositor)
         .approve(contracts.hysiBatchInteraction.address, parseEther("1000000"));
@@ -1411,8 +1411,16 @@ describe("HysiBatchInteraction Network Test", function () {
       );
       await provider.send("evm_increaseTime", [1800]);
       await provider.send("evm_mine", []);
-      const results =
+      const initialResults =
         await contracts.hysiBatchInteraction.getV2InitalCalculationResults();
+      console.log(initialResults.toString());
+      const poolResults =
+        await contracts.hysiBatchInteraction.getV2PoolCalculationResults(
+          initialResults[1],
+          initialResults[4],
+          initialResults[6]
+        );
+      console.log(poolResults.toString());
     });
     it("mints v2", async function () {
       await contracts.threeCrv

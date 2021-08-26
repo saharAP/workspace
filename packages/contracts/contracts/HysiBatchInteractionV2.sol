@@ -388,8 +388,7 @@ contract HysiBatchInteractionV2 is Owned {
     returns (
       uint256,
       uint256,
-      uint256[] memory,
-      uint256[] memory,
+      uint256,
       uint256[] memory,
       uint256[] memory,
       uint256[] memory,
@@ -455,10 +454,26 @@ contract HysiBatchInteractionV2 is Owned {
       .mul(1e18)
       .div(hysiIn3Crv);
 
-    uint256[] memory poolAllocations = new uint256[](quantities.length);
+    return (
+      hysiIn3Crv,
+      hysiAmount1,
+      totalLeftoverIn3Crv,
+      quantities,
+      quantitiesIn3Crv,
+      yTokensIn3Crv,
+      leftoversIn3Crv
+    );
+  }
+
+  function getV2PoolCalculationResults(
+    uint256 hysiAmount1,
+    uint256[] calldata quantitiesIn3Crv,
+    uint256[] calldata leftoversIn3Crv
+  ) external view returns (uint256[] memory, uint256[] memory) {
+    uint256[] memory poolAllocations = new uint256[](underlying.length);
 
     uint256[] memory poolAllocationsAfterLeftovers = new uint256[](
-      quantities.length
+      underlying.length
     );
 
     for (uint256 i; i < underlying.length; i++) {
@@ -466,17 +481,7 @@ contract HysiBatchInteractionV2 is Owned {
       poolAllocations[i] = poolAllocation;
       poolAllocationsAfterLeftovers[i] = poolAllocation.sub(leftoversIn3Crv[i]);
     }
-
-    return (
-      hysiIn3Crv,
-      totalLeftoverIn3Crv,
-      quantities,
-      quantitiesIn3Crv,
-      yTokensIn3Crv,
-      leftoversIn3Crv,
-      poolAllocations,
-      poolAllocationsAfterLeftovers
-    );
+    return (poolAllocations, poolAllocationsAfterLeftovers);
   }
 
   function batchMintEven() external {
