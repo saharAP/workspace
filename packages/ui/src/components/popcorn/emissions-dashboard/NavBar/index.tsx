@@ -4,32 +4,11 @@ import { BellIcon, MenuIcon, XIcon } from '@heroicons/react/outline';
 import { PlusIcon } from '@heroicons/react/solid';
 import { Fragment } from 'react';
 
-
-const user = {
-  name: 'Tom Cook',
-  email: 'tom@example.com',
-  imageUrl:
-    'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
-};
-
-export const navigation = [
-  { name: 'Dashboard', href: '#', current: true },
-  { name: 'Team', href: '#', current: false },
-  { name: 'Projects', href: '#', current: false },
-  { name: 'Calendar', href: '#', current: false },
-];
-
-export const userNavigation = [
-  { name: 'Your Profile', href: '#' },
-  { name: 'Settings', href: '#' },
-  { name: 'Sign out', href: '#' },
-];
-
 function classNames(...classes) {
   return classes.filter(Boolean).join(' ');
 }
 
-export const NavBar = ({ title, headerNavigation, userNavigation }) => {
+export const NavBar = ({ title, headerNavigation, userNavigation, user, logo}) => {
   return (
     <div className="bg-gray-100">
       <Disclosure as="nav" className="bg-white shadow-sm">
@@ -39,19 +18,19 @@ export const NavBar = ({ title, headerNavigation, userNavigation }) => {
               <div className="flex justify-between h-16">
                 <div className="flex">
                   <div className="flex-shrink-0 flex items-center">
-                    <img
+                  <img
                       className="block lg:hidden h-8 w-auto"
-                      src="https://tailwindui.com/img/logos/workflow-mark-indigo-600.svg"
-                      alt="Workflow"
+                      src={logo}
+                      alt="Popcorn logo"
                     />
                     <img
                       className="hidden lg:block h-8 w-auto"
-                      src="https://tailwindui.com/img/logos/workflow-logo-indigo-600-mark-gray-800-text.svg"
-                      alt="Workflow"
+                      src={logo}
+                      alt="Popcorn logo"
                     />
                   </div>
                   <div className="hidden sm:-my-px sm:ml-6 sm:flex sm:space-x-8">
-                    {headerNavigation.map((item) => (
+                    {headerNavigation && headerNavigation.map((item) => (
                       <a
                         key={item.name}
                         href={item.href}
@@ -88,7 +67,7 @@ export const NavBar = ({ title, headerNavigation, userNavigation }) => {
                         <span className="sr-only">Open user menu</span>
                         <img
                           className="h-8 w-8 rounded-full"
-                          src={user.imageUrl}
+                          src={user?.imageUrl}
                           alt=""
                         />
                       </Menu.Button>
@@ -103,7 +82,7 @@ export const NavBar = ({ title, headerNavigation, userNavigation }) => {
                       leaveTo="transform opacity-0 scale-95"
                     >
                       <Menu.Items className="origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg py-1 bg-white ring-1 ring-black ring-opacity-5 focus:outline-none">
-                        {userNavigation.map((item) => (
+                        {userNavigation && userNavigation.map((item) => (
                           <Menu.Item key={item.name}>
                             {({ active }) => (
                               <a
@@ -138,7 +117,7 @@ export const NavBar = ({ title, headerNavigation, userNavigation }) => {
 
             <Disclosure.Panel className="sm:hidden">
               <div className="pt-2 pb-3 space-y-1">
-                {headerNavigation.map((item) => (
+                {headerNavigation && headerNavigation.map((item) => (
                   <a
                     key={item.name}
                     href={item.href}
@@ -159,16 +138,16 @@ export const NavBar = ({ title, headerNavigation, userNavigation }) => {
                   <div className="flex-shrink-0">
                     <img
                       className="h-10 w-10 rounded-full"
-                      src={user.imageUrl}
+                      src={user?.imageUrl}
                       alt=""
                     />
                   </div>
                   <div className="ml-3">
                     <div className="text-base font-medium text-gray-800">
-                      {user.name}
+                      {user?.name}
                     </div>
                     <div className="text-sm font-medium text-gray-500">
-                      {user.email}
+                      {user?.email}
                     </div>
                   </div>
                   <button className="ml-auto bg-white flex-shrink-0 p-1 rounded-full text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
@@ -194,8 +173,8 @@ export const NavBar = ({ title, headerNavigation, userNavigation }) => {
       </Disclosure>
       <div className="py-10">
           <header>
-            <div className="max-w-7xl px-4 sm:px-6 lg:px-8">
-              <h1 className="text-3xl font-medium leading-tight text-gray-700">
+            <div className="px-4 sm:px-6 lg:px-8">
+              <h1 className="text-3xl text-center font-medium leading-tight text-gray-700">
                 {title}
               </h1>
             </div>
