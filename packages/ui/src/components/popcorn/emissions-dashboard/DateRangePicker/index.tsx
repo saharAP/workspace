@@ -288,7 +288,7 @@ export const CalendarInput: React.FC<CalendarInputProps> = ({label, defaultDate,
                         disabled
                           ? 'cursor-not-allowed opacity-25'
                           : 'cursor-pointer',
-                        'text-center text-sm leading-none rounded-full leading-loose transition ease-in-out duration-100',
+                        'text-center text-sm rounded-full leading-loose transition ease-in-out duration-100',
                       )}
                     >
                       {dateItem}
