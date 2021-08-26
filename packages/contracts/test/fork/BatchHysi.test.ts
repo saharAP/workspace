@@ -736,7 +736,7 @@ describe("HysiBatchInteraction Network Test", function () {
       });
     });
   });
-  context.only("moveUnclaimedDepositsIntoCurrentBatch", function () {
+  context("moveUnclaimedDepositsIntoCurrentBatch", function () {
     context("error", function () {
       it("reverts when length of batchIds and shares are not matching", async function () {
         await expect(
