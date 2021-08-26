@@ -324,6 +324,7 @@ export const CalendarInput: React.FC<CalendarInputProps> = ({
 
 export const DateRangePicker = () => {
   const [selectedStartDate, setSelectedStartDate] = useState(new Date("03/04/2021"));
+  const [selectedEndDate, setSelectedEndDate] = useState(null);
 
   return (
     <div className="grid justify-items-stretch md:mr-24">
@@ -334,10 +335,11 @@ export const DateRangePicker = () => {
           isStartInput
           defaultDate={selectedStartDate}
           onChange={(selected) => setSelectedStartDate(selected)}
-          maxDate={new Date()} />
+          maxDate={selectedEndDate ? selectedEndDate: new Date()} />
           <CalendarInput
           label="End Date"
           minDate={selectedStartDate}
+          onChange={(selected) => setSelectedEndDate(selected)}
           maxDate={new Date()}
           isStartInput={false} />
           <button
