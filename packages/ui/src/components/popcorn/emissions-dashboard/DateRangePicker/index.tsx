@@ -31,11 +31,14 @@ interface CalendarInputProps  {
   onChange?: (selectedDate: Date) => void
 }
 
-export const CalendarInput: React.FC<CalendarInputProps> = ({label, defaultDate, onChange, minDate, maxDate, isStartInput}) => {
+export const CalendarInput: React.FC<CalendarInputProps> = ({
+  label, defaultDate, onChange, minDate, maxDate, isStartInput
+}) => {
   const [showCalendar, setShowCalendar] = useState(false);
   const [daysList, setDaysList] = useState([]);
   const [blankDaysList, setBlankDaysList] = useState([]);
   const [date, setDate] = useState(defaultDate ? DateTime.fromJSDate(defaultDate): DateTime.fromJSDate(new Date()));
+  const [selectedDate, setSelectedDate] = useState(defaultDate ? DateTime.fromJSDate(defaultDate): DateTime.fromJSDate(new Date()));
   const dateRef = useRef(null);
   const defaultValue =
     defaultDate && DateTime.fromJSDate(defaultDate);
@@ -49,42 +52,54 @@ export const CalendarInput: React.FC<CalendarInputProps> = ({label, defaultDate,
   const getDateValue = (day) => {
     const year = date.year;
     const month = date.month;
-    let selectedDate = DateTime.fromFormat(`${year}-${month}-${day}`, 'yyyy-M-d');
-    dateRef.current.value = selectedDate.toFormat('yyyy/MM/dd');
-    setShowCalendar(false);
+    let selected = DateTime.fromFormat(`${year}-${month}-${day}`, 'yyyy-M-d');
+    dateRef.current.value = selected.toFormat('yyyy/MM/dd');
     if(onChange){
-      onChange(selectedDate.toJSDate());
+      onChange(selected.toJSDate());
     }
+    setSelectedDate(selected)
+    setShowCalendar(false);
   };
 
-  const isToday = (date, currenDate) => {
-    const year = currenDate.year;
-    const month = currenDate.month - 1;
+  const isToday = (date, currentDate) => {
+    const year = currentDate.year;
+    const month = currentDate.month - 1;
     const today = new Date();
     const newDate = new Date(year, month, date);
     return today.toDateString() === newDate.toDateString();
   };
 
-  const isBeforeMinDate = (date, currenDate, minDate) => {
+  const isSelected = (date, currentDate, selection) => {
+    if(selection) {
+      const year = currentDate.year;
+      const month = currentDate.month - 1;
+      const selectedDate = selection.toJSDate();
+      const newDate = new Date(year, month, date);
+      return selectedDate.toDateString() === newDate.toDateString();
+    }
+    return false;
+  };
+
+  const isBeforeMinDate = (date, currentDate, minDate) => {
     if(minDate && isStartInput){
-      const year = currenDate.year;
-      const month = currenDate.month - 1;
+      const year = currentDate.year;
+      const month = currentDate.month - 1;
       const newDate = new Date(year, month, date);
       return minDate.getTime() <= newDate.getTime();
     }
     if(minDate && !isStartInput){
-      const year = currenDate.year;
-      const month = currenDate.month;
+      const year = currentDate.year;
+      const month = currentDate.month;
       const newDate = new Date(year, month, date);
       return !(minDate.getTime() <= newDate.getTime());
     }
     return false;
   };
 
-  const isAfterMaxDate = (date, currenDate, maxDate) => {
+  const isAfterMaxDate = (date, currentDate, maxDate) => {
     if(maxDate){
-      const year = currenDate.year;
-      const month = currenDate.month - 1;
+      const year = currentDate.year;
+      const month = currentDate.month - 1;
       const newDate = new Date(year, month, date);
       return newDate.getTime() >= maxDate.getTime();
     }
@@ -288,6 +303,9 @@ export const CalendarInput: React.FC<CalendarInputProps> = ({label, defaultDate,
                         disabled
                           ? 'cursor-not-allowed opacity-25'
                           : 'cursor-pointer',
+                        isSelected(dateItem, date, selectedDate)
+                          ? 'text-white bg-gray-200'
+                          : '',
                         'text-center text-sm rounded-full leading-loose transition ease-in-out duration-100',
                       )}
                     >
@@ -305,7 +323,7 @@ export const CalendarInput: React.FC<CalendarInputProps> = ({label, defaultDate,
 };
 
 export const DateRangePicker = () => {
-  const [startDate, setStartDate] = useState(new Date("03/04/2021"));
+  const [selectedStartDate, setSelectedStartDate] = useState(new Date("03/04/2021"));
 
   return (
     <div className="grid justify-items-stretch md:mr-24">
@@ -314,12 +332,12 @@ export const DateRangePicker = () => {
           <CalendarInput
           label="Start Date"
           isStartInput
-          defaultDate={startDate}
-          onChange={(selected) => setStartDate(selected)}
+          defaultDate={selectedStartDate}
+          onChange={(selected) => setSelectedStartDate(selected)}
           maxDate={new Date()} />
           <CalendarInput
           label="End Date"
-          minDate={startDate}
+          minDate={selectedStartDate}
           maxDate={new Date()}
           isStartInput={false} />
           <button
