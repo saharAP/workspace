@@ -22,26 +22,38 @@ function classNames(...classes) {
   return classes.filter(Boolean).join(' ');
 }
 
-interface CalendarInputProps  {
-  label: string,
-  defaultDate?: Date,
-  minDate?: Date,
-  maxDate?: Date,
-  isStartInput?: Boolean,
-  onChange?: (selectedDate: Date) => void
+interface CalendarInputProps {
+  label: string;
+  defaultDate?: Date;
+  minDate?: Date;
+  maxDate?: Date;
+  isStartInput?: Boolean;
+  onChange?: (selectedDate: Date) => void;
 }
 
 export const CalendarInput: React.FC<CalendarInputProps> = ({
-  label, defaultDate, onChange, minDate, maxDate, isStartInput
+  label,
+  defaultDate,
+  onChange,
+  minDate,
+  maxDate,
+  isStartInput,
 }) => {
   const [showCalendar, setShowCalendar] = useState(false);
   const [daysList, setDaysList] = useState([]);
   const [blankDaysList, setBlankDaysList] = useState([]);
-  const [date, setDate] = useState(defaultDate ? DateTime.fromJSDate(defaultDate): DateTime.fromJSDate(new Date()));
-  const [selectedDate, setSelectedDate] = useState(defaultDate ? DateTime.fromJSDate(defaultDate): DateTime.fromJSDate(new Date()));
+  const [date, setDate] = useState(
+    defaultDate
+      ? DateTime.fromJSDate(defaultDate)
+      : DateTime.fromJSDate(new Date()),
+  );
+  const [selectedDate, setSelectedDate] = useState(
+    defaultDate
+      ? DateTime.fromJSDate(defaultDate)
+      : DateTime.fromJSDate(new Date()),
+  );
   const dateRef = useRef(null);
-  const defaultValue =
-    defaultDate && DateTime.fromJSDate(defaultDate);
+  const defaultValue = defaultDate && DateTime.fromJSDate(defaultDate);
 
   const handleKeyDown = (event) => {
     if (event.keyCode == ESCAPE_KEY) {
@@ -54,10 +66,10 @@ export const CalendarInput: React.FC<CalendarInputProps> = ({
     const month = date.month;
     let selected = DateTime.fromFormat(`${year}-${month}-${day}`, 'yyyy-M-d');
     dateRef.current.value = selected.toFormat('yyyy/MM/dd');
-    if(onChange){
+    if (onChange) {
       onChange(selected.toJSDate());
     }
-    setSelectedDate(selected)
+    setSelectedDate(selected);
     setShowCalendar(false);
   };
 
@@ -70,7 +82,7 @@ export const CalendarInput: React.FC<CalendarInputProps> = ({
   };
 
   const isSelected = (date, currentDate, selection) => {
-    if(selection) {
+    if (selection) {
       const year = currentDate.year;
       const month = currentDate.month - 1;
       const selectedDate = selection.toJSDate();
@@ -81,13 +93,13 @@ export const CalendarInput: React.FC<CalendarInputProps> = ({
   };
 
   const isBeforeMinDate = (date, currentDate, minDate) => {
-    if(minDate && isStartInput){
+    if (minDate && isStartInput) {
       const year = currentDate.year;
       const month = currentDate.month - 1;
       const newDate = new Date(year, month, date);
       return minDate.getTime() <= newDate.getTime();
     }
-    if(minDate && !isStartInput){
+    if (minDate && !isStartInput) {
       const year = currentDate.year;
       const month = currentDate.month;
       const newDate = new Date(year, month, date);
@@ -97,13 +109,13 @@ export const CalendarInput: React.FC<CalendarInputProps> = ({
   };
 
   const isAfterMaxDate = (date, currentDate, maxDate) => {
-    if(maxDate){
+    if (maxDate) {
       const year = currentDate.year;
       const month = currentDate.month - 1;
       const newDate = new Date(year, month, date);
       return newDate.getTime() >= maxDate.getTime();
     }
-    if(maxDate && !isStartInput){
+    if (maxDate && !isStartInput) {
       const today = new Date();
       return !(today.getTime() <= maxDate.getTime());
     }
@@ -135,14 +147,22 @@ export const CalendarInput: React.FC<CalendarInputProps> = ({
     if (next) {
       newDate = date.plus({ months: 1 });
     } else {
-      newDate = date.minus({ months: 1 })
+      newDate = date.minus({ months: 1 });
     }
     setDate(newDate);
     getNoOfDays(newDate);
   };
 
-  const previousMonthNavigationDisabled = isBeforeMinDate(0, date.minus({ months: 1 }), minDate);
-  const nextMonthNavigationDisabled = isAfterMaxDate(0, date.plus({ months: 1 }), maxDate);
+  const previousMonthNavigationDisabled = isBeforeMinDate(
+    0,
+    date.minus({ months: 1 }),
+    minDate,
+  );
+  const nextMonthNavigationDisabled = isAfterMaxDate(
+    0,
+    date.plus({ months: 1 }),
+    maxDate,
+  );
 
   useEffect(() => {
     getNoOfDays(date);
@@ -190,9 +210,7 @@ export const CalendarInput: React.FC<CalendarInputProps> = ({
             </svg>
           </div>
           {showCalendar && (
-            <div
-              className="bg-white mt-12 rounded-lg shadow p-4 absolute top-0 left-0 z-10 w-72"
-            >
+            <div className="bg-white mt-12 rounded-lg shadow p-4 absolute top-0 left-0 z-10 w-72">
               <div className="flex justify-between items-center mb-2">
                 <div>
                   <span className="text-lg font-bold text-gray-800">
@@ -211,7 +229,11 @@ export const CalendarInput: React.FC<CalendarInputProps> = ({
                         : 'cursor-pointer',
                       'transition ease-in-out duration-100 inline-flex cursor-point p-1 rounded-full',
                     )}
-                    onClick={() => previousMonthNavigationDisabled ? {} : navigateMonth(false)}
+                    onClick={() =>
+                      previousMonthNavigationDisabled
+                        ? {}
+                        : navigateMonth(false)
+                    }
                   >
                     <svg
                       className="h-6 w-6 text-gray-500 inline-flex"
@@ -235,7 +257,9 @@ export const CalendarInput: React.FC<CalendarInputProps> = ({
                         : 'cursor-pointer',
                       'transition ease-in-out duration-100 inline-flex cursor-point p-1 rounded-full',
                     )}
-                    onClick={() => nextMonthNavigationDisabled ? {} :  navigateMonth(true)}
+                    onClick={() =>
+                      nextMonthNavigationDisabled ? {} : navigateMonth(true)
+                    }
                   >
                     <svg
                       className="h-6 w-6 text-gray-500 inline-flex"
@@ -277,42 +301,45 @@ export const CalendarInput: React.FC<CalendarInputProps> = ({
                   />
                 ))}
                 {daysList.map((dateItem) => {
-                  let disabled = (
-                    (isBeforeMinDate(dateItem, date, minDate) && !isAfterMaxDate(dateItem, date, maxDate)) ||
-                  (!isBeforeMinDate(dateItem, date, minDate) && isAfterMaxDate(dateItem, date, maxDate))
-                  );
-                  if(!isStartInput
-                    && dateItem <= minDate.getDate()
-                    && (date.month - 1) === minDate.getMonth()
-                    && (date.year) === minDate.getFullYear()
-                    ){
+                  let disabled =
+                    (isBeforeMinDate(dateItem, date, minDate) &&
+                      !isAfterMaxDate(dateItem, date, maxDate)) ||
+                    (!isBeforeMinDate(dateItem, date, minDate) &&
+                      isAfterMaxDate(dateItem, date, maxDate));
+                  if (
+                    !isStartInput &&
+                    dateItem <= minDate.getDate() &&
+                    date.month - 1 === minDate.getMonth() &&
+                    date.year === minDate.getFullYear()
+                  ) {
                     disabled = true;
                   }
-                  return(
-                  <div
-                    style={{ width: '14.28%' }}
-                    className="px-1 mb-1"
-                    key={dateItem}
-                  >
+                  return (
                     <div
-                      onClick={() => disabled ? {} : getDateValue(dateItem)}
-                      className={classNames(
-                        isToday(dateItem, date)
-                          ? 'bg-blue-500 text-white'
-                          : 'text-gray-700 hover:bg-blue-200',
-                        disabled
-                          ? 'cursor-not-allowed opacity-25'
-                          : 'cursor-pointer',
-                        isSelected(dateItem, date, selectedDate)
-                          ? 'text-white bg-gray-200'
-                          : '',
-                        'text-center text-sm rounded-full leading-loose transition ease-in-out duration-100',
-                      )}
+                      style={{ width: '14.28%' }}
+                      className="px-1 mb-1"
+                      key={dateItem}
                     >
-                      {dateItem}
+                      <div
+                        onClick={() => (disabled ? {} : getDateValue(dateItem))}
+                        className={classNames(
+                          isToday(dateItem, date)
+                            ? 'bg-blue-500 text-white'
+                            : 'text-gray-700 hover:bg-blue-200',
+                          disabled
+                            ? 'cursor-not-allowed opacity-25'
+                            : 'cursor-pointer',
+                          isSelected(dateItem, date, selectedDate)
+                            ? 'text-white bg-gray-200'
+                            : '',
+                          'text-center text-sm rounded-full leading-loose transition ease-in-out duration-100',
+                        )}
+                      >
+                        {dateItem}
+                      </div>
                     </div>
-                  </div>
-                );})}
+                  );
+                })}
               </div>
             </div>
           )}
@@ -323,7 +350,9 @@ export const CalendarInput: React.FC<CalendarInputProps> = ({
 };
 
 export const DateRangePicker = () => {
-  const [selectedStartDate, setSelectedStartDate] = useState(new Date("03/04/2021"));
+  const [selectedStartDate, setSelectedStartDate] = useState(
+    new Date('03/04/2021'),
+  );
   const [selectedEndDate, setSelectedEndDate] = useState(null);
 
   return (
@@ -331,17 +360,19 @@ export const DateRangePicker = () => {
       <div className="md:flex md:items-center md:justify-between justify-self-end">
         <div className="mt-4 flex md:mt-0 md:ml-4">
           <CalendarInput
-          label="Start Date"
-          isStartInput
-          defaultDate={selectedStartDate}
-          onChange={(selected) => setSelectedStartDate(selected)}
-          maxDate={selectedEndDate ? selectedEndDate: new Date()} />
+            label="Start Date"
+            isStartInput
+            defaultDate={selectedStartDate}
+            onChange={(selected) => setSelectedStartDate(selected)}
+            maxDate={selectedEndDate ? selectedEndDate : new Date()}
+          />
           <CalendarInput
-          label="End Date"
-          minDate={selectedStartDate}
-          onChange={(selected) => setSelectedEndDate(selected)}
-          maxDate={new Date()}
-          isStartInput={false} />
+            label="End Date"
+            minDate={selectedStartDate}
+            onChange={(selected) => setSelectedEndDate(selected)}
+            maxDate={new Date()}
+            isStartInput={false}
+          />
           <button
             type="button"
             className="ml-2 inline-flex items-center px-2.5 py-1.5 border-8 border-transparent text-xs font-bold rounded shadow-sm text-indigo-600 bg-indigo-100 hover:text-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 h-10 self-end mb-2.5"
