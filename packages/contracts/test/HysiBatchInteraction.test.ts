@@ -609,7 +609,7 @@ describe("HysiBatchInteraction", function () {
             .withArgs(batchId, parseEther("100"), depositor.address);
           expect(
             await contracts.mockSetToken.balanceOf(depositor.address)
-          ).to.equal(parseEther("100"));
+          ).to.equal(parseEther("200"));
         });
         it("withdraws part of the deposit and continues to redeem the rest", async function () {
           const batchId = await contracts.hysiBatchInteraction.batchesOfAccount(
