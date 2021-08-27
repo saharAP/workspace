@@ -1,32 +1,23 @@
 // SPDX-License-Identifier: MIT
 
-pragma solidity >=0.7.0 <0.8.0;
+pragma solidity ^0.6.12;
 
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/token/ERC20/SafeERC20.sol";
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
-import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 import "@openzeppelin/contracts/math/SafeMath.sol";
 import "@openzeppelin/contracts/utils/ReentrancyGuard.sol";
 import "@openzeppelin/contracts/utils/Pausable.sol";
+import "./lib/AffiliateToken.sol";
+import "./Interfaces/IERC20Metadata.sol";
+import "./Interfaces/Integrations/CurveContracts.sol";
 import "./Defended.sol";
 import "./Interfaces/Integrations/YearnVault.sol";
-import "./Interfaces/Integrations/CurveContracts.sol";
 
-contract Pool is ERC20, Ownable, ReentrancyGuard, Pausable, Defended {
+contract Pool is AffiliateToken, Ownable, ReentrancyGuard, Pausable, Defended {
   using SafeMath for uint256;
-  using SafeERC20 for ThreeCrv;
-  using SafeERC20 for CrvLPToken;
-  using SafeERC20 for YearnVault;
+  using SafeERC20 for IERC20;
 
-  /* ========== STATE VARIABLES ========== */
-
-  ThreeCrv public threeCrv;
-  CrvLPToken public crvLPToken;
-  YearnVault public yearnVault;
-  CurveAddressProvider public curveAddressProvider;
-  CurveRegistry public curveRegistry;
-  CurveMetapool public curveMetapool;
   address public rewardsManager;
 
   uint256 constant BPS_DENOMINATOR = 10_000;
@@ -37,9 +28,8 @@ contract Pool is ERC20, Ownable, ReentrancyGuard, Pausable, Defended {
   uint256 public performanceFee = 2000;
   uint256 public poolTokenHWM = 1e18;
   uint256 public feesUpdatedAt;
-  mapping(address => uint256) public blockLocks;
 
-  /* ========== EVENTS ========== */
+  mapping(address => uint256) public blockLocks;
 
   event Deposit(address indexed from, uint256 deposit, uint256 poolTokens);
   event Withdrawal(address indexed to, uint256 amount);
@@ -50,93 +40,105 @@ contract Pool is ERC20, Ownable, ReentrancyGuard, Pausable, Defended {
   event ManagementFeeChanged(uint256 previousBps, uint256 newBps);
   event PerformanceFeeChanged(uint256 previousBps, uint256 newBps);
 
-  /* ========== CONSTRUCTOR ========== */
-
   constructor(
-    address threeCrv_,
-    address yearnVault_,
-    address curveAddressProvider_,
+    address token_,
+    address yearnRegistry_,
     address rewardsManager_
-  ) ERC20("Popcorn 3Crv Pool", "pop3Crv") {
-    require(address(threeCrv_) != address(0));
-    require(address(yearnVault_) != address(0));
-    require(address(curveAddressProvider_) != address(0));
+  )
+    public
+    AffiliateToken(
+      token_,
+      yearnRegistry_,
+      string(
+        abi.encodePacked("Popcorn ", IERC20Metadata(token_).name(), " Pool")
+      ),
+      string(abi.encodePacked("pop", IERC20Metadata(token_).symbol()))
+    )
+  {
+    require(address(yearnRegistry_) != address(0));
+    require(address(token_) != address(0));
     require(rewardsManager_ != address(0));
 
-    threeCrv = ThreeCrv(threeCrv_);
-    yearnVault = YearnVault(yearnVault_);
-    crvLPToken = CrvLPToken(yearnVault.token());
-    curveAddressProvider = CurveAddressProvider(curveAddressProvider_);
-    curveRegistry = CurveRegistry(curveAddressProvider.get_registry());
-    curveMetapool = CurveMetapool(
-      curveRegistry.get_pool_from_lp_token(address(crvLPToken))
-    );
     rewardsManager = rewardsManager_;
     feesUpdatedAt = block.timestamp;
   }
 
-  /* ========== VIEW FUNCTIONS ========== */
-
-  function pricePerPoolToken() public view returns (uint256) {
-    return valueFor(1e18);
+  modifier blockLocked() {
+    require(blockLocks[msg.sender] < block.number, "Locked until next block");
+    _;
   }
-
-  function totalValue() public view returns (uint256) {
-    return _totalValue();
-  }
-
-  function valueFor(uint256 poolTokens) public view returns (uint256) {
-    uint256 yvShares = _yearnSharesFor(poolTokens);
-    uint256 shareValue = _yearnShareValue(yvShares);
-    return shareValue;
-  }
-
-  /* ========== MUTATIVE FUNCTIONS ========== */
 
   function deposit(uint256 amount)
-    external
+    public
+    override
     defend
     nonReentrant
     whenNotPaused
     blockLocked
     returns (uint256)
   {
-    require(amount <= threeCrv.balanceOf(msg.sender), "Insufficient balance");
+    require(amount <= token.balanceOf(msg.sender), "Insufficient balance");
     _lockForBlock(msg.sender);
     _takeFees();
 
-    uint256 poolTokens = _issuePoolTokensForAmount(msg.sender, amount);
-    emit Deposit(msg.sender, amount, poolTokens);
+    uint256 sharesBefore = balanceOf(msg.sender);
+    super.deposit(amount);
+    uint256 sharesAfter = balanceOf(msg.sender);
+    uint256 shares = sharesAfter.sub(sharesBefore);
 
-    threeCrv.safeTransferFrom(msg.sender, address(this), amount);
-    uint256 crvLPTokenAmount = _sendToCurve(amount);
-    _sendToYearn(crvLPTokenAmount);
-
+    emit Deposit(msg.sender, amount, shares);
     _reportPoolTokenHWM();
-    return balanceOf(msg.sender);
+    return shares;
+  }
+
+  function depositFor(uint256 amount, address recipient)
+    public
+    defend
+    nonReentrant
+    whenNotPaused
+    blockLocked
+    returns (uint256)
+  {
+    require(amount <= token.balanceOf(msg.sender), "Insufficient balance");
+    _lockForBlock(msg.sender);
+    _takeFees();
+
+    uint256 deposited = _deposit(msg.sender, address(this), amount, true);
+    uint256 shares = _sharesForValue(deposited);
+    _mint(recipient, shares);
+
+    emit Deposit(recipient, amount, shares);
+    _reportPoolTokenHWM();
+    return shares;
   }
 
   function withdraw(uint256 amount)
-    external
+    public
+    override
     nonReentrant
     blockLocked
-    returns (uint256, uint256)
+    returns (uint256)
   {
     require(amount <= balanceOf(msg.sender), "Insufficient pool token balance");
 
     _lockForBlock(msg.sender);
     _takeFees();
 
-    uint256 threeCrvAmount = _withdrawPoolTokens(msg.sender, amount);
-    uint256 fee = _calculateWithdrawalFee(threeCrvAmount);
-    uint256 withdrawal = threeCrvAmount.sub(fee);
+    uint256 feeShares = _calculateWithdrawalFee(amount);
+    uint256 withdrawalShares = amount.sub(feeShares);
+    uint256 fee = valueFor(feeShares);
+    uint256 withdrawal = valueFor(withdrawalShares);
 
-    _transferWithdrawalFee(fee);
-    _transferWithdrawal(withdrawal);
+    _burn(msg.sender, amount);
+    _withdraw(address(this), msg.sender, withdrawal, true);
+    _withdraw(address(this), rewardsManager, fee, true);
+
+    emit WithdrawalFee(rewardsManager, fee);
+    emit Withdrawal(msg.sender, withdrawal);
 
     _reportPoolTokenHWM();
 
-    return (withdrawal, fee);
+    return withdrawal;
   }
 
   function takeFees() external nonReentrant {
@@ -144,42 +146,43 @@ contract Pool is ERC20, Ownable, ReentrancyGuard, Pausable, Defended {
     _reportPoolTokenHWM();
   }
 
+  function setWithdrawalFee(uint256 withdrawalFee_) external onlyOwner {
+    require(withdrawalFee != withdrawalFee_, "Same withdrawalFee");
+    uint256 _previousWithdrawalFee = withdrawalFee;
+    withdrawalFee = withdrawalFee_;
+    emit WithdrawalFeeChanged(_previousWithdrawalFee, withdrawalFee);
+  }
+
+  function setManagementFee(uint256 managementFee_) external onlyOwner {
+    require(managementFee != managementFee_, "Same managementFee");
+    uint256 _previousManagementFee = managementFee;
+    managementFee = managementFee_;
+    emit ManagementFeeChanged(_previousManagementFee, managementFee);
+  }
+
+  function setPerformanceFee(uint256 performanceFee_) external onlyOwner {
+    require(performanceFee != performanceFee_, "Same performanceFee");
+    uint256 _previousPerformanceFee = performanceFee;
+    performanceFee = performanceFee_;
+    emit PerformanceFeeChanged(_previousPerformanceFee, performanceFee);
+  }
+
   function withdrawAccruedFees() external onlyOwner {
-    uint256 tokenBalance = balanceOf(address(this));
-    uint256 threeCrvAmount = _withdrawPoolTokens(address(this), tokenBalance);
-    _transferThreeCrv(rewardsManager, threeCrvAmount);
+    uint256 balance = balanceOf(address(this));
+    _burn(address(this), balance);
+    _withdraw(address(this), rewardsManager, valueFor(balance), true);
   }
 
-  function transfer(address recipient, uint256 amount)
-    public
-    override
-    blockLocked
-    returns (bool)
-  {
-    return super.transfer(recipient, amount);
+  function pricePerPoolToken() public view returns (uint256) {
+    return valueFor(1e18);
   }
 
-  function transferFrom(
-    address sender,
-    address recipient,
-    uint256 amount
-  ) public override blockLocked returns (bool) {
-    return super.transferFrom(sender, recipient, amount);
+  function totalValue() public view returns (uint256) {
+    return totalVaultBalance(address(this));
   }
 
-  function pauseContract() external onlyOwner {
-    _pause();
-  }
-
-  function unpauseContract() external onlyOwner {
-    _unpause();
-  }
-
-  /* ========== RESTRICTED FUNCTIONS ========== */
-
-  function _totalValue() internal view returns (uint256) {
-    uint256 yvShareBalance = yearnVault.balanceOf(address(this));
-    return _yearnShareValue(yvShareBalance);
+  function valueFor(uint256 poolTokens) public view returns (uint256) {
+    return _shareValue(poolTokens);
   }
 
   function _reportPoolTokenHWM() internal {
@@ -192,19 +195,8 @@ contract Pool is ERC20, Ownable, ReentrancyGuard, Pausable, Defended {
     internal
     returns (uint256)
   {
-    uint256 tokens = 0;
-    if (totalSupply() > 0) {
-      tokens = amount.mul(1e18).div(pricePerPoolToken());
-    } else {
-      tokens = amount;
-    }
+    uint256 tokens = _sharesForValue(amount);
     return _issuePoolTokens(to, tokens);
-  }
-
-  function _takeFees() internal {
-    _takeManagementFee();
-    _takePerformanceFee();
-    feesUpdatedAt = block.timestamp;
   }
 
   function _takeManagementFee() internal {
@@ -231,38 +223,18 @@ contract Pool is ERC20, Ownable, ReentrancyGuard, Pausable, Defended {
     }
   }
 
+  function _takeFees() internal {
+    _takeManagementFee();
+    _takePerformanceFee();
+    feesUpdatedAt = block.timestamp;
+  }
+
   function _calculateWithdrawalFee(uint256 withdrawalAmount)
     internal
     view
     returns (uint256)
   {
     return withdrawalAmount.mul(withdrawalFee).div(BPS_DENOMINATOR);
-  }
-
-  function _transferWithdrawalFee(uint256 fee) internal {
-    _transferThreeCrv(rewardsManager, fee);
-    emit WithdrawalFee(rewardsManager, fee);
-  }
-
-  function _transferWithdrawal(uint256 withdrawal) internal {
-    _transferThreeCrv(msg.sender, withdrawal);
-    emit Withdrawal(msg.sender, withdrawal);
-  }
-
-  function _transferThreeCrv(address to, uint256 amount) internal {
-    threeCrv.safeIncreaseAllowance(address(this), amount);
-    threeCrv.safeTransferFrom(address(this), to, amount);
-  }
-
-  function _poolShareFor(uint256 poolTokenAmount)
-    internal
-    view
-    returns (uint256)
-  {
-    if (totalSupply() == 0) {
-      return 1e18;
-    }
-    return poolTokenAmount.mul(1e18).div(totalSupply());
   }
 
   function _issuePoolTokens(address to, uint256 amount)
@@ -273,109 +245,32 @@ contract Pool is ERC20, Ownable, ReentrancyGuard, Pausable, Defended {
     return amount;
   }
 
-  function _burnPoolTokens(address from, uint256 amount)
-    internal
-    returns (uint256)
-  {
-    _burn(from, amount);
-    return amount;
+  function pauseContract() external onlyOwner {
+    _pause();
   }
 
-  function _withdrawPoolTokens(address fromAddress, uint256 amount)
-    internal
-    returns (uint256)
-  {
-    uint256 yvShareWithdrawal = _yearnSharesFor(amount);
-    _burnPoolTokens(fromAddress, amount);
-    uint256 crvLPTokenAmount = _withdrawFromYearn(yvShareWithdrawal);
-    return _withdrawFromCurve(crvLPTokenAmount);
-  }
-
-  function _sendToCurve(uint256 amount) internal returns (uint256) {
-    threeCrv.safeIncreaseAllowance(address(curveMetapool), amount);
-    uint256[2] memory curveDepositAmounts = [
-      0, // USDX
-      amount // 3Crv
-    ];
-    return curveMetapool.add_liquidity(curveDepositAmounts, 0);
-  }
-
-  function _crvBalance() internal view returns (uint256) {
-    return crvLPToken.balanceOf(address(this));
-  }
-
-  function _withdrawFromCurve(uint256 crvLPTokenAmount)
-    internal
-    returns (uint256)
-  {
-    crvLPToken.safeIncreaseAllowance(address(curveMetapool), crvLPTokenAmount);
-    return curveMetapool.remove_liquidity_one_coin(crvLPTokenAmount, 1, 0);
-  }
-
-  function _sendToYearn(uint256 amount) internal returns (uint256) {
-    crvLPToken.safeIncreaseAllowance(address(yearnVault), amount);
-    uint256 yearnBalanceBefore = _yearnBalance();
-    yearnVault.deposit(amount);
-    uint256 yearnBalanceAfter = _yearnBalance();
-    return yearnBalanceAfter.sub(yearnBalanceBefore);
-  }
-
-  function _yearnBalance() internal view returns (uint256) {
-    return yearnVault.balanceOf(address(this));
-  }
-
-  function _yearnSharesFor(uint256 poolTokenAmount)
-    internal
-    view
-    returns (uint256)
-  {
-    return _yearnBalance().mul(_poolShareFor(poolTokenAmount)).div(1e18);
-  }
-
-  function _withdrawFromYearn(uint256 yvShares) internal returns (uint256) {
-    uint256 crvBalanceBefore = _crvBalance();
-    yearnVault.withdraw(yvShares);
-    uint256 crvBalanceAfter = _crvBalance();
-    return crvBalanceAfter.sub(crvBalanceBefore);
-  }
-
-  function _yearnShareValue(uint256 yvShares) internal view returns (uint256) {
-    uint256 crvLPTokens = yearnVault.pricePerShare().mul(yvShares).div(1e18);
-    uint256 virtualPrice = curveMetapool.get_virtual_price();
-    return crvLPTokens.mul(virtualPrice).div(1e18);
+  function unpauseContract() external onlyOwner {
+    _unpause();
   }
 
   function _lockForBlock(address account) internal {
     blockLocks[account] = block.number;
   }
 
-  /* ========== SETTER ========== */
-
-  function setWithdrawalFee(uint256 withdrawalFee_) external onlyOwner {
-    require(withdrawalFee != withdrawalFee_, "Same withdrawalFee");
-    uint256 _previousWithdrawalFee = withdrawalFee;
-    withdrawalFee = withdrawalFee_;
-    emit WithdrawalFeeChanged(_previousWithdrawalFee, withdrawalFee);
+  function transfer(address recipient, uint256 amount)
+    public
+    override
+    blockLocked
+    returns (bool)
+  {
+    return super.transfer(recipient, amount);
   }
 
-  function setManagementFee(uint256 managementFee_) external onlyOwner {
-    require(managementFee != managementFee_, "Same managementFee");
-    uint256 _previousManagementFee = managementFee;
-    managementFee = managementFee_;
-    emit ManagementFeeChanged(_previousManagementFee, managementFee);
-  }
-
-  function setPerformanceFee(uint256 performanceFee_) external onlyOwner {
-    require(performanceFee != performanceFee_, "Same performanceFee");
-    uint256 _previousPerformanceFee = performanceFee;
-    performanceFee = performanceFee_;
-    emit PerformanceFeeChanged(_previousPerformanceFee, performanceFee);
-  }
-
-  /* ========== MODIFIER ========== */
-
-  modifier blockLocked() {
-    require(blockLocks[msg.sender] < block.number, "Locked until next block");
-    _;
+  function transferFrom(
+    address sender,
+    address recipient,
+    uint256 amount
+  ) public override blockLocked returns (bool) {
+    return super.transferFrom(sender, recipient, amount);
   }
 }
