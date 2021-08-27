@@ -102,11 +102,7 @@ contract HysiBatchInteraction is Owned {
     batchCooldown = batchCooldown_;
     currentMintBatchId = _generateNextBatchId(bytes32("mint"));
     currentRedeemBatchId = _generateNextBatchId(bytes32("redeem"));
-<<<<<<< HEAD
     _setRedeemBatchType();
-=======
-
->>>>>>> feature/batch-hysi-interaction
     mintThreshold = mintThreshold_;
     redeemThreshold = redeemThreshold_;
 
