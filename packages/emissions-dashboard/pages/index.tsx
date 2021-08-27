@@ -1,7 +1,6 @@
+import { NavBar } from '@popcorn/ui/components/popcorn/emissions-dashboard/NavBar/index';
 import { useRouter } from 'next/router';
-import React, { useEffect } from 'react';
-
-import { NavBar } from '@popcorn/ui/components/popcorn/emissions-dashboard/NavBar/index'
+import React, { useEffect, useState } from 'react';
 
 const user = {
   name: 'Tom Cook',
@@ -10,9 +9,7 @@ const user = {
     'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
 };
 
-export const navigation = [
-  { name: 'Dashboard', href: '#', current: true },
-];
+export const navigation = [{ name: 'Dashboard', href: '#', current: true }];
 
 export const userNavigation = [
   { name: 'Your Profile', href: '#' },
@@ -22,23 +19,37 @@ export const userNavigation = [
 
 const IndexPage = () => {
   const router = useRouter();
+  const [open, setOpen] = useState<boolean>(false);
+
   useEffect(() => {
     if (typeof window !== 'undefined' && window.location.pathname !== '/') {
       router.replace(window.location.pathname);
     }
   }, [router.pathname]);
 
+  const handleAddContract = (contractAddress): void => {
+    if (localStorage.getItem('contracts')) {
+      const existingContracts = JSON.parse(localStorage.getItem('contracts'));
+      existingContracts.push(contractAddress);
+      localStorage.setItem('contracts', JSON.stringify(existingContracts));
+    } else {
+      localStorage.setItem('contracts', JSON.stringify([contractAddress]));
+    }
+    setOpen(false);
+  };
+
   return (
-      <div className="bg-gray-50">
-        <NavBar
-        title='Smart Contract Emissions Dashboard'
+    <div className="bg-gray-50">
+      <NavBar
+        title="Smart Contract Emissions Dashboard"
         headerNavigation={navigation}
         userNavigation={userNavigation}
         user={user}
-        logo='/icons/popcorn_v1_rainbow_bg.png'
-        />
-      </div>
-    );
+        logo="/icons/popcorn_v1_rainbow_bg.png"
+        contractProps={{ addContract: handleAddContract, open, setOpen }}
+      />
+    </div>
+  );
 };
 
 export default IndexPage;
