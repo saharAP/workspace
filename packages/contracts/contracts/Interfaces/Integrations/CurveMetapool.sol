@@ -1,4 +1,4 @@
-pragma solidity >=0.7.0 <0.8.0;
+pragma solidity >=0.6.0 <0.8.0;
 
 interface CurveMetapool {
   function add_liquidity(uint256[2] calldata amounts, uint256 min_mint_amounts)

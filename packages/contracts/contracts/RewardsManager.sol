@@ -2,20 +2,20 @@
 
 pragma solidity >=0.7.0 <0.8.0;
 
-import "./Interfaces/IStaking.sol";
-import "./Interfaces/ITreasury.sol";
-import "./Interfaces/IInsurance.sol";
-import "./Interfaces/IBeneficiaryVaults.sol";
-import "./Interfaces/IRewardsManager.sol";
-import "./Interfaces/IRegion.sol";
-import "./Owned.sol";
-import "./KeeperIncentive.sol";
 import "@openzeppelin/contracts/math/SafeMath.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/utils/ReentrancyGuard.sol";
 import "@openzeppelin/contracts/token/ERC20/SafeERC20.sol";
 import "@openzeppelin/contracts/cryptography/MerkleProof.sol";
 import "@uniswap/v2-periphery/contracts/interfaces/IUniswapV2Router02.sol";
+import "./lib/Owned.sol";
+import "./KeeperIncentive.sol";
+import "./Interfaces/IRegion.sol";
+import "./Interfaces/IStaking.sol";
+import "./Interfaces/ITreasury.sol";
+import "./Interfaces/IInsurance.sol";
+import "./Interfaces/IBeneficiaryVaults.sol";
+import "./Interfaces/IRewardsManager.sol";
 
 /**
  * @title Popcorn Rewards Manager
