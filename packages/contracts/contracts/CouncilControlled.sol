@@ -1,6 +1,6 @@
 pragma solidity >=0.7.0 <0.8.0;
 
-import "./IRegion.sol";
+import "./Interfaces/IRegion.sol";
 
 // https://docs.synthetix.io/contracts/source/contracts/owned
 contract CouncilControlled {
