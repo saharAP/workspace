@@ -28,7 +28,7 @@ export const NavBar: React.FC<NavBarProps> = ({
                 <div className="flex">
                   <div className="flex-shrink-0 flex items-center">
                     <img
-                      className="block h-8 w-auto"
+                      className="block h-16 w-auto"
                       src={logo}
                       alt="Popcorn logo"
                     />
