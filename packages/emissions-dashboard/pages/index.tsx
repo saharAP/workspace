@@ -1,6 +1,7 @@
 import { NavBar } from '@popcorn/ui/components/popcorn/emissions-dashboard/NavBar/index';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
+import web3 from 'web3';
 
 const user = {
   name: 'Tom Cook',
@@ -30,16 +31,21 @@ const IndexPage = () => {
 
   const addContract = (contractAddress: string): void => {
     if(contractAddress){
-      if (localStorage.getItem('contracts')) {
-        const existingContracts = JSON.parse(localStorage.getItem('contracts'));
-        existingContracts.push(contractAddress);
-        localStorage.setItem('contracts', JSON.stringify(existingContracts));
+      if(web3.utils.isAddress(contractAddress)){
+        if (localStorage.getItem('contracts')) {
+          const existingContracts = JSON.parse(localStorage.getItem('contracts'));
+          existingContracts.push(contractAddress);
+          localStorage.setItem('contracts', JSON.stringify(existingContracts));
+        } else {
+          localStorage.setItem('contracts', JSON.stringify([contractAddress]));
+        }
+        setOpen(false);
       } else {
-        localStorage.setItem('contracts', JSON.stringify([contractAddress]));
+        const message = "The address you entered is not a valid Ethereum contract. Please enter a valid address."
+        setErrorMessage(message);
       }
-      setOpen(false);
     } else {
-      setErrorMessage("No Contract Address was provided");
+      setErrorMessage("No Contract Address was provided. Please enter a valid address");
     }
   };
 
