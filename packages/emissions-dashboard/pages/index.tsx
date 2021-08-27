@@ -20,6 +20,7 @@ export const userNavigation = [
 const IndexPage = () => {
   const router = useRouter();
   const [open, setOpen] = useState<boolean>(false);
+  const [errorMessage, setErrorMessage] = useState<string>('');
 
   useEffect(() => {
     if (typeof window !== 'undefined' && window.location.pathname !== '/') {
@@ -27,15 +28,24 @@ const IndexPage = () => {
     }
   }, [router.pathname]);
 
-  const handleAddContract = (contractAddress): void => {
-    if (localStorage.getItem('contracts')) {
-      const existingContracts = JSON.parse(localStorage.getItem('contracts'));
-      existingContracts.push(contractAddress);
-      localStorage.setItem('contracts', JSON.stringify(existingContracts));
+  const addContract = (contractAddress: string): void => {
+    if(contractAddress){
+      if (localStorage.getItem('contracts')) {
+        const existingContracts = JSON.parse(localStorage.getItem('contracts'));
+        existingContracts.push(contractAddress);
+        localStorage.setItem('contracts', JSON.stringify(existingContracts));
+      } else {
+        localStorage.setItem('contracts', JSON.stringify([contractAddress]));
+      }
+      setOpen(false);
     } else {
-      localStorage.setItem('contracts', JSON.stringify([contractAddress]));
+      setErrorMessage("No Contract Address was provided");
     }
-    setOpen(false);
+  };
+
+  const openAddContractModal = ():void => {
+    setOpen(true);
+    setErrorMessage("");
   };
 
   return (
@@ -46,7 +56,8 @@ const IndexPage = () => {
         userNavigation={userNavigation}
         user={user}
         logo="/images/popcorn-logo.png"
-        contractProps={{ addContract: handleAddContract, open, setOpen }}
+        contractProps={{ addContract, open, setOpen }}
+        contractErrorProps={{ openAddContractModal, errorMessage, setErrorMessage }}
       />
     </>
   );

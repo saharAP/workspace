@@ -35,4 +35,9 @@ export interface NavBarProps {
     setOpen: (state:boolean) => void;
     addContract: (contract:string) => void;
   };
+  contractErrorProps: {
+    errorMessage: string;
+    setErrorMessage: (error: string) => void;
+    openAddContractModal: () => void;
+  };
 }
