@@ -41,6 +41,9 @@ async function deployContracts(): Promise<Contracts> {
   const mock3Crv = await (
     await MockERC20.deploy("3Crv", "3Crv", 18)
   ).deployed();
+  const mockBasicCoin = await (
+    await MockERC20.deploy("Basic", "Basic", 18)
+  ).deployed();
   await mock3Crv.mint(depositor.address, DepositorInitial);
   await mock3Crv.mint(depositor1.address, DepositorInitial);
   await mock3Crv.mint(depositor2.address, DepositorInitial);
@@ -67,11 +70,27 @@ async function deployContracts(): Promise<Contracts> {
   const MockCurveMetapool = await ethers.getContractFactory(
     "MockCurveMetapool"
   );
+
+  //Besides crvUSDX and 3Crv no coins are needed in this test which is why i used the same token in the other places
   const mockCurveMetapoolUSDX = await (
-    await MockCurveMetapool.deploy(mockCrvUSDX.address, mock3Crv.address)
+    await MockCurveMetapool.deploy(
+      mockBasicCoin.address,
+      mockCrvUSDX.address,
+      mock3Crv.address,
+      mockBasicCoin.address,
+      mockBasicCoin.address,
+      mockBasicCoin.address
+    )
   ).deployed();
   const mockCurveMetapoolUST = await (
-    await MockCurveMetapool.deploy(mockCrvUST.address, mock3Crv.address)
+    await MockCurveMetapool.deploy(
+      mockBasicCoin.address,
+      mockCrvUST.address,
+      mock3Crv.address,
+      mockBasicCoin.address,
+      mockBasicCoin.address,
+      mockBasicCoin.address
+    )
   ).deployed();
 
   const mockBasicIssuanceModule = (await (
