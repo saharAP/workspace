@@ -2,13 +2,17 @@
 import { Disclosure, Menu, Transition } from '@headlessui/react';
 import { BellIcon, MenuIcon, XIcon } from '@heroicons/react/outline';
 import { PlusIcon } from '@heroicons/react/solid';
-import { Fragment } from 'react';
+import React from 'react';
+import { Fragment, useState } from 'react';
+import { AddContractModal } from '../AddContractModal'
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(' ');
 }
 
 export const NavBar = ({ title, headerNavigation, userNavigation, user, logo}) => {
+  const [open, setOpen] = useState(false);
+
   return (
     <div className="bg-gray-100">
       <Disclosure as="nav" className="bg-white shadow-sm">
@@ -50,6 +54,7 @@ export const NavBar = ({ title, headerNavigation, userNavigation, user, logo}) =
                 <div className="hidden sm:ml-6 sm:flex sm:items-center">
                   <button
                     type="button"
+                    onClick={() => setOpen(!open)}
                     className="inline-flex items-center px-3 py-2 border border-transparent shadow-sm text-sm leading-4 font-medium rounded-md text-white relative right-1 bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
                   >
                     <PlusIcon className="-ml-0.5 mr-2 h-4 w-4" aria-hidden="true" />
@@ -180,6 +185,10 @@ export const NavBar = ({ title, headerNavigation, userNavigation, user, logo}) =
             </div>
           </header>
         </div>
+      <AddContractModal
+      setOpen={setOpen}
+      open={open}
+      />
     </div>
   );
 };

@@ -1,12 +1,24 @@
-import { Fragment } from 'react'
-import { Dialog, Transition } from '@headlessui/react'
+import { Dialog, Transition } from '@headlessui/react';
+import React, { Fragment, useState } from 'react';
 
-export interface Props {
+export interface ContractModalProps {
   open: boolean;
-  setOpen: () => void;
+  setOpen: (state: boolean) => void;
 }
 
-export const AddContractModal: React.FC<Props> = ({ open, setOpen}) => {
+export const AddContractModal: React.FC<ContractModalProps> = ({ open, setOpen }) => {
+  const [contractAddress, setContractAddress] = useState<string>('');
+  const handleAddContract = (): void => {
+    if (localStorage.getItem('contracts')) {
+      const existingContracts = JSON.parse(localStorage.getItem('contracts'));
+      existingContracts.push(contractAddress);
+      localStorage.setItem('contracts', JSON.stringify(existingContracts));
+    } else {
+      localStorage.setItem('contracts', JSON.stringify([contractAddress]));
+    }
+    setOpen(false);
+  };
+
   return (
     <Transition.Root show={open} as={Fragment}>
       <Dialog
@@ -25,10 +37,13 @@ export const AddContractModal: React.FC<Props> = ({ open, setOpen}) => {
             leaveFrom="opacity-100"
             leaveTo="opacity-0"
           >
-            <Dialog.Overlay className="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" />
+            <Dialog.Overlay className="fixed inset-0 bg-gray-500 bg-opacity-50 transition-opacity" />
           </Transition.Child>
 
-          <span className="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">
+          <span
+            className="hidden sm:inline-block sm:align-middle sm:h-screen"
+            aria-hidden="true"
+          >
             &#8203;
           </span>
           <Transition.Child
@@ -43,15 +58,21 @@ export const AddContractModal: React.FC<Props> = ({ open, setOpen}) => {
             <div className="inline-block align-bottom bg-white rounded-lg px-4 pt-5 pb-4 text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full sm:p-6">
               <div>
                 <div className="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
-                  <Dialog.Title as="h4" className="text-base text-center mb-8 leading-6 font-medium text-gray-800">
+                  <Dialog.Title
+                    as="h4"
+                    className="text-base text-center mb-8 leading-6 font-medium text-gray-800"
+                  >
                     Add Contract to Dashboard
                   </Dialog.Title>
                   <div className="mt-2">
                     <p className="text-sm text-gray-700 pb-1">
-                      Enter Ethereum Address of contact
+                      Enter Ethereum Address of contract
                     </p>
                     <input
                       type="text"
+                      onChange={event =>
+                        setContractAddress(event.target.value)
+                      }
                       className="w-full pl-4 pr-10 py-2 text-sm leading-none border rounded-lg shadow-sm focus:outline-none focus:shadow-outline text-gray-500 font-light"
                       placeholder="0xD634182479185918515"
                     />
@@ -62,7 +83,7 @@ export const AddContractModal: React.FC<Props> = ({ open, setOpen}) => {
                 <button
                   type="button"
                   className="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-blue-600 text-base font-medium text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 sm:ml-3 sm:w-auto sm:text-sm"
-                  onClick={() => setOpen(false)}
+                  onClick={() => handleAddContract()}
                 >
                   Confirm
                 </button>
@@ -79,5 +100,5 @@ export const AddContractModal: React.FC<Props> = ({ open, setOpen}) => {
         </div>
       </Dialog>
     </Transition.Root>
-  )
-}
+  );
+};
