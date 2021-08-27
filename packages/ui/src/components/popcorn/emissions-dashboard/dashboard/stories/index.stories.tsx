@@ -100,7 +100,7 @@ export default {
   component: EmissionsDashboardPage,
   decorators: [
     (Story) => (
-      <div className="bg-gray-100">
+      <>
         <NavBar
         title='Smart Contract Emissions Dashboard'
         headerNavigation={navigation}
@@ -116,7 +116,7 @@ export default {
         }
         />
         <Story />
-      </div>
+      </>
     ),
   ],
 } as Meta;
