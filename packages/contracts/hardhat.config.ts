@@ -217,6 +217,15 @@ module.exports = {
           },
         },
       },
+      {
+        version: "0.6.12",
+        settings: {
+          optimizer: {
+            enabled: true,
+            runs: 1000,
+          },
+        },
+      },
     ],
   },
   networks: {
@@ -230,7 +239,7 @@ module.exports = {
         process.env.FORKING_ENABLED == "true"
           ? {
               url: process.env.FORKING_RPC_URL,
-              blockNumber: 12780680,
+              blockNumber: parseInt(process.env.FORKING_BLOCK_NUMBER),
             }
           : undefined,
     },

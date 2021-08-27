@@ -12,7 +12,7 @@
     "compile": "yarn clean && hardhat compile ",
     "test": "yarn hardhat test test/*.test.ts",
     "test:fork": "yarn hardhat test test/fork/*.test.ts",
-    "coverage": "yarn hardhat coverage",
+    "coverage": "yarn hardhat coverage --testfiles 'test/*.test.ts'",
     "postinstall": "yarn compile"
   },
   "devDependencies": {
@@ -41,15 +41,17 @@
     "dotenv": "^10.0.0",
     "ethereum-waffle": "^3.2.2",
     "ethers": "^5.4.1",
-    "hardhat": "^2.0.10",
+    "hardhat": "^2.4.3",
     "merkle-tree-solidity": "^1.0.8",
     "mocha": "^8.4.0",
     "prettier": "^2.2.1",
     "prettier-plugin-solidity": "^1.0.0-beta.5",
+    "solidity-coverage": "^0.7.6",
     "ts-generator": "^0.1.1",
     "ts-node": "^9.1.1",
     "typechain": "^5.0.0",
-    "typescript": "^4.2.4"
+    "typescript": "^4.2.4",
+    "yearn-protocol": "yaoandrew/yearn-vaults#v0.4.0"
   },
   "license": "MIT"
 }
