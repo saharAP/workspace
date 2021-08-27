@@ -39,7 +39,7 @@ const IndexPage = () => {
   };
 
   return (
-    <div className="bg-gray-50">
+    <>
       <NavBar
         title="Smart Contract Emissions Dashboard"
         headerNavigation={navigation}
@@ -48,7 +48,7 @@ const IndexPage = () => {
         logo="/icons/popcorn_v1_rainbow_bg.png"
         contractProps={{ addContract: handleAddContract, open, setOpen }}
       />
-    </div>
+    </>
   );
 };
 

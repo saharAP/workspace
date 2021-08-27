@@ -12,21 +12,16 @@ function classNames(...classes) {
 
 export const NavBar = ({ title, headerNavigation, userNavigation, user, logo, contractProps}) => {
   return (
-    <div className="bg-gray-100">
+    <div className="bg-gray-50">
       <Disclosure as="nav" className="bg-white shadow-sm">
         {({ open }) => (
           <>
-            <div className="max-w-7xl px-4 sm:px-6 lg:px-8">
+            <div className="w-full px-24">
               <div className="flex justify-between h-16">
                 <div className="flex">
                   <div className="flex-shrink-0 flex items-center">
                   <img
-                      className="block lg:hidden h-8 w-auto"
-                      src={logo}
-                      alt="Popcorn logo"
-                    />
-                    <img
-                      className="hidden lg:block h-8 w-auto"
+                      className="block h-8 w-auto"
                       src={logo}
                       alt="Popcorn logo"
                     />
@@ -38,7 +33,7 @@ export const NavBar = ({ title, headerNavigation, userNavigation, user, logo, co
                         href={item.href}
                         className={classNames(
                           item.current
-                            ? 'border-indigo-500 text-gray-900'
+                            ? 'border-blue-500 text-gray-900'
                             : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300',
                           'inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium',
                         )}
@@ -58,7 +53,7 @@ export const NavBar = ({ title, headerNavigation, userNavigation, user, logo, co
                     <PlusIcon className="-ml-0.5 mr-2 h-4 w-4" aria-hidden="true" />
                     Add Contract
                   </button>
-                  <button className="bg-white p-1 rounded-full text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                  <button className="bg-white p-1 rounded-full text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
                     <span className="sr-only">View notifications</span>
                     <BellIcon className="h-6 w-6" aria-hidden="true" />
                   </button>
@@ -66,7 +61,7 @@ export const NavBar = ({ title, headerNavigation, userNavigation, user, logo, co
                   {/* Profile dropdown */}
                   <Menu as="div" className="ml-3 relative">
                     <div>
-                      <Menu.Button className="bg-white flex text-sm rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                      <Menu.Button className="bg-white flex text-sm rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
                         <span className="sr-only">Open user menu</span>
                         <img
                           className="h-8 w-8 rounded-full"
@@ -106,7 +101,7 @@ export const NavBar = ({ title, headerNavigation, userNavigation, user, logo, co
                 </div>
                 <div className="-mr-2 flex items-center sm:hidden">
                   {/* Mobile menu button */}
-                  <Disclosure.Button className="bg-white inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                  <Disclosure.Button className="bg-white inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
                     <span className="sr-only">Open main menu</span>
                     {open ? (
                       <XIcon className="block h-6 w-6" aria-hidden="true" />
@@ -126,7 +121,7 @@ export const NavBar = ({ title, headerNavigation, userNavigation, user, logo, co
                     href={item.href}
                     className={classNames(
                       item.current
-                        ? 'bg-indigo-50 border-indigo-500 text-indigo-700'
+                        ? 'bg-blue-50 border-blue-500 text-blue-700'
                         : 'border-transparent text-gray-600 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-800',
                       'block pl-3 pr-4 py-2 border-l-4 text-base font-medium',
                     )}
@@ -153,7 +148,7 @@ export const NavBar = ({ title, headerNavigation, userNavigation, user, logo, co
                       {user?.email}
                     </div>
                   </div>
-                  <button className="ml-auto bg-white flex-shrink-0 p-1 rounded-full text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                  <button className="ml-auto bg-white flex-shrink-0 p-1 rounded-full text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
                     <span className="sr-only">View notifications</span>
                     <BellIcon className="h-6 w-6" aria-hidden="true" />
                   </button>

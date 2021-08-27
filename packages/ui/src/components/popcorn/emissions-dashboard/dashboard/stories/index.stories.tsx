@@ -107,6 +107,13 @@ export default {
         userNavigation={userNavigation}
         user={user}
         logo='https://tailwindui.com/img/logos/workflow-mark-indigo-600.svg'
+        contractProps={
+          {
+            open:false,
+            setOpen: () => {},
+            addContract: () => {},
+          }
+        }
         />
         <Story />
       </div>
@@ -117,4 +124,8 @@ export default {
 const Template: Story = (args) => <EmissionsDashboardPage {...args} />;
 
 export const Primary = Template.bind({});
-Primary.args = {};
+Primary.args = {
+  open:false,
+  setOpen: () => {},
+  addContract: () => {},
+};
