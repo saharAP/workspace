@@ -45,7 +45,7 @@ const IndexPage = () => {
         headerNavigation={navigation}
         userNavigation={userNavigation}
         user={user}
-        logo="/icons/popcorn_v1_rainbow_bg.png"
+        logo="/images/popcorn-logo.png"
         contractProps={{ addContract: handleAddContract, open, setOpen }}
       />
     </>
