@@ -1,5 +1,5 @@
 import { Dialog, Transition } from '@headlessui/react';
-import React, { Fragment, useState } from 'react';
+import React, { Fragment, useState, useRef } from 'react';
 
 export interface ContractModalProps {
   open: boolean;
@@ -13,6 +13,7 @@ export const AddContractModal: React.FC<ContractModalProps> = ({
   addContract,
 }) => {
   const [contractAddress, setContractAddress] = useState<string>('');
+  const inputRef= useRef(null)
 
   return (
     <Transition.Root show={open} as={Fragment}>
@@ -20,6 +21,7 @@ export const AddContractModal: React.FC<ContractModalProps> = ({
         as="div"
         auto-reopen="true"
         className="fixed z-10 inset-0 overflow-y-auto"
+        initialFocus={inputRef}
         onClose={setOpen}
       >
         <div className="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
@@ -72,6 +74,7 @@ export const AddContractModal: React.FC<ContractModalProps> = ({
                         }
                         className="w-full pl-4 pr-10 py-2 text-sm leading-none border rounded-lg shadow-sm focus:outline-none focus:shadow-outline text-gray-500 font-light"
                         placeholder="0xD634182479185918515"
+                        ref={inputRef}
                       />
                     </div>
                   </div>
