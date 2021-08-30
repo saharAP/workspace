@@ -9,13 +9,16 @@ import {
   XAxis,
   YAxis,
 } from 'recharts';
-import { ChartData } from '../AreaChart';
+import { getEmptyChartData } from '../dummyEmissionsData';
+import { ChartData } from '../../../../../interfaces/index';
 
 export interface AreaChartProps {
   data: ChartData[];
   height?: number;
   width?: number;
 }
+
+const emptyData = getEmptyChartData()
 
 export const AreaBarChart: React.FC<AreaChartProps> = ({
   data,
@@ -29,6 +32,7 @@ export const AreaBarChart: React.FC<AreaChartProps> = ({
         width="87%"
         height={height}
       >
+        {data && data.length ? (
         <ComposedChart data={data}>
           <XAxis dataKey="date" scale="band" hide={true}></XAxis>
           <YAxis
@@ -46,7 +50,7 @@ export const AreaBarChart: React.FC<AreaChartProps> = ({
             hide={true}
           />
           <Tooltip />
-          <CartesianGrid stroke="#f5f5f5" />
+          <CartesianGrid stroke="#E0E0E0" />
           <Area
             type="monotone"
             dataKey="co2Emissions"
@@ -60,6 +64,15 @@ export const AreaBarChart: React.FC<AreaChartProps> = ({
             fill="#4F46E5"
           />
         </ComposedChart>
+        )
+        : (
+        <ComposedChart data={emptyData}>
+          <XAxis dataKey="date" scale="band" hide={true} ></XAxis>
+          <CartesianGrid stroke="#E0E0E0" />
+          <text x="500" fill="#666" text-anchor="middle" dy="85">No data available to create Chart</text>
+        </ComposedChart>
+        )
+      }
       </ResponsiveContainer>
     </div>
   );

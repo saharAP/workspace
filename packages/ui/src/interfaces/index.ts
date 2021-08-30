@@ -20,6 +20,12 @@ interface UserNavigation {
   href: string;
 }
 
+export interface ChartData {
+  data: string;
+  numTransactions: number;
+  co2Emissions: number;
+}
+
 export interface NavBarProps {
   title: string;
   headerNavigation: HeaderNavigation[];
