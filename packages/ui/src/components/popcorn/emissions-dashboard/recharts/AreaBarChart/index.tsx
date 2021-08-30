@@ -69,7 +69,7 @@ export const AreaBarChart: React.FC<AreaChartProps> = ({
         <ComposedChart data={emptyData}>
           <XAxis dataKey="date" scale="band" hide={true} ></XAxis>
           <CartesianGrid stroke="#E0E0E0" />
-          <text x="500" fill="#666" text-anchor="middle" dy="85">No data available to create Chart</text>
+          <text x="50%" fill="#D0D0D0" text-anchor="middle" dy="50%">No data available to create chart</text>
         </ComposedChart>
         )
       }
