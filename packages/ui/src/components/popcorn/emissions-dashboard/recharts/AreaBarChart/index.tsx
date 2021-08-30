@@ -9,8 +9,8 @@ import {
   XAxis,
   YAxis,
 } from 'recharts';
-import { getEmptyChartData } from '../dummyEmissionsData';
 import { ChartData } from '../../../../../interfaces/index';
+import { getEmptyChartData } from '../dummyEmissionsData';
 
 export interface AreaChartProps {
   data: ChartData[];
@@ -18,7 +18,7 @@ export interface AreaChartProps {
   width?: number;
 }
 
-const emptyData = getEmptyChartData()
+const emptyData = getEmptyChartData();
 
 export const AreaBarChart: React.FC<AreaChartProps> = ({
   data,
@@ -33,46 +33,46 @@ export const AreaBarChart: React.FC<AreaChartProps> = ({
         height={height}
       >
         {data && data.length ? (
-        <ComposedChart data={data}>
-          <XAxis dataKey="date" scale="band" hide={true}></XAxis>
-          <YAxis
-            yAxisId="left"
-            orientation="left"
-            dataKey="numTransactions"
-            tick={false}
-            hide={true}
-          />
-          <YAxis
-            yAxisId="right"
-            orientation="right"
-            dataKey="co2Emissions"
-            tick={false}
-            hide={true}
-          />
-          <Tooltip />
-          <CartesianGrid stroke="#E0E0E0" />
-          <Area
-            type="monotone"
-            dataKey="co2Emissions"
-            stroke="#C7D2FE"
-            yAxisId="left"
-          />
-          <Bar
-            yAxisId="right"
-            dataKey="numTransactions"
-            barSize={20}
-            fill="#4F46E5"
-          />
-        </ComposedChart>
-        )
-        : (
-        <ComposedChart data={emptyData}>
-          <XAxis dataKey="date" scale="band" hide={true} ></XAxis>
-          <CartesianGrid stroke="#E0E0E0" />
-          <text x="50%" fill="#D0D0D0" text-anchor="middle" dy="50%">No data available to create chart</text>
-        </ComposedChart>
-        )
-      }
+          <ComposedChart data={data}>
+            <XAxis dataKey="date" scale="band" hide={true}></XAxis>
+            <YAxis
+              yAxisId="left"
+              orientation="left"
+              dataKey="numTransactions"
+              tick={false}
+              hide={true}
+            />
+            <YAxis
+              yAxisId="right"
+              orientation="right"
+              dataKey="co2Emissions"
+              tick={false}
+              hide={true}
+            />
+            <Tooltip />
+            <CartesianGrid stroke="#E0E0E0" />
+            <Area
+              type="monotone"
+              dataKey="co2Emissions"
+              stroke="#C7D2FE"
+              yAxisId="left"
+            />
+            <Bar
+              yAxisId="right"
+              dataKey="numTransactions"
+              barSize={20}
+              fill="#4F46E5"
+            />
+          </ComposedChart>
+        ) : (
+          <ComposedChart data={emptyData}>
+            <XAxis dataKey="date" scale="band" hide={true}></XAxis>
+            <CartesianGrid stroke="#E0E0E0" />
+            <text x="50%" fill="#D0D0D0" text-anchor="middle" dy="50%">
+              No data available to create chart
+            </text>
+          </ComposedChart>
+        )}
       </ResponsiveContainer>
     </div>
   );
