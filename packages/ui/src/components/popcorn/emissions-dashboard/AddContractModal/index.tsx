@@ -73,7 +73,7 @@ export const AddContractModal: React.FC<ContractModalProps> = ({
                           setContractAddress(event.target.value)
                         }
                         className="w-full pl-4 pr-10 py-2 text-sm leading-none border rounded-lg shadow-sm focus:outline-none focus:shadow-outline text-gray-500 font-light"
-                        placeholder="0xD634182479185918515"
+                        placeholder="0xa258c4606ca8206d8aa700ce2143d7db854d168c"
                         ref={inputRef}
                       />
                     </div>
