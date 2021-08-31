@@ -15,6 +15,12 @@ import { getEmptyChartData } from '../dummyEmissionsData';
 export interface AreaChartProps {
   data: ChartData[];
   height?: number;
+  transactionsDataKey: string;
+  dateDataKey: string;
+  co2EmissionDataKey: string;
+  areaColor?: string;
+  barColor?: string;
+  gridColor?: string;
 }
 
 const emptyData = getEmptyChartData();
@@ -22,50 +28,57 @@ const emptyData = getEmptyChartData();
 export const AreaBarChart: React.FC<AreaChartProps> = ({
   data,
   height,
+  transactionsDataKey,
+  dateDataKey,
+  co2EmissionDataKey,
+  areaColor = "#C7D2FE",
+  barColor = "#4F46E5",
+  gridColor = "#E0E0E0"
 }) => {
   return (
     <div className="w-screen grid justify-items-stretch">
       <ResponsiveContainer
         className="justify-self-start ml-3"
         width="87%"
-        height={height}
+        height={height ? height : 200}
       >
         {data && data.length ? (
           <ComposedChart data={data}>
-            <XAxis dataKey="date" scale="band" hide={true}></XAxis>
+            <XAxis dataKey={dateDataKey} scale="band" hide={true}></XAxis>
             <YAxis
               yAxisId="left"
               orientation="left"
-              dataKey="numTransactions"
+              dataKey={transactionsDataKey}
               tick={false}
               hide={true}
             />
             <YAxis
               yAxisId="right"
               orientation="right"
-              dataKey="co2Emissions"
+              dataKey={co2EmissionDataKey}
               tick={false}
               hide={true}
             />
             <Tooltip />
-            <CartesianGrid stroke="#E0E0E0" />
+            <CartesianGrid stroke={gridColor} />
             <Area
               type="monotone"
-              dataKey="co2Emissions"
-              stroke="#C7D2FE"
+              dataKey={co2EmissionDataKey}
+              stroke={areaColor}
+              fill={areaColor}
               yAxisId="left"
             />
             <Bar
               yAxisId="right"
-              dataKey="numTransactions"
+              dataKey={transactionsDataKey}
               barSize={20}
-              fill="#4F46E5"
+              fill={barColor}
             />
           </ComposedChart>
         ) : (
           <ComposedChart data={emptyData}>
-            <XAxis dataKey="date" scale="band" hide={true}></XAxis>
-            <CartesianGrid stroke="#E0E0E0" />
+            <XAxis dataKey={dateDataKey} scale="band" hide={true}></XAxis>
+            <CartesianGrid stroke={gridColor} />
             <text x="50%" fill="#D0D0D0" text-anchor="middle" dy="50%">
               No data available to create chart
             </text>

@@ -17,4 +17,10 @@ export default {
 const Template: Story = (args) => <AreaBarChart {...args} />;
 
 export const ChartWithData = Template.bind({});
-ChartWithData.args = { data: getDummyEmissionData(), height: 200 };
+ChartWithData.args = {
+  data: getDummyEmissionData(),
+  height: 200,
+  transactionsDataKey: "numTransactions",
+  dateDataKey: "date",
+  co2EmissionDataKey: "co2Emissions",
+};
