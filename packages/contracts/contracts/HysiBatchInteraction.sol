@@ -257,9 +257,11 @@ contract HysiBatchInteraction is Owned {
       uint256 yTokenInCrvToken = YearnVault(tokenAddresses[i]).pricePerShare();
 
       //Check how many 3CRV are needed to mint one crvLPToken
-      uint256 crvLPTokenIn3Crv = curvePoolTokenPairs[tokenAddresses[i]]
-        .curveMetaPool
-        .calc_withdraw_one_coin(1e18, 1);
+      uint256 crvLPTokenIn3Crv = uint256(2e18).sub(
+        curvePoolTokenPairs[tokenAddresses[i]]
+          .curveMetaPool
+          .calc_withdraw_one_coin(1e18, 1)
+      );
 
       require(
         crvLPTokenIn3Crv <=
