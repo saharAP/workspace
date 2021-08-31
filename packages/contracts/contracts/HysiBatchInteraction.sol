@@ -27,17 +27,34 @@ contract HysiBatchInteraction is Owned {
   using SafeERC20 for ISetToken;
   using SafeERC20 for IERC20;
 
+  /**
+   * @notice Defines if the Batch will mint or redeem HYSI
+   */
   enum BatchType {
     Mint,
     Redeem
   }
 
+  /**
+   * @notice Defines if the Batch will mint or redeem HYSI
+   * @param curveMetaPool A CurveMetaPool for trading an exotic stablecoin against 3CRV
+   * @param crvToken The LP-Token of the CurveMetapool
+   * @param yToken The yToken (and yearn Vault) needed to as underyling for HYSI
+   */
   struct Underlying {
+    CurveMetapool curveMetaPool;
     IERC20 crvToken;
     YearnVault yToken;
-    CurveMetapool curveMetaPool;
   }
 
+  /**
+   * @notice The Batch structure is used both for Batches of Minting and Redeeming
+   * @param unclaimedShares The total amount of unclaimed shares in this batch
+   * @param suppliedToken The total amount of deposited token (either 3CRV or HYSI)
+   * @param claimableToken The total amount of claimable token (either 3CRV or HYSI)
+   * @param shareBalance The individual share balance per user that has deposited token
+   * @param claimable Shows if a batch has been processed and is ready to be claimed
+   */
   struct Batch {
     uint256 unclaimedShares;
     uint256 suppliedToken;
@@ -51,7 +68,7 @@ contract HysiBatchInteraction is Owned {
   IERC20 public threeCrv;
   BasicIssuanceModule public setBasicIssuanceModule;
   ISetToken public setToken;
-  Underlying[] public underlying;
+  Underlying[4] public underlying;
 
   mapping(address => bytes32[]) public batchesOfAccount;
   mapping(bytes32 => Batch) public batches;
@@ -79,7 +96,7 @@ contract HysiBatchInteraction is Owned {
     IERC20 threeCrv_,
     ISetToken setToken_,
     BasicIssuanceModule basicIssuanceModule_,
-    Underlying[] memory underlying_,
+    Underlying[4] memory underlying_,
     uint256 batchCooldown_,
     uint256 mintThreshold_,
     uint256 redeemThreshold_
@@ -123,9 +140,10 @@ contract HysiBatchInteraction is Owned {
   /**
    * @notice Deposits funds in the current mint batch
    * @param  amount_ Amount of 3cr3CRV to use for minting
+   * @dev Should this be secured we nonReentrant?
    */
   function depositForMint(uint256 amount_) external {
-    require(threeCrv.balanceOf(msg.sender) > 0, "insufficent balance");
+    require(threeCrv.balanceOf(msg.sender) >= amount_, "insufficent balance");
     threeCrv.transferFrom(msg.sender, address(this), amount_);
     _deposit(amount_, currentMintBatchId);
   }
@@ -133,9 +151,10 @@ contract HysiBatchInteraction is Owned {
   /**
    * @notice deposits funds in the current redeem batch
    * @param  amount_ amount of HYSI to be redeemed
+   * @dev Should this be secured we nonReentrant?
    */
   function depositForRedeem(uint256 amount_) external {
-    require(setToken.balanceOf(msg.sender) > 0, "insufficient balance");
+    require(setToken.balanceOf(msg.sender) >= amount_, "insufficient balance");
     setToken.transferFrom(msg.sender, address(this), amount_);
     _deposit(amount_, currentRedeemBatchId);
   }
@@ -506,7 +525,7 @@ contract HysiBatchInteraction is Owned {
     @dev since our calculations for minting just iterate through the index and match it with the quantities given by Set
     @dev we must make sure to align them correctly by index, otherwise our whole calculation breaks down
   */
-  function _setUnderlyingToken(Underlying[] memory underlying_) internal {
+  function _setUnderlyingToken(Underlying[4] memory underlying_) internal {
     for (uint256 i; i < underlying_.length; i++) {
       underlying.push(underlying_[i]);
     }
