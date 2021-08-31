@@ -118,8 +118,7 @@ async function deployContracts(): Promise<Contracts> {
       ],
       1800,
       parseEther("20000"),
-      parseEther("200"),
-      50
+      parseEther("200")
     )
   ).deployed()) as HysiBatchInteraction;
 
@@ -528,7 +527,7 @@ describe("HysiBatchInteraction", function () {
             .connect(depositor)
             .depositForRedeem(parseEther("100"));
           await expect(
-            contracts.hysiBatchInteraction.connect(owner).batchRedeem()
+            contracts.hysiBatchInteraction.connect(owner).batchRedeem(0)
           ).to.be.revertedWith("can not execute batch action yet");
         });
       });
@@ -546,7 +545,7 @@ describe("HysiBatchInteraction", function () {
           await provider.send("evm_increaseTime", [1800]);
           const result = await contracts.hysiBatchInteraction
             .connect(owner)
-            .batchRedeem();
+            .batchRedeem(0);
           expect(result)
             .to.emit(contracts.hysiBatchInteraction, "BatchRedeemed")
             .withArgs(batchId, parseEther("100"), parseEther("9990"));
@@ -571,7 +570,7 @@ describe("HysiBatchInteraction", function () {
             .depositForRedeem(parseEther("100"));
           const result = await contracts.hysiBatchInteraction
             .connect(owner)
-            .batchRedeem();
+            .batchRedeem(0);
           expect(result).to.emit(
             contracts.hysiBatchInteraction,
             "BatchRedeemed"
@@ -587,7 +586,7 @@ describe("HysiBatchInteraction", function () {
           await provider.send("evm_increaseTime", [1800]);
 
           const previousRedeemBatchId = await contracts.hysiBatchInteraction.currentRedeemBatchId();
-          await contracts.hysiBatchInteraction.batchRedeem();
+          await contracts.hysiBatchInteraction.batchRedeem(0);
 
           const previousBatch = await contracts.hysiBatchInteraction.batches(
             previousRedeemBatchId
@@ -645,7 +644,7 @@ describe("HysiBatchInteraction", function () {
       });
       it("claim batch successfully", async function () {
         await provider.send("evm_increaseTime", [1800]);
-        await contracts.hysiBatchInteraction.connect(owner).batchRedeem();
+        await contracts.hysiBatchInteraction.connect(owner).batchRedeem(0);
         const batchId = await contracts.hysiBatchInteraction.batchesOfAccount(
           depositor.address,
           0

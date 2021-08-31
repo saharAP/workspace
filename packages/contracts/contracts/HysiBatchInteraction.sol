@@ -345,10 +345,11 @@ contract HysiBatchInteraction is Owned {
 
   /**
    * @notice Redeems HYSI for 3CRV. This function goes through all the steps necessary to get 3CRV
+   * @param min3crvToReceive_ sets minimum amount of 3crv to redeem HYSI for, otherwise the transaction will revert
    * @dev This function reedeems HYSI for the underlying yToken and deposits these yToken in curve Metapools for 3CRV
    * @dev In order to get stablecoins from 3CRV we can use a zap to redeem 3CRV for stables in the curve tri-pool
    */
-  function batchRedeem() external {
+  function batchRedeem(uint256 min3crvToReceive_) external {
     Batch storage batch = batches[currentRedeemBatchId];
 
     //Check if there was enough time between the last batch minting and this attempt...
@@ -400,13 +401,6 @@ contract HysiBatchInteraction is Owned {
         .crvLPToken
         .balanceOf(address(this));
 
-      //Check how many 3CRV are needed to mint one crvLPToken
-      uint256 crvLPTokenIn3Crv = curvePoolTokenPairs[tokenAddresses[i]]
-        .curveMetaPool
-        .calc_withdraw_one_coin(crvLPTokenBalance, 1)
-        .mul(1e18)
-        .div(crvLPTokenBalance);
-
       //Deposit crvLPToken to receive 3CRV
       _withdrawFromCurve(
         crvLPTokenBalance,
@@ -417,6 +411,8 @@ contract HysiBatchInteraction is Owned {
 
     //Save the redeemed amount of 3CRV as claimable token for the batch
     batch.claimableToken = threeCrv.balanceOf(address(this)).sub(oldBalance);
+
+    require(batch.claimableToken >= min3crvToReceive_, "slippage too high");
 
     emit BatchRedeemed(
       currentRedeemBatchId,
