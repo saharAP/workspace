@@ -14,10 +14,9 @@
   }
   ```
 */
-import { PlusIcon } from '@heroicons/react/solid'
+import { PlusIcon } from '@heroicons/react/solid';
 
 const people = [
-
   {
     name: 'Lindsay Walton',
     handle: 'lindsaywalton',
@@ -72,8 +71,7 @@ const people = [
     imageUrl:
       'https://images.unsplash.com/photo-1463453091185-61582044d556?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
   },
-
-]
+];
 
 export default function Example() {
   return (
@@ -94,8 +92,12 @@ export default function Example() {
               d="M34 40h10v-4a6 6 0 00-10.712-3.714M34 40H14m20 0v-4a9.971 9.971 0 00-.712-3.714M14 40H4v-4a6 6 0 0110.713-3.714M14 40v-4c0-1.313.253-2.566.713-3.714m0 0A10.003 10.003 0 0124 26c4.21 0 7.813 2.602 9.288 6.286M30 14a6 6 0 11-12 0 6 6 0 0112 0zm12 6a4 4 0 11-8 0 4 4 0 018 0zm-28 0a4 4 0 11-8 0 4 4 0 018 0z"
             />
           </svg>
-          <h2 className="mt-2 text-lg font-medium text-gray-900">Add team members</h2>
-          <p className="mt-1 text-sm text-gray-500">You haven’t added any team members to your project yet.</p>
+          <h2 className="mt-2 text-lg font-medium text-gray-900">
+            Add team members
+          </h2>
+          <p className="mt-1 text-sm text-gray-500">
+            You haven’t added any team members to your project yet.
+          </p>
         </div>
         <form className="mt-6 sm:flex sm:items-center" action="#">
           <label htmlFor="emails" className="sr-only">
@@ -135,7 +137,9 @@ export default function Example() {
         </form>
       </div>
       <div className="mt-10">
-        <h3 className="text-xs font-semibold text-gray-500 uppercase tracking-wide">Recommended team members</h3>
+        <h3 className="text-xs font-semibold text-gray-500 uppercase tracking-wide">
+          Recommended team members
+        </h3>
         <ul className="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-2">
           {people.map((person, personIdx) => (
             <li key={personIdx}>
@@ -145,15 +149,26 @@ export default function Example() {
               >
                 <span className="min-w-0 flex-1 flex items-center space-x-3">
                   <span className="block flex-shrink-0">
-                    <img className="h-10 w-10 rounded-full" src={person.imageUrl} alt="" />
+                    <img
+                      className="h-10 w-10 rounded-full"
+                      src={person.imageUrl}
+                      alt=""
+                    />
                   </span>
                   <span className="block min-w-0 flex-1">
-                    <span className="block text-sm font-medium text-gray-900 truncate">{person.name}</span>
-                    <span className="block text-sm font-medium text-gray-500 truncate">{person.role}</span>
+                    <span className="block text-sm font-medium text-gray-900 truncate">
+                      {person.name}
+                    </span>
+                    <span className="block text-sm font-medium text-gray-500 truncate">
+                      {person.role}
+                    </span>
                   </span>
                 </span>
                 <span className="flex-shrink-0 h-10 w-10 inline-flex items-center justify-center">
-                  <PlusIcon className="h-5 w-5 text-gray-400 group-hover:text-gray-500" aria-hidden="true" />
+                  <PlusIcon
+                    className="h-5 w-5 text-gray-400 group-hover:text-gray-500"
+                    aria-hidden="true"
+                  />
                 </span>
               </button>
             </li>
@@ -161,5 +176,5 @@ export default function Example() {
         </ul>
       </div>
     </div>
-  )
+  );
 }

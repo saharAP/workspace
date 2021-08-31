@@ -1,10 +1,8 @@
 import {
-  IpfsClient,
-} from '@popcorn/utils';
-import {
   BeneficiaryApplication,
-  BeneficiaryRegistryAdapter
-} from "@popcorn/contracts/adapters";
+  BeneficiaryRegistryAdapter,
+} from '@popcorn/contracts/adapters';
+import { IpfsClient } from '@popcorn/utils';
 import BeneficiaryGrid from 'components/Beneficiaries/BeneficiaryGrid';
 import { useContext, useEffect, useState } from 'react';
 import { ContractsContext } from '../../context/Web3/contracts';

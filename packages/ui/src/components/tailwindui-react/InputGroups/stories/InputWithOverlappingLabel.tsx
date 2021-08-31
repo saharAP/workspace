@@ -31,5 +31,5 @@ export default function Example() {
         placeholder="Jane Doe"
       />
     </div>
-  )
+  );
 }

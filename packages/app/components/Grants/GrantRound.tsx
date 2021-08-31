@@ -1,7 +1,9 @@
 import {
-  IpfsClient,
-} from '@popcorn/utils';
-import { ElectionMetadata, BeneficiaryRegistryAdapter, BeneficiaryApplication } from '@popcorn/contracts/adapters';
+  BeneficiaryApplication,
+  BeneficiaryRegistryAdapter,
+  ElectionMetadata,
+} from '@popcorn/contracts/adapters';
+import { IpfsClient } from '@popcorn/utils';
 import { ContractsContext } from 'context/Web3/contracts';
 import { BigNumber, utils } from 'ethers';
 import { PendingVotes, Vote, Votes } from 'pages/grant-elections/[type]';

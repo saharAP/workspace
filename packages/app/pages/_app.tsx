@@ -1,18 +1,18 @@
-import React, { useEffect, useState } from 'react';
-import Head from 'next/head';
-import '../styles/globals.css';
-import Router from 'next/router';
-import { StateProvider } from '../context/store';
-import { Web3ReactProvider } from '@web3-react/core';
 import { Web3Provider } from '@ethersproject/providers';
-import ContractsWrapper from '../context/Web3/contracts';
-import SwapChainModal from 'components/SwapChainModal';
-import ElectionsProvider from '../context/Web3/elections';
-import { SingleActionModalContainer } from 'components/Modal/SingleActionModalContainer';
-import { DualActionModalContainer } from 'components/Modal/DualActionModalContainer';
-import NotificationsContainer from 'components/Notifications/NotificationsContainer';
+import { Web3ReactProvider } from '@web3-react/core';
 import { Debug } from 'components/Debug';
+import { DualActionModalContainer } from 'components/Modal/DualActionModalContainer';
 import DualActionWideModalContainer from 'components/Modal/DualActionWideModalContainer';
+import { SingleActionModalContainer } from 'components/Modal/SingleActionModalContainer';
+import NotificationsContainer from 'components/Notifications/NotificationsContainer';
+import SwapChainModal from 'components/SwapChainModal';
+import Head from 'next/head';
+import Router from 'next/router';
+import React, { useEffect, useState } from 'react';
+import { StateProvider } from '../context/store';
+import ContractsWrapper from '../context/Web3/contracts';
+import ElectionsProvider from '../context/Web3/elections';
+import '../styles/globals.css';
 
 function getLibrary(provider: any): Web3Provider {
   const library = new Web3Provider(provider);

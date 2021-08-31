@@ -17,7 +17,10 @@
 export default function Example() {
   return (
     <div>
-      <label htmlFor="price" className="block text-sm font-medium text-gray-700">
+      <label
+        htmlFor="price"
+        className="block text-sm font-medium text-gray-700"
+      >
         Price
       </label>
       <div className="mt-1 relative rounded-md shadow-sm">
@@ -39,5 +42,5 @@ export default function Example() {
         </div>
       </div>
     </div>
-  )
+  );
 }

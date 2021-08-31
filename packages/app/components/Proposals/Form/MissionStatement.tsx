@@ -1,10 +1,8 @@
-
 import { ExclamationCircleIcon } from '@heroicons/react/outline';
 import { FormStepProps } from 'pages/proposals/propose';
 import React, { useState } from 'react';
 import inputExists from 'utils/isValidInput';
 import ContinueButton from './ContinueButton';
-import ControlledTextInput from './ControlledTextInput';
 
 const MissionStatement: React.FC<FormStepProps> = ({
   form,

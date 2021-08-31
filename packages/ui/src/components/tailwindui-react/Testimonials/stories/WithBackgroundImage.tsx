@@ -12,11 +12,16 @@ export default function Example() {
             />
           </div>
           <div className="relative lg:col-span-1">
-            <img className="h-12 w-auto" src="https://tailwindui.com/img/logos/workcation-logo-white.svg" alt="" />
+            <img
+              className="h-12 w-auto"
+              src="https://tailwindui.com/img/logos/workcation-logo-white.svg"
+              alt=""
+            />
             <blockquote className="mt-6 text-white">
               <p className="text-xl font-medium sm:text-2xl">
-                Workflow has completely transformed how we interact with customers. We've seen record bookings, higher
-                customer satisfaction, and reduced churn.
+                Workflow has completely transformed how we interact with
+                customers. We've seen record bookings, higher customer
+                satisfaction, and reduced churn.
               </p>
               <footer className="mt-6">
                 <p className="flex flex-col font-medium">
@@ -29,5 +34,5 @@ export default function Example() {
         </div>
       </div>
     </div>
-  )
+  );
 }

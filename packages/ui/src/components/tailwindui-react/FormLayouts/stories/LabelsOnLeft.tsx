@@ -20,15 +20,21 @@ export default function Example() {
       <div className="space-y-8 divide-y divide-gray-200 sm:space-y-5">
         <div>
           <div>
-            <h3 className="text-lg leading-6 font-medium text-gray-900">Profile</h3>
+            <h3 className="text-lg leading-6 font-medium text-gray-900">
+              Profile
+            </h3>
             <p className="mt-1 max-w-2xl text-sm text-gray-500">
-              This information will be displayed publicly so be careful what you share.
+              This information will be displayed publicly so be careful what you
+              share.
             </p>
           </div>
 
           <div className="mt-6 sm:mt-5 space-y-6 sm:space-y-5">
             <div className="sm:grid sm:grid-cols-3 sm:gap-4 sm:items-start sm:border-t sm:border-gray-200 sm:pt-5">
-              <label htmlFor="username" className="block text-sm font-medium text-gray-700 sm:mt-px sm:pt-2">
+              <label
+                htmlFor="username"
+                className="block text-sm font-medium text-gray-700 sm:mt-px sm:pt-2"
+              >
                 Username
               </label>
               <div className="mt-1 sm:mt-0 sm:col-span-2">
@@ -48,7 +54,10 @@ export default function Example() {
             </div>
 
             <div className="sm:grid sm:grid-cols-3 sm:gap-4 sm:items-start sm:border-t sm:border-gray-200 sm:pt-5">
-              <label htmlFor="about" className="block text-sm font-medium text-gray-700 sm:mt-px sm:pt-2">
+              <label
+                htmlFor="about"
+                className="block text-sm font-medium text-gray-700 sm:mt-px sm:pt-2"
+              >
                 About
               </label>
               <div className="mt-1 sm:mt-0 sm:col-span-2">
@@ -59,18 +68,27 @@ export default function Example() {
                   className="max-w-lg shadow-sm block w-full focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm border border-gray-300 rounded-md"
                   defaultValue={''}
                 />
-                <p className="mt-2 text-sm text-gray-500">Write a few sentences about yourself.</p>
+                <p className="mt-2 text-sm text-gray-500">
+                  Write a few sentences about yourself.
+                </p>
               </div>
             </div>
 
             <div className="sm:grid sm:grid-cols-3 sm:gap-4 sm:items-center sm:border-t sm:border-gray-200 sm:pt-5">
-              <label htmlFor="photo" className="block text-sm font-medium text-gray-700">
+              <label
+                htmlFor="photo"
+                className="block text-sm font-medium text-gray-700"
+              >
                 Photo
               </label>
               <div className="mt-1 sm:mt-0 sm:col-span-2">
                 <div className="flex items-center">
                   <span className="h-12 w-12 rounded-full overflow-hidden bg-gray-100">
-                    <svg className="h-full w-full text-gray-300" fill="currentColor" viewBox="0 0 24 24">
+                    <svg
+                      className="h-full w-full text-gray-300"
+                      fill="currentColor"
+                      viewBox="0 0 24 24"
+                    >
                       <path d="M24 20.993V24H0v-2.996A14.977 14.977 0 0112.004 15c4.904 0 9.26 2.354 11.996 5.993zM16.002 8.999a4 4 0 11-8 0 4 4 0 018 0z" />
                     </svg>
                   </span>
@@ -85,7 +103,10 @@ export default function Example() {
             </div>
 
             <div className="sm:grid sm:grid-cols-3 sm:gap-4 sm:items-start sm:border-t sm:border-gray-200 sm:pt-5">
-              <label htmlFor="cover-photo" className="block text-sm font-medium text-gray-700 sm:mt-px sm:pt-2">
+              <label
+                htmlFor="cover-photo"
+                className="block text-sm font-medium text-gray-700 sm:mt-px sm:pt-2"
+              >
                 Cover photo
               </label>
               <div className="mt-1 sm:mt-0 sm:col-span-2">
@@ -111,11 +132,18 @@ export default function Example() {
                         className="relative cursor-pointer bg-white rounded-md font-medium text-indigo-600 hover:text-indigo-500 focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-indigo-500"
                       >
                         <span>Upload a file</span>
-                        <input id="file-upload" name="file-upload" type="file" className="sr-only" />
+                        <input
+                          id="file-upload"
+                          name="file-upload"
+                          type="file"
+                          className="sr-only"
+                        />
                       </label>
                       <p className="pl-1">or drag and drop</p>
                     </div>
-                    <p className="text-xs text-gray-500">PNG, JPG, GIF up to 10MB</p>
+                    <p className="text-xs text-gray-500">
+                      PNG, JPG, GIF up to 10MB
+                    </p>
                   </div>
                 </div>
               </div>
@@ -125,12 +153,19 @@ export default function Example() {
 
         <div className="pt-8 space-y-6 sm:pt-10 sm:space-y-5">
           <div>
-            <h3 className="text-lg leading-6 font-medium text-gray-900">Personal Information</h3>
-            <p className="mt-1 max-w-2xl text-sm text-gray-500">Use a permanent address where you can receive mail.</p>
+            <h3 className="text-lg leading-6 font-medium text-gray-900">
+              Personal Information
+            </h3>
+            <p className="mt-1 max-w-2xl text-sm text-gray-500">
+              Use a permanent address where you can receive mail.
+            </p>
           </div>
           <div className="space-y-6 sm:space-y-5">
             <div className="sm:grid sm:grid-cols-3 sm:gap-4 sm:items-start sm:border-t sm:border-gray-200 sm:pt-5">
-              <label htmlFor="first-name" className="block text-sm font-medium text-gray-700 sm:mt-px sm:pt-2">
+              <label
+                htmlFor="first-name"
+                className="block text-sm font-medium text-gray-700 sm:mt-px sm:pt-2"
+              >
                 First name
               </label>
               <div className="mt-1 sm:mt-0 sm:col-span-2">
@@ -145,7 +180,10 @@ export default function Example() {
             </div>
 
             <div className="sm:grid sm:grid-cols-3 sm:gap-4 sm:items-start sm:border-t sm:border-gray-200 sm:pt-5">
-              <label htmlFor="last-name" className="block text-sm font-medium text-gray-700 sm:mt-px sm:pt-2">
+              <label
+                htmlFor="last-name"
+                className="block text-sm font-medium text-gray-700 sm:mt-px sm:pt-2"
+              >
                 Last name
               </label>
               <div className="mt-1 sm:mt-0 sm:col-span-2">
@@ -160,7 +198,10 @@ export default function Example() {
             </div>
 
             <div className="sm:grid sm:grid-cols-3 sm:gap-4 sm:items-start sm:border-t sm:border-gray-200 sm:pt-5">
-              <label htmlFor="email" className="block text-sm font-medium text-gray-700 sm:mt-px sm:pt-2">
+              <label
+                htmlFor="email"
+                className="block text-sm font-medium text-gray-700 sm:mt-px sm:pt-2"
+              >
                 Email address
               </label>
               <div className="mt-1 sm:mt-0 sm:col-span-2">
@@ -175,7 +216,10 @@ export default function Example() {
             </div>
 
             <div className="sm:grid sm:grid-cols-3 sm:gap-4 sm:items-start sm:border-t sm:border-gray-200 sm:pt-5">
-              <label htmlFor="country" className="block text-sm font-medium text-gray-700 sm:mt-px sm:pt-2">
+              <label
+                htmlFor="country"
+                className="block text-sm font-medium text-gray-700 sm:mt-px sm:pt-2"
+              >
                 Country / Region
               </label>
               <div className="mt-1 sm:mt-0 sm:col-span-2">
@@ -193,7 +237,10 @@ export default function Example() {
             </div>
 
             <div className="sm:grid sm:grid-cols-3 sm:gap-4 sm:items-start sm:border-t sm:border-gray-200 sm:pt-5">
-              <label htmlFor="street-address" className="block text-sm font-medium text-gray-700 sm:mt-px sm:pt-2">
+              <label
+                htmlFor="street-address"
+                className="block text-sm font-medium text-gray-700 sm:mt-px sm:pt-2"
+              >
                 Street address
               </label>
               <div className="mt-1 sm:mt-0 sm:col-span-2">
@@ -208,7 +255,10 @@ export default function Example() {
             </div>
 
             <div className="sm:grid sm:grid-cols-3 sm:gap-4 sm:items-start sm:border-t sm:border-gray-200 sm:pt-5">
-              <label htmlFor="city" className="block text-sm font-medium text-gray-700 sm:mt-px sm:pt-2">
+              <label
+                htmlFor="city"
+                className="block text-sm font-medium text-gray-700 sm:mt-px sm:pt-2"
+              >
                 City
               </label>
               <div className="mt-1 sm:mt-0 sm:col-span-2">
@@ -222,7 +272,10 @@ export default function Example() {
             </div>
 
             <div className="sm:grid sm:grid-cols-3 sm:gap-4 sm:items-start sm:border-t sm:border-gray-200 sm:pt-5">
-              <label htmlFor="state" className="block text-sm font-medium text-gray-700 sm:mt-px sm:pt-2">
+              <label
+                htmlFor="state"
+                className="block text-sm font-medium text-gray-700 sm:mt-px sm:pt-2"
+              >
                 State / Province
               </label>
               <div className="mt-1 sm:mt-0 sm:col-span-2">
@@ -236,7 +289,10 @@ export default function Example() {
             </div>
 
             <div className="sm:grid sm:grid-cols-3 sm:gap-4 sm:items-start sm:border-t sm:border-gray-200 sm:pt-5">
-              <label htmlFor="zip" className="block text-sm font-medium text-gray-700 sm:mt-px sm:pt-2">
+              <label
+                htmlFor="zip"
+                className="block text-sm font-medium text-gray-700 sm:mt-px sm:pt-2"
+              >
                 ZIP / Postal
               </label>
               <div className="mt-1 sm:mt-0 sm:col-span-2">
@@ -254,9 +310,12 @@ export default function Example() {
 
         <div className="divide-y divide-gray-200 pt-8 space-y-6 sm:pt-10 sm:space-y-5">
           <div>
-            <h3 className="text-lg leading-6 font-medium text-gray-900">Notifications</h3>
+            <h3 className="text-lg leading-6 font-medium text-gray-900">
+              Notifications
+            </h3>
             <p className="mt-1 max-w-2xl text-sm text-gray-500">
-              We'll always let you know about important changes, but you pick what else you want to hear about.
+              We'll always let you know about important changes, but you pick
+              what else you want to hear about.
             </p>
           </div>
           <div className="space-y-6 sm:space-y-5 divide-y divide-gray-200">
@@ -264,7 +323,10 @@ export default function Example() {
               <div role="group" aria-labelledby="label-email">
                 <div className="sm:grid sm:grid-cols-3 sm:gap-4 sm:items-baseline">
                   <div>
-                    <div className="text-base font-medium text-gray-900 sm:text-sm sm:text-gray-700" id="label-email">
+                    <div
+                      className="text-base font-medium text-gray-900 sm:text-sm sm:text-gray-700"
+                      id="label-email"
+                    >
                       By Email
                     </div>
                   </div>
@@ -280,10 +342,16 @@ export default function Example() {
                           />
                         </div>
                         <div className="ml-3 text-sm">
-                          <label htmlFor="comments" className="font-medium text-gray-700">
+                          <label
+                            htmlFor="comments"
+                            className="font-medium text-gray-700"
+                          >
                             Comments
                           </label>
-                          <p className="text-gray-500">Get notified when someones posts a comment on a posting.</p>
+                          <p className="text-gray-500">
+                            Get notified when someones posts a comment on a
+                            posting.
+                          </p>
                         </div>
                       </div>
                       <div>
@@ -297,10 +365,15 @@ export default function Example() {
                             />
                           </div>
                           <div className="ml-3 text-sm">
-                            <label htmlFor="candidates" className="font-medium text-gray-700">
+                            <label
+                              htmlFor="candidates"
+                              className="font-medium text-gray-700"
+                            >
                               Candidates
                             </label>
-                            <p className="text-gray-500">Get notified when a candidate applies for a job.</p>
+                            <p className="text-gray-500">
+                              Get notified when a candidate applies for a job.
+                            </p>
                           </div>
                         </div>
                       </div>
@@ -315,10 +388,16 @@ export default function Example() {
                             />
                           </div>
                           <div className="ml-3 text-sm">
-                            <label htmlFor="offers" className="font-medium text-gray-700">
+                            <label
+                              htmlFor="offers"
+                              className="font-medium text-gray-700"
+                            >
                               Offers
                             </label>
-                            <p className="text-gray-500">Get notified when a candidate accepts or rejects an offer.</p>
+                            <p className="text-gray-500">
+                              Get notified when a candidate accepts or rejects
+                              an offer.
+                            </p>
                           </div>
                         </div>
                       </div>
@@ -340,7 +419,9 @@ export default function Example() {
                   </div>
                   <div className="sm:col-span-2">
                     <div className="max-w-lg">
-                      <p className="text-sm text-gray-500">These are delivered via SMS to your mobile phone.</p>
+                      <p className="text-sm text-gray-500">
+                        These are delivered via SMS to your mobile phone.
+                      </p>
                       <div className="mt-4 space-y-4">
                         <div className="flex items-center">
                           <input
@@ -349,7 +430,10 @@ export default function Example() {
                             type="radio"
                             className="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300"
                           />
-                          <label htmlFor="push-everything" className="ml-3 block text-sm font-medium text-gray-700">
+                          <label
+                            htmlFor="push-everything"
+                            className="ml-3 block text-sm font-medium text-gray-700"
+                          >
                             Everything
                           </label>
                         </div>
@@ -360,7 +444,10 @@ export default function Example() {
                             type="radio"
                             className="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300"
                           />
-                          <label htmlFor="push-email" className="ml-3 block text-sm font-medium text-gray-700">
+                          <label
+                            htmlFor="push-email"
+                            className="ml-3 block text-sm font-medium text-gray-700"
+                          >
                             Same as email
                           </label>
                         </div>
@@ -371,7 +458,10 @@ export default function Example() {
                             type="radio"
                             className="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300"
                           />
-                          <label htmlFor="push-nothing" className="ml-3 block text-sm font-medium text-gray-700">
+                          <label
+                            htmlFor="push-nothing"
+                            className="ml-3 block text-sm font-medium text-gray-700"
+                          >
                             No push notifications
                           </label>
                         </div>
@@ -402,5 +492,5 @@ export default function Example() {
         </div>
       </div>
     </form>
-  )
+  );
 }

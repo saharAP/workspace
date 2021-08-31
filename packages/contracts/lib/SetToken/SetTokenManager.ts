@@ -1,11 +1,11 @@
+import Bluebird from "bluebird";
+import { HardhatRuntimeEnvironment } from "hardhat/types";
 import { Address } from "packages/utils/src/types";
 import BasicIssuanceModuleManager from "./BasicIssuanceModuleManager";
 import { Configuration } from "./Configuration";
 import SetTokenCreator from "./SetTokenCreator";
-import Bluebird from "bluebird";
-import getCreatedSetTokenAddress from "./utils/getCreatedSetTokenAddress";
-import { HardhatRuntimeEnvironment } from "hardhat/types";
 import StreamingFeeModuleManager from "./StreamingFeeModuleManager";
+import getCreatedSetTokenAddress from "./utils/getCreatedSetTokenAddress";
 
 export class SetTokenManager {
   constructor(

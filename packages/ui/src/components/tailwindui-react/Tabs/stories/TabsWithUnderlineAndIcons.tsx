@@ -14,19 +14,22 @@
   }
   ```
 */
-import { CreditCardIcon, OfficeBuildingIcon, UserIcon, UsersIcon } from '@heroicons/react/solid'
+import {
+  CreditCardIcon,
+  OfficeBuildingIcon,
+  UserIcon,
+  UsersIcon,
+} from '@heroicons/react/solid';
 
 const tabs = [
-
   { name: 'My Account', href: '#', icon: UserIcon, current: false },
   { name: 'Company', href: '#', icon: OfficeBuildingIcon, current: false },
   { name: 'Team Members', href: '#', icon: UsersIcon, current: true },
   { name: 'Billing', href: '#', icon: CreditCardIcon, current: false },
-
-]
+];
 
 function classNames(...classes) {
-  return classes.filter(Boolean).join(' ')
+  return classes.filter(Boolean).join(' ');
 }
 
 export default function Example() {
@@ -58,14 +61,16 @@ export default function Example() {
                   tab.current
                     ? 'border-indigo-500 text-indigo-600'
                     : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300',
-                  'group inline-flex items-center py-4 px-1 border-b-2 font-medium text-sm'
+                  'group inline-flex items-center py-4 px-1 border-b-2 font-medium text-sm',
                 )}
                 aria-current={tab.current ? 'page' : undefined}
               >
                 <tab.icon
                   className={classNames(
-                    tab.current ? 'text-indigo-500' : 'text-gray-400 group-hover:text-gray-500',
-                    '-ml-0.5 mr-2 h-5 w-5'
+                    tab.current
+                      ? 'text-indigo-500'
+                      : 'text-gray-400 group-hover:text-gray-500',
+                    '-ml-0.5 mr-2 h-5 w-5',
                   )}
                   aria-hidden="true"
                 />
@@ -76,5 +81,5 @@ export default function Example() {
         </div>
       </div>
     </div>
-  )
+  );
 }

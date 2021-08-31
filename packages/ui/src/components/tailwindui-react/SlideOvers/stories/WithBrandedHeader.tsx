@@ -1,14 +1,19 @@
 /* This example requires Tailwind CSS v2.0+ */
-import { Fragment, useState } from 'react'
-import { Dialog, Transition } from '@headlessui/react'
-import { XIcon } from '@heroicons/react/outline'
+import { Dialog, Transition } from '@headlessui/react';
+import { XIcon } from '@heroicons/react/outline';
+import { Fragment, useState } from 'react';
 
 export default function Example() {
-  const [open, setOpen] = useState(true)
+  const [open, setOpen] = useState(true);
 
   return (
     <Transition.Root show={open} as={Fragment}>
-      <Dialog as="div" auto-reopen="true" className="fixed inset-0 overflow-hidden" onClose={setOpen}>
+      <Dialog
+        as="div"
+        auto-reopen="true"
+        className="fixed inset-0 overflow-hidden"
+        onClose={setOpen}
+      >
         <div className="absolute inset-0 overflow-hidden">
           <Dialog.Overlay className="absolute inset-0" />
 
@@ -26,7 +31,9 @@ export default function Example() {
                 <div className="h-full flex flex-col bg-white shadow-xl overflow-y-scroll">
                   <div className="py-6 px-4 bg-indigo-700 sm:px-6">
                     <div className="flex items-center justify-between">
-                      <Dialog.Title className="text-lg font-medium text-white">Panel title</Dialog.Title>
+                      <Dialog.Title className="text-lg font-medium text-white">
+                        Panel title
+                      </Dialog.Title>
                       <div className="ml-3 h-7 flex items-center">
                         <button
                           className="bg-indigo-700 rounded-md text-indigo-200 hover:text-white focus:outline-none focus:ring-2 focus:ring-white"
@@ -39,14 +46,18 @@ export default function Example() {
                     </div>
                     <div className="mt-1">
                       <p className="text-sm text-indigo-300">
-                        Lorem, ipsum dolor sit amet consectetur adipisicing elit aliquam ad hic recusandae soluta.
+                        Lorem, ipsum dolor sit amet consectetur adipisicing elit
+                        aliquam ad hic recusandae soluta.
                       </p>
                     </div>
                   </div>
                   <div className="relative flex-1 py-6 px-4 sm:px-6">
                     {/* Replace with your content */}
                     <div className="absolute inset-0 py-6 px-4 sm:px-6">
-                      <div className="h-full border-2 border-dashed border-gray-200" aria-hidden="true" />
+                      <div
+                        className="h-full border-2 border-dashed border-gray-200"
+                        aria-hidden="true"
+                      />
                     </div>
                     {/* /End replace */}
                   </div>
@@ -57,5 +68,5 @@ export default function Example() {
         </div>
       </Dialog>
     </Transition.Root>
-  )
+  );
 }

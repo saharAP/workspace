@@ -1,6 +1,5 @@
 /* This example requires Tailwind CSS v2.0+ */
 const faqs = [
-
   {
     id: 1,
     question: "What's the best thing about Switzerland?",
@@ -8,8 +7,7 @@ const faqs = [
       "I don't know, but the flag is a big plus. Lorem ipsum dolor sit amet consectetur adipisicing elit. Quas cupiditate laboriosam fugiat.",
   },
   // More questions...
-
-]
+];
 
 export default function Example() {
   return (
@@ -20,8 +18,9 @@ export default function Example() {
             Frequently asked questions
           </h2>
           <p className="mt-4 text-gray-500">
-            Ac euismod vel sit maecenas id pellentesque eu sed consectetur. Malesuada adipiscing sagittis vel nulla nec.
-            Urna, sed a lectus elementum blandit et.
+            Ac euismod vel sit maecenas id pellentesque eu sed consectetur.
+            Malesuada adipiscing sagittis vel nulla nec. Urna, sed a lectus
+            elementum blandit et.
           </p>
         </div>
         <div className="mt-20">
@@ -36,5 +35,5 @@ export default function Example() {
         </div>
       </div>
     </div>
-  )
+  );
 }

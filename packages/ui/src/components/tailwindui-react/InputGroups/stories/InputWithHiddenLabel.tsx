@@ -28,5 +28,5 @@ export default function Example() {
         placeholder="you@example.com"
       />
     </div>
-  )
+  );
 }

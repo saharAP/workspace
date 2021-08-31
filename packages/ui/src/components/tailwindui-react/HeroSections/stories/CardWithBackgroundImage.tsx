@@ -1,6 +1,5 @@
 /* This example requires Tailwind CSS v2.0+ */
-import { Fragment } from 'react'
-import { Popover, Transition } from '@headlessui/react'
+import { Popover, Transition } from '@headlessui/react';
 import {
   AnnotationIcon,
   ChatAlt2Icon,
@@ -8,14 +7,15 @@ import {
   MenuIcon,
   QuestionMarkCircleIcon,
   XIcon,
-} from '@heroicons/react/outline'
-import { ChevronDownIcon } from '@heroicons/react/solid'
+} from '@heroicons/react/outline';
+import { ChevronDownIcon } from '@heroicons/react/solid';
+import { Fragment } from 'react';
 
 const solutions = [
-
   {
     name: 'Inbox',
-    description: 'Get a better understanding of where your traffic is coming from.',
+    description:
+      'Get a better understanding of where your traffic is coming from.',
     href: '#',
     icon: InboxIcon,
   },
@@ -25,25 +25,27 @@ const solutions = [
     href: '#',
     icon: AnnotationIcon,
   },
-  { name: 'Live Chat', description: "Your customers' data will be safe and secure.", href: '#', icon: ChatAlt2Icon },
+  {
+    name: 'Live Chat',
+    description: "Your customers' data will be safe and secure.",
+    href: '#',
+    icon: ChatAlt2Icon,
+  },
   {
     name: 'Knowledge Base',
     description: "Connect with third-party tools that you're already using.",
     href: '#',
     icon: QuestionMarkCircleIcon,
   },
-
-]
+];
 const navigation = [
-
   { name: 'Pricing', href: '#' },
   { name: 'Partners', href: '#' },
   { name: 'Company', href: '#' },
-
-]
+];
 
 function classNames(...classes) {
-  return classes.filter(Boolean).join(' ')
+  return classes.filter(Boolean).join(' ');
 }
 
 export default function Example() {
@@ -75,14 +77,14 @@ export default function Example() {
                     <Popover.Button
                       className={classNames(
                         open ? 'text-gray-900' : 'text-gray-500',
-                        'group bg-white rounded-md inline-flex items-center text-base font-medium hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500'
+                        'group bg-white rounded-md inline-flex items-center text-base font-medium hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500',
                       )}
                     >
                       <span>Solutions</span>
                       <ChevronDownIcon
                         className={classNames(
                           open ? 'text-gray-600' : 'text-gray-400',
-                          'ml-2 h-5 w-5 group-hover:text-gray-500'
+                          'ml-2 h-5 w-5 group-hover:text-gray-500',
                         )}
                         aria-hidden="true"
                       />
@@ -107,11 +109,18 @@ export default function Example() {
                                 className="-m-3 p-3 flex items-start rounded-lg hover:bg-gray-50"
                               >
                                 <div className="flex-shrink-0 flex items-center justify-center h-10 w-10 rounded-md bg-indigo-600 text-white sm:h-12 sm:w-12">
-                                  <item.icon className="h-6 w-6" aria-hidden="true" />
+                                  <item.icon
+                                    className="h-6 w-6"
+                                    aria-hidden="true"
+                                  />
                                 </div>
                                 <div className="ml-4">
-                                  <p className="text-base font-medium text-gray-900">{item.name}</p>
-                                  <p className="mt-1 text-sm text-gray-500">{item.description}</p>
+                                  <p className="text-base font-medium text-gray-900">
+                                    {item.name}
+                                  </p>
+                                  <p className="mt-1 text-sm text-gray-500">
+                                    {item.description}
+                                  </p>
                                 </div>
                               </a>
                             ))}
@@ -124,13 +133,20 @@ export default function Example() {
               </Popover>
 
               {navigation.map((item) => (
-                <a key={item.name} href={item.href} className="text-base font-medium text-gray-500 hover:text-gray-900">
+                <a
+                  key={item.name}
+                  href={item.href}
+                  className="text-base font-medium text-gray-500 hover:text-gray-900"
+                >
                   {item.name}
                 </a>
               ))}
             </Popover.Group>
             <div className="hidden md:flex items-center justify-end md:flex-1 lg:w-0">
-              <a href="#" className="whitespace-nowrap text-base font-medium text-gray-500 hover:text-gray-900">
+              <a
+                href="#"
+                className="whitespace-nowrap text-base font-medium text-gray-500 hover:text-gray-900"
+              >
                 Sign in
               </a>
               <a
@@ -183,7 +199,9 @@ export default function Example() {
                           <div className="flex-shrink-0 flex items-center justify-center h-10 w-10 rounded-md bg-indigo-600 text-white">
                             <item.icon className="h-6 w-6" aria-hidden="true" />
                           </div>
-                          <div className="ml-4 text-base font-medium text-gray-900">{item.name}</div>
+                          <div className="ml-4 text-base font-medium text-gray-900">
+                            {item.name}
+                          </div>
                         </a>
                       ))}
                     </nav>
@@ -239,12 +257,17 @@ export default function Example() {
                 </div>
                 <div className="relative px-4 py-16 sm:px-6 sm:py-24 lg:py-32 lg:px-8">
                   <h1 className="text-center text-4xl font-extrabold tracking-tight sm:text-5xl lg:text-6xl">
-                    <span className="block text-white">Take control of your</span>
-                    <span className="block text-indigo-200">customer support</span>
+                    <span className="block text-white">
+                      Take control of your
+                    </span>
+                    <span className="block text-indigo-200">
+                      customer support
+                    </span>
                   </h1>
                   <p className="mt-6 max-w-lg mx-auto text-center text-xl text-indigo-200 sm:max-w-3xl">
-                    Anim aute id magna aliqua ad ad non deserunt sunt. Qui irure qui lorem cupidatat commodo. Elit sunt
-                    amet fugiat veniam occaecat fugiat aliqua.
+                    Anim aute id magna aliqua ad ad non deserunt sunt. Qui irure
+                    qui lorem cupidatat commodo. Elit sunt amet fugiat veniam
+                    occaecat fugiat aliqua.
                   </p>
                   <div className="mt-10 max-w-sm mx-auto sm:max-w-none sm:flex sm:justify-center">
                     <div className="space-y-4 sm:space-y-0 sm:mx-auto sm:inline-grid sm:grid-cols-2 sm:gap-5">
@@ -275,10 +298,18 @@ export default function Example() {
               </p>
               <div className="mt-6 grid grid-cols-2 gap-8 md:grid-cols-6 lg:grid-cols-5">
                 <div className="col-span-1 flex justify-center md:col-span-2 lg:col-span-1">
-                  <img className="h-12" src="https://tailwindui.com/img/logos/tuple-logo-gray-400.svg" alt="Tuple" />
+                  <img
+                    className="h-12"
+                    src="https://tailwindui.com/img/logos/tuple-logo-gray-400.svg"
+                    alt="Tuple"
+                  />
                 </div>
                 <div className="col-span-1 flex justify-center md:col-span-2 lg:col-span-1">
-                  <img className="h-12" src="https://tailwindui.com/img/logos/mirage-logo-gray-400.svg" alt="Mirage" />
+                  <img
+                    className="h-12"
+                    src="https://tailwindui.com/img/logos/mirage-logo-gray-400.svg"
+                    alt="Mirage"
+                  />
                 </div>
                 <div className="col-span-1 flex justify-center md:col-span-2 lg:col-span-1">
                   <img
@@ -309,5 +340,5 @@ export default function Example() {
         {/* More main page content here... */}
       </main>
     </div>
-  )
+  );
 }

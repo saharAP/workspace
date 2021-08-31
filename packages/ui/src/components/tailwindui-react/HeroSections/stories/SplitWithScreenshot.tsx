@@ -14,7 +14,7 @@
   }
   ```
 */
-import { ChevronRightIcon, StarIcon } from '@heroicons/react/solid'
+import { ChevronRightIcon, StarIcon } from '@heroicons/react/solid';
 
 export default function Example() {
   return (
@@ -46,7 +46,8 @@ export default function Example() {
                   Server management for growing teams
                 </h1>
                 <p className="mt-6 text-xl text-gray-500">
-                  Anim aute id magna aliqua ad ad non deserunt sunt. Qui irure qui lorem cupidatat commodo.
+                  Anim aute id magna aliqua ad ad non deserunt sunt. Qui irure
+                  qui lorem cupidatat commodo.
                 </p>
               </div>
               <form action="#" className="mt-12 sm:max-w-lg sm:w-full sm:flex">
@@ -73,15 +74,35 @@ export default function Example() {
               <div className="mt-6">
                 <div className="inline-flex items-center divide-x divide-gray-300">
                   <div className="flex-shrink-0 flex pr-5">
-                    <StarIcon className="h-5 w-5 text-yellow-400" aria-hidden="true" />
-                    <StarIcon className="h-5 w-5 text-yellow-400" aria-hidden="true" />
-                    <StarIcon className="h-5 w-5 text-yellow-400" aria-hidden="true" />
-                    <StarIcon className="h-5 w-5 text-yellow-400" aria-hidden="true" />
-                    <StarIcon className="h-5 w-5 text-yellow-400" aria-hidden="true" />
+                    <StarIcon
+                      className="h-5 w-5 text-yellow-400"
+                      aria-hidden="true"
+                    />
+                    <StarIcon
+                      className="h-5 w-5 text-yellow-400"
+                      aria-hidden="true"
+                    />
+                    <StarIcon
+                      className="h-5 w-5 text-yellow-400"
+                      aria-hidden="true"
+                    />
+                    <StarIcon
+                      className="h-5 w-5 text-yellow-400"
+                      aria-hidden="true"
+                    />
+                    <StarIcon
+                      className="h-5 w-5 text-yellow-400"
+                      aria-hidden="true"
+                    />
                   </div>
                   <div className="min-w-0 flex-1 pl-5 py-1 text-sm text-gray-500 sm:py-3">
-                    <span className="font-medium text-gray-900">Rated 5 stars</span> by over{' '}
-                    <span className="font-medium text-indigo-600">500 beta users</span>
+                    <span className="font-medium text-gray-900">
+                      Rated 5 stars
+                    </span>{' '}
+                    by over{' '}
+                    <span className="font-medium text-indigo-600">
+                      500 beta users
+                    </span>
                   </div>
                 </div>
               </div>
@@ -109,10 +130,21 @@ export default function Example() {
                     height={20}
                     patternUnits="userSpaceOnUse"
                   >
-                    <rect x={0} y={0} width={4} height={4} className="text-gray-200" fill="currentColor" />
+                    <rect
+                      x={0}
+                      y={0}
+                      width={4}
+                      height={4}
+                      className="text-gray-200"
+                      fill="currentColor"
+                    />
                   </pattern>
                 </defs>
-                <rect width={404} height={392} fill="url(#837c3e70-6c3a-44e6-8854-cc48c737b659)" />
+                <rect
+                  width={404}
+                  height={392}
+                  fill="url(#837c3e70-6c3a-44e6-8854-cc48c737b659)"
+                />
               </svg>
             </div>
             <div className="relative pl-4 -mr-40 sm:mx-auto sm:max-w-3xl sm:px-0 lg:max-w-none lg:h-full lg:pl-12">
@@ -126,5 +158,5 @@ export default function Example() {
         </div>
       </div>
     </div>
-  )
+  );
 }

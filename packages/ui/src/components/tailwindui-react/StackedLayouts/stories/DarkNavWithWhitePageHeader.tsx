@@ -1,13 +1,13 @@
 /* This example requires Tailwind CSS v2.0+ */
-import { Fragment } from 'react'
-import { Disclosure, Menu, Transition } from '@headlessui/react'
-import { BellIcon, MenuIcon, XIcon } from '@heroicons/react/outline'
+import { Disclosure, Menu, Transition } from '@headlessui/react';
+import { BellIcon, MenuIcon, XIcon } from '@heroicons/react/outline';
+import { Fragment } from 'react';
 
-const navigation = ['Dashboard', 'Team', 'Projects', 'Calendar', 'Reports']
-const profile = ['Your Profile', 'Settings', 'Sign out']
+const navigation = ['Dashboard', 'Team', 'Projects', 'Calendar', 'Reports'];
+const profile = ['Your Profile', 'Settings', 'Sign out'];
 
 function classNames(...classes) {
-  return classes.filter(Boolean).join(' ')
+  return classes.filter(Boolean).join(' ');
 }
 
 export default function Example() {
@@ -32,7 +32,10 @@ export default function Example() {
                         itemIdx === 0 ? (
                           <Fragment key={item}>
                             {/* Current: "bg-gray-900 text-white", Default: "text-gray-300 hover:bg-gray-700 hover:text-white" */}
-                            <a href="#" className="bg-gray-900 text-white px-3 py-2 rounded-md text-sm font-medium">
+                            <a
+                              href="#"
+                              className="bg-gray-900 text-white px-3 py-2 rounded-md text-sm font-medium"
+                            >
                               {item}
                             </a>
                           </Fragment>
@@ -44,7 +47,7 @@ export default function Example() {
                           >
                             {item}
                           </a>
-                        )
+                        ),
                       )}
                     </div>
                   </div>
@@ -85,7 +88,7 @@ export default function Example() {
                                   href="#"
                                   className={classNames(
                                     active ? 'bg-gray-100' : '',
-                                    'block px-4 py-2 text-sm text-gray-700'
+                                    'block px-4 py-2 text-sm text-gray-700',
                                   )}
                                 >
                                   {item}
@@ -118,7 +121,10 @@ export default function Example() {
                   itemIdx === 0 ? (
                     <Fragment key={item}>
                       {/* Current: "bg-gray-900 text-white", Default: "text-gray-300 hover:bg-gray-700 hover:text-white" */}
-                      <a href="#" className="bg-gray-900 text-white block px-3 py-2 rounded-md text-base font-medium">
+                      <a
+                        href="#"
+                        className="bg-gray-900 text-white block px-3 py-2 rounded-md text-base font-medium"
+                      >
                         {item}
                       </a>
                     </Fragment>
@@ -130,7 +136,7 @@ export default function Example() {
                     >
                       {item}
                     </a>
-                  )
+                  ),
                 )}
               </div>
               <div className="pt-4 pb-3 border-t border-gray-700">
@@ -143,8 +149,12 @@ export default function Example() {
                     />
                   </div>
                   <div className="ml-3">
-                    <div className="text-base font-medium leading-none text-white">Tom Cook</div>
-                    <div className="text-sm font-medium leading-none text-gray-400">tom@example.com</div>
+                    <div className="text-base font-medium leading-none text-white">
+                      Tom Cook
+                    </div>
+                    <div className="text-sm font-medium leading-none text-gray-400">
+                      tom@example.com
+                    </div>
                   </div>
                   <button className="ml-auto bg-gray-800 flex-shrink-0 p-1 rounded-full text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white">
                     <span className="sr-only">View notifications</span>
@@ -183,5 +193,5 @@ export default function Example() {
         </div>
       </main>
     </div>
-  )
+  );
 }

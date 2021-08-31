@@ -1,9 +1,9 @@
 /* This example requires Tailwind CSS v2.0+ */
-import { Fragment, useState } from 'react'
-import { Transition } from '@headlessui/react'
+import { Transition } from '@headlessui/react';
+import { Fragment, useState } from 'react';
 
 export default function Example() {
-  const [show, setShow] = useState(true)
+  const [show, setShow] = useState(true);
 
   return (
     <>
@@ -27,8 +27,12 @@ export default function Example() {
             <div className="max-w-md w-full bg-white shadow-lg rounded-lg pointer-events-auto flex ring-1 ring-black ring-opacity-5 divide-x divide-gray-200">
               <div className="w-0 flex-1 flex items-center p-4">
                 <div className="w-full">
-                  <p className="text-sm font-medium text-gray-900">Receive notifications</p>
-                  <p className="mt-1 text-sm text-gray-500">Notications may include alerts, sounds, and badges.</p>
+                  <p className="text-sm font-medium text-gray-900">
+                    Receive notifications
+                  </p>
+                  <p className="mt-1 text-sm text-gray-500">
+                    Notications may include alerts, sounds, and badges.
+                  </p>
                 </div>
               </div>
               <div className="flex">
@@ -37,7 +41,7 @@ export default function Example() {
                     <button
                       className="w-full border border-transparent rounded-none rounded-tr-lg px-4 py-3 flex items-center justify-center text-sm font-medium text-indigo-600 hover:text-indigo-500 focus:outline-none focus:z-10 focus:ring-2 focus:ring-indigo-500"
                       onClick={() => {
-                        setShow(false)
+                        setShow(false);
                       }}
                     >
                       Reply
@@ -47,7 +51,7 @@ export default function Example() {
                     <button
                       className="w-full border border-transparent rounded-none rounded-br-lg px-4 py-3 flex items-center justify-center text-sm font-medium text-gray-700 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500"
                       onClick={() => {
-                        setShow(false)
+                        setShow(false);
                       }}
                     >
                       Don't allow
@@ -60,5 +64,5 @@ export default function Example() {
         </div>
       </div>
     </>
-  )
+  );
 }

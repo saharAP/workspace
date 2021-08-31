@@ -1,12 +1,10 @@
-import React, { useContext, useEffect } from 'react';
-import { createContext, useState } from 'react';
-
-import { ContractsContext } from './contracts';
-import { GrantElections } from '@popcorn/contracts/typechain';
 import {
   ElectionMetadata,
   GrantElectionAdapter,
 } from '@popcorn/contracts/adapters';
+import { GrantElections } from '@popcorn/contracts/typechain';
+import React, { createContext, useContext, useEffect, useState } from 'react';
+import { ContractsContext } from './contracts';
 
 interface ElectionsContext {
   elections: ElectionMetadata[];

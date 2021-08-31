@@ -1,5 +1,10 @@
 /* This example requires Tailwind CSS v2.0+ */
-import { AnnotationIcon, PaperClipIcon, PencilIcon, TrashIcon } from '@heroicons/react/solid'
+import {
+  AnnotationIcon,
+  PaperClipIcon,
+  PencilIcon,
+  TrashIcon,
+} from '@heroicons/react/solid';
 
 export default function Example() {
   return (
@@ -40,5 +45,5 @@ export default function Example() {
         </span>
       </div>
     </div>
-  )
+  );
 }

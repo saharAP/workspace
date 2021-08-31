@@ -1,8 +1,8 @@
-import React from 'react';
 import { FormStepProps } from 'pages/proposals/propose';
-import ControlledTextInput from './ControlledTextInput';
+import React from 'react';
 import inputExists from 'utils/isValidInput';
 import ContinueButton from './ContinueButton';
+import ControlledTextInput from './ControlledTextInput';
 
 export default function ProjectName({
   form,

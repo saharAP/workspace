@@ -1,11 +1,19 @@
 /* This example requires Tailwind CSS v2.0+ */
 const people = [
-
-  { name: 'Jane Cooper', title: 'Regional Paradigm Technician', role: 'Admin', email: 'jane.cooper@example.com' },
-  { name: 'Cody Fisher', title: 'Product Directives Officer', role: 'Owner', email: 'cody.fisher@example.com' },
+  {
+    name: 'Jane Cooper',
+    title: 'Regional Paradigm Technician',
+    role: 'Admin',
+    email: 'jane.cooper@example.com',
+  },
+  {
+    name: 'Cody Fisher',
+    title: 'Product Directives Officer',
+    role: 'Owner',
+    email: 'cody.fisher@example.com',
+  },
   // More people...
-
-]
+];
 
 export default function Example() {
   return (
@@ -47,13 +55,27 @@ export default function Example() {
               </thead>
               <tbody>
                 {people.map((person, personIdx) => (
-                  <tr key={person.email} className={personIdx % 2 === 0 ? 'bg-white' : 'bg-gray-50'}>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{person.name}</td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{person.title}</td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{person.email}</td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{person.role}</td>
+                  <tr
+                    key={person.email}
+                    className={personIdx % 2 === 0 ? 'bg-white' : 'bg-gray-50'}
+                  >
+                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                      {person.name}
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                      {person.title}
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                      {person.email}
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                      {person.role}
+                    </td>
                     <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                      <a href="#" className="text-indigo-600 hover:text-indigo-900">
+                      <a
+                        href="#"
+                        className="text-indigo-600 hover:text-indigo-900"
+                      >
                         Edit
                       </a>
                     </td>
@@ -65,5 +87,5 @@ export default function Example() {
         </div>
       </div>
     </div>
-  )
+  );
 }

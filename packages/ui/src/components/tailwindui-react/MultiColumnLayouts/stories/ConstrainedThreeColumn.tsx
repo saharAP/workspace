@@ -14,21 +14,27 @@
   }
   ```
 */
-import { Fragment } from 'react'
-import { Disclosure, Menu, Transition } from '@headlessui/react'
-import { SearchIcon } from '@heroicons/react/solid'
-import { MenuAlt1Icon, XIcon } from '@heroicons/react/outline'
+import { Disclosure, Menu, Transition } from '@headlessui/react';
+import { MenuAlt1Icon, XIcon } from '@heroicons/react/outline';
+import { SearchIcon } from '@heroicons/react/solid';
+import { Fragment } from 'react';
 
 function classNames(...classes) {
-  return classes.filter(Boolean).join(' ')
+  return classes.filter(Boolean).join(' ');
 }
 
 export default function Example() {
   return (
     <>
       {/* Background color split screen for large screens */}
-      <div className="fixed top-0 left-0 w-1/2 h-full bg-white" aria-hidden="true" />
-      <div className="fixed top-0 right-0 w-1/2 h-full bg-gray-50" aria-hidden="true" />
+      <div
+        className="fixed top-0 left-0 w-1/2 h-full bg-white"
+        aria-hidden="true"
+      />
+      <div
+        className="fixed top-0 right-0 w-1/2 h-full bg-gray-50"
+        aria-hidden="true"
+      />
       <div className="relative min-h-screen flex flex-col">
         {/* Navbar */}
         <Disclosure as="nav" className="flex-shrink-0 bg-indigo-600">
@@ -74,7 +80,10 @@ export default function Example() {
                       {open ? (
                         <XIcon className="block h-6 w-6" aria-hidden="true" />
                       ) : (
-                        <MenuAlt1Icon className="block h-6 w-6" aria-hidden="true" />
+                        <MenuAlt1Icon
+                          className="block h-6 w-6"
+                          aria-hidden="true"
+                        />
                       )}
                     </Disclosure.Button>
                   </div>
@@ -123,7 +132,7 @@ export default function Example() {
                                   href="#"
                                   className={classNames(
                                     active ? 'bg-gray-100' : '',
-                                    'block px-4 py-2 text-sm text-gray-700'
+                                    'block px-4 py-2 text-sm text-gray-700',
                                   )}
                                 >
                                   View Profile
@@ -136,7 +145,7 @@ export default function Example() {
                                   href="#"
                                   className={classNames(
                                     active ? 'bg-gray-100' : '',
-                                    'block px-4 py-2 text-sm text-gray-700'
+                                    'block px-4 py-2 text-sm text-gray-700',
                                   )}
                                 >
                                   Settings
@@ -149,7 +158,7 @@ export default function Example() {
                                   href="#"
                                   className={classNames(
                                     active ? 'bg-gray-100' : '',
-                                    'block px-4 py-2 text-sm text-gray-700'
+                                    'block px-4 py-2 text-sm text-gray-700',
                                   )}
                                 >
                                   Logout
@@ -166,7 +175,10 @@ export default function Example() {
 
               <Disclosure.Panel className="lg:hidden">
                 <div className="px-2 pt-2 pb-3">
-                  <a href="#" className="block px-3 py-2 rounded-md text-base font-medium text-white bg-indigo-800">
+                  <a
+                    href="#"
+                    className="block px-3 py-2 rounded-md text-base font-medium text-white bg-indigo-800"
+                  >
                     Dashboard
                   </a>
                   <a
@@ -240,5 +252,5 @@ export default function Example() {
         </div>
       </div>
     </>
-  )
+  );
 }

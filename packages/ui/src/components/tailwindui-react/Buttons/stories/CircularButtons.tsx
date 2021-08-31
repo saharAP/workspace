@@ -1,6 +1,6 @@
 /* This example requires Tailwind CSS v2.0+ */
-import { PlusIcon as PlusIconSolid } from '@heroicons/react/solid'
-import { PlusIcon as PlusIconOutline } from '@heroicons/react/outline'
+import { PlusIcon as PlusIconOutline } from '@heroicons/react/outline';
+import { PlusIcon as PlusIconSolid } from '@heroicons/react/solid';
 
 export default function Example() {
   return (
@@ -36,5 +36,5 @@ export default function Example() {
         <PlusIconOutline className="h-6 w-6" aria-hidden="true" />
       </button>
     </>
-  )
+  );
 }

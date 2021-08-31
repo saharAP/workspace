@@ -1,8 +1,7 @@
-import React, { useEffect } from 'react';
 import Head from 'next/head';
+import React, { useEffect } from 'react';
 import { StateProvider } from '../context/store';
 import '../styles/globals.css';
-
 
 export default function DashboardApp(props) {
   const { Component, pageProps } = props;
@@ -31,7 +30,7 @@ export default function DashboardApp(props) {
         ></link>
       </Head>
       <StateProvider>
-          <Component {...pageProps} />
+        <Component {...pageProps} />
       </StateProvider>
     </React.Fragment>
   );

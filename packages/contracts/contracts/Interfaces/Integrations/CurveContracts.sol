@@ -6,4 +6,5 @@ import "./CurveRegistry.sol";
 import "./CurveMetapool.sol";
 
 interface ThreeCrv is IERC20 {}
+
 interface CrvLPToken is IERC20 {}

@@ -17,7 +17,10 @@
 export default function Example() {
   return (
     <div>
-      <label htmlFor="location" className="block text-sm font-medium text-gray-700">
+      <label
+        htmlFor="location"
+        className="block text-sm font-medium text-gray-700"
+      >
         Location
       </label>
       <select
@@ -31,5 +34,5 @@ export default function Example() {
         <option>EU</option>
       </select>
     </div>
-  )
+  );
 }

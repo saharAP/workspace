@@ -15,7 +15,6 @@
   ```
 */
 const announcements = [
-
   {
     id: 1,
     title: 'Office closed on July 2nd',
@@ -34,8 +33,7 @@ const announcements = [
     preview:
       'Tenetur libero voluptatem rerum occaecati qui est molestiae exercitationem. Voluptate quisquam iure assumenda consequatur ex et recusandae. Alias consectetur voluptatibus. Accusamus a ab dicta et. Consequatur quis dignissimos voluptatem nisi.',
   },
-
-]
+];
 
 export default function Example() {
   return (
@@ -52,7 +50,9 @@ export default function Example() {
                     {announcement.title}
                   </a>
                 </h3>
-                <p className="mt-1 text-sm text-gray-600 line-clamp-2">{announcement.preview}</p>
+                <p className="mt-1 text-sm text-gray-600 line-clamp-2">
+                  {announcement.preview}
+                </p>
               </div>
             </li>
           ))}
@@ -67,5 +67,5 @@ export default function Example() {
         </a>
       </div>
     </div>
-  )
+  );
 }

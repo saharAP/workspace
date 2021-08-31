@@ -17,7 +17,10 @@
 export default function Example() {
   return (
     <div>
-      <label htmlFor="search" className="block text-sm font-medium text-gray-700">
+      <label
+        htmlFor="search"
+        className="block text-sm font-medium text-gray-700"
+      >
         Quick search
       </label>
       <div className="mt-1 relative flex items-center">
@@ -34,5 +37,5 @@ export default function Example() {
         </div>
       </div>
     </div>
-  )
+  );
 }

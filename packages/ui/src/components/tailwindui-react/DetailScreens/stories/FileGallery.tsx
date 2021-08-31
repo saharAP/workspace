@@ -15,8 +15,7 @@
   }
   ```
 */
-import { Fragment, useState } from 'react'
-import { Dialog, Menu, Transition } from '@headlessui/react'
+import { Dialog, Menu, Transition } from '@headlessui/react';
 import {
   CogIcon,
   CollectionIcon,
@@ -28,40 +27,34 @@ import {
   UserGroupIcon,
   ViewGridIcon as ViewGridIconOutline,
   XIcon,
-} from '@heroicons/react/outline'
+} from '@heroicons/react/outline';
 import {
   PencilIcon,
   PlusIcon as PlusIconSolid,
   SearchIcon,
   ViewGridIcon as ViewGridIconSolid,
   ViewListIcon,
-} from '@heroicons/react/solid'
+} from '@heroicons/react/solid';
+import { Fragment, useState } from 'react';
 
 const navigation = [
-
   { name: 'Home', href: '#', icon: HomeIcon, current: false },
   { name: 'All Files', href: '#', icon: ViewGridIconOutline, current: false },
   { name: 'Photos', href: '#', icon: PhotographIcon, current: true },
   { name: 'Shared', href: '#', icon: UserGroupIcon, current: false },
   { name: 'Albums', href: '#', icon: CollectionIcon, current: false },
   { name: 'Settings', href: '#', icon: CogIcon, current: false },
-
-]
+];
 const userNavigation = [
-
   { name: 'Your profile', href: '#' },
   { name: 'Sign out', href: '#' },
-
-]
+];
 const tabs = [
-
   { name: 'Recently Viewed', href: '#', current: true },
   { name: 'Recently Added', href: '#', current: false },
   { name: 'Favorited', href: '#', current: false },
-
-]
+];
 const files = [
-
   {
     name: 'IMG_4985.HEIC',
     size: '3.9 MB',
@@ -70,10 +63,8 @@ const files = [
     current: true,
   },
   // More files...
-
-]
+];
 const currentFile = {
-
   name: 'IMG_4985.HEIC',
   size: '3.9 MB',
   source:
@@ -99,15 +90,14 @@ const currentFile = {
         'https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixqx=oilqXxSqey&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
     },
   ],
-
-}
+};
 
 function classNames(...classes) {
-  return classes.filter(Boolean).join(' ')
+  return classes.filter(Boolean).join(' ');
 }
 
 export default function Example() {
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   return (
     <div className="relative h-screen bg-gray-50 flex overflow-hidden">
@@ -127,15 +117,19 @@ export default function Example() {
                 key={item.name}
                 href={item.href}
                 className={classNames(
-                  item.current ? 'bg-indigo-800 text-white' : 'text-indigo-100 hover:bg-indigo-800 hover:text-white',
-                  'group w-full p-3 rounded-md flex flex-col items-center text-xs font-medium'
+                  item.current
+                    ? 'bg-indigo-800 text-white'
+                    : 'text-indigo-100 hover:bg-indigo-800 hover:text-white',
+                  'group w-full p-3 rounded-md flex flex-col items-center text-xs font-medium',
                 )}
                 aria-current={item.current ? 'page' : undefined}
               >
                 <item.icon
                   className={classNames(
-                    item.current ? 'text-white' : 'text-indigo-300 group-hover:text-white',
-                    'h-6 w-6'
+                    item.current
+                      ? 'text-white'
+                      : 'text-indigo-300 group-hover:text-white',
+                    'h-6 w-6',
                   )}
                   aria-hidden="true"
                 />
@@ -148,7 +142,11 @@ export default function Example() {
 
       {/* Mobile menu */}
       <Transition.Root show={mobileMenuOpen} as={Fragment}>
-        <Dialog as="div" className="fixed inset-0 z-40 flex md:hidden" onClose={setMobileMenuOpen}>
+        <Dialog
+          as="div"
+          className="fixed inset-0 z-40 flex md:hidden"
+          onClose={setMobileMenuOpen}
+        >
           <Transition.Child
             as={Fragment}
             enter="transition-opacity ease-linear duration-300"
@@ -208,14 +206,16 @@ export default function Example() {
                           item.current
                             ? 'bg-indigo-800 text-white'
                             : 'text-indigo-100 hover:bg-indigo-800 hover:text-white',
-                          'group py-2 px-3 rounded-md flex items-center text-sm font-medium'
+                          'group py-2 px-3 rounded-md flex items-center text-sm font-medium',
                         )}
                         aria-current={item.current ? 'page' : undefined}
                       >
                         <item.icon
                           className={classNames(
-                            item.current ? 'text-white' : 'text-indigo-300 group-hover:text-white',
-                            'mr-3 h-6 w-6'
+                            item.current
+                              ? 'text-white'
+                              : 'text-indigo-300 group-hover:text-white',
+                            'mr-3 h-6 w-6',
                           )}
                           aria-hidden="true"
                         />
@@ -253,7 +253,10 @@ export default function Example() {
                   </label>
                   <div className="relative w-full text-gray-400 focus-within:text-gray-600">
                     <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center">
-                      <SearchIcon className="flex-shrink-0 h-5 w-5" aria-hidden="true" />
+                      <SearchIcon
+                        className="flex-shrink-0 h-5 w-5"
+                        aria-hidden="true"
+                      />
                     </div>
                     <input
                       name="search-field"
@@ -302,7 +305,7 @@ export default function Example() {
                               href={item.href}
                               className={classNames(
                                 active ? 'bg-gray-100' : '',
-                                'block px-4 py-2 text-sm text-gray-700'
+                                'block px-4 py-2 text-sm text-gray-700',
                               )}
                             >
                               {item.name}
@@ -331,7 +334,9 @@ export default function Example() {
           <main className="flex-1 overflow-y-auto">
             <div className="pt-8 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
               <div className="flex">
-                <h1 className="flex-1 text-2xl font-bold text-gray-900">Photos</h1>
+                <h1 className="flex-1 text-2xl font-bold text-gray-900">
+                  Photos
+                </h1>
                 <div className="ml-6 bg-gray-100 p-0.5 rounded-lg flex items-center sm:hidden">
                   <button
                     type="button"
@@ -369,7 +374,10 @@ export default function Example() {
                 </div>
                 <div className="hidden sm:block">
                   <div className="flex items-center border-b border-gray-200">
-                    <nav className="flex-1 -mb-px flex space-x-6 xl:space-x-8" aria-label="Tabs">
+                    <nav
+                      className="flex-1 -mb-px flex space-x-6 xl:space-x-8"
+                      aria-label="Tabs"
+                    >
                       {tabs.map((tab) => (
                         <a
                           key={tab.name}
@@ -379,7 +387,7 @@ export default function Example() {
                             tab.current
                               ? 'border-indigo-500 text-indigo-600'
                               : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300',
-                            'whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm'
+                            'whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm',
                           )}
                         >
                           {tab.name}
@@ -398,7 +406,10 @@ export default function Example() {
                         type="button"
                         className="ml-0.5 bg-white p-1.5 rounded-md shadow-sm text-gray-400 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500"
                       >
-                        <ViewGridIconSolid className="h-5 w-5" aria-hidden="true" />
+                        <ViewGridIconSolid
+                          className="h-5 w-5"
+                          aria-hidden="true"
+                        />
                         <span className="sr-only">Use grid view</span>
                       </button>
                     </div>
@@ -422,7 +433,7 @@ export default function Example() {
                           file.current
                             ? 'ring-2 ring-offset-2 ring-indigo-500'
                             : 'focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-offset-gray-100 focus-within:ring-indigo-500',
-                          'group block w-full aspect-w-10 aspect-h-7 rounded-lg bg-gray-100 overflow-hidden'
+                          'group block w-full aspect-w-10 aspect-h-7 rounded-lg bg-gray-100 overflow-hidden',
                         )}
                       >
                         <img
@@ -430,17 +441,24 @@ export default function Example() {
                           alt=""
                           className={classNames(
                             file.current ? '' : 'group-hover:opacity-75',
-                            'object-cover pointer-events-none'
+                            'object-cover pointer-events-none',
                           )}
                         />
-                        <button type="button" className="absolute inset-0 focus:outline-none">
-                          <span className="sr-only">View details for {file.name}</span>
+                        <button
+                          type="button"
+                          className="absolute inset-0 focus:outline-none"
+                        >
+                          <span className="sr-only">
+                            View details for {file.name}
+                          </span>
                         </button>
                       </div>
                       <p className="mt-2 block text-sm font-medium text-gray-900 truncate pointer-events-none">
                         {file.name}
                       </p>
-                      <p className="block text-sm font-medium text-gray-500 pointer-events-none">{file.size}</p>
+                      <p className="block text-sm font-medium text-gray-500 pointer-events-none">
+                        {file.size}
+                      </p>
                     </li>
                   ))}
                 </ul>
@@ -453,7 +471,11 @@ export default function Example() {
             <div className="pb-16 space-y-6">
               <div>
                 <div className="block w-full aspect-w-10 aspect-h-7 rounded-lg overflow-hidden">
-                  <img src={currentFile.source} alt="" className="object-cover" />
+                  <img
+                    src={currentFile.source}
+                    alt=""
+                    className="object-cover"
+                  />
                 </div>
                 <div className="mt-4 flex items-start justify-between">
                   <div>
@@ -461,7 +483,9 @@ export default function Example() {
                       <span className="sr-only">Details for </span>
                       {currentFile.name}
                     </h2>
-                    <p className="text-sm font-medium text-gray-500">{currentFile.size}</p>
+                    <p className="text-sm font-medium text-gray-500">
+                      {currentFile.size}
+                    </p>
                   </div>
                   <button
                     type="button"
@@ -476,9 +500,14 @@ export default function Example() {
                 <h3 className="font-medium text-gray-900">Information</h3>
                 <dl className="mt-2 border-t border-b border-gray-200 divide-y divide-gray-200">
                   {Object.keys(currentFile.information).map((key) => (
-                    <div key={key} className="py-3 flex justify-between text-sm font-medium">
+                    <div
+                      key={key}
+                      className="py-3 flex justify-between text-sm font-medium"
+                    >
                       <dt className="text-gray-500">{key}</dt>
-                      <dd className="text-gray-900">{currentFile.information[key]}</dd>
+                      <dd className="text-gray-900">
+                        {currentFile.information[key]}
+                      </dd>
                     </div>
                   ))}
                 </dl>
@@ -486,7 +515,9 @@ export default function Example() {
               <div>
                 <h3 className="font-medium text-gray-900">Description</h3>
                 <div className="mt-2 flex items-center justify-between">
-                  <p className="text-sm text-gray-500 italic">Add a description to this image.</p>
+                  <p className="text-sm text-gray-500 italic">
+                    Add a description to this image.
+                  </p>
                   <button
                     type="button"
                     className="bg-white rounded-full h-8 w-8 flex items-center justify-center text-gray-400 hover:bg-gray-100 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500"
@@ -500,10 +531,19 @@ export default function Example() {
                 <h3 className="font-medium text-gray-900">Shared with</h3>
                 <ul className="mt-2 border-t border-b border-gray-200 divide-y divide-gray-200">
                   {currentFile.sharedWith.map((person) => (
-                    <li key={person.id} className="py-3 flex justify-between items-center">
+                    <li
+                      key={person.id}
+                      className="py-3 flex justify-between items-center"
+                    >
                       <div className="flex items-center">
-                        <img src={person.imageUrl} alt="" className="w-8 h-8 rounded-full" />
-                        <p className="ml-4 text-sm font-medium text-gray-900">{person.name}</p>
+                        <img
+                          src={person.imageUrl}
+                          alt=""
+                          className="w-8 h-8 rounded-full"
+                        />
+                        <p className="ml-4 text-sm font-medium text-gray-900">
+                          {person.name}
+                        </p>
                       </div>
                       <button
                         type="button"
@@ -547,5 +587,5 @@ export default function Example() {
         </div>
       </div>
     </div>
-  )
+  );
 }

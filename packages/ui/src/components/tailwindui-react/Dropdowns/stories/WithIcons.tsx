@@ -1,6 +1,5 @@
 /* This example requires Tailwind CSS v2.0+ */
-import { Fragment } from 'react'
-import { Menu, Transition } from '@headlessui/react'
+import { Menu, Transition } from '@headlessui/react';
 import {
   ArchiveIcon,
   ArrowCircleRightIcon,
@@ -10,10 +9,11 @@ import {
   PencilAltIcon,
   TrashIcon,
   UserAddIcon,
-} from '@heroicons/react/solid'
+} from '@heroicons/react/solid';
+import { Fragment } from 'react';
 
 function classNames(...classes) {
-  return classes.filter(Boolean).join(' ')
+  return classes.filter(Boolean).join(' ');
 }
 
 export default function Example() {
@@ -43,10 +43,13 @@ export default function Example() {
                   href="#"
                   className={classNames(
                     active ? 'bg-gray-100 text-gray-900' : 'text-gray-700',
-                    'group flex items-center px-4 py-2 text-sm'
+                    'group flex items-center px-4 py-2 text-sm',
                   )}
                 >
-                  <PencilAltIcon className="mr-3 h-5 w-5 text-gray-400 group-hover:text-gray-500" aria-hidden="true" />
+                  <PencilAltIcon
+                    className="mr-3 h-5 w-5 text-gray-400 group-hover:text-gray-500"
+                    aria-hidden="true"
+                  />
                   Edit
                 </a>
               )}
@@ -57,10 +60,13 @@ export default function Example() {
                   href="#"
                   className={classNames(
                     active ? 'bg-gray-100 text-gray-900' : 'text-gray-700',
-                    'group flex items-center px-4 py-2 text-sm'
+                    'group flex items-center px-4 py-2 text-sm',
                   )}
                 >
-                  <DuplicateIcon className="mr-3 h-5 w-5 text-gray-400 group-hover:text-gray-500" aria-hidden="true" />
+                  <DuplicateIcon
+                    className="mr-3 h-5 w-5 text-gray-400 group-hover:text-gray-500"
+                    aria-hidden="true"
+                  />
                   Duplicate
                 </a>
               )}
@@ -73,10 +79,13 @@ export default function Example() {
                   href="#"
                   className={classNames(
                     active ? 'bg-gray-100 text-gray-900' : 'text-gray-700',
-                    'group flex items-center px-4 py-2 text-sm'
+                    'group flex items-center px-4 py-2 text-sm',
                   )}
                 >
-                  <ArchiveIcon className="mr-3 h-5 w-5 text-gray-400 group-hover:text-gray-500" aria-hidden="true" />
+                  <ArchiveIcon
+                    className="mr-3 h-5 w-5 text-gray-400 group-hover:text-gray-500"
+                    aria-hidden="true"
+                  />
                   Archive
                 </a>
               )}
@@ -87,7 +96,7 @@ export default function Example() {
                   href="#"
                   className={classNames(
                     active ? 'bg-gray-100 text-gray-900' : 'text-gray-700',
-                    'group flex items-center px-4 py-2 text-sm'
+                    'group flex items-center px-4 py-2 text-sm',
                   )}
                 >
                   <ArrowCircleRightIcon
@@ -106,10 +115,13 @@ export default function Example() {
                   href="#"
                   className={classNames(
                     active ? 'bg-gray-100 text-gray-900' : 'text-gray-700',
-                    'group flex items-center px-4 py-2 text-sm'
+                    'group flex items-center px-4 py-2 text-sm',
                   )}
                 >
-                  <UserAddIcon className="mr-3 h-5 w-5 text-gray-400 group-hover:text-gray-500" aria-hidden="true" />
+                  <UserAddIcon
+                    className="mr-3 h-5 w-5 text-gray-400 group-hover:text-gray-500"
+                    aria-hidden="true"
+                  />
                   Share
                 </a>
               )}
@@ -120,10 +132,13 @@ export default function Example() {
                   href="#"
                   className={classNames(
                     active ? 'bg-gray-100 text-gray-900' : 'text-gray-700',
-                    'group flex items-center px-4 py-2 text-sm'
+                    'group flex items-center px-4 py-2 text-sm',
                   )}
                 >
-                  <HeartIcon className="mr-3 h-5 w-5 text-gray-400 group-hover:text-gray-500" aria-hidden="true" />
+                  <HeartIcon
+                    className="mr-3 h-5 w-5 text-gray-400 group-hover:text-gray-500"
+                    aria-hidden="true"
+                  />
                   Add to favorites
                 </a>
               )}
@@ -136,10 +151,13 @@ export default function Example() {
                   href="#"
                   className={classNames(
                     active ? 'bg-gray-100 text-gray-900' : 'text-gray-700',
-                    'group flex items-center px-4 py-2 text-sm'
+                    'group flex items-center px-4 py-2 text-sm',
                   )}
                 >
-                  <TrashIcon className="mr-3 h-5 w-5 text-gray-400 group-hover:text-gray-500" aria-hidden="true" />
+                  <TrashIcon
+                    className="mr-3 h-5 w-5 text-gray-400 group-hover:text-gray-500"
+                    aria-hidden="true"
+                  />
                   Delete
                 </a>
               )}
@@ -148,5 +166,5 @@ export default function Example() {
         </Menu.Items>
       </Transition>
     </Menu>
-  )
+  );
 }

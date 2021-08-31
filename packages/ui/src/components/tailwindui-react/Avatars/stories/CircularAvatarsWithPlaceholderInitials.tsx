@@ -22,5 +22,5 @@ export default function Example() {
         <span className="text-xl font-medium leading-none text-white">TW</span>
       </span>
     </>
-  )
+  );
 }

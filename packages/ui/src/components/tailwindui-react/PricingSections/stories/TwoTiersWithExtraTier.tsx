@@ -1,8 +1,7 @@
 /* This example requires Tailwind CSS v2.0+ */
-import { CheckIcon } from '@heroicons/react/outline'
+import { CheckIcon } from '@heroicons/react/outline';
 
 const tiers = [
-
   {
     name: 'Standard',
     href: '#',
@@ -27,8 +26,7 @@ const tiers = [
       'Itaque cupiditate adipisci quibusdam',
     ],
   },
-
-]
+];
 
 export default function Example() {
   return (
@@ -36,12 +34,15 @@ export default function Example() {
       <div className="pt-12 sm:pt-16 lg:pt-24">
         <div className="max-w-7xl mx-auto text-center px-4 sm:px-6 lg:px-8">
           <div className="max-w-3xl mx-auto space-y-2 lg:max-w-none">
-            <h2 className="text-lg leading-6 font-semibold text-gray-300 uppercase tracking-wider">Pricing</h2>
+            <h2 className="text-lg leading-6 font-semibold text-gray-300 uppercase tracking-wider">
+              Pricing
+            </h2>
             <p className="text-3xl font-extrabold text-white sm:text-4xl lg:text-5xl">
               The right price for you, whoever you are
             </p>
             <p className="text-xl text-gray-300">
-              Lorem ipsum dolor, sit amet consectetur adipisicing elit. Harum sequi unde repudiandae natus.
+              Lorem ipsum dolor, sit amet consectetur adipisicing elit. Harum
+              sequi unde repudiandae natus.
             </p>
           </div>
         </div>
@@ -52,7 +53,10 @@ export default function Example() {
           <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="max-w-md mx-auto space-y-4 lg:max-w-5xl lg:grid lg:grid-cols-2 lg:gap-5 lg:space-y-0">
               {tiers.map((tier) => (
-                <div key={tier.name} className="flex flex-col rounded-lg shadow-lg overflow-hidden">
+                <div
+                  key={tier.name}
+                  className="flex flex-col rounded-lg shadow-lg overflow-hidden"
+                >
                   <div className="px-6 py-8 bg-white sm:p-10 sm:pb-6">
                     <div>
                       <h3
@@ -64,18 +68,27 @@ export default function Example() {
                     </div>
                     <div className="mt-4 flex items-baseline text-6xl font-extrabold">
                       ${tier.priceMonthly}
-                      <span className="ml-1 text-2xl font-medium text-gray-500">/mo</span>
+                      <span className="ml-1 text-2xl font-medium text-gray-500">
+                        /mo
+                      </span>
                     </div>
-                    <p className="mt-5 text-lg text-gray-500">{tier.description}</p>
+                    <p className="mt-5 text-lg text-gray-500">
+                      {tier.description}
+                    </p>
                   </div>
                   <div className="flex-1 flex flex-col justify-between px-6 pt-6 pb-8 bg-gray-50 space-y-6 sm:p-10 sm:pt-6">
                     <ul className="space-y-4">
                       {tier.features.map((feature) => (
                         <li key={feature} className="flex items-start">
                           <div className="flex-shrink-0">
-                            <CheckIcon className="h-6 w-6 text-green-500" aria-hidden="true" />
+                            <CheckIcon
+                              className="h-6 w-6 text-green-500"
+                              aria-hidden="true"
+                            />
                           </div>
-                          <p className="ml-3 text-base text-gray-700">{feature}</p>
+                          <p className="ml-3 text-base text-gray-700">
+                            {feature}
+                          </p>
                         </li>
                       ))}
                     </ul>
@@ -104,8 +117,9 @@ export default function Example() {
                   </h3>
                 </div>
                 <div className="mt-4 text-lg text-gray-600">
-                  Get full access to all of standard license features for solo projects that make less than $20k gross
-                  revenue for <span className="font-semibold text-gray-900">$29</span>.
+                  Get full access to all of standard license features for solo
+                  projects that make less than $20k gross revenue for{' '}
+                  <span className="font-semibold text-gray-900">$29</span>.
                 </div>
               </div>
               <div className="mt-6 rounded-md shadow lg:mt-0 lg:ml-10 lg:flex-shrink-0">
@@ -121,5 +135,5 @@ export default function Example() {
         </div>
       </div>
     </div>
-  )
+  );
 }

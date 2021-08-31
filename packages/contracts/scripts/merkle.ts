@@ -11,12 +11,12 @@ export const merklize = function (elements) {
 
 export const makeElement = function (who, amount) {
   return Buffer.from(
-    solidityKeccak256(['address', 'uint256'], [who, amount]).replace(/^0x/, ""),
+    solidityKeccak256(["address", "uint256"], [who, amount]).replace(/^0x/, ""),
     "hex"
   );
 };
 
-export const generateClaims = function (accounts:string[]) {
+export const generateClaims = function (accounts: string[]) {
   let claims = {};
   let split = parseEther("100").div(accounts.length).toString();
   accounts.forEach((address, i) => (claims[address] = String(split)));

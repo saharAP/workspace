@@ -23,42 +23,33 @@
   }
   ```
 */
-import { Fragment, useState } from 'react'
-import { Disclosure, Menu, RadioGroup, Transition } from '@headlessui/react'
-import { HomeIcon, PlusIcon, SearchIcon } from '@heroicons/react/solid'
-import { BellIcon, MenuIcon, XIcon } from '@heroicons/react/outline'
+import { Disclosure, Menu, RadioGroup, Transition } from '@headlessui/react';
+import { BellIcon, MenuIcon, XIcon } from '@heroicons/react/outline';
+import { HomeIcon, PlusIcon, SearchIcon } from '@heroicons/react/solid';
+import { Fragment, useState } from 'react';
 
 const user = {
-
   name: 'Floyd Miles',
   email: 'floydmiles@example.com',
   imageUrl:
     'https://images.unsplash.com/photo-1463453091185-61582044d556?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
-
-}
+};
 const navigation = [
-
   { name: 'Dashboard', href: '#' },
   { name: 'Jobs', href: '#' },
   { name: 'Applicants', href: '#' },
   { name: 'Company', href: '#' },
-
-]
+];
 const breadcrumbs = [
-
   { name: 'Projects', href: '#', current: false },
   { name: 'Project Nero', href: '#', current: true },
-
-]
+];
 const userNavigation = [
-
   { name: 'Your Profile', href: '#' },
   { name: 'Settings', href: '#' },
   { name: 'Sign out', href: '#' },
-
-]
+];
 const team = [
-
   {
     name: 'Calvin Hawkins',
     email: 'calvin.hawkins@example.com',
@@ -77,22 +68,28 @@ const team = [
     imageUrl:
       'https://images.unsplash.com/photo-1531427186611-ecfd6d936c79?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
   },
-
-]
+];
 const settings = [
-
-  { name: 'Public access', description: 'This project would be available to anyone who has the link' },
-  { name: 'Private to Project Members', description: 'Only members of this project would be able to access' },
-  { name: 'Private to you', description: 'You are the only one able to access this project' },
-
-]
+  {
+    name: 'Public access',
+    description: 'This project would be available to anyone who has the link',
+  },
+  {
+    name: 'Private to Project Members',
+    description: 'Only members of this project would be able to access',
+  },
+  {
+    name: 'Private to you',
+    description: 'You are the only one able to access this project',
+  },
+];
 
 function classNames(...classes) {
-  return classes.filter(Boolean).join(' ')
+  return classes.filter(Boolean).join(' ');
 }
 
 export default function Example() {
-  const [selected, setSelected] = useState(settings[0])
+  const [selected, setSelected] = useState(settings[0]);
 
   return (
     <>
@@ -128,7 +125,10 @@ export default function Example() {
                     </label>
                     <div className="relative text-white focus-within:text-gray-400">
                       <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                        <SearchIcon className="flex-shrink-0 h-5 w-5" aria-hidden="true" />
+                        <SearchIcon
+                          className="flex-shrink-0 h-5 w-5"
+                          aria-hidden="true"
+                        />
                       </div>
                       <input
                         id="search"
@@ -162,7 +162,11 @@ export default function Example() {
                     <div>
                       <Menu.Button className="bg-sky-500 rounded-full flex text-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-sky-500 focus:ring-white">
                         <span className="sr-only">Open user menu</span>
-                        <img className="h-8 w-8 rounded-full" src={user.imageUrl} alt="" />
+                        <img
+                          className="h-8 w-8 rounded-full"
+                          src={user.imageUrl}
+                          alt=""
+                        />
                       </Menu.Button>
                     </div>
                     <Transition
@@ -182,7 +186,7 @@ export default function Example() {
                                 href={item.href}
                                 className={classNames(
                                   active ? 'bg-gray-100' : '',
-                                  'block px-4 py-2 text-sm text-gray-700'
+                                  'block px-4 py-2 text-sm text-gray-700',
                                 )}
                               >
                                 {item.name}
@@ -212,11 +216,19 @@ export default function Example() {
               <div className="pt-4 pb-3 border-t border-sky-500">
                 <div className="flex items-center px-4">
                   <div className="flex-shrink-0">
-                    <img className="h-10 w-10 rounded-full" src={user.imageUrl} alt="" />
+                    <img
+                      className="h-10 w-10 rounded-full"
+                      src={user.imageUrl}
+                      alt=""
+                    />
                   </div>
                   <div className="ml-3">
-                    <div className="text-base font-medium text-white">{user.name}</div>
-                    <div className="text-sm font-medium text-sky-200">{user.email}</div>
+                    <div className="text-base font-medium text-white">
+                      {user.name}
+                    </div>
+                    <div className="text-sm font-medium text-sky-200">
+                      {user.email}
+                    </div>
                   </div>
                   <button className="ml-auto flex-shrink-0 bg-sky-500 rounded-full p-1 text-sky-200 hover:text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-sky-500 focus:ring-white">
                     <span className="sr-only">View notifications</span>
@@ -241,12 +253,18 @@ export default function Example() {
       </Disclosure>
 
       {/* Breadcrumb */}
-      <nav className="hidden bg-white border-b border-gray-200 lg:flex" aria-label="Breadcrumb">
+      <nav
+        className="hidden bg-white border-b border-gray-200 lg:flex"
+        aria-label="Breadcrumb"
+      >
         <ol className="max-w-screen-xl w-full mx-auto px-4 flex space-x-4 sm:px-6 lg:px-8">
           <li className="flex">
             <div className="flex items-center">
               <a href="#" className="text-gray-400 hover:text-gray-500">
-                <HomeIcon className="flex-shrink-0 h-5 w-5" aria-hidden="true" />
+                <HomeIcon
+                  className="flex-shrink-0 h-5 w-5"
+                  aria-hidden="true"
+                />
                 <span className="sr-only">Home</span>
               </a>
             </div>
@@ -281,14 +299,20 @@ export default function Example() {
         <form>
           <div className="space-y-6">
             <div>
-              <h1 className="text-lg leading-6 font-medium text-gray-900">Project Settings</h1>
+              <h1 className="text-lg leading-6 font-medium text-gray-900">
+                Project Settings
+              </h1>
               <p className="mt-1 text-sm text-gray-500">
-                Let’s get started by filling in the information below to create your new project.
+                Let’s get started by filling in the information below to create
+                your new project.
               </p>
             </div>
 
             <div>
-              <label htmlFor="project-name" className="block text-sm font-medium text-gray-700">
+              <label
+                htmlFor="project-name"
+                className="block text-sm font-medium text-gray-700"
+              >
                 Project Name
               </label>
               <div className="mt-1">
@@ -303,7 +327,10 @@ export default function Example() {
             </div>
 
             <div>
-              <label htmlFor="description" className="block text-sm font-medium text-gray-700">
+              <label
+                htmlFor="description"
+                className="block text-sm font-medium text-gray-700"
+              >
                 Description
               </label>
               <div className="mt-1">
@@ -319,7 +346,10 @@ export default function Example() {
 
             <div className="space-y-2">
               <div className="space-y-1">
-                <label htmlFor="add-team-members" className="block text-sm font-medium text-gray-700">
+                <label
+                  htmlFor="add-team-members"
+                  className="block text-sm font-medium text-gray-700"
+                >
                   Add Team Members
                 </label>
                 <p id="add-team-members-helper" className="sr-only">
@@ -341,7 +371,10 @@ export default function Example() {
                       type="button"
                       className="bg-white inline-flex items-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-500"
                     >
-                      <PlusIcon className="-ml-2 mr-1 h-5 w-5 text-gray-400" aria-hidden="true" />
+                      <PlusIcon
+                        className="-ml-2 mr-1 h-5 w-5 text-gray-400"
+                        aria-hidden="true"
+                      />
                       <span>Add</span>
                     </button>
                   </span>
@@ -352,10 +385,18 @@ export default function Example() {
                 <ul className="divide-y divide-gray-200">
                   {team.map((person) => (
                     <li key={person.email} className="py-4 flex">
-                      <img className="h-10 w-10 rounded-full" src={person.imageUrl} alt="" />
+                      <img
+                        className="h-10 w-10 rounded-full"
+                        src={person.imageUrl}
+                        alt=""
+                      />
                       <div className="ml-3 flex flex-col">
-                        <span className="text-sm font-medium text-gray-900">{person.name}</span>
-                        <span className="text-sm text-gray-500">{person.email}</span>
+                        <span className="text-sm font-medium text-gray-900">
+                          {person.name}
+                        </span>
+                        <span className="text-sm text-gray-500">
+                          {person.email}
+                        </span>
                       </div>
                     </li>
                   ))}
@@ -364,7 +405,9 @@ export default function Example() {
             </div>
 
             <RadioGroup value={selected} onChange={setSelected}>
-              <RadioGroup.Label className="text-sm font-medium text-gray-900">Privacy</RadioGroup.Label>
+              <RadioGroup.Label className="text-sm font-medium text-gray-900">
+                Privacy
+              </RadioGroup.Label>
 
               <div className="mt-1 bg-white rounded-md shadow-sm -space-y-px">
                 {settings.map((setting, settingIdx) => (
@@ -374,9 +417,13 @@ export default function Example() {
                     className={({ checked }) =>
                       classNames(
                         settingIdx === 0 ? 'rounded-tl-md rounded-tr-md' : '',
-                        settingIdx === settings.length - 1 ? 'rounded-bl-md rounded-br-md' : '',
-                        checked ? 'bg-sky-50 border-sky-200 z-10' : 'border-gray-200',
-                        'relative border p-4 flex cursor-pointer focus:outline-none'
+                        settingIdx === settings.length - 1
+                          ? 'rounded-bl-md rounded-br-md'
+                          : '',
+                        checked
+                          ? 'bg-sky-50 border-sky-200 z-10'
+                          : 'border-gray-200',
+                        'relative border p-4 flex cursor-pointer focus:outline-none',
                       )
                     }
                   >
@@ -384,9 +431,11 @@ export default function Example() {
                       <>
                         <span
                           className={classNames(
-                            checked ? 'bg-sky-600 border-transparent' : 'bg-white border-gray-300',
+                            checked
+                              ? 'bg-sky-600 border-transparent'
+                              : 'bg-white border-gray-300',
                             active ? 'ring-2 ring-offset-2 ring-sky-500' : '',
-                            'h-4 w-4 mt-0.5 cursor-pointer rounded-full border flex items-center justify-center'
+                            'h-4 w-4 mt-0.5 cursor-pointer rounded-full border flex items-center justify-center',
                           )}
                           aria-hidden="true"
                         >
@@ -397,14 +446,17 @@ export default function Example() {
                             as="span"
                             className={classNames(
                               checked ? 'text-sky-900' : 'text-gray-900',
-                              'block text-sm font-medium'
+                              'block text-sm font-medium',
                             )}
                           >
                             {setting.name}
                           </RadioGroup.Label>
                           <RadioGroup.Description
                             as="span"
-                            className={classNames(checked ? 'text-sky-700' : 'text-gray-500', 'block text-sm')}
+                            className={classNames(
+                              checked ? 'text-sky-700' : 'text-gray-500',
+                              'block text-sm',
+                            )}
                           >
                             {setting.description}
                           </RadioGroup.Description>
@@ -417,7 +469,10 @@ export default function Example() {
             </RadioGroup>
 
             <div>
-              <label htmlFor="tags" className="block text-sm font-medium text-gray-700">
+              <label
+                htmlFor="tags"
+                className="block text-sm font-medium text-gray-700"
+              >
                 Tags
               </label>
               <input
@@ -446,5 +501,5 @@ export default function Example() {
         </form>
       </main>
     </>
-  )
+  );
 }

@@ -1,5 +1,5 @@
 /* This example requires Tailwind CSS v2.0+ */
-import { SpeakerphoneIcon, XIcon } from '@heroicons/react/outline'
+import { SpeakerphoneIcon, XIcon } from '@heroicons/react/outline';
 
 export default function Example() {
   return (
@@ -9,11 +9,16 @@ export default function Example() {
           <div className="flex items-center justify-between flex-wrap">
             <div className="w-0 flex-1 flex items-center">
               <span className="flex p-2 rounded-lg bg-indigo-800">
-                <SpeakerphoneIcon className="h-6 w-6 text-white" aria-hidden="true" />
+                <SpeakerphoneIcon
+                  className="h-6 w-6 text-white"
+                  aria-hidden="true"
+                />
               </span>
               <p className="ml-3 font-medium text-white truncate">
                 <span className="md:hidden">We announced a new product!</span>
-                <span className="hidden md:inline">Big news! We're excited to announce a brand new product.</span>
+                <span className="hidden md:inline">
+                  Big news! We're excited to announce a brand new product.
+                </span>
               </p>
             </div>
             <div className="order-3 mt-2 flex-shrink-0 w-full sm:order-2 sm:mt-0 sm:w-auto">
@@ -37,5 +42,5 @@ export default function Example() {
         </div>
       </div>
     </div>
-  )
+  );
 }

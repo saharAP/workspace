@@ -1,7 +1,14 @@
+import bluebird from "bluebird";
 import { Signer, utils } from "ethers";
 import { HardhatRuntimeEnvironment } from "hardhat/types";
-import { BeneficiaryGovernance, BeneficiaryGovernanceFactory, MockErc20, MockErc20Factory, Staking, StakingFactory } from "../typechain";
-import bluebird from "bluebird";
+import {
+  BeneficiaryGovernance,
+  BeneficiaryGovernanceFactory,
+  MockErc20,
+  MockErc20Factory,
+  Staking,
+  StakingFactory,
+} from "../typechain";
 
 enum ProposalStatus {
   New,
@@ -28,9 +35,9 @@ interface Args {
 }
 
 interface Contracts {
-    BeneficiaryGovernance: BeneficiaryGovernance;
-    MockPOP: MockErc20;
-    Staking: Staking;
+  BeneficiaryGovernance: BeneficiaryGovernance;
+  MockPOP: MockErc20;
+  Staking: Staking;
 }
 export default async function run(args: Args, hre: HardhatRuntimeEnvironment) {
   const [
@@ -48,17 +55,11 @@ export default async function run(args: Args, hre: HardhatRuntimeEnvironment) {
 
   const contracts: Contracts = {
     BeneficiaryGovernance: await BeneficiaryGovernanceFactory.connect(
-        args.beneficiaryGovernance,
-        hre.ethers.provider
-      ),
-    MockPOP: await MockErc20Factory.connect(
-        args.mockPOP,
-        hre.ethers.provider
-      ),
-    Staking: await StakingFactory.connect(
-        args.staking,
-        hre.ethers.provider
-      )
+      args.beneficiaryGovernance,
+      hre.ethers.provider
+    ),
+    MockPOP: await MockErc20Factory.connect(args.mockPOP, hre.ethers.provider),
+    Staking: await StakingFactory.connect(args.staking, hre.ethers.provider),
   };
 
   const approveForStaking = async (voters: Signer[]): Promise<void> => {
@@ -90,7 +91,10 @@ export default async function run(args: Args, hre: HardhatRuntimeEnvironment) {
     await bluebird.map(
       voters,
       async (account) => {
-        return contracts.MockPOP.mint(account.address, utils.parseEther("10000"));
+        return contracts.MockPOP.mint(
+          account.address,
+          utils.parseEther("10000")
+        );
       },
       { concurrency: 1 }
     );
@@ -155,13 +159,13 @@ export default async function run(args: Args, hre: HardhatRuntimeEnvironment) {
     }
 
     if ((targetStatus = ProposalStatus.Passed)) {
-        await Promise.all(
-          [1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((val) => {
-            voteOnProposal(proposalId, eval(`voter${val}`), Vote.Yes);
-          })
-        );
-        console.log("Voting complete");
-      }
+      await Promise.all(
+        [1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((val) => {
+          voteOnProposal(proposalId, eval(`voter${val}`), Vote.Yes);
+        })
+      );
+      console.log("Voting complete");
+    }
   };
 
   await mintPOP(await hre.ethers.getSigners());

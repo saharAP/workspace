@@ -19,8 +19,7 @@
   }
   ```
 */
-import { Fragment } from 'react'
-import { Popover, Transition } from '@headlessui/react'
+import { Popover, Transition } from '@headlessui/react';
 import {
   BookmarkAltIcon,
   CalendarIcon,
@@ -35,15 +34,16 @@ import {
   SupportIcon,
   ViewGridIcon,
   XIcon,
-} from '@heroicons/react/outline'
-import { ChevronDownIcon } from '@heroicons/react/solid'
+} from '@heroicons/react/outline';
+import { ChevronDownIcon } from '@heroicons/react/solid';
+import { Fragment } from 'react';
 
 const header = {
-
   solutions: [
     {
       name: 'Analytics',
-      description: 'Get a better understanding of where your traffic is coming from.',
+      description:
+        'Get a better understanding of where your traffic is coming from.',
       href: '#',
       icon: ChartBarIcon,
     },
@@ -67,7 +67,8 @@ const header = {
     },
     {
       name: 'Automations',
-      description: 'Build strategic funnels that will drive your customers to convert',
+      description:
+        'Build strategic funnels that will drive your customers to convert',
       href: '#',
       icon: RefreshIcon,
     },
@@ -79,19 +80,22 @@ const header = {
   resources: [
     {
       name: 'Help Center',
-      description: 'Get all of your questions answered in our forums or contact support.',
+      description:
+        'Get all of your questions answered in our forums or contact support.',
       href: '#',
       icon: SupportIcon,
     },
     {
       name: 'Guides',
-      description: 'Learn how to maximize our platform to get the most out of it.',
+      description:
+        'Learn how to maximize our platform to get the most out of it.',
       href: '#',
       icon: BookmarkAltIcon,
     },
     {
       name: 'Events',
-      description: 'See what meet-ups and other events we might be planning near you.',
+      description:
+        'See what meet-ups and other events we might be planning near you.',
       href: '#',
       icon: CalendarIcon,
     },
@@ -104,20 +108,26 @@ const header = {
   ],
   recentPosts: [
     { name: 'Boost your conversion rate', href: '#' },
-    { name: 'How to use search engine optimization to drive traffic to your site', href: '#' },
+    {
+      name: 'How to use search engine optimization to drive traffic to your site',
+      href: '#',
+    },
     { name: 'Improve your customer experience', href: '#' },
   ],
-
-}
+};
 const pricing = {
-
   tiers: [
     {
       title: 'Freelancer',
       price: 24,
       frequency: '/month',
       description: 'The essentials to provide your best work for clients.',
-      features: ['5 products', 'Up to 1,000 subscribers', 'Basic analytics', '48-hour support response time'],
+      features: [
+        '5 products',
+        'Up to 1,000 subscribers',
+        'Basic analytics',
+        '48-hour support response time',
+      ],
       cta: 'Monthly billing',
       mostPopular: false,
     },
@@ -153,10 +163,8 @@ const pricing = {
       mostPopular: false,
     },
   ],
-
-}
+};
 const faqs = [
-
   {
     id: 1,
     question: "What's the best thing about Switzerland?",
@@ -164,10 +172,8 @@ const faqs = [
       "I don't know, but the flag is a big plus. Lorem ipsum dolor sit amet consectetur adipisicing elit. Quas cupiditate laboriosam fugiat.",
   },
   // More questions...
-
-]
+];
 const footer = {
-
   solutions: [
     { name: 'Marketing', href: '#' },
     { name: 'Analytics', href: '#' },
@@ -255,11 +261,10 @@ const footer = {
       ),
     },
   ],
-
-}
+};
 
 function classNames(...classes) {
-  return classes.filter(Boolean).join(' ')
+  return classes.filter(Boolean).join(' ');
 }
 
 export default function Example() {
@@ -294,14 +299,14 @@ export default function Example() {
                       <Popover.Button
                         className={classNames(
                           open ? 'text-gray-900' : 'text-gray-500',
-                          'group bg-white rounded-md inline-flex items-center text-base font-medium hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-rose-500'
+                          'group bg-white rounded-md inline-flex items-center text-base font-medium hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-rose-500',
                         )}
                       >
                         <span>Solutions</span>
                         <ChevronDownIcon
                           className={classNames(
                             open ? 'text-gray-600' : 'text-gray-400',
-                            'ml-2 h-5 w-5 group-hover:text-gray-500'
+                            'ml-2 h-5 w-5 group-hover:text-gray-500',
                           )}
                           aria-hidden="true"
                         />
@@ -325,10 +330,17 @@ export default function Example() {
                                   href={solution.href}
                                   className="-m-3 p-3 flex items-start rounded-lg hover:bg-gray-50"
                                 >
-                                  <solution.icon className="flex-shrink-0 h-6 w-6 text-rose-400" aria-hidden="true" />
+                                  <solution.icon
+                                    className="flex-shrink-0 h-6 w-6 text-rose-400"
+                                    aria-hidden="true"
+                                  />
                                   <div className="ml-4">
-                                    <p className="text-base font-medium text-gray-900">{solution.name}</p>
-                                    <p className="mt-1 text-sm text-gray-500">{solution.description}</p>
+                                    <p className="text-base font-medium text-gray-900">
+                                      {solution.name}
+                                    </p>
+                                    <p className="mt-1 text-sm text-gray-500">
+                                      {solution.description}
+                                    </p>
                                   </div>
                                 </a>
                               ))}
@@ -340,7 +352,10 @@ export default function Example() {
                                     href={cta.href}
                                     className="-m-3 p-3 flex items-center rounded-md text-base font-medium text-gray-900 hover:bg-gray-100"
                                   >
-                                    <cta.icon className="flex-shrink-0 h-6 w-6 text-gray-400" aria-hidden="true" />
+                                    <cta.icon
+                                      className="flex-shrink-0 h-6 w-6 text-gray-400"
+                                      aria-hidden="true"
+                                    />
                                     <span className="ml-3">{cta.name}</span>
                                   </a>
                                 </div>
@@ -353,10 +368,16 @@ export default function Example() {
                   )}
                 </Popover>
 
-                <a href="#" className="text-base font-medium text-gray-500 hover:text-gray-900">
+                <a
+                  href="#"
+                  className="text-base font-medium text-gray-500 hover:text-gray-900"
+                >
                   Pricing
                 </a>
-                <a href="#" className="text-base font-medium text-gray-500 hover:text-gray-900">
+                <a
+                  href="#"
+                  className="text-base font-medium text-gray-500 hover:text-gray-900"
+                >
                   Docs
                 </a>
 
@@ -366,14 +387,14 @@ export default function Example() {
                       <Popover.Button
                         className={classNames(
                           open ? 'text-gray-900' : 'text-gray-500',
-                          'group bg-white rounded-md inline-flex items-center text-base font-medium hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-rose-500'
+                          'group bg-white rounded-md inline-flex items-center text-base font-medium hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-rose-500',
                         )}
                       >
                         <span>More</span>
                         <ChevronDownIcon
                           className={classNames(
                             open ? 'text-gray-600' : 'text-gray-400',
-                            'ml-2 h-5 w-5 group-hover:text-gray-500'
+                            'ml-2 h-5 w-5 group-hover:text-gray-500',
                           )}
                           aria-hidden="true"
                         />
@@ -397,10 +418,17 @@ export default function Example() {
                                   href={resource.href}
                                   className="-m-3 p-3 flex items-start rounded-lg hover:bg-gray-50"
                                 >
-                                  <resource.icon className="flex-shrink-0 h-6 w-6 text-rose-400" aria-hidden="true" />
+                                  <resource.icon
+                                    className="flex-shrink-0 h-6 w-6 text-rose-400"
+                                    aria-hidden="true"
+                                  />
                                   <div className="ml-4">
-                                    <p className="text-base font-medium text-gray-900">{resource.name}</p>
-                                    <p className="mt-1 text-sm text-gray-500">{resource.description}</p>
+                                    <p className="text-base font-medium text-gray-900">
+                                      {resource.name}
+                                    </p>
+                                    <p className="mt-1 text-sm text-gray-500">
+                                      {resource.description}
+                                    </p>
                                   </div>
                                 </a>
                               ))}
@@ -412,8 +440,14 @@ export default function Example() {
                                 </h3>
                                 <ul className="mt-4 space-y-4">
                                   {header.recentPosts.map((post) => (
-                                    <li key={post.name} className="text-base truncate">
-                                      <a href={post.href} className="font-medium text-gray-900 hover:text-gray-700">
+                                    <li
+                                      key={post.name}
+                                      className="text-base truncate"
+                                    >
+                                      <a
+                                        href={post.href}
+                                        className="font-medium text-gray-900 hover:text-gray-700"
+                                      >
                                         {post.name}
                                       </a>
                                     </li>
@@ -421,9 +455,13 @@ export default function Example() {
                                 </ul>
                               </div>
                               <div className="mt-5 text-sm">
-                                <a href="#" className="font-medium text-rose-600 hover:text-rose-500">
+                                <a
+                                  href="#"
+                                  className="font-medium text-rose-600 hover:text-rose-500"
+                                >
                                   {' '}
-                                  View all posts <span aria-hidden="true">&rarr;</span>
+                                  View all posts{' '}
+                                  <span aria-hidden="true">&rarr;</span>
                                 </a>
                               </div>
                             </div>
@@ -435,7 +473,10 @@ export default function Example() {
                 </Popover>
               </Popover.Group>
               <div className="hidden md:flex items-center justify-end md:flex-1 lg:w-0">
-                <a href="#" className="whitespace-nowrap text-base font-medium text-gray-500 hover:text-gray-900">
+                <a
+                  href="#"
+                  className="whitespace-nowrap text-base font-medium text-gray-500 hover:text-gray-900"
+                >
                   Sign in
                 </a>
                 <a
@@ -486,8 +527,13 @@ export default function Example() {
                           href={solution.href}
                           className="-m-3 p-3 flex items-center rounded-md hover:bg-gray-50"
                         >
-                          <solution.icon className="flex-shrink-0 h-6 w-6 text-rose-400" aria-hidden="true" />
-                          <span className="ml-3 text-base font-medium text-gray-900">{solution.name}</span>
+                          <solution.icon
+                            className="flex-shrink-0 h-6 w-6 text-rose-400"
+                            aria-hidden="true"
+                          />
+                          <span className="ml-3 text-base font-medium text-gray-900">
+                            {solution.name}
+                          </span>
                         </a>
                       ))}
                     </nav>
@@ -495,11 +541,17 @@ export default function Example() {
                 </div>
                 <div className="py-6 px-5 space-y-6">
                   <div className="grid grid-cols-2 gap-y-4 gap-x-8">
-                    <a href="#" className="text-base font-medium text-gray-900 hover:text-gray-700">
+                    <a
+                      href="#"
+                      className="text-base font-medium text-gray-900 hover:text-gray-700"
+                    >
                       Pricing
                     </a>
 
-                    <a href="#" className="text-base font-medium text-gray-900 hover:text-gray-700">
+                    <a
+                      href="#"
+                      className="text-base font-medium text-gray-900 hover:text-gray-700"
+                    >
                       Docs
                     </a>
                     {header.resources.map((resource) => (
@@ -539,8 +591,9 @@ export default function Example() {
               Pricing plans for teams of all sizes
             </h1>
             <p className="mt-6 max-w-2xl text-xl text-gray-500">
-              Choose an affordable plan that's packed with the best features for engaging your audience, creating
-              customer loyalty, and driving sales.
+              Choose an affordable plan that's packed with the best features for
+              engaging your audience, creating customer loyalty, and driving
+              sales.
             </p>
           </div>
         </div>
@@ -561,15 +614,21 @@ export default function Example() {
                 className="relative p-8 bg-white border border-gray-200 rounded-2xl shadow-sm flex flex-col"
               >
                 <div className="flex-1">
-                  <h3 className="text-xl font-semibold text-gray-900">{tier.title}</h3>
+                  <h3 className="text-xl font-semibold text-gray-900">
+                    {tier.title}
+                  </h3>
                   {tier.mostPopular ? (
                     <p className="absolute top-0 py-1.5 px-4 bg-rose-500 rounded-full text-xs font-semibold uppercase tracking-wide text-white transform -translate-y-1/2">
                       Most popular
                     </p>
                   ) : null}
                   <p className="mt-4 flex items-baseline text-gray-900">
-                    <span className="text-5xl font-extrabold tracking-tight">${tier.price}</span>
-                    <span className="ml-1 text-xl font-semibold">{tier.frequency}</span>
+                    <span className="text-5xl font-extrabold tracking-tight">
+                      ${tier.price}
+                    </span>
+                    <span className="ml-1 text-xl font-semibold">
+                      {tier.frequency}
+                    </span>
                   </p>
                   <p className="mt-6 text-gray-500">{tier.description}</p>
 
@@ -577,7 +636,10 @@ export default function Example() {
                   <ul role="list" className="mt-6 space-y-6">
                     {tier.features.map((feature) => (
                       <li key={feature} className="flex">
-                        <CheckIcon className="flex-shrink-0 w-6 h-6 text-rose-500" aria-hidden="true" />
+                        <CheckIcon
+                          className="flex-shrink-0 w-6 h-6 text-rose-500"
+                          aria-hidden="true"
+                        />
                         <span className="ml-3 text-gray-500">{feature}</span>
                       </li>
                     ))}
@@ -590,7 +652,7 @@ export default function Example() {
                     tier.mostPopular
                       ? 'bg-rose-500 text-white hover:bg-rose-600'
                       : 'bg-rose-50 text-rose-700 hover:bg-rose-100',
-                    'mt-8 block w-full py-3 px-6 border border-transparent rounded-md text-center font-medium'
+                    'mt-8 block w-full py-3 px-6 border border-transparent rounded-md text-center font-medium',
                   )}
                 >
                   {tier.cta}
@@ -610,10 +672,18 @@ export default function Example() {
           </h2>
           <div className="grid grid-cols-2 gap-8 md:grid-cols-6 lg:grid-cols-5">
             <div className="col-span-1 flex justify-center md:col-span-2 lg:col-span-1">
-              <img className="h-12" src="https://tailwindui.com/img/logos/tuple-logo-gray-400.svg" alt="Tuple" />
+              <img
+                className="h-12"
+                src="https://tailwindui.com/img/logos/tuple-logo-gray-400.svg"
+                alt="Tuple"
+              />
             </div>
             <div className="col-span-1 flex justify-center md:col-span-2 lg:col-span-1">
-              <img className="h-12" src="https://tailwindui.com/img/logos/mirage-logo-gray-400.svg" alt="Mirage" />
+              <img
+                className="h-12"
+                src="https://tailwindui.com/img/logos/mirage-logo-gray-400.svg"
+                alt="Mirage"
+              />
             </div>
             <div className="col-span-1 flex justify-center md:col-span-2 lg:col-span-1">
               <img
@@ -642,7 +712,10 @@ export default function Example() {
         {/* Testimonial */}
         <div className="relative">
           {/* Decorative background */}
-          <div aria-hidden="true" className="absolute inset-x-0 h-1/2 bg-gradient-to-b from-white to-gray-50" />
+          <div
+            aria-hidden="true"
+            className="absolute inset-x-0 h-1/2 bg-gradient-to-b from-white to-gray-50"
+          />
 
           <div className="relative max-w-2xl mx-auto px-4 sm:px-6 lg:max-w-7xl lg:px-8">
             <div className="relative py-24 px-8 bg-rose-500 rounded-xl shadow-2xl overflow-hidden lg:px-16 lg:grid lg:grid-cols-2 lg:gap-x-8">
@@ -654,11 +727,16 @@ export default function Example() {
                 />
               </div>
               <div className="relative lg:col-span-1">
-                <img className="h-12 w-auto" src="https://tailwindui.com/img/logos/workcation-logo-white.svg" alt="" />
+                <img
+                  className="h-12 w-auto"
+                  src="https://tailwindui.com/img/logos/workcation-logo-white.svg"
+                  alt=""
+                />
                 <blockquote className="mt-6 text-white">
                   <p className="text-xl font-medium sm:text-2xl">
-                    Workflow has completely transformed how we interact with customers. We've seen record bookings,
-                    higher customer satisfaction, and reduced churn.
+                    Workflow has completely transformed how we interact with
+                    customers. We've seen record bookings, higher customer
+                    satisfaction, and reduced churn.
                   </p>
                   <footer className="mt-6">
                     <p className="flex flex-col font-medium">
@@ -677,14 +755,22 @@ export default function Example() {
           aria-labelledby="faq-heading"
           className="max-w-2xl mx-auto py-24 px-4 divide-y divide-gray-200 sm:px-6 lg:max-w-7xl lg:py-32 lg:px-8"
         >
-          <h2 id="faq-heading" className="text-3xl font-extrabold text-gray-900">
+          <h2
+            id="faq-heading"
+            className="text-3xl font-extrabold text-gray-900"
+          >
             Frequently asked questions
           </h2>
           <div className="mt-8">
             <dl className="divide-y divide-gray-200">
               {faqs.map((faq) => (
-                <div key={faq.id} className="pt-6 pb-8 md:grid md:grid-cols-12 md:gap-8">
-                  <dt className="text-base font-medium text-gray-900 md:col-span-5">{faq.question}</dt>
+                <div
+                  key={faq.id}
+                  className="pt-6 pb-8 md:grid md:grid-cols-12 md:gap-8"
+                >
+                  <dt className="text-base font-medium text-gray-900 md:col-span-5">
+                    {faq.question}
+                  </dt>
                   <dd className="mt-2 md:mt-0 md:col-span-7">
                     <p className="text-base text-gray-500">{faq.answer}</p>
                   </dd>
@@ -709,11 +795,16 @@ export default function Example() {
                 alt="Company name"
               />
               <p className="text-gray-500 text-base">
-                Making the world a better place through constructing elegant hierarchies.
+                Making the world a better place through constructing elegant
+                hierarchies.
               </p>
               <div className="flex space-x-6">
                 {footer.social.map((link) => (
-                  <a key={link.name} href={link.href} className="text-gray-400 hover:text-gray-500">
+                  <a
+                    key={link.name}
+                    href={link.href}
+                    className="text-gray-400 hover:text-gray-500"
+                  >
                     <span className="sr-only">{link.name}</span>
                     <link.icon className="h-6 w-6" aria-hidden="true" />
                   </a>
@@ -723,11 +814,16 @@ export default function Example() {
             <div className="mt-12 grid grid-cols-2 gap-8 xl:mt-0 xl:col-span-2">
               <div className="md:grid md:grid-cols-2 md:gap-8">
                 <div>
-                  <h3 className="text-sm font-semibold text-gray-400 tracking-wider uppercase">Solutions</h3>
+                  <h3 className="text-sm font-semibold text-gray-400 tracking-wider uppercase">
+                    Solutions
+                  </h3>
                   <ul className="mt-4 space-y-4">
                     {footer.solutions.map((link) => (
                       <li key={link.name}>
-                        <a href={link.href} className="text-base text-gray-500 hover:text-gray-900">
+                        <a
+                          href={link.href}
+                          className="text-base text-gray-500 hover:text-gray-900"
+                        >
                           {link.name}
                         </a>
                       </li>
@@ -735,11 +831,16 @@ export default function Example() {
                   </ul>
                 </div>
                 <div className="mt-12 md:mt-0">
-                  <h3 className="text-sm font-semibold text-gray-400 tracking-wider uppercase">Support</h3>
+                  <h3 className="text-sm font-semibold text-gray-400 tracking-wider uppercase">
+                    Support
+                  </h3>
                   <ul className="mt-4 space-y-4">
                     {footer.support.map((link) => (
                       <li key={link.name}>
-                        <a href={link.href} className="text-base text-gray-500 hover:text-gray-900">
+                        <a
+                          href={link.href}
+                          className="text-base text-gray-500 hover:text-gray-900"
+                        >
                           {link.name}
                         </a>
                       </li>
@@ -749,11 +850,16 @@ export default function Example() {
               </div>
               <div className="md:grid md:grid-cols-2 md:gap-8">
                 <div>
-                  <h3 className="text-sm font-semibold text-gray-400 tracking-wider uppercase">Company</h3>
+                  <h3 className="text-sm font-semibold text-gray-400 tracking-wider uppercase">
+                    Company
+                  </h3>
                   <ul className="mt-4 space-y-4">
                     {footer.company.map((link) => (
                       <li key={link.name}>
-                        <a href={link.href} className="text-base text-gray-500 hover:text-gray-900">
+                        <a
+                          href={link.href}
+                          className="text-base text-gray-500 hover:text-gray-900"
+                        >
                           {link.name}
                         </a>
                       </li>
@@ -761,11 +867,16 @@ export default function Example() {
                   </ul>
                 </div>
                 <div className="mt-12 md:mt-0">
-                  <h3 className="text-sm font-semibold text-gray-400 tracking-wider uppercase">Legal</h3>
+                  <h3 className="text-sm font-semibold text-gray-400 tracking-wider uppercase">
+                    Legal
+                  </h3>
                   <ul className="mt-4 space-y-4">
                     {footer.legal.map((link) => (
                       <li key={link.name}>
-                        <a href={link.href} className="text-base text-gray-500 hover:text-gray-900">
+                        <a
+                          href={link.href}
+                          className="text-base text-gray-500 hover:text-gray-900"
+                        >
                           {link.name}
                         </a>
                       </li>
@@ -776,10 +887,12 @@ export default function Example() {
             </div>
           </div>
           <div className="mt-12 border-t border-gray-200 pt-8">
-            <p className="text-base text-gray-400 xl:text-center">&copy; 2020 Workflow, Inc. All rights reserved.</p>
+            <p className="text-base text-gray-400 xl:text-center">
+              &copy; 2020 Workflow, Inc. All rights reserved.
+            </p>
           </div>
         </div>
       </footer>
     </div>
-  )
+  );
 }

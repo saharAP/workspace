@@ -1,15 +1,13 @@
+import {
+  BeneficiaryApplication,
+  BeneficiaryRegistryAdapter,
+} from '@popcorn/contracts/adapters';
+import { IpfsClient } from '@popcorn/utils';
+import BeneficiaryPage from 'components/Beneficiaries/BeneficiaryPage';
+import Loading from 'components/CommonComponents/Loading';
 import { ContractsContext } from 'context/Web3/contracts';
 import { useRouter } from 'next/router';
 import React, { useContext, useEffect, useState } from 'react';
-import BeneficiaryPage from 'components/Beneficiaries/BeneficiaryPage';
-import {
-  IpfsClient,
-} from '@popcorn/utils';
-import {
-  BeneficiaryApplication,
-  BeneficiaryRegistryAdapter
-} from "@popcorn/contracts/adapters";
-import Loading from 'components/CommonComponents/Loading';
 
 export default function SingleBeneficiaryPage(): JSX.Element {
   const router = useRouter();

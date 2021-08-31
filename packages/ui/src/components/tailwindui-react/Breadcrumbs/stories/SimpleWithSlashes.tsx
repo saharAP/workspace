@@ -1,12 +1,10 @@
 /* This example requires Tailwind CSS v2.0+ */
-import { HomeIcon } from '@heroicons/react/solid'
+import { HomeIcon } from '@heroicons/react/solid';
 
 const pages = [
-
   { name: 'Projects', href: '#', current: false },
   { name: 'Project Nero', href: '#', current: true },
-
-]
+];
 
 export default function Example() {
   return (
@@ -44,5 +42,5 @@ export default function Example() {
         ))}
       </ol>
     </nav>
-  )
+  );
 }

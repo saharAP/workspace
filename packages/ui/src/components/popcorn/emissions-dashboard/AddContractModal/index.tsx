@@ -7,7 +7,11 @@ export interface ContractModalProps {
   addContract: (contract: string) => void;
 }
 
-export const AddContractModal: React.FC<ContractModalProps> = ({ open, setOpen, addContract }) => {
+export const AddContractModal: React.FC<ContractModalProps> = ({
+  open,
+  setOpen,
+  addContract,
+}) => {
   const [contractAddress, setContractAddress] = useState<string>('');
 
   return (
@@ -61,7 +65,7 @@ export const AddContractModal: React.FC<ContractModalProps> = ({ open, setOpen, 
                     </p>
                     <input
                       type="text"
-                      onChange={event =>
+                      onChange={(event) =>
                         setContractAddress(event.target.value)
                       }
                       className="w-full pl-4 pr-10 py-2 text-sm leading-none border rounded-lg shadow-sm focus:outline-none focus:shadow-outline text-gray-500 font-light"

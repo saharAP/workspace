@@ -23,8 +23,7 @@
   }
   ```
 */
-import { Fragment, useState } from 'react'
-import { Dialog, Transition } from '@headlessui/react'
+import { Dialog, Transition } from '@headlessui/react';
 import {
   BellIcon,
   BookmarkAltIcon,
@@ -40,83 +39,91 @@ import {
   UserIcon,
   ViewGridAddIcon,
   XIcon,
-} from '@heroicons/react/outline'
-import { ChevronLeftIcon } from '@heroicons/react/solid'
+} from '@heroicons/react/outline';
+import { ChevronLeftIcon } from '@heroicons/react/solid';
+import { Fragment, useState } from 'react';
 
 const navigation = [
-
   { name: 'Home', href: '#', icon: HomeIcon },
   { name: 'Trending', href: '#', icon: FireIcon },
   { name: 'Bookmarks', href: '#', icon: BookmarkAltIcon },
   { name: 'Messages', href: '#', icon: InboxIcon },
   { name: 'Profile', href: '#', icon: UserIcon },
-
-]
+];
 const subNavigation = [
-
   {
     name: 'Account',
-    description: 'Ullamcorper id at suspendisse nec id volutpat vestibulum enim. Interdum blandit.',
+    description:
+      'Ullamcorper id at suspendisse nec id volutpat vestibulum enim. Interdum blandit.',
     href: '#',
     icon: CogIcon,
     current: true,
   },
   {
     name: 'Notifications',
-    description: 'Enim, nullam mi vel et libero urna lectus enim. Et sed in maecenas tellus.',
+    description:
+      'Enim, nullam mi vel et libero urna lectus enim. Et sed in maecenas tellus.',
     href: '#',
     icon: BellIcon,
     current: false,
   },
   {
     name: 'Security',
-    description: 'Semper accumsan massa vel volutpat massa. Non turpis ut nulla aliquet turpis.',
+    description:
+      'Semper accumsan massa vel volutpat massa. Non turpis ut nulla aliquet turpis.',
     href: '#',
     icon: KeyIcon,
     current: false,
   },
   {
     name: 'Appearance',
-    description: 'Magna nulla id sed ornare ipsum eget. Massa eget porttitor suscipit consequat.',
+    description:
+      'Magna nulla id sed ornare ipsum eget. Massa eget porttitor suscipit consequat.',
     href: '#',
     icon: PhotographIcon,
     current: false,
   },
   {
     name: 'Billing',
-    description: 'Orci aliquam arcu egestas turpis cursus. Lectus faucibus netus dui auctor mauris.',
+    description:
+      'Orci aliquam arcu egestas turpis cursus. Lectus faucibus netus dui auctor mauris.',
     href: '#',
     icon: CashIcon,
     current: false,
   },
   {
     name: 'Integrations',
-    description: 'Nisi, elit volutpat odio urna quis arcu faucibus dui. Mauris adipiscing pellentesque.',
+    description:
+      'Nisi, elit volutpat odio urna quis arcu faucibus dui. Mauris adipiscing pellentesque.',
     href: '#',
     icon: ViewGridAddIcon,
     current: false,
   },
   {
     name: 'Additional Resources',
-    description: 'Quis viverra netus donec ut auctor fringilla facilisis. Nunc sit donec cursus sit quis et.',
+    description:
+      'Quis viverra netus donec ut auctor fringilla facilisis. Nunc sit donec cursus sit quis et.',
     href: '#',
     icon: SearchCircleIcon,
     current: false,
   },
-
-]
+];
 
 function classNames(...classes) {
-  return classes.filter(Boolean).join(' ')
+  return classes.filter(Boolean).join(' ');
 }
 
 export default function Example() {
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   return (
     <div className="relative h-screen flex bg-blue-gray-50 overflow-hidden">
       <Transition.Root show={mobileMenuOpen} as={Fragment}>
-        <Dialog as="div" className="fixed inset-0 flex z-40 lg:hidden" onClose={setMobileMenuOpen}>
+        <Dialog
+          as="div"
+          className="fixed inset-0 flex z-40 lg:hidden"
+          onClose={setMobileMenuOpen}
+        >
           <Transition.Child
             as={Fragment}
             enter="transition-opacity ease-linear duration-300"
@@ -225,7 +232,10 @@ export default function Example() {
                   alt="Workflow"
                 />
               </div>
-              <nav aria-label="Sidebar" className="py-6 flex flex-col items-center space-y-3">
+              <nav
+                aria-label="Sidebar"
+                className="py-6 flex flex-col items-center space-y-3"
+              >
                 {navigation.map((item) => (
                   <a
                     key={item.name}
@@ -282,10 +292,19 @@ export default function Example() {
         <main className="flex-1 flex overflow-hidden">
           <div className="flex-1 flex flex-col overflow-y-auto xl:overflow-hidden">
             {/* Breadcrumb */}
-            <nav aria-label="Breadcrumb" className="bg-white border-b border-blue-gray-200 xl:hidden">
+            <nav
+              aria-label="Breadcrumb"
+              className="bg-white border-b border-blue-gray-200 xl:hidden"
+            >
               <div className="max-w-3xl mx-auto py-3 px-4 flex items-start sm:px-6 lg:px-8">
-                <a href="#" className="-ml-1 inline-flex items-center space-x-3 text-sm font-medium text-blue-gray-900">
-                  <ChevronLeftIcon className="h-5 w-5 text-blue-gray-400" aria-hidden="true" />
+                <a
+                  href="#"
+                  className="-ml-1 inline-flex items-center space-x-3 text-sm font-medium text-blue-gray-900"
+                >
+                  <ChevronLeftIcon
+                    className="h-5 w-5 text-blue-gray-400"
+                    aria-hidden="true"
+                  />
                   <span>Settings</span>
                 </a>
               </div>
@@ -298,7 +317,9 @@ export default function Example() {
                 className="hidden flex-shrink-0 w-96 bg-white border-r border-blue-gray-200 xl:flex xl:flex-col"
               >
                 <div className="flex-shrink-0 h-16 px-6 border-b border-blue-gray-200 flex items-center">
-                  <p className="text-lg font-medium text-blue-gray-900">Settings</p>
+                  <p className="text-lg font-medium text-blue-gray-900">
+                    Settings
+                  </p>
                 </div>
                 <div className="flex-1 min-h-0 overflow-y-auto">
                   {subNavigation.map((item) => (
@@ -306,15 +327,24 @@ export default function Example() {
                       key={item.name}
                       href={item.href}
                       className={classNames(
-                        item.current ? 'bg-blue-50 bg-opacity-50' : 'hover:bg-blue-50 hover:bg-opacity-50',
-                        'flex p-6 border-b border-blue-gray-200'
+                        item.current
+                          ? 'bg-blue-50 bg-opacity-50'
+                          : 'hover:bg-blue-50 hover:bg-opacity-50',
+                        'flex p-6 border-b border-blue-gray-200',
                       )}
                       aria-current={item.current ? 'page' : undefined}
                     >
-                      <item.icon className="flex-shrink-0 -mt-0.5 h-6 w-6 text-blue-gray-400" aria-hidden="true" />
+                      <item.icon
+                        className="flex-shrink-0 -mt-0.5 h-6 w-6 text-blue-gray-400"
+                        aria-hidden="true"
+                      />
                       <div className="ml-3 text-sm">
-                        <p className="font-medium text-blue-gray-900">{item.name}</p>
-                        <p className="mt-1 text-blue-gray-500">{item.description}</p>
+                        <p className="font-medium text-blue-gray-900">
+                          {item.name}
+                        </p>
+                        <p className="mt-1 text-blue-gray-500">
+                          {item.description}
+                        </p>
                       </div>
                     </a>
                   ))}
@@ -324,19 +354,27 @@ export default function Example() {
               {/* Main content */}
               <div className="flex-1 max-h-screen xl:overflow-y-auto">
                 <div className="max-w-3xl mx-auto py-10 px-4 sm:px-6 lg:py-12 lg:px-8">
-                  <h1 className="text-3xl font-extrabold text-blue-gray-900">Account</h1>
+                  <h1 className="text-3xl font-extrabold text-blue-gray-900">
+                    Account
+                  </h1>
 
                   <form className="mt-6 space-y-8 divide-y divide-y-blue-gray-200">
                     <div className="grid grid-cols-1 gap-y-6 sm:grid-cols-6 sm:gap-x-6">
                       <div className="sm:col-span-6">
-                        <h2 className="text-xl font-medium text-blue-gray-900">Profile</h2>
+                        <h2 className="text-xl font-medium text-blue-gray-900">
+                          Profile
+                        </h2>
                         <p className="mt-1 text-sm text-blue-gray-500">
-                          This information will be displayed publicly so be careful what you share.
+                          This information will be displayed publicly so be
+                          careful what you share.
                         </p>
                       </div>
 
                       <div className="sm:col-span-3">
-                        <label htmlFor="first-name" className="block text-sm font-medium text-blue-gray-900">
+                        <label
+                          htmlFor="first-name"
+                          className="block text-sm font-medium text-blue-gray-900"
+                        >
                           First name
                         </label>
                         <input
@@ -349,7 +387,10 @@ export default function Example() {
                       </div>
 
                       <div className="sm:col-span-3">
-                        <label htmlFor="last-name" className="block text-sm font-medium text-blue-gray-900">
+                        <label
+                          htmlFor="last-name"
+                          className="block text-sm font-medium text-blue-gray-900"
+                        >
                           Last name
                         </label>
                         <input
@@ -362,7 +403,10 @@ export default function Example() {
                       </div>
 
                       <div className="sm:col-span-6">
-                        <label htmlFor="username" className="block text-sm font-medium text-blue-gray-900">
+                        <label
+                          htmlFor="username"
+                          className="block text-sm font-medium text-blue-gray-900"
+                        >
                           Username
                         </label>
                         <div className="mt-1 flex rounded-md shadow-sm">
@@ -381,7 +425,10 @@ export default function Example() {
                       </div>
 
                       <div className="sm:col-span-6">
-                        <label htmlFor="photo" className="block text-sm font-medium text-blue-gray-900">
+                        <label
+                          htmlFor="photo"
+                          className="block text-sm font-medium text-blue-gray-900"
+                        >
                           Photo
                         </label>
                         <div className="mt-1 flex items-center">
@@ -417,7 +464,10 @@ export default function Example() {
                       </div>
 
                       <div className="sm:col-span-6">
-                        <label htmlFor="description" className="block text-sm font-medium text-blue-gray-900">
+                        <label
+                          htmlFor="description"
+                          className="block text-sm font-medium text-blue-gray-900"
+                        >
                           Description
                         </label>
                         <div className="mt-1">
@@ -430,12 +480,16 @@ export default function Example() {
                           />
                         </div>
                         <p className="mt-3 text-sm text-blue-gray-500">
-                          Brief description for your profile. URLs are hyperlinked.
+                          Brief description for your profile. URLs are
+                          hyperlinked.
                         </p>
                       </div>
 
                       <div className="sm:col-span-6">
-                        <label htmlFor="url" className="block text-sm font-medium text-blue-gray-900">
+                        <label
+                          htmlFor="url"
+                          className="block text-sm font-medium text-blue-gray-900"
+                        >
                           URL
                         </label>
                         <input
@@ -449,14 +503,20 @@ export default function Example() {
 
                     <div className="pt-8 grid grid-cols-1 gap-y-6 sm:grid-cols-6 sm:gap-x-6">
                       <div className="sm:col-span-6">
-                        <h2 className="text-xl font-medium text-blue-gray-900">Personal Information</h2>
+                        <h2 className="text-xl font-medium text-blue-gray-900">
+                          Personal Information
+                        </h2>
                         <p className="mt-1 text-sm text-blue-gray-500">
-                          This information will be displayed publicly so be careful what you share.
+                          This information will be displayed publicly so be
+                          careful what you share.
                         </p>
                       </div>
 
                       <div className="sm:col-span-3">
-                        <label htmlFor="email-address" className="block text-sm font-medium text-blue-gray-900">
+                        <label
+                          htmlFor="email-address"
+                          className="block text-sm font-medium text-blue-gray-900"
+                        >
                           Email address
                         </label>
                         <input
@@ -469,7 +529,10 @@ export default function Example() {
                       </div>
 
                       <div className="sm:col-span-3">
-                        <label htmlFor="phone-number" className="block text-sm font-medium text-blue-gray-900">
+                        <label
+                          htmlFor="phone-number"
+                          className="block text-sm font-medium text-blue-gray-900"
+                        >
                           Phone number
                         </label>
                         <input
@@ -482,7 +545,10 @@ export default function Example() {
                       </div>
 
                       <div className="sm:col-span-3">
-                        <label htmlFor="country" className="block text-sm font-medium text-blue-gray-900">
+                        <label
+                          htmlFor="country"
+                          className="block text-sm font-medium text-blue-gray-900"
+                        >
                           Country
                         </label>
                         <input
@@ -495,7 +561,10 @@ export default function Example() {
                       </div>
 
                       <div className="sm:col-span-3">
-                        <label htmlFor="language" className="block text-sm font-medium text-blue-gray-900">
+                        <label
+                          htmlFor="language"
+                          className="block text-sm font-medium text-blue-gray-900"
+                        >
                           Language
                         </label>
                         <input
@@ -508,7 +577,10 @@ export default function Example() {
 
                       <p className="text-sm text-blue-gray-500 sm:col-span-6">
                         This account was created on{' '}
-                        <time dateTime="2017-01-05T20:35:40">January 5, 2017, 8:35:40 PM</time>.
+                        <time dateTime="2017-01-05T20:35:40">
+                          January 5, 2017, 8:35:40 PM
+                        </time>
+                        .
                       </p>
                     </div>
 
@@ -534,5 +606,5 @@ export default function Example() {
         </main>
       </div>
     </div>
-  )
+  );
 }

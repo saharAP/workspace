@@ -20,10 +20,21 @@ export default function Example() {
               height={20}
               patternUnits="userSpaceOnUse"
             >
-              <rect x={0} y={0} width={4} height={4} className="text-gray-200" fill="currentColor" />
+              <rect
+                x={0}
+                y={0}
+                width={4}
+                height={4}
+                className="text-gray-200"
+                fill="currentColor"
+              />
             </pattern>
           </defs>
-          <rect width={784} height={404} fill="url(#e56e3f81-d9c1-4b83-a3ba-0d0ac8c32f32)" />
+          <rect
+            width={784}
+            height={404}
+            fill="url(#e56e3f81-d9c1-4b83-a3ba-0d0ac8c32f32)"
+          />
         </svg>
 
         <svg
@@ -43,10 +54,21 @@ export default function Example() {
               height={20}
               patternUnits="userSpaceOnUse"
             >
-              <rect x={0} y={0} width={4} height={4} className="text-gray-200" fill="currentColor" />
+              <rect
+                x={0}
+                y={0}
+                width={4}
+                height={4}
+                className="text-gray-200"
+                fill="currentColor"
+              />
             </pattern>
           </defs>
-          <rect width={404} height={784} fill="url(#56409614-3d62-4985-9a10-7ca758a8f4f0)" />
+          <rect
+            width={404}
+            height={784}
+            fill="url(#56409614-3d62-4985-9a10-7ca758a8f4f0)"
+          />
         </svg>
 
         <div className="relative lg:flex lg:items-center">
@@ -74,8 +96,9 @@ export default function Example() {
             <blockquote className="relative">
               <div className="text-2xl leading-9 font-medium text-gray-900">
                 <p>
-                  Lorem ipsum dolor sit amet consectetur adipisicing elit. Nemo expedita voluptas culpa sapiente alias
-                  molestiae. Numquam corrupti in laborum sed rerum et corporis.
+                  Lorem ipsum dolor sit amet consectetur adipisicing elit. Nemo
+                  expedita voluptas culpa sapiente alias molestiae. Numquam
+                  corrupti in laborum sed rerum et corporis.
                 </p>
               </div>
               <footer className="mt-8">
@@ -88,8 +111,12 @@ export default function Example() {
                     />
                   </div>
                   <div className="ml-4 lg:ml-0">
-                    <div className="text-base font-medium text-gray-900">Judith Black</div>
-                    <div className="text-base font-medium text-indigo-600">CEO, Tuple</div>
+                    <div className="text-base font-medium text-gray-900">
+                      Judith Black
+                    </div>
+                    <div className="text-base font-medium text-indigo-600">
+                      CEO, Tuple
+                    </div>
                   </div>
                 </div>
               </footer>
@@ -98,5 +125,5 @@ export default function Example() {
         </div>
       </div>
     </section>
-  )
+  );
 }

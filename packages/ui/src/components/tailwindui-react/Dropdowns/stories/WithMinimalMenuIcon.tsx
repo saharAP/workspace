@@ -1,10 +1,10 @@
 /* This example requires Tailwind CSS v2.0+ */
-import { Fragment } from 'react'
-import { Menu, Transition } from '@headlessui/react'
-import { DotsVerticalIcon } from '@heroicons/react/solid'
+import { Menu, Transition } from '@headlessui/react';
+import { DotsVerticalIcon } from '@heroicons/react/solid';
+import { Fragment } from 'react';
 
 function classNames(...classes) {
-  return classes.filter(Boolean).join(' ')
+  return classes.filter(Boolean).join(' ');
 }
 
 export default function Example() {
@@ -34,7 +34,7 @@ export default function Example() {
                   href="#"
                   className={classNames(
                     active ? 'bg-gray-100 text-gray-900' : 'text-gray-700',
-                    'block px-4 py-2 text-sm'
+                    'block px-4 py-2 text-sm',
                   )}
                 >
                   Account settings
@@ -47,7 +47,7 @@ export default function Example() {
                   href="#"
                   className={classNames(
                     active ? 'bg-gray-100 text-gray-900' : 'text-gray-700',
-                    'block px-4 py-2 text-sm'
+                    'block px-4 py-2 text-sm',
                   )}
                 >
                   Support
@@ -60,7 +60,7 @@ export default function Example() {
                   href="#"
                   className={classNames(
                     active ? 'bg-gray-100 text-gray-900' : 'text-gray-700',
-                    'block px-4 py-2 text-sm'
+                    'block px-4 py-2 text-sm',
                   )}
                 >
                   License
@@ -74,7 +74,7 @@ export default function Example() {
                     type="submit"
                     className={classNames(
                       active ? 'bg-gray-100 text-gray-900' : 'text-gray-700',
-                      'block w-full text-left px-4 py-2 text-sm'
+                      'block w-full text-left px-4 py-2 text-sm',
                     )}
                   >
                     Sign out
@@ -86,5 +86,5 @@ export default function Example() {
         </Menu.Items>
       </Transition>
     </Menu>
-  )
+  );
 }

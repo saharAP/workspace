@@ -1,4 +1,7 @@
-export const getInitialStateFromLocalStorage = <T>(storename: string, initialState: T): T => {
+export const getInitialStateFromLocalStorage = <T>(
+  storename: string,
+  initialState: T,
+): T => {
   let localState: string;
   let parsedLocalState: T;
 
