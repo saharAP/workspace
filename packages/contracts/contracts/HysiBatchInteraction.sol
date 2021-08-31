@@ -38,29 +38,29 @@ contract HysiBatchInteraction is Owned {
   /**
    * @notice Defines if the Batch will mint or redeem HYSI
    * @param curveMetaPool A CurveMetaPool for trading an exotic stablecoin against 3CRV
-   * @param crvToken The LP-Token of the CurveMetapool
-   * @param yToken The yToken (and yearn Vault) needed to as underyling for HYSI
+   * @param crvLPToken The LP-Token of the CurveMetapool
    */
-  struct Underlying {
+  struct CurvePoolTokenPair {
     CurveMetapool curveMetaPool;
-    IERC20 crvToken;
-    YearnVault yToken;
+    IERC20 crvLPToken;
   }
 
   /**
    * @notice The Batch structure is used both for Batches of Minting and Redeeming
+   * @param batchType Determines if this Batch is for Minting or Redeeming HYSI
+   * @param claimable Shows if a batch has been processed and is ready to be claimed, the suppliedToken cant be withdrawn if a batch is claimable
    * @param unclaimedShares The total amount of unclaimed shares in this batch
    * @param suppliedToken The total amount of deposited token (either 3CRV or HYSI)
    * @param claimableToken The total amount of claimable token (either 3CRV or HYSI)
    * @param shareBalance The individual share balance per user that has deposited token
-   * @param claimable Shows if a batch has been processed and is ready to be claimed
    */
   struct Batch {
+    BatchType batchType;
+    bool claimable;
     uint256 unclaimedShares;
     uint256 suppliedToken;
     uint256 claimableToken;
     mapping(address => uint256) shareBalance;
-    bool claimable;
   }
 
   /* ========== STATE VARIABLES ========== */
@@ -68,7 +68,7 @@ contract HysiBatchInteraction is Owned {
   IERC20 public threeCrv;
   BasicIssuanceModule public setBasicIssuanceModule;
   ISetToken public setToken;
-  Underlying[4] public underlying;
+  mapping(address => CurvePoolTokenPair) public curvePoolTokenPairs;
 
   mapping(address => bytes32[]) public batchesOfAccount;
   mapping(bytes32 => Batch) public batches;
@@ -80,14 +80,28 @@ contract HysiBatchInteraction is Owned {
   uint256 public batchCooldown;
   uint256 public mintThreshold;
   uint256 public redeemThreshold;
+  uint16 public slippageTolerance; //In Basis points
 
   /* ========== EVENTS ========== */
 
   event Deposit(address indexed from, uint256 deposit);
   event Withdrawal(address indexed to, uint256 amount);
-  event BatchMinted(uint256 amount);
-  event BatchRedeemed(uint256 amount);
-  event Claimed(address account, uint256 amount);
+  event BatchMinted(
+    bytes32 indexed batchId,
+    uint256 hysiAmount,
+    uint256 suppliedTokenAmount
+  );
+  event BatchRedeemed(
+    bytes32 indexed batchId,
+    uint256 hysiAmount,
+    uint256 suppliedTokenAmount
+  );
+  event Claimed(
+    address indexed account,
+    BatchType batchType,
+    uint256 shares,
+    uint256 claimedToken
+  );
   event TokenSetAdded(ISetToken setToken);
 
   /* ========== CONSTRUCTOR ========== */
@@ -96,10 +110,12 @@ contract HysiBatchInteraction is Owned {
     IERC20 threeCrv_,
     ISetToken setToken_,
     BasicIssuanceModule basicIssuanceModule_,
-    Underlying[4] memory underlying_,
+    address[4] memory yTokenAddresses_,
+    CurvePoolTokenPair[4] memory curvePoolTokenPairs_,
     uint256 batchCooldown_,
     uint256 mintThreshold_,
-    uint256 redeemThreshold_
+    uint256 redeemThreshold_,
+    uint16 slippageTolerance_
   ) Owned(msg.sender) {
     require(address(threeCrv_) != address(0));
     require(address(setToken_) != address(0));
@@ -108,7 +124,7 @@ contract HysiBatchInteraction is Owned {
     setToken = setToken_;
     setBasicIssuanceModule = basicIssuanceModule_;
 
-    _setUnderlyingToken(underlying_);
+    _setCurvePoolTokenPairs(yTokenAddresses_, curvePoolTokenPairs_);
 
     batchCooldown = batchCooldown_;
     currentMintBatchId = _generateNextBatchId(bytes32("mint"));
@@ -119,6 +135,10 @@ contract HysiBatchInteraction is Owned {
 
     lastMintedAt = block.timestamp;
     lastRedeemedAt = block.timestamp;
+
+    slippageTolerance = slippageTolerance_;
+
+    batches[currentRedeemBatchId].batchType = BatchType.Redeem;
   }
 
   /* ========== VIEWS ========== */
@@ -162,9 +182,8 @@ contract HysiBatchInteraction is Owned {
   /**
    * @notice Claims funds after the batch has been processed (get HYSI from a mint batch and 3CRV from a redeem batch)
    * @param batchId_ Id of batch to claim from
-   * @param batchType_ Type of the batch (Mint, Redeem)
    */
-  function claim(bytes32 batchId_, BatchType batchType_) external {
+  function claim(bytes32 batchId_) external {
     Batch storage batch = batches[batchId_];
     require(batch.claimable, "not yet claimable");
 
@@ -182,15 +201,13 @@ contract HysiBatchInteraction is Owned {
     batch.shareBalance[msg.sender] = 0;
 
     //Transfer token
-    if (batchType_ == BatchType.Mint) {
-      setToken.safeIncreaseAllowance(address(this), claimedToken);
-      setToken.safeTransferFrom(address(this), msg.sender, claimedToken);
+    if (batch.batchType == BatchType.Mint) {
+      setToken.safeTransfer(msg.sender, claimedToken);
     } else {
-      threeCrv.safeIncreaseAllowance(address(this), claimedToken);
-      threeCrv.safeTransferFrom(address(this), msg.sender, claimedToken);
+      threeCrv.safeTransfer(msg.sender, claimedToken);
     }
 
-    emit Claimed(msg.sender, shares);
+    emit Claimed(msg.sender, batch.batchType, shares, claimedToken);
   }
 
   /**
@@ -229,27 +246,31 @@ contract HysiBatchInteraction is Owned {
         1e18
       );
 
-    //Total value of leftover yToken in 3CRV
+    //Total value of leftover yToken valued in 3CRV
     uint256 totalLeftoverIn3Crv;
 
     //Individual yToken leftovers valued in 3CRV
     uint256[] memory leftoversIn3Crv = new uint256[](quantities.length);
 
-    for (uint256 i; i < underlying.length; i++) {
+    for (uint256 i; i < tokenAddresses.length; i++) {
       //Check how many crvLPToken are needed to mint one yToken
-      uint256 yTokenInCrvToken = underlying[i].yToken.pricePerShare();
+      uint256 yTokenInCrvToken = YearnVault(tokenAddresses[i]).pricePerShare();
 
       //Check how many 3CRV are needed to mint one crvLPToken
-      uint256 crvTokenIn3Crv = underlying[i]
+      uint256 crvLPTokenIn3Crv = curvePoolTokenPairs[tokenAddresses[i]]
         .curveMetaPool
         .calc_withdraw_one_coin(1e18, 1);
 
+      require(
+        crvLPTokenIn3Crv <= 1e18.mul(10000.add(slippageTolerance)).div(10000),
+        "slippage too large"
+      );
+
       //Calculate how many 3CRV are needed to mint one yToken
-      uint256 yTokenIn3Crv = yTokenInCrvToken.mul(crvTokenIn3Crv).div(1e18);
+      uint256 yTokenIn3Crv = yTokenInCrvToken.mul(crvLPTokenIn3Crv).div(1e18);
 
       //Calculate how much the yToken leftover are worth in 3CRV
-      uint256 leftoverIn3Crv = underlying[i]
-        .yToken
+      uint256 leftoverIn3Crv = YearnVault(tokenAddresses[i])
         .balanceOf(address(this))
         .mul(yTokenIn3Crv)
         .div(1e18);
@@ -266,56 +287,54 @@ contract HysiBatchInteraction is Owned {
       totalLeftoverIn3Crv
     );
 
-    for (uint256 i; i < underlying.length; i++) {
+    for (uint256 i; i < tokenAddresses.length; i++) {
       //Calculate the pool allocation by dividing the suppliedToken by 4 and take leftovers into account
       uint256 poolAllocation = suppliedTokenPlusLeftovers.div(4).sub(
         leftoversIn3Crv[i]
       );
 
       //Pool 3CRV to get crvLPToken
-      _sendToCurve(poolAllocation, underlying[i].curveMetaPool);
+      _sendToCurve(
+        poolAllocation,
+        curvePoolTokenPairs[tokenAddresses[i]].curveMetaPool
+      );
 
       //Deposit crvLPToken to get yToken
       _sendToYearn(
-        underlying[i].crvToken.balanceOf(address(this)),
-        underlying[i].crvToken,
-        underlying[i].yToken
+        curvePoolTokenPairs[tokenAddresses[i]].crvLPToken.balanceOf(
+          address(this)
+        ),
+        curvePoolTokenPairs[tokenAddresses[i]].crvLPToken,
+        YearnVault(tokenAddresses[i])
       );
 
       //Approve yToken for minting
-      underlying[i].yToken.safeIncreaseAllowance(
+      YearnVault(tokenAddresses[i]).safeIncreaseAllowance(
         address(setBasicIssuanceModule),
-        underlying[i].yToken.balanceOf(address(this))
+        YearnVault(tokenAddresses[i]).balanceOf(address(this))
       );
     }
 
     //Get the minimum amount of hysi that we can mint with our balances of yToken
-    uint256 hysiAmount = underlying[0]
-      .yToken
+    uint256 hysiAmount = YearnVault(tokenAddresses[0])
       .balanceOf(address(this))
       .mul(1e18)
       .div(quantities[0]);
 
-    for (uint256 i = 1; i < underlying.length; i++) {
+    for (uint256 i = 1; i < tokenAddresses.length; i++) {
       hysiAmount = Math.min(
         hysiAmount,
-        underlying[i].yToken.balanceOf(address(this)).mul(1e18).div(
+        YearnVault(tokenAddresses[i]).balanceOf(address(this)).mul(1e18).div(
           quantities[i]
         )
       );
     }
 
-    //Check our balance of HYSI since we could have some still around from previous batches
-    uint256 oldBalance = setToken.balanceOf(address(this));
-
     //Mint HYSI
     setBasicIssuanceModule.issue(setToken, hysiAmount, address(this));
 
     //Save the minted amount HYSI as claimable token for the batch
-    batch.claimableToken = setToken.balanceOf(address(this)).sub(oldBalance);
-
-    //Set suppliedToken to 0 so users cant withdraw any 3CRV
-    batch.suppliedToken = 0;
+    batch.claimableToken = hysiAmount;
 
     //Set claimable to true so users can claim their HYSI
     batch.claimable = true;
@@ -323,12 +342,10 @@ contract HysiBatchInteraction is Owned {
     //Update lastMintedAt for cooldown calculations
     lastMintedAt = block.timestamp;
 
+    emit BatchMinted(currentMintBatchId, hysiAmount, batch.suppliedToken);
+
     //Create the next mint batch id
     currentMintBatchId = _generateNextBatchId(currentMintBatchId);
-
-    //Should we display with how much money Hysi got minted or how many hysi got minted?
-    //First is definitely easier to test but whats more valuable?
-    emit BatchMinted(hysiAmount);
   }
 
   /**
@@ -343,7 +360,7 @@ contract HysiBatchInteraction is Owned {
     //...or if enough HYSI was deposited to make the minting worthwhile
     //This is to prevent excessive gas consumption and costs as we will pay keeper to call this function
     require(
-      (block.timestamp.sub(lastMintedAt) >= batchCooldown) ||
+      (block.timestamp.sub(lastRedeemedAt) >= batchCooldown) ||
         (batch.suppliedToken >= redeemThreshold),
       "can not execute batch action yet"
     );
@@ -355,6 +372,15 @@ contract HysiBatchInteraction is Owned {
       setToken.balanceOf(address(this)) >= batch.suppliedToken,
       "insufficient balance"
     );
+
+    //Get tokenAddresses for mapping of underlying
+    (
+      address[] memory tokenAddresses,
+      uint256[] memory quantities
+    ) = setBasicIssuanceModule.getRequiredComponentUnitsForIssue(
+        setToken,
+        1e18
+      );
 
     //Allow setBasicIssuanceModule to use HYSI
     setToken.safeIncreaseAllowance(
@@ -368,28 +394,45 @@ contract HysiBatchInteraction is Owned {
     //Check our balance of 3CRV since we could have some still around from previous batches
     uint256 oldBalance = threeCrv.balanceOf(address(this));
 
-    for (uint256 i; i < underlying.length; i++) {
+    for (uint256 i; i < tokenAddresses.length; i++) {
       //Deposit yToken to receive crvLPToken
       _withdrawFromYearn(
-        underlying[i].yToken.balanceOf(address(this)),
-        underlying[i].yToken
+        YearnVault(tokenAddresses[i]).balanceOf(address(this)),
+        YearnVault(tokenAddresses[i])
+      );
+
+      uint256 crvLPTokenBalance = curvePoolTokenPairs[tokenAddresses[i]]
+        .crvLPToken
+        .balanceOf(address(this));
+
+      //Check how many 3CRV are needed to mint one crvLPToken
+      uint256 crvLPTokenIn3Crv = curvePoolTokenPairs[tokenAddresses[i]]
+        .curveMetaPool
+        .calc_withdraw_one_coin(crvLPTokenBalance, 1)
+        .mul(1e18)
+        .div(crvLPTokenBalance);
+
+      require(
+        crvLPTokenIn3Crv <= 1e18.mul(10000.add(slippageTolerance)).div(10000),
+        "slippage too large"
       );
 
       //Deposit crvLPToken to receive 3CRV
       _withdrawFromCurve(
-        underlying[i].crvToken.balanceOf(address(this)),
-        underlying[i].crvToken,
-        underlying[i].curveMetaPool
+        crvLPTokenBalance,
+        curvePoolTokenPairs[tokenAddresses[i]].crvLPToken,
+        curvePoolTokenPairs[tokenAddresses[i]].curveMetaPool
       );
     }
-
-    emit BatchRedeemed(batch.suppliedToken);
 
     //Save the redeemed amount of 3CRV as claimable token for the batch
     batch.claimableToken = threeCrv.balanceOf(address(this)).sub(oldBalance);
 
-    //Set suppliedToken to 0 so users cant withdraw any HYSI
-    batch.suppliedToken = 0;
+    emit BatchRedeemed(
+      currentRedeemBatchId,
+      batch.claimableToken,
+      batch.suppliedToken
+    );
 
     //Set claimable to true so users can claim their HYSI
     batch.claimable = true;
@@ -399,6 +442,8 @@ contract HysiBatchInteraction is Owned {
 
     //Create the next redeem batch id
     currentRedeemBatchId = _generateNextBatchId(currentRedeemBatchId);
+
+    batches[currentRedeemBatchId].batchType = BatchType.Redeem;
   }
 
   /* ========== RESTRICTED FUNCTIONS ========== */
@@ -439,7 +484,6 @@ contract HysiBatchInteraction is Owned {
     //Takes 3CRV and sends lpToken to this contract
     //Metapools take an array of amounts with the exoctic stablecoin at the first spot and 3CRV at the second.
     //The second variable determines the min amount of LP-Token we want to receive (slippage control)
-    //TODO Calculate an acceptable value for slippage
     curveMetapool_.add_liquidity([0, amount_], 0);
   }
 
@@ -459,7 +503,6 @@ contract HysiBatchInteraction is Owned {
     //Takes lp Token and sends 3CRV to this contract
     //The second variable is the index for the token we want to receive (0 = exotic stablecoin, 1 = 3CRV)
     //The third variable determines min amount of token we want to receive (slippage control)
-    //TODO Calculate an acceptable value for slippage
     curveMetapool_.remove_liquidity_one_coin(amount_, 1, 0);
   }
 
@@ -509,25 +552,30 @@ contract HysiBatchInteraction is Owned {
 
   /**
    * @notice This function allows the owner to change the composition of underlying token of the HYSI
-   * @param underlying_ An array structs describing underlying yToken, crvToken and curve metapool
+   * @param yTokenAddresses_ An array of addresses for the yToken needed to mint HYSI
+   * @param curvePoolTokenPairs_ An array structs describing underlying yToken, crvToken and curve metapool
    */
-  function setUnderylingToken(Underlying[] calldata underlying_)
-    public
-    onlyOwner
-  {
-    _setUnderlyingToken(underlying_);
+  function setCurvePoolTokenPairs(
+    address[4] yTokenAddresses_,
+    CurvePoolTokenPair[4] calldata curvePoolTokenPairs_
+  ) public onlyOwner {
+    _setCurvePoolTokenPairs(yTokenAddresses_, curvePoolTokenPairs_);
   }
 
   /**
-    @notice This function defines which underlying token and pools are needed to mint a hysi token
-    @param underlying_ An array structs describing underlying yToken, crvToken and curve metapool
-    @dev !!! Its absolutely necessary that the order of underylingToken matches the order of getRequireedComponentUnitsforIssue
-    @dev since our calculations for minting just iterate through the index and match it with the quantities given by Set
-    @dev we must make sure to align them correctly by index, otherwise our whole calculation breaks down
-  */
-  function _setUnderlyingToken(Underlying[4] memory underlying_) internal {
-    for (uint256 i; i < underlying_.length; i++) {
-      underlying.push(underlying_[i]);
+   *  @notice This function defines which underlying token and pools are needed to mint a hysi token
+   * @param yTokenAddresses An array of addresses for the yToken needed to mint HYSI
+   * @param curvePoolTokenPairs_ An array structs describing underlying yToken, crvToken and curve metapool
+   * @dev !!! Its absolutely necessary that the order of underylingToken matches the order of getRequireedComponentUnitsforIssue
+   * @dev since our calculations for minting just iterate through the index and match it with the quantities given by Set
+   * @dev we must make sure to align them correctly by index, otherwise our whole calculation breaks down
+   */
+  function _setCurvePoolTokenPairs(
+    address[4] yTokenAddresses_,
+    CurvePoolTokenPair[4] memory curvePoolTokenPairs_
+  ) internal {
+    for (uint256 i; i < yTokenAddresses_.length; i++) {
+      curvePoolTokenPairs[yTokenAddresses_[i]] = curvePoolTokenPairs_[i];
     }
   }
 
@@ -556,5 +604,11 @@ contract HysiBatchInteraction is Owned {
     redeemThreshold = threshold_;
   }
 
-  /* ========== MODIFIER ========== */
+  /**
+   * @notice Sets the acceptable slippage amount for curve LP Token in basis points
+   * @param slippageTolerance_ Acceptable slippage amount in basis points
+   */
+  function setSlippageTolerance(uint16 slippageTolerance_) external onlyOwner {
+    slippageTolerance = slippageTolerance_;
+  }
 }

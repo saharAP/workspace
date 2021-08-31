@@ -106,21 +106,21 @@ async function deployContracts(): Promise<Contracts> {
       mock3Crv.address,
       mockSetToken.address,
       mockBasicIssuanceModule.address,
+      [mockYearnVaultUSDX.address, mockYearnVaultUST.address],
       [
         {
-          crvToken: mockCrvUSDX.address,
-          yToken: mockYearnVaultUSDX.address,
           curveMetaPool: mockCurveMetapoolUSDX.address,
+          crvLPToken: mockCrvUSDX.address,
         },
         {
-          crvToken: mockCrvUST.address,
-          yToken: mockYearnVaultUST.address,
           curveMetaPool: mockCurveMetapoolUST.address,
+          crvLPToken: mockCrvUST.address,
         },
       ],
       1800,
       parseEther("20000"),
-      parseEther("200")
+      parseEther("200"),
+      50
     )
   ).deployed()) as HysiBatchInteraction;
 
@@ -366,7 +366,7 @@ describe("HysiBatchInteraction", function () {
           0
         );
         await expect(
-          contracts.hysiBatchInteraction.claim(batchId, BatchType.Redeem)
+          contracts.hysiBatchInteraction.claim(batchId)
         ).to.be.revertedWith("not yet claimable");
       });
       it("claim batch successfully", async function () {
@@ -378,9 +378,7 @@ describe("HysiBatchInteraction", function () {
           0
         );
         expect(
-          await contracts.hysiBatchInteraction
-            .connect(depositor)
-            .claim(batchId, BatchType.Mint)
+          await contracts.hysiBatchInteraction.connect(depositor).claim(batchId)
         )
           .to.emit(contracts.hysiBatchInteraction, "Claimed")
           .withArgs(depositor.address, parseEther("10000"));
@@ -644,7 +642,7 @@ describe("HysiBatchInteraction", function () {
           0
         );
         await expect(
-          contracts.hysiBatchInteraction.claim(batchId, BatchType.Redeem)
+          contracts.hysiBatchInteraction.claim(batchId)
         ).to.be.revertedWith("not yet claimable");
       });
       it("claim batch successfully", async function () {
@@ -655,9 +653,7 @@ describe("HysiBatchInteraction", function () {
           0
         );
         expect(
-          await contracts.hysiBatchInteraction
-            .connect(depositor)
-            .claim(batchId, BatchType.Redeem)
+          await contracts.hysiBatchInteraction.connect(depositor).claim(batchId)
         )
           .to.emit(contracts.hysiBatchInteraction, "Claimed")
           .withArgs(depositor.address, parseEther("100"));

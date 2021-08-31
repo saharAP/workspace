@@ -79,29 +79,6 @@ const CURVE_ADDRESS_PROVIDER_ADDRESS =
 const CURVE_FACTORY_METAPOOL_DEPOSIT_ZAP_ADDRESS =
   "0xA79828DF1850E8a3A3064576f380D90aECDD3359";
 
-const underlying = [
-  {
-    crvToken: CRV_DUSD_TOKEN_ADDRESS,
-    yToken: YDUSD_TOKEN_ADDRESS,
-    curveMetaPool: DUSD_METAPOOL_ADDRESS,
-  },
-  {
-    crvToken: CRV_FRAX_TOKEN_ADDRESS,
-    yToken: YFRAX_TOKEN_ADDRESS,
-    curveMetaPool: FRAX_METAPOOL_ADDRESS,
-  },
-  {
-    crvToken: CRV_USDN_TOKEN_ADDRESS,
-    yToken: YUSDN_TOKEN_ADDRESS,
-    curveMetaPool: USDN_METAPOOL_ADDRESS,
-  },
-  {
-    crvToken: CRV_UST_TOKEN_ADDRESS,
-    yToken: YUST_TOKEN_ADDRESS,
-    curveMetaPool: UST_METAPOOL_ADDRESS,
-  },
-];
-
 async function deployContracts(): Promise<Contracts> {
   //Deploy helper Faucet
   const Faucet = await ethers.getContractFactory("Faucet");
@@ -205,10 +182,34 @@ async function deployContracts(): Promise<Contracts> {
       THREE_CRV_TOKEN_ADDRESS,
       HYSI_TOKEN_ADDRESS,
       SET_BASIC_ISSUANCE_MODULE_ADDRESS,
-      underlying,
+      [
+        YDUSD_TOKEN_ADDRESS,
+        YFRAX_TOKEN_ADDRESS,
+        YUSDN_TOKEN_ADDRESS,
+        YUST_TOKEN_ADDRESS,
+      ],
+      [
+        {
+          curveMetaPool: DUSD_METAPOOL_ADDRESS,
+          crvLPToken: CRV_DUSD_TOKEN_ADDRESS,
+        },
+        {
+          curveMetaPool: FRAX_METAPOOL_ADDRESS,
+          crvLPToken: CRV_FRAX_TOKEN_ADDRESS,
+        },
+        {
+          curveMetaPool: USDN_METAPOOL_ADDRESS,
+          crvLPToken: CRV_USDN_TOKEN_ADDRESS,
+        },
+        {
+          curveMetaPool: UST_METAPOOL_ADDRESS,
+          crvLPToken: CRV_UST_TOKEN_ADDRESS,
+        },
+      ],
       1500,
       parseEther("200"),
-      parseEther("1")
+      parseEther("1"),
+      50
     )
   ).deployed();
 
@@ -512,7 +513,7 @@ describe("HysiBatchInteraction Network Test", function () {
           0
         );
         await expect(
-          contracts.hysiBatchInteraction.claim(batchId, BatchType.Redeem)
+          contracts.hysiBatchInteraction.claim(batchId)
         ).to.be.revertedWith("not yet claimable");
       });
       it("claim batch successfully", async function () {
@@ -524,9 +525,7 @@ describe("HysiBatchInteraction Network Test", function () {
           0
         );
         expect(
-          await contracts.hysiBatchInteraction
-            .connect(depositor)
-            .claim(batchId, BatchType.Mint)
+          await contracts.hysiBatchInteraction.connect(depositor).claim(batchId)
         )
           .to.emit(contracts.hysiBatchInteraction, "Claimed")
           .withArgs(depositor.address, parseEther("100"));
@@ -702,7 +701,7 @@ describe("HysiBatchInteraction Network Test", function () {
           1
         );
         await expect(
-          contracts.hysiBatchInteraction.claim(batchId, BatchType.Redeem)
+          contracts.hysiBatchInteraction.claim(batchId)
         ).to.be.revertedWith("not yet claimable");
       });
       it("claim batch successfully", async function () {
@@ -717,9 +716,7 @@ describe("HysiBatchInteraction Network Test", function () {
           1
         );
         expect(
-          await contracts.hysiBatchInteraction
-            .connect(depositor)
-            .claim(batchId, BatchType.Redeem)
+          await contracts.hysiBatchInteraction.connect(depositor).claim(batchId)
         )
           .to.emit(contracts.hysiBatchInteraction, "Claimed")
           .withArgs(depositor.address, hysiBalance);
