@@ -16,4 +16,4 @@ export default {
 const Template: Story = (args) => <AreaBarChart {...args} />;
 
 export const ChartWithOutData = Template.bind({});
-ChartWithOutData.args = { data: [], width: 300, height: 200 };
+ChartWithOutData.args = { data: [], height: 200 };

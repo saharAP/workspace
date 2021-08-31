@@ -15,7 +15,6 @@ import { getEmptyChartData } from '../dummyEmissionsData';
 export interface AreaChartProps {
   data: ChartData[];
   height?: number;
-  width?: number;
 }
 
 const emptyData = getEmptyChartData();
@@ -23,7 +22,6 @@ const emptyData = getEmptyChartData();
 export const AreaBarChart: React.FC<AreaChartProps> = ({
   data,
   height,
-  width,
 }) => {
   return (
     <div className="w-screen grid justify-items-stretch">
