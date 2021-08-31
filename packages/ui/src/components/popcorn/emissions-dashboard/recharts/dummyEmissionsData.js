@@ -7,3 +7,11 @@ export const getDummyEmissionData = () => {
     };
   });
 };
+
+export const getEmptyChartData = () => {
+  return new Array(20).fill(undefined).map((x, i) => {
+    return {
+      date: `${i}/05/2021`,
+    };
+  });
+};

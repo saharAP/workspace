@@ -112,6 +112,11 @@ export default {
             setOpen: () => {},
             addContract: () => {},
           }}
+          contractErrorProps={{
+            errorMessage: 'Fatal error, run your life',
+            setErrorMessage: () => {},
+            openAddContractModal: () => {},
+          }}
         />
         <Story />
       </>
@@ -123,7 +128,14 @@ const Template: Story = (args) => <EmissionsDashboardPage {...args} />;
 
 export const Primary = Template.bind({});
 Primary.args = {
-  open: false,
-  setOpen: () => {},
-  addContract: () => {},
+  contractProps: {
+    open: false,
+    setOpen: () => {},
+    addContract: () => {},
+  },
+  contractErrorProps: {
+    errorMessage: 'Fatal error, run your life',
+    setErrorMessage: () => {},
+    openAddContractModal: () => {},
+  },
 };

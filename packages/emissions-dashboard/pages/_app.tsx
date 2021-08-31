@@ -1,7 +1,15 @@
+import { Web3Provider } from '@ethersproject/providers';
+import { Web3ReactProvider } from '@web3-react/core';
 import Head from 'next/head';
-import React, { useEffect } from 'react';
+import React, { Fragment, useEffect } from 'react';
 import { StateProvider } from '../context/store';
 import '../styles/globals.css';
+
+function getLibrary(provider: any): Web3Provider {
+  const library = new Web3Provider(provider);
+  library.pollingInterval = 12000;
+  return library;
+}
 
 export default function DashboardApp(props) {
   const { Component, pageProps } = props;
@@ -15,7 +23,7 @@ export default function DashboardApp(props) {
   }, []);
 
   return (
-    <React.Fragment>
+    <Fragment>
       <Head>
         <title>Smart Carbon Emissions Dashboard</title>
         <meta
@@ -29,9 +37,11 @@ export default function DashboardApp(props) {
           rel="stylesheet"
         ></link>
       </Head>
-      <StateProvider>
-        <Component {...pageProps} />
-      </StateProvider>
-    </React.Fragment>
+      <Web3ReactProvider getLibrary={getLibrary}>
+        <StateProvider>
+          <Component {...pageProps} />
+        </StateProvider>
+      </Web3ReactProvider>
+    </Fragment>
   );
 }
