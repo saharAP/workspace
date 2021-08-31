@@ -80,7 +80,6 @@ contract HysiBatchInteraction is Owned {
   uint256 public batchCooldown;
   uint256 public mintThreshold;
   uint256 public redeemThreshold;
-  uint16 public slippageTolerance; //In Basis points
 
   /* ========== EVENTS ========== */
 
@@ -114,8 +113,7 @@ contract HysiBatchInteraction is Owned {
     CurvePoolTokenPair[] memory curvePoolTokenPairs_,
     uint256 batchCooldown_,
     uint256 mintThreshold_,
-    uint256 redeemThreshold_,
-    uint16 slippageTolerance_
+    uint256 redeemThreshold_
   ) Owned(msg.sender) {
     require(address(threeCrv_) != address(0));
     require(address(setToken_) != address(0));
@@ -135,8 +133,6 @@ contract HysiBatchInteraction is Owned {
 
     lastMintedAt = block.timestamp;
     lastRedeemedAt = block.timestamp;
-
-    slippageTolerance = slippageTolerance_;
 
     batches[currentRedeemBatchId].batchType = BatchType.Redeem;
   }
@@ -216,7 +212,7 @@ contract HysiBatchInteraction is Owned {
    * @dev This process leaves some leftovers which are partially used in the next mint batches.
    * @dev In order to get 3CRV we can implement a zap to move stables into the curve tri-pool
    */
-  function batchMint() external {
+  function batchMint(uint256 minAmountToMint_) external {
     Batch storage batch = batches[currentMintBatchId];
 
     //Check if there was enough time between the last batch minting and this attempt...
@@ -261,12 +257,6 @@ contract HysiBatchInteraction is Owned {
         curvePoolTokenPairs[tokenAddresses[i]]
           .curveMetaPool
           .calc_withdraw_one_coin(1e18, 1)
-      );
-
-      require(
-        crvLPTokenIn3Crv <=
-          uint256(1e18).mul(uint256(10000).add(slippageTolerance)).div(10000),
-        "slippage too large"
       );
 
       //Calculate how many 3CRV are needed to mint one yToken
@@ -332,6 +322,8 @@ contract HysiBatchInteraction is Owned {
         )
       );
     }
+
+    require(hysiAmount >= minAmountToMint_, "slippage too high");
 
     //Mint HYSI
     setBasicIssuanceModule.issue(setToken, hysiAmount, address(this));
@@ -414,12 +406,6 @@ contract HysiBatchInteraction is Owned {
         .calc_withdraw_one_coin(crvLPTokenBalance, 1)
         .mul(1e18)
         .div(crvLPTokenBalance);
-
-      require(
-        crvLPTokenIn3Crv <=
-          uint256(1e18).mul(uint256(10000).add(slippageTolerance)).div(10000),
-        "slippage too large"
-      );
 
       //Deposit crvLPToken to receive 3CRV
       _withdrawFromCurve(
@@ -606,13 +592,5 @@ contract HysiBatchInteraction is Owned {
    */
   function setRedeemThreshold(uint256 threshold_) external onlyOwner {
     redeemThreshold = threshold_;
-  }
-
-  /**
-   * @notice Sets the acceptable slippage amount for curve LP Token in basis points
-   * @param slippageTolerance_ Acceptable slippage amount in basis points
-   */
-  function setSlippageTolerance(uint16 slippageTolerance_) external onlyOwner {
-    slippageTolerance = slippageTolerance_;
   }
 }

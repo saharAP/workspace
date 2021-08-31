@@ -251,7 +251,7 @@ describe("HysiBatchInteraction", function () {
             .connect(depositor)
             .depositForMint(parseEther("10000"));
           await expect(
-            contracts.hysiBatchInteraction.connect(owner).batchMint()
+            contracts.hysiBatchInteraction.connect(owner).batchMint(0)
           ).to.be.revertedWith("can not execute batch action yet");
         });
       });
@@ -271,7 +271,7 @@ describe("HysiBatchInteraction", function () {
           await provider.send("evm_increaseTime", [1800]);
           const result = await contracts.hysiBatchInteraction
             .connect(owner)
-            .batchMint();
+            .batchMint(0);
           expect(result)
             .to.emit(contracts.hysiBatchInteraction, "BatchMinted")
             .withArgs(batchId, parseEther("10000"), parseEther("50"));
@@ -301,7 +301,7 @@ describe("HysiBatchInteraction", function () {
             .connect(depositor1)
             .depositForMint(parseEther("10000"));
           await expect(
-            contracts.hysiBatchInteraction.connect(owner).batchMint()
+            contracts.hysiBatchInteraction.connect(owner).batchMint(0)
           ).to.emit(contracts.hysiBatchInteraction, "BatchMinted");
         });
         it("advances to the next batch", async function () {
@@ -317,7 +317,7 @@ describe("HysiBatchInteraction", function () {
           await provider.send("evm_increaseTime", [1800]);
 
           const previousMintBatchId = await contracts.hysiBatchInteraction.currentMintBatchId();
-          await contracts.hysiBatchInteraction.batchMint();
+          await contracts.hysiBatchInteraction.batchMint(0);
 
           const previousBatch = await contracts.hysiBatchInteraction.batches(
             previousMintBatchId
@@ -368,7 +368,7 @@ describe("HysiBatchInteraction", function () {
       it("claim batch successfully", async function () {
         await provider.send("evm_increaseTime", [1800]);
         await provider.send("evm_mine", []);
-        await contracts.hysiBatchInteraction.connect(owner).batchMint();
+        await contracts.hysiBatchInteraction.connect(owner).batchMint(0);
         const batchId = await contracts.hysiBatchInteraction.batchesOfAccount(
           depositor.address,
           0

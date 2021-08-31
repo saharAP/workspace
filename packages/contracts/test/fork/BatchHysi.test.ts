@@ -1,7 +1,12 @@
 import { SignerWithAddress } from "@nomiclabs/hardhat-ethers/signers";
 import { expect } from "chai";
 import { BigNumber } from "ethers";
-import { formatEther, parseEther } from "ethers/lib/utils";
+import {
+  formatEther,
+  formatUnits,
+  parseEther,
+  parseUnits,
+} from "ethers/lib/utils";
 import { ethers, network, waffle } from "hardhat";
 import CurveMetapoolAbi from "../../lib/Curve/CurveMetapoolAbi.json";
 import BasicIssuanceModuleAbi from "../../lib/SetToken/vendor/set-protocol/artifacts/BasicIssuanceModule.json";
@@ -24,6 +29,7 @@ interface Contracts {
   crvFRAX: ERC20;
   crvUSDN: ERC20;
   crvUST: ERC20;
+  threePool: CurveMetapool;
   dusdMetapool: CurveMetapool;
   fraxMetapool: CurveMetapool;
   usdnMetapool: CurveMetapool;
@@ -55,9 +61,11 @@ const HYSI_TOKEN_ADDRESS = "0x8d1621a27bb8c84e59ca339cf9b21e15b907e408";
 
 const SET_BASIC_ISSUANCE_MODULE_ADDRESS =
   "0xd8EF3cACe8b4907117a45B0b125c68560532F94D";
+const SET_TOKEN_ADDRESS = "0x8d1621a27bb8c84e59ca339cf9b21e15b907e408";
 
 const THREE_CRV_TOKEN_ADDRESS = "0x6c3F90f043a72FA612cbac8115EE7e52BDe6E490";
 
+const THREEPOOL_ADDRESS = "0xbEbc44782C7dB0a1A60Cb6fe97d0b483032FF1C7";
 const CRV_DUSD_TOKEN_ADDRESS = "0x3a664ab939fd8482048609f652f9a0b0677337b9";
 const CRV_FRAX_TOKEN_ADDRESS = "0xd632f22692fac7611d2aa1c0d552930d43caed3b";
 const CRV_USDN_TOKEN_ADDRESS = "0x4f3e8f405cf5afc05d68142f3783bdfe13811522";
@@ -78,6 +86,29 @@ const CURVE_ADDRESS_PROVIDER_ADDRESS =
   "0x0000000022D53366457F9d5E68Ec105046FC4383";
 const CURVE_FACTORY_METAPOOL_DEPOSIT_ZAP_ADDRESS =
   "0xA79828DF1850E8a3A3064576f380D90aECDD3359";
+
+const componentMap = {
+  [YDUSD_TOKEN_ADDRESS]: {
+    name: "yDUSD",
+    metaPool: undefined,
+    yPool: undefined,
+  },
+  [YFRAX_TOKEN_ADDRESS]: {
+    name: "yFRAX",
+    metaPool: undefined,
+    yPool: undefined,
+  },
+  [YUSDN_TOKEN_ADDRESS]: {
+    name: "yUSDN",
+    metaPool: undefined,
+    yPool: undefined,
+  },
+  [YUST_TOKEN_ADDRESS]: {
+    name: "yUST",
+    metaPool: undefined,
+    yPool: undefined,
+  },
+};
 
 async function deployContracts(): Promise<Contracts> {
   //Deploy helper Faucet
@@ -120,6 +151,11 @@ async function deployContracts(): Promise<Contracts> {
     CRV_UST_TOKEN_ADDRESS
   )) as ERC20;
 
+  const threePool = (await ethers.getContractAt(
+    CurveMetapoolAbi,
+    THREEPOOL_ADDRESS
+  )) as CurveMetapool;
+
   //Deploy Curve Metapool
   const dusdMetapool = (await ethers.getContractAt(
     CurveMetapoolAbi,
@@ -141,6 +177,23 @@ async function deployContracts(): Promise<Contracts> {
     UST_METAPOOL_ADDRESS
   )) as CurveMetapool;
 
+  //const calcWithdraw = {
+  //  dusd: formatEther(
+  //    await dusdMetapool.calc_withdraw_one_coin(parseEther("1"), 1)
+  //  ),
+  //  frax: formatEther(
+  //    await fraxMetapool.calc_withdraw_one_coin(parseEther("1"), 1)
+  //  ),
+  //  usdn: formatEther(
+  //    await usdnMetapool.calc_withdraw_one_coin(parseEther("1"), 1)
+  //  ),
+  //  ust: formatEther(
+  //    await ustMetapool.calc_withdraw_one_coin(parseEther("1"), 1)
+  //  ),
+  //};
+
+  //console.log({ calcWithdraw });
+
   //Deploy Yearn Vaults
   const yDUSD = (await ethers.getContractAt(
     "MockYearnV2Vault",
@@ -161,6 +214,15 @@ async function deployContracts(): Promise<Contracts> {
     "MockYearnV2Vault",
     YUST_TOKEN_ADDRESS
   )) as MockYearnV2Vault;
+
+  componentMap[YDUSD_TOKEN_ADDRESS].metaPool = dusdMetapool;
+  componentMap[YDUSD_TOKEN_ADDRESS].yPool = yDUSD;
+  componentMap[YFRAX_TOKEN_ADDRESS].metaPool = fraxMetapool;
+  componentMap[YFRAX_TOKEN_ADDRESS].yPool = yFRAX;
+  componentMap[YUSDN_TOKEN_ADDRESS].metaPool = usdnMetapool;
+  componentMap[YUSDN_TOKEN_ADDRESS].yPool = yUSDN;
+  componentMap[YUST_TOKEN_ADDRESS].metaPool = ustMetapool;
+  componentMap[YUST_TOKEN_ADDRESS].yPool = yUST;
 
   //Deploy Set Procotol
   const hysi = (await ethers.getContractAt(
@@ -208,8 +270,7 @@ async function deployContracts(): Promise<Contracts> {
       ],
       2500,
       parseEther("200"),
-      parseEther("1"),
-      150
+      parseEther("1")
     )
   ).deployed();
 
@@ -219,6 +280,7 @@ async function deployContracts(): Promise<Contracts> {
     crvFRAX,
     crvUSDN,
     crvUST,
+    threePool,
     dusdMetapool,
     fraxMetapool,
     usdnMetapool,
@@ -233,7 +295,50 @@ async function deployContracts(): Promise<Contracts> {
     faucet,
   };
 }
+const getMinAmountOfHYSIToMint = async (): Promise<BigNumber> => {
+  const batchId = await contracts.hysiBatchInteraction.currentMintBatchId();
+  // get expected units of HYSI given 3crv amount:
+  const threeCrvInBatch = (
+    await contracts.hysiBatchInteraction.batches(batchId)
+  ).suppliedToken;
+  const valueOf3CrvInBatch = threeCrvInBatch.mul(
+    await contracts.threePool.get_virtual_price()
+  );
+  const components = await contracts.basicIssuanceModule.getRequiredComponentUnitsForIssue(
+    SET_TOKEN_ADDRESS,
+    parseEther("1")
+  );
+  const componentAddresses = components[0];
+  const componentAmounts = components[1];
 
+  const componentVirtualPrices = await Promise.all(
+    componentAddresses.map(async (component) => {
+      const metapool = componentMap[component.toLowerCase()]
+        .metaPool as CurveMetapool;
+      const yPool = componentMap[component.toLowerCase()]
+        .yPool as MockYearnV2Vault;
+      const yPoolPricePerShare = await yPool.pricePerShare();
+      const metapoolPrice = await metapool.get_virtual_price();
+      return yPoolPricePerShare.mul(metapoolPrice).div(parseEther("1"));
+    })
+  );
+
+  const componentValuesInUSD = componentVirtualPrices.reduce(
+    (sum, componentPrice, i) => {
+      return sum.add(componentPrice.mul(componentAmounts[i]));
+    },
+    parseEther("0")
+  );
+
+  const HYSI_toMint = valueOf3CrvInBatch
+    .mul(parseEther("1"))
+    .div(componentValuesInUSD);
+
+  const minAmountToMint = HYSI_toMint.mul(parseEther(".995")).div(
+    parseEther("1")
+  );
+  return minAmountToMint;
+};
 async function depositForHysiMint(
   account: SignerWithAddress,
   threeCrvAmount: BigNumber
@@ -254,7 +359,8 @@ async function distributeHysiToken(): Promise<void> {
 
   await provider.send("evm_increaseTime", [1800]);
   await provider.send("evm_mine", []);
-  await contracts.hysiBatchInteraction.connect(owner).batchMint();
+
+  await contracts.hysiBatchInteraction.connect(owner).batchMint(0);
   const depositId = await contracts.hysiBatchInteraction.batchesOfAccount(
     depositor.address,
     0
@@ -407,14 +513,15 @@ describe("HysiBatchInteraction Network Test", function () {
             .connect(depositor)
             .depositForMint(parseEther("100"));
           await expect(
-            contracts.hysiBatchInteraction.connect(owner).batchMint()
+            contracts.hysiBatchInteraction.connect(owner).batchMint(0)
           ).to.be.revertedWith("can not execute batch action yet");
         });
       });
       context("success", function () {
         it("batch mints", async function () {
-          this.timeout(25000);
+          this.timeout(45000);
           const batchId = await contracts.hysiBatchInteraction.currentMintBatchId();
+
           await contracts.threeCrv
             .connect(depositor)
             .approve(contracts.hysiBatchInteraction.address, parseEther("100"));
@@ -423,9 +530,18 @@ describe("HysiBatchInteraction Network Test", function () {
             .depositForMint(parseEther("100"));
           await provider.send("evm_increaseTime", [2500]);
           await provider.send("evm_mine", []);
+
+          const minAmount = await getMinAmountOfHYSIToMint();
+
           const result = await contracts.hysiBatchInteraction
             .connect(depositor)
-            .batchMint();
+            .batchMint(minAmount);
+          const tx = await result.wait(1);
+          console.log({
+            gasUsed: formatEther(
+              tx.cumulativeGasUsed.mul(parseUnits("50", "gwei"))
+            ),
+          });
           expect(result)
             .to.emit(contracts.hysiBatchInteraction, "BatchMinted")
             .withArgs(
@@ -440,6 +556,7 @@ describe("HysiBatchInteraction Network Test", function () {
           ).to.equal(parseEther("0.406935062490403271"));
         });
         it("mints early when mintThreshold is met", async function () {
+          this.timeout(45000);
           await contracts.threeCrv
             .connect(depositor)
             .approve(contracts.hysiBatchInteraction.address, parseEther("100"));
@@ -453,7 +570,7 @@ describe("HysiBatchInteraction Network Test", function () {
             .connect(depositor1)
             .depositForMint(parseEther("100"));
           await expect(
-            contracts.hysiBatchInteraction.connect(owner).batchMint()
+            contracts.hysiBatchInteraction.connect(owner).batchMint(0)
           ).to.emit(contracts.hysiBatchInteraction, "BatchMinted");
         });
         it("advances to the next batch", async function () {
@@ -466,7 +583,7 @@ describe("HysiBatchInteraction Network Test", function () {
           await provider.send("evm_increaseTime", [2500]);
 
           const previousMintBatchId = await contracts.hysiBatchInteraction.currentMintBatchId();
-          await contracts.hysiBatchInteraction.batchMint();
+          await contracts.hysiBatchInteraction.batchMint(0);
 
           const previousBatch = await contracts.hysiBatchInteraction.batches(
             previousMintBatchId
@@ -517,7 +634,7 @@ describe("HysiBatchInteraction Network Test", function () {
       it("claim batch successfully", async function () {
         await provider.send("evm_increaseTime", [2500]);
 
-        await contracts.hysiBatchInteraction.connect(owner).batchMint();
+        await contracts.hysiBatchInteraction.connect(owner).batchMint(0);
         const batchId = await contracts.hysiBatchInteraction.batchesOfAccount(
           depositor.address,
           0
