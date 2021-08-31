@@ -1,5 +1,4 @@
 import { Meta, Story } from '@storybook/react/types-6-0';
-import { getDummyEmissionData } from '../dummyEmissionsData';
 import { AreaBarChart } from './index';
 
 export default {
@@ -16,9 +15,9 @@ export default {
 
 const Template: Story = (args) => <AreaBarChart {...args} />;
 
-export const ChartWithData = Template.bind({});
-ChartWithData.args = {
-  data: getDummyEmissionData(),
+export const ChartWithOutData = Template.bind({});
+ChartWithOutData.args = {
+  data: [],
   height: 200,
   transactionsDataKey: "numTransactions",
   dateDataKey: "date",
