@@ -242,6 +242,81 @@ describe("HysiBatchInteraction", function () {
         ).to.equal(currentMintBatchId);
       });
     });
+    context("withdraw from queue", function () {
+      beforeEach(async function () {
+        await contracts.mock3Crv
+          .connect(depositor)
+          .approve(contracts.hysiBatchInteraction.address, parseEther("100"));
+        await contracts.hysiBatchInteraction
+          .connect(depositor)
+          .depositForMint(parseEther("100"));
+      });
+      context("revert", function () {
+        it("reverts when the batch was already minted", async function () {
+          const batchId = await contracts.hysiBatchInteraction.batchesOfAccount(
+            depositor.address,
+            0
+          );
+          await provider.send("evm_increaseTime", [1800]);
+          await provider.send("evm_mine", []);
+          await contracts.hysiBatchInteraction.batchMint(0);
+          await expect(
+            contracts.hysiBatchInteraction
+              .connect(depositor)
+              .withdrawFromQueue(batchId, BatchType.Mint, parseEther("10"))
+          ).to.be.revertedWith("already processed");
+        });
+        it("reverts when trying to withdraw more than deposited", async function () {
+          const batchId = await contracts.hysiBatchInteraction.batchesOfAccount(
+            depositor.address,
+            0
+          );
+
+          await expect(
+            contracts.hysiBatchInteraction
+              .connect(depositor)
+              .withdrawFromQueue(batchId, BatchType.Mint, parseEther("101"))
+          ).to.be.revertedWith("not enough shares");
+        });
+      });
+      context("sucess", function () {
+        it("withdraws the deposit", async function () {
+          const batchId = await contracts.hysiBatchInteraction.batchesOfAccount(
+            depositor.address,
+            0
+          );
+          const balance = await contracts.mock3Crv.balanceOf(depositor.address);
+          expect(
+            await contracts.hysiBatchInteraction
+              .connect(depositor)
+              .withdrawFromQueue(batchId, BatchType.Mint, parseEther("100"))
+          )
+            .to.emit(contracts.hysiBatchInteraction, "WithdrawnFromQueue")
+            .withArgs(batchId, parseEther("100"), depositor.address);
+          expect(
+            await contracts.mock3Crv.balanceOf(depositor.address)
+          ).to.equal(balance.add(parseEther("100")));
+        });
+        it("withdraws part of the deposit and continues to mint the rest", async function () {
+          const batchId = await contracts.hysiBatchInteraction.batchesOfAccount(
+            depositor.address,
+            0
+          );
+          expect(
+            await contracts.hysiBatchInteraction
+              .connect(depositor)
+              .withdrawFromQueue(batchId, BatchType.Mint, parseEther("50"))
+          ).to.emit(contracts.hysiBatchInteraction, "WithdrawnFromQueue");
+          await provider.send("evm_increaseTime", [1800]);
+          await provider.send("evm_mine", []);
+          await contracts.hysiBatchInteraction.batchMint(0);
+          expect(
+            (await contracts.hysiBatchInteraction.batches(batchId))
+              .claimableToken
+          ).to.equal(parseEther("0.4980015"));
+        });
+      });
+    });
     context("batch minting", function () {
       context("reverts", function () {
         it("reverts when minting too early", async function () {
@@ -502,6 +577,79 @@ describe("HysiBatchInteraction", function () {
             0
           )
         ).to.equal(currentRedeemBatchId);
+      });
+    });
+    context("withdraw from queue", function () {
+      beforeEach(async function () {
+        await contracts.mockSetToken
+          .connect(owner)
+          .mint(depositor.address, parseEther("100"));
+        await contracts.mockSetToken
+          .connect(depositor)
+          .approve(contracts.hysiBatchInteraction.address, parseEther("100"));
+        await contracts.hysiBatchInteraction
+          .connect(depositor)
+          .depositForRedeem(parseEther("100"));
+        await contracts.mockCrvUSDX.mint(
+          contracts.mockYearnVaultUSDX.address,
+          parseEther("20000")
+        );
+        await contracts.mockCrvUST.mint(
+          contracts.mockYearnVaultUST.address,
+          parseEther("20000")
+        );
+      });
+      context("revert", function () {
+        it("reverts when the batch was already redeemed", async function () {
+          const batchId = await contracts.hysiBatchInteraction.batchesOfAccount(
+            depositor.address,
+            0
+          );
+          await provider.send("evm_increaseTime", [1800]);
+          await provider.send("evm_mine", []);
+          await contracts.hysiBatchInteraction.batchRedeem(0);
+          await expect(
+            contracts.hysiBatchInteraction
+              .connect(depositor)
+              .withdrawFromQueue(batchId, BatchType.Redeem, parseEther("10"))
+          ).to.be.revertedWith("already processed");
+        });
+      });
+      context("sucess", function () {
+        it("withdraws the deposit", async function () {
+          const batchId = await contracts.hysiBatchInteraction.batchesOfAccount(
+            depositor.address,
+            0
+          );
+          expect(
+            await contracts.hysiBatchInteraction
+              .connect(depositor)
+              .withdrawFromQueue(batchId, BatchType.Redeem, parseEther("100"))
+          )
+            .to.emit(contracts.hysiBatchInteraction, "WithdrawnFromQueue")
+            .withArgs(batchId, parseEther("100"), depositor.address);
+          expect(
+            await contracts.mockSetToken.balanceOf(depositor.address)
+          ).to.equal(parseEther("200"));
+        });
+        it("withdraws part of the deposit and continues to redeem the rest", async function () {
+          const batchId = await contracts.hysiBatchInteraction.batchesOfAccount(
+            depositor.address,
+            0
+          );
+          expect(
+            await contracts.hysiBatchInteraction
+              .connect(depositor)
+              .withdrawFromQueue(batchId, BatchType.Redeem, parseEther("50"))
+          ).to.emit(contracts.hysiBatchInteraction, "WithdrawnFromQueue");
+          await provider.send("evm_increaseTime", [1800]);
+          await provider.send("evm_mine", []);
+          await contracts.hysiBatchInteraction.batchRedeem(0);
+          expect(
+            (await contracts.hysiBatchInteraction.batches(batchId))
+              .claimableToken
+          ).to.equal(parseEther("4995"));
+        });
       });
     });
     context("batch redeeming", function () {
