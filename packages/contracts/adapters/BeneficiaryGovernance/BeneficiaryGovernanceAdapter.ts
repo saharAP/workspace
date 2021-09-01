@@ -1,5 +1,5 @@
-import { formatAndRoundBigNumber, IIpfsClient } from "@popcorn/utils";
-import { Contract } from "ethers";
+import { IIpfsClient } from "@popcorn/utils";
+import { BigNumber, Contract } from "ethers";
 
 export enum ProposalStatus {
   Open,
@@ -50,8 +50,8 @@ export interface Proposal {
   stageDeadline: Date;
   proposalType: ProposalType;
   votes: {
-    for: string;
-    against: string;
+    for: BigNumber;
+    against: BigNumber;
   };
 }
 export class BeneficiaryGovernanceAdapter {
@@ -71,8 +71,8 @@ export class BeneficiaryGovernanceAdapter {
           1000
       ),
       votes: {
-        for: formatAndRoundBigNumber(proposal.yesCount),
-        against: formatAndRoundBigNumber(proposal.noCount),
+        for: proposal.yesCount,
+        against: proposal.noCount,
       },
     };
   }

@@ -4,7 +4,7 @@ pragma solidity ^0.7.0;
 
 import "@chainlink/contracts/src/v0.7/dev/VRFConsumerBase.sol";
 import "@openzeppelin/contracts/math/SafeMath.sol";
-import "./IRandomNumberConsumer.sol";
+import "./Interfaces/IRandomNumberConsumer.sol";
 
 contract RandomNumberConsumer is VRFConsumerBase {
   using SafeMath for uint256;
