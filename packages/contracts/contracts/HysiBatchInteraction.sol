@@ -353,7 +353,7 @@ contract HysiBatchInteraction is Owned {
     Batch storage batch = batches[currentRedeemBatchId];
 
     //Check if there was enough time between the last batch redemption and this attempt...
-    //...or if enough HYSI was deposited to make the minting worthwhile
+    //...or if enough HYSI was deposited to make the redemption worthwhile
     //This is to prevent excessive gas consumption and costs as we will pay keeper to call this function
     require(
       (block.timestamp.sub(lastRedeemedAt) >= batchCooldown) ||
