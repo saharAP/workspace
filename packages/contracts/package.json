@@ -10,7 +10,7 @@
     "prettier": "prettier --write 'contracts/**/*.sol'",
     "clean": "rimraf ./cache & rimraf ./artifacts",
     "compile": "yarn clean && hardhat compile ",
-    "docify": "rm -rf ./.gitbook.yaml ./docgen/SUMMARY.md ./docgen/docs/* && node scripts/docify.js"
+    "docify": "rm -rf ./.gitbook.yaml ./docgen/SUMMARY.md ./docgen/docs/* && node scripts/docify.js",
     "test": "yarn hardhat test test/*.test.ts",
     "test:fork": "yarn hardhat test test/fork/*.test.ts",
     "coverage": "yarn hardhat coverage --testfiles 'test/*.test.ts'",
@@ -53,7 +53,7 @@
     "typechain": "^5.0.0",
     "typescript": "^4.2.4",
     "solc": "0.7.6",
-    "solidity-docgen": "^0.5.13"
+    "solidity-docgen": "^0.5.13",
     "yearn-protocol": "yaoandrew/yearn-vaults#v0.4.0"
   },
   "license": "MIT"
