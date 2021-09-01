@@ -232,6 +232,7 @@ contract HysiBatchInteraction is Owned {
 
   /**
    * @notice Mint HYSI token with deposited 3CRV. This function goes through all the steps necessary to mint an optimal amount of HYSI
+   * @param minAmountToMint_ The expected min amount of hysi to mint. If hysiAmount is lower than minAmountToMint_ the transaction will revert.
    * @dev This function deposits 3CRV in the underlying Metapool and deposits these LP token to get yToken which in turn are used to mint HYSI
    * @dev This process leaves some leftovers which are partially used in the next mint batches.
    * @dev In order to get 3CRV we can implement a zap to move stables into the curve tri-pool
