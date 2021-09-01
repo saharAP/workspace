@@ -144,29 +144,24 @@ contract HysiBatchInteraction is Owned {
   /**
    * @notice This function allows a user to withdraw their funds from a batch before that batch has been processed
    * @param batchId_ From which batch should funds be withdrawn from
-   * @param batchType_ The type of this batch (Mint or Redeem)
-   * @param amount_ Amount of either HYSI or 3CRV to be withdrawn from the queue (depending on mintBatch / redeemBatch)
+   * @param shares_ Amount of shares in HYSI or 3CRV to be withdrawn from the queue (depending on mintBatch / redeemBatch)
    */
-  function withdrawFromQueue(
-    bytes32 batchId_,
-    BatchType batchType_,
-    uint256 amount_
-  ) external {
+  function withdrawFromQueue(bytes32 batchId_, uint256 shares_) external {
     Batch storage batch = batches[batchId_];
     require(batch.claimable == false, "already processed");
-    require(batch.shareBalance[msg.sender] >= amount_, "not enough shares");
+    require(batch.shareBalance[msg.sender] >= shares_, "not enough shares");
 
     batch.shareBalance[msg.sender] = batch.shareBalance[msg.sender].sub(
-      amount_
+      shares_
     );
-    batch.suppliedToken = batch.suppliedToken.sub(amount_);
-    batch.unclaimedShares = batch.unclaimedShares.sub(amount_);
-    if (batchType_ == BatchType.Mint) {
-      threeCrv.safeTransfer(msg.sender, amount_);
+    batch.suppliedToken = batch.suppliedToken.sub(shares_);
+    batch.unclaimedShares = batch.unclaimedShares.sub(shares_);
+    if (batch.batchType == BatchType.Mint) {
+      threeCrv.safeTransfer(msg.sender, shares_);
     } else {
-      setToken.safeTransfer(msg.sender, amount_);
+      setToken.safeTransfer(msg.sender, shares_);
     }
-    emit WithdrawnFromQueue(batchId_, amount_, msg.sender);
+    emit WithdrawnFromQueue(batchId_, shares_, msg.sender);
   }
 
   /**
