@@ -1,11 +1,15 @@
 # HYSI Batch Interaction
 
 ## Intro
-The contract in question is ./contracts/HysiBatchInteraction.sol
+The contract in question is ./contracts/HysiBatchInteraction.sol.
 
-In order to run tests add FORKING_RPC_URL to the .env in root as well as set FORKING_BLOCK_NUMBER to 12780680.
+
+In order to run tests copy .env.example into .env in the root folder.
+In .env set FORKING_RPC_URL to your rpc-url (We used alchemy since we encountered some issues with Infura) and FORKING_BLOCK_NUMBER to 12780680. Afterwards run ```yarn``` in root to install all dependencies.
 
 The tests are ./test/HysiBatchInteraction.test.ts and ./test/fork/BatchHysi.test.ts
+
+Run the tests with ```yarn hardhat test ./test/HysiBatchInteraction.test.ts``` or ```yarn hardhat test ./test/fork/BatchHysi.test.ts```
 
 ## Business Logic
 HysiBatchInteraction was created to allow users to pool ressources and save on gas when minting or redeeming HYSI directly with stablecoins.
@@ -34,7 +38,7 @@ A permissioned keeper mints HYSI with depositeed 3CRV.
 3. We than calculate a how many 3CRV we need to deposit into each metapool. 
 4. Deposit allocated 3CRV for LP-Token in curve metapools.
 5. Deposit LP-Token into yearn vaults.
-6. Calculate the lowest possible amount of HYSI we can mint with the available yToken.
+6. Calculate the highest possible amount of HYSI we can mint with the lowest common denominator of available yToken.
 7. Check if this amount is acceptable or if the slippage is too high.
 8. Mint HYSI and set the minted amount to be claimed.
 9. Set the Batch to claimable, update the last mint timestamp and create a new mint batch.
@@ -57,8 +61,7 @@ A user withdraws their funds from a batch before it gets processed.
 3. Withdraw either 3CRV or HYSI depending on the batchType.
 
 ### MoveUnclaimedDepositsIntoCurrentBatch
-A user has not yet claimed processed funds in older batches and wants to use them in a new batch without needing to manually claim all these funds.
-(A user can either use 3CRV from previously redeemed HYSI to mint HYSI again or redeem previously minted HYSI for 3CRV)
+It is possible that a user has minted HYSI in the past and not claimed it yet. In the scenario that they want to redeem this HYSI again we allow them to do so without needing to claim it first (and pay additional gas). This function moves unclaimed HYSI or 3CRV and moves into the current mint/redeem batch.
 
 1. The user defines from which type of batches the want to withdraw from, an array of batches and the amount of shares they want to withdraw.
 2. Loop through each of the batches.
