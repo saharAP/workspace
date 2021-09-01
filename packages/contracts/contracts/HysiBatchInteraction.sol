@@ -361,7 +361,7 @@ contract HysiBatchInteraction is Owned {
       "can not execute batch action yet"
     );
     //Check if the Batch got already processed -- should technically not be possible
-    require(batch.claimable == false, "already minted");
+    require(batch.claimable == false, "already redeemed");
 
     //Check if this contract has enough HYSI -- should technically not be necessary
     require(
