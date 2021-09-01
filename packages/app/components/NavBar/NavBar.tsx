@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import React, { useState } from 'react';
 import { connectors } from '../../context/Web3/connectors';
+import { GrantsMenu } from './GrantsMenu';
 import NavbarLink from './NavbarLinks';
 import { ProposalsMenu } from './ProposalsMenu';
 
@@ -44,6 +45,17 @@ const Navbar: React.FC = () => {
               label="Staking"
               url="/staking"
               isActive={router.pathname === '/staking'}
+            />
+          </li>
+          <li>
+            <NavbarLink
+              label="Grant Elections"
+              onClick={() => setShowGrants(!showGrants)}
+              isActive={router.pathname === '/grant-elections/all'}
+            />
+            <GrantsMenu
+              visible={showGrants}
+              toggleSubMenu={() => setShowGrants(!showGrants)}
             />
           </li>
           <li>

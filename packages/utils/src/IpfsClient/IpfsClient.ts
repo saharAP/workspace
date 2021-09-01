@@ -74,7 +74,7 @@ export const IpfsClient: IIpfsClient = {
           headers,
         };
     return await axios
-      .post(process.env.IPFS_GATEWAY_PIN, data, config)
+      .post(`${process.env.IPFS_GATEWAY_PIN}`, data, config)
       .then((result) => {
         return { hash: result.data.IpfsHash, status: result.status };
       })
