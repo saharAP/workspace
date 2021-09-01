@@ -8,10 +8,10 @@ import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "@openzeppelin/contracts/math/SafeMath.sol";
 import "@openzeppelin/contracts/utils/ReentrancyGuard.sol";
 import "@openzeppelin/contracts/utils/Pausable.sol";
-import "./lib/AffiliateToken.sol";
-import "./Interfaces/IERC20Metadata.sol";
-import "./Interfaces/Integrations/CurveContracts.sol";
-import "./Defended.sol";
+import "./AffiliateToken.sol";
+import "./../Interfaces/IERC20Metadata.sol";
+import "./../Interfaces/Integrations/CurveContracts.sol";
+import "./../Defended.sol";
 
 contract Pool is AffiliateToken, Ownable, ReentrancyGuard, Pausable, Defended {
   using SafeMath for uint256;
@@ -213,10 +213,10 @@ contract Pool is AffiliateToken, Ownable, ReentrancyGuard, Pausable, Defended {
     if (pricePerPoolToken() > poolTokenHWM) {
       uint256 changeInPricePerToken = pricePerPoolToken().sub(poolTokenHWM);
       uint256 fee = performanceFee
-      .mul(changeInPricePerToken)
-      .mul(totalSupply())
-      .div(BPS_DENOMINATOR)
-      .div(1e18);
+        .mul(changeInPricePerToken)
+        .mul(totalSupply())
+        .div(BPS_DENOMINATOR)
+        .div(1e18);
       _issuePoolTokensForAmount(address(this), fee);
       emit PerformanceFee(fee);
     }
