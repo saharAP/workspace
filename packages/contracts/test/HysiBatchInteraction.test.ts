@@ -95,14 +95,15 @@ async function deployContracts(): Promise<Contracts> {
   ).deployed();
 
   const mockBasicIssuanceModule = (await (
-    await (await ethers.getContractFactory("MockBasicIssuanceModule")).deploy(
-      [mockYearnVaultUSDX.address, mockYearnVaultUST.address],
-      [50, 50]
-    )
+    await (
+      await ethers.getContractFactory("MockBasicIssuanceModule")
+    ).deploy([mockYearnVaultUSDX.address, mockYearnVaultUST.address], [50, 50])
   ).deployed()) as MockBasicIssuanceModule;
 
   const hysiBatchInteraction = (await (
-    await (await ethers.getContractFactory("HysiBatchInteraction")).deploy(
+    await (
+      await ethers.getContractFactory("HysiBatchInteraction")
+    ).deploy(
       mock3Crv.address,
       mockSetToken.address,
       mockBasicIssuanceModule.address,
@@ -167,7 +168,8 @@ describe("HysiBatchInteraction", function () {
             contracts.hysiBatchInteraction.address
           )
         ).to.equal(parseEther("10000"));
-        const currentMintBatchId = await contracts.hysiBatchInteraction.currentMintBatchId();
+        const currentMintBatchId =
+          await contracts.hysiBatchInteraction.currentMintBatchId();
         const currentBatch = await contracts.hysiBatchInteraction.batches(
           currentMintBatchId
         );
@@ -182,7 +184,8 @@ describe("HysiBatchInteraction", function () {
           .connect(depositor)
           .depositForMint(parseEther("10000"));
 
-        const currentMintBatchId = await contracts.hysiBatchInteraction.currentMintBatchId();
+        const currentMintBatchId =
+          await contracts.hysiBatchInteraction.currentMintBatchId();
         expect(
           await contracts.hysiBatchInteraction.batchesOfAccount(
             depositor.address,
@@ -212,7 +215,8 @@ describe("HysiBatchInteraction", function () {
         await contracts.hysiBatchInteraction
           .connect(depositor2)
           .depositForMint(parseEther("5000"));
-        const currentMintBatchId = await contracts.hysiBatchInteraction.currentMintBatchId();
+        const currentMintBatchId =
+          await contracts.hysiBatchInteraction.currentMintBatchId();
         const currentBatch = await contracts.hysiBatchInteraction.batches(
           currentMintBatchId
         );
@@ -257,7 +261,8 @@ describe("HysiBatchInteraction", function () {
       });
       context("success", function () {
         it("batch mints", async function () {
-          const batchId = await contracts.hysiBatchInteraction.currentMintBatchId();
+          const batchId =
+            await contracts.hysiBatchInteraction.currentMintBatchId();
 
           await contracts.mock3Crv
             .connect(depositor)
@@ -316,7 +321,8 @@ describe("HysiBatchInteraction", function () {
             .depositForMint(parseEther("10000"));
           await provider.send("evm_increaseTime", [1800]);
 
-          const previousMintBatchId = await contracts.hysiBatchInteraction.currentMintBatchId();
+          const previousMintBatchId =
+            await contracts.hysiBatchInteraction.currentMintBatchId();
           await contracts.hysiBatchInteraction.batchMint(0);
 
           const previousBatch = await contracts.hysiBatchInteraction.batches(
@@ -324,7 +330,8 @@ describe("HysiBatchInteraction", function () {
           );
           expect(previousBatch.claimable).to.equal(true);
 
-          const currentMintBatchId = await contracts.hysiBatchInteraction.currentMintBatchId();
+          const currentMintBatchId =
+            await contracts.hysiBatchInteraction.currentMintBatchId();
           expect(currentMintBatchId).to.not.equal(previousMintBatchId);
         });
       });
@@ -423,7 +430,8 @@ describe("HysiBatchInteraction", function () {
             contracts.hysiBatchInteraction.address
           )
         ).to.equal(parseEther("100"));
-        const currentRedeemBatchId = await contracts.hysiBatchInteraction.currentRedeemBatchId();
+        const currentRedeemBatchId =
+          await contracts.hysiBatchInteraction.currentRedeemBatchId();
         const currentBatch = await contracts.hysiBatchInteraction.batches(
           currentRedeemBatchId
         );
@@ -438,7 +446,8 @@ describe("HysiBatchInteraction", function () {
           .connect(depositor)
           .depositForRedeem(parseEther("100"));
 
-        const currentRedeemBatchId = await contracts.hysiBatchInteraction.currentRedeemBatchId();
+        const currentRedeemBatchId =
+          await contracts.hysiBatchInteraction.currentRedeemBatchId();
         expect(
           await contracts.hysiBatchInteraction.batchesOfAccount(
             depositor.address,
@@ -468,7 +477,8 @@ describe("HysiBatchInteraction", function () {
         await contracts.hysiBatchInteraction
           .connect(depositor2)
           .depositForRedeem(parseEther("50"));
-        const currentRedeemBatchId = await contracts.hysiBatchInteraction.currentRedeemBatchId();
+        const currentRedeemBatchId =
+          await contracts.hysiBatchInteraction.currentRedeemBatchId();
         const currentBatch = await contracts.hysiBatchInteraction.batches(
           currentRedeemBatchId
         );
@@ -534,7 +544,8 @@ describe("HysiBatchInteraction", function () {
       });
       context("success", function () {
         it("batch redeems", async function () {
-          const batchId = await contracts.hysiBatchInteraction.currentRedeemBatchId();
+          const batchId =
+            await contracts.hysiBatchInteraction.currentRedeemBatchId();
 
           await contracts.mockSetToken
             .connect(depositor)
@@ -586,7 +597,8 @@ describe("HysiBatchInteraction", function () {
             .depositForRedeem(parseEther("100"));
           await provider.send("evm_increaseTime", [1800]);
 
-          const previousRedeemBatchId = await contracts.hysiBatchInteraction.currentRedeemBatchId();
+          const previousRedeemBatchId =
+            await contracts.hysiBatchInteraction.currentRedeemBatchId();
           await contracts.hysiBatchInteraction.batchRedeem(0);
 
           const previousBatch = await contracts.hysiBatchInteraction.batches(
@@ -594,7 +606,8 @@ describe("HysiBatchInteraction", function () {
           );
           expect(previousBatch.claimable).to.equal(true);
 
-          const currentRedeemBatchId = await contracts.hysiBatchInteraction.currentRedeemBatchId();
+          const currentRedeemBatchId =
+            await contracts.hysiBatchInteraction.currentRedeemBatchId();
           expect(currentRedeemBatchId).to.not.equal(previousRedeemBatchId);
         });
       });
@@ -706,7 +719,7 @@ describe("HysiBatchInteraction", function () {
 
         await provider.send("evm_increaseTime", [1800]);
         await provider.send("evm_mine", []);
-        await contracts.hysiBatchInteraction.connect(owner).batchMint();
+        await contracts.hysiBatchInteraction.connect(owner).batchMint(0);
         const batchId = await contracts.hysiBatchInteraction.batchesOfAccount(
           depositor.address,
           0
@@ -772,7 +785,7 @@ describe("HysiBatchInteraction", function () {
         );
         await provider.send("evm_increaseTime", [1800]);
         await provider.send("evm_mine", []);
-        await contracts.hysiBatchInteraction.connect(owner).batchMint();
+        await contracts.hysiBatchInteraction.connect(owner).batchMint(0);
         const mintedHYSI = await contracts.mockSetToken.balanceOf(
           contracts.hysiBatchInteraction.address
         );
@@ -827,7 +840,7 @@ describe("HysiBatchInteraction", function () {
         );
         await provider.send("evm_increaseTime", [1800]);
         await provider.send("evm_mine", []);
-        await contracts.hysiBatchInteraction.connect(owner).batchRedeem();
+        await contracts.hysiBatchInteraction.connect(owner).batchRedeem(0);
         const redeemed3CRV = await contracts.mock3Crv.balanceOf(
           contracts.hysiBatchInteraction.address
         );
@@ -865,7 +878,7 @@ describe("HysiBatchInteraction", function () {
         );
         await provider.send("evm_increaseTime", [1800]);
         await provider.send("evm_mine", []);
-        await contracts.hysiBatchInteraction.connect(owner).batchMint();
+        await contracts.hysiBatchInteraction.connect(owner).batchMint(0);
         const mintedHYSI = await contracts.mockSetToken.balanceOf(
           contracts.hysiBatchInteraction.address
         );
@@ -922,13 +935,14 @@ describe("HysiBatchInteraction", function () {
               .depositForMint(parseEther("100"));
             await provider.send("evm_increaseTime", [1800]);
             await provider.send("evm_mine", []);
-            await contracts.hysiBatchInteraction.connect(owner).batchMint();
+            await contracts.hysiBatchInteraction.connect(owner).batchMint(0);
           },
           { concurrency: 1 }
         );
-        const batchIds = await contracts.hysiBatchInteraction.getAccountBatches(
-          depositor.address
-        );
+        const batchIds =
+          await contracts.hysiBatchInteraction.getBatchesOfAccount(
+            depositor.address
+          );
         const mintedHYSI = await contracts.mockSetToken.balanceOf(
           contracts.hysiBatchInteraction.address
         );
