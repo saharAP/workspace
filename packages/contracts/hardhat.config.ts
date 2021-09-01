@@ -1,3 +1,4 @@
+import "@float-capital/solidity-coverage";
 import "@nomiclabs/hardhat-waffle";
 import "@popcorn/utils/src/envLoader";
 import "@typechain/hardhat";
@@ -12,7 +13,6 @@ import SetTokenManager from "./lib/SetToken/SetTokenManager";
 import deploy from "./scripts/deployWithValues";
 import deployTestnet from "./scripts/deployWithValuesTestnet";
 import finalizeElection from "./scripts/finalizeElection";
-import "@float-capital/solidity-coverage";
 
 task("accounts", "Prints the list of accounts", async (args, hre) => {
   const accounts = await hre.ethers.getSigners();
