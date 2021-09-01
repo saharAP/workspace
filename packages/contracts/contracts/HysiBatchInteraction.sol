@@ -208,22 +208,20 @@ contract HysiBatchInteraction is Owned {
       //Check that the user has enough funds and that the batch was already minted
       //Only the current redeemBatch is claimable == false so this check allows us to not adjust batch.suppliedToken
       //Additionally it makes no sense to move funds from the current redeemBatch to the current redeemBatch
-      if (
-        shares[i] <= batch.shareBalance[msg.sender] &&
-        batch.batchType == batchType &&
-        batch.claimable == true
-      ) {
-        uint256 claimedToken = batch.claimableToken.mul(shares[i]).div(
-          batch.unclaimedShares
-        );
-        batch.claimableToken = batch.claimableToken.sub(claimedToken);
-        batch.unclaimedShares = batch.unclaimedShares.sub(shares[i]);
-        batch.shareBalance[msg.sender] = batch.shareBalance[msg.sender].sub(
-          shares[i]
-        );
+      require(shares[i] <= batch.shareBalance[msg.sender], "not enough shares");
+      require(batch.batchType == batchType, "inccorect batchType");
+      require(batch.claimable == true, "has not yet been processed");
 
-        totalAmount = totalAmount.add(claimedToken);
-      }
+      uint256 claimedToken = batch.claimableToken.mul(shares[i]).div(
+        batch.unclaimedShares
+      );
+      batch.claimableToken = batch.claimableToken.sub(claimedToken);
+      batch.unclaimedShares = batch.unclaimedShares.sub(shares[i]);
+      batch.shareBalance[msg.sender] = batch.shareBalance[msg.sender].sub(
+        shares[i]
+      );
+
+      totalAmount = totalAmount.add(claimedToken);
     }
     require(totalAmount > 0, "totalAmount must be larger 0");
 
