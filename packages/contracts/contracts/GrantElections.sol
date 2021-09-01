@@ -393,7 +393,7 @@ contract GrantElections is ParticipationReward {
   function proposeFinalization(uint256 _electionId, bytes32 _merkleRoot)
     external
   {
-    require(proposer[msg.sender] == true, "not an proposer");
+    require(proposer[msg.sender] == true, "not a proposer");
 
     Election storage _election = elections[_electionId];
     require(

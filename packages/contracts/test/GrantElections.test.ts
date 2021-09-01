@@ -412,28 +412,28 @@ describe("GrantElections", function () {
         });
         it("requires the account not to be a approver already", async function () {
           await contracts.grantElections
-            .connect(owner)
+            .connect(governance)
             .addApprover(beneficiary.address);
           await expect(
             contracts.grantElections
-              .connect(owner)
+              .connect(governance)
               .addApprover(beneficiary.address)
           ).to.be.revertedWith("already registered");
         });
         it("requires the account not to be a proposer already", async function () {
           await contracts.grantElections
-            .connect(owner)
+            .connect(governance)
             .addProposer(beneficiary.address);
           await expect(
             contracts.grantElections
-              .connect(owner)
+              .connect(governance)
               .addApprover(beneficiary.address)
           ).to.be.revertedWith("is already a proposer");
         });
         it("adds the account as a approver", async function () {
           await expect(
             contracts.grantElections
-              .connect(owner)
+              .connect(governance)
               .addApprover(beneficiary.address)
           )
             .to.emit(contracts.grantElections, "ApproverAdded")
@@ -456,17 +456,17 @@ describe("GrantElections", function () {
         it("requires the account to be a approver", async function () {
           await expect(
             contracts.grantElections
-              .connect(owner)
+              .connect(governance)
               .removeApprover(beneficiary.address)
           ).to.be.revertedWith("not registered");
         });
         it("removes the approver", async function () {
           await contracts.grantElections
-            .connect(owner)
+            .connect(governance)
             .addApprover(beneficiary.address);
           await expect(
             contracts.grantElections
-              .connect(owner)
+              .connect(governance)
               .removeApprover(beneficiary.address)
           )
             .to.emit(contracts.grantElections, "ApproverRemoved")
@@ -641,11 +641,11 @@ describe("GrantElections", function () {
     });
     it("should allow to create a new election for a term when the old one is finalized", async function () {
       await contracts.grantElections
-        .connect(owner)
-        .addApprover(beneficiary.address);
+        .connect(governance)
+        .addProposer(beneficiary.address);
       await contracts.grantElections
-        .connect(owner)
-        .addApprover(beneficiary2.address);
+        .connect(governance)
+        .addApprover(owner.address);
       const merkleRoot = ethers.utils.formatBytes32String("merkleRoot");
       await contracts.grantElections
         .connect(governance)
@@ -671,7 +671,7 @@ describe("GrantElections", function () {
         .connect(beneficiary)
         .proposeFinalization(electionId, merkleRoot);
       await contracts.grantElections
-        .connect(beneficiary2)
+        .connect(owner)
         .approveFinalization(electionId, merkleRoot);
       const currentBlockNumber = await ethers.provider.getBlockNumber();
       const currentBlock = await ethers.provider._getBlock(currentBlockNumber);
@@ -842,10 +842,10 @@ describe("GrantElections", function () {
           );
         await prepareElection(GRANT_TERM.MONTH, electionId);
         await contracts.grantElections
-          .connect(owner)
+          .connect(governance)
           .addProposer(beneficiary.address);
         await contracts.grantElections
-          .connect(owner)
+          .connect(governance)
           .addApprover(owner.address);
       });
       describe("propose finalization", function () {
@@ -1127,10 +1127,10 @@ describe("GrantElections", function () {
         ethers.provider.send("evm_mine", []);
         await contracts.grantElections.refreshElectionState(electionId);
         await contracts.grantElections
-          .connect(owner)
+          .connect(governance)
           .addProposer(beneficiary.address);
         await contracts.grantElections
-          .connect(owner)
+          .connect(governance)
           .addApprover(owner.address);
       });
       it("creates a random number", async function () {
