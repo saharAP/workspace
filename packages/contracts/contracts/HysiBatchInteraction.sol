@@ -102,6 +102,11 @@ contract HysiBatchInteraction is Owned {
     uint256 claimedToken
   );
   event TokenSetAdded(ISetToken setToken);
+  event MovedUnclaimedDepositsIntoCurrentBatch(
+    uint256 amount,
+    BatchType batchType,
+    address account
+  );
 
   /* ========== CONSTRUCTOR ========== */
 
@@ -127,7 +132,7 @@ contract HysiBatchInteraction is Owned {
     batchCooldown = batchCooldown_;
     currentMintBatchId = _generateNextBatchId(bytes32("mint"));
     currentRedeemBatchId = _generateNextBatchId(bytes32("redeem"));
-
+    _setRedeemBatchType();
     mintThreshold = mintThreshold_;
     redeemThreshold = redeemThreshold_;
 
@@ -207,7 +212,69 @@ contract HysiBatchInteraction is Owned {
   }
 
   /**
+   * @notice Moves unclaimed token (3crv or Hysi) from their respective Batches into a new redeemBatch / mintBatch without needing to claim them first
+   * @param batchIds the ids of each batch where hysi should be moved from
+   * @param shares how many shares should redeemed in each of the batches
+   * @param batchType the batchType where funds should be taken from (Mint -> Take Hysi and redeem then, Redeem -> Take 3Crv and Mint HYSI)
+   * @dev input arrays must not be longer than 20 elements to prevent gas-overflow
+   * @dev the indices of batchIds must match the amountsInHysi to work properly (This will be done by the frontend)
+   * @dev we check the requirements for each batch only with an if and skip it instead of using require...
+   * @dev ...to not revert a whole transaction for one faulty input while still preserving security
+   */
+  function moveUnclaimedDepositsIntoCurrentBatch(
+    bytes32[] calldata batchIds,
+    uint256[] calldata shares,
+    BatchType batchType
+  ) external {
+    require(batchIds.length == shares.length, "array lengths must match");
+    //Protect from gas overflow (20 is chosen arbitrarily)
+    //TODO find the highest length possible without causing gas-overflow
+    require(batchIds.length <= 20, "submit less batches");
+
+    uint256 totalAmount;
+
+    for (uint256 i; i < batchIds.length; i++) {
+      Batch storage batch = batches[batchIds[i]];
+
+      //Check that the user has enough funds and that the batch was already minted
+      //Only the current redeemBatch is claimable == false so this check allows us to not adjust batch.suppliedToken
+      //Additionally it makes no sense to move funds from the current redeemBatch to the current redeemBatch
+      require(shares[i] <= batch.shareBalance[msg.sender], "not enough shares");
+      require(batch.batchType == batchType, "inccorect batchType");
+      require(batch.claimable == true, "has not yet been processed");
+
+      uint256 claimedToken = batch.claimableToken.mul(shares[i]).div(
+        batch.unclaimedShares
+      );
+      batch.claimableToken = batch.claimableToken.sub(claimedToken);
+      batch.unclaimedShares = batch.unclaimedShares.sub(shares[i]);
+      batch.shareBalance[msg.sender] = batch.shareBalance[msg.sender].sub(
+        shares[i]
+      );
+
+      totalAmount = totalAmount.add(claimedToken);
+    }
+    require(totalAmount > 0, "totalAmount must be larger 0");
+
+    bytes32 currentBatchId;
+    if (batchType == BatchType.Mint) {
+      currentBatchId = currentRedeemBatchId;
+    } else {
+      currentBatchId = currentMintBatchId;
+    }
+
+    _deposit(totalAmount, currentBatchId);
+
+    emit MovedUnclaimedDepositsIntoCurrentBatch(
+      totalAmount,
+      batchType,
+      msg.sender
+    );
+  }
+
+  /**
    * @notice Mint HYSI token with deposited 3CRV. This function goes through all the steps necessary to mint an optimal amount of HYSI
+   * @param minAmountToMint_ The expected min amount of hysi to mint. If hysiAmount is lower than minAmountToMint_ the transaction will revert.
    * @dev This function deposits 3CRV in the underlying Metapool and deposits these LP token to get yToken which in turn are used to mint HYSI
    * @dev This process leaves some leftovers which are partially used in the next mint batches.
    * @dev In order to get 3CRV we can implement a zap to move stables into the curve tri-pool
@@ -532,6 +599,11 @@ contract HysiBatchInteraction is Owned {
     returns (bytes32)
   {
     return keccak256(abi.encodePacked(block.timestamp, currentBatchId_));
+  }
+
+  function _setRedeemBatchType() internal {
+    Batch storage batch = batches[currentRedeemBatchId];
+    batch.batchType = BatchType.Redeem;
   }
 
   /* ========== SETTER ========== */
