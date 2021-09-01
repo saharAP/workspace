@@ -323,29 +323,158 @@ describe("GrantElections", function () {
   describe("approver and proposer maintance", function () {
     context("proposer", function () {
       context("adding", function () {
-        it("must be called by the governance", async function (){
-          await expect(contracts.grantElections.connect(beneficiary).addProposer(beneficiary.address)).to.be.revertedWith("Only the contract governance may perform this action"))
-        })
-        it("requires the account not to be a proposer already", async function () {
-          await contracts.grantElections.connect(owner).
+        it("must be called by the governance", async function () {
+          await expect(
+            contracts.grantElections
+              .connect(beneficiary)
+              .addProposer(beneficiary.address)
+          ).to.be.revertedWith(
+            "Only the contract governance may perform this action"
+          );
         });
-        it("requires the account not to be a approver already", async function () {});
-        it("adds the account as a proposer", async function () {});
+        it("requires the account not to be a proposer already", async function () {
+          await contracts.grantElections
+            .connect(governance)
+            .addProposer(beneficiary.address);
+          await expect(
+            contracts.grantElections
+              .connect(governance)
+              .addProposer(beneficiary.address)
+          ).to.be.revertedWith("already registered");
+        });
+        it("requires the account not to be a approver already", async function () {
+          await contracts.grantElections
+            .connect(governance)
+            .addApprover(beneficiary.address);
+          await expect(
+            contracts.grantElections
+              .connect(governance)
+              .addProposer(beneficiary.address)
+          ).to.be.revertedWith("is already an approver");
+        });
+        it("adds the account as a proposer", async function () {
+          await expect(
+            contracts.grantElections
+              .connect(governance)
+              .addProposer(beneficiary.address)
+          )
+            .to.emit(contracts.grantElections, "ProposerAdded")
+            .withArgs(beneficiary.address);
+          expect(
+            await contracts.grantElections.proposer(beneficiary.address)
+          ).to.be.equal(true);
+        });
       });
       context("removing", function () {
-        it("requires the account to be a proposer", async function () {});
-        it("removes the proposer", async function () {});
+        it("must be called by the governance", async function () {
+          await expect(
+            contracts.grantElections
+              .connect(beneficiary)
+              .removeProposer(beneficiary.address)
+          ).to.be.revertedWith(
+            "Only the contract governance may perform this action"
+          );
+        });
+        it("requires the account to be a proposer", async function () {
+          await expect(
+            contracts.grantElections
+              .connect(governance)
+              .removeProposer(beneficiary.address)
+          ).to.be.revertedWith("not registered");
+        });
+        it("removes the proposer", async function () {
+          await contracts.grantElections
+            .connect(governance)
+            .addProposer(beneficiary.address);
+          await expect(
+            contracts.grantElections
+              .connect(governance)
+              .removeProposer(beneficiary.address)
+          )
+            .to.emit(contracts.grantElections, "ProposerRemoved")
+            .withArgs(beneficiary.address);
+          expect(
+            await contracts.grantElections.proposer(beneficiary.address)
+          ).to.be.equal(false);
+        });
       });
     });
     context("approver", function () {
       context("adding", function () {
-        it("requires the account not to be a approver already", async function () {});
-        it("requires the account not to be a proposer already", async function () {});
-        it("adds the account as a approver", async function () {});
+        it("must be called by the governance", async function () {
+          await expect(
+            contracts.grantElections
+              .connect(beneficiary)
+              .addApprover(beneficiary.address)
+          ).to.be.revertedWith(
+            "Only the contract governance may perform this action"
+          );
+        });
+        it("requires the account not to be a approver already", async function () {
+          await contracts.grantElections
+            .connect(owner)
+            .addApprover(beneficiary.address);
+          await expect(
+            contracts.grantElections
+              .connect(owner)
+              .addApprover(beneficiary.address)
+          ).to.be.revertedWith("already registered");
+        });
+        it("requires the account not to be a proposer already", async function () {
+          await contracts.grantElections
+            .connect(owner)
+            .addProposer(beneficiary.address);
+          await expect(
+            contracts.grantElections
+              .connect(owner)
+              .addApprover(beneficiary.address)
+          ).to.be.revertedWith("is already a proposer");
+        });
+        it("adds the account as a approver", async function () {
+          await expect(
+            contracts.grantElections
+              .connect(owner)
+              .addApprover(beneficiary.address)
+          )
+            .to.emit(contracts.grantElections, "ApproverAdded")
+            .withArgs(beneficiary.address);
+          expect(
+            await contracts.grantElections.approver(beneficiary.address)
+          ).to.be.equal(true);
+        });
       });
       context("removing", function () {
-        it("requires the account to be a approver", async function () {});
-        it("removes the approver", async function () {});
+        it("must be called by the governance", async function () {
+          await expect(
+            contracts.grantElections
+              .connect(beneficiary)
+              .removeApprover(beneficiary.address)
+          ).to.be.revertedWith(
+            "Only the contract governance may perform this action"
+          );
+        });
+        it("requires the account to be a approver", async function () {
+          await expect(
+            contracts.grantElections
+              .connect(owner)
+              .removeApprover(beneficiary.address)
+          ).to.be.revertedWith("not registered");
+        });
+        it("removes the approver", async function () {
+          await contracts.grantElections
+            .connect(owner)
+            .addApprover(beneficiary.address);
+          await expect(
+            contracts.grantElections
+              .connect(owner)
+              .removeApprover(beneficiary.address)
+          )
+            .to.emit(contracts.grantElections, "ApproverRemoved")
+            .withArgs(beneficiary.address);
+          expect(
+            await contracts.grantElections.approver(beneficiary.address)
+          ).to.be.equal(false);
+        });
       });
     });
   });
@@ -511,6 +640,12 @@ describe("GrantElections", function () {
       ).to.be.revertedWith("election not yet finalized");
     });
     it("should allow to create a new election for a term when the old one is finalized", async function () {
+      await contracts.grantElections
+        .connect(owner)
+        .addApprover(beneficiary.address);
+      await contracts.grantElections
+        .connect(owner)
+        .addApprover(beneficiary2.address);
       const merkleRoot = ethers.utils.formatBytes32String("merkleRoot");
       await contracts.grantElections
         .connect(governance)
@@ -532,14 +667,12 @@ describe("GrantElections", function () {
       ethers.provider.send("evm_increaseTime", [30 * ONE_DAY]);
       ethers.provider.send("evm_mine", []);
       await contracts.grantElections.refreshElectionState(electionId);
-      await contracts.grantElections.proposeFinalization(
-        electionId,
-        merkleRoot
-      );
-      await contracts.grantElections.approveFinalization(
-        electionId,
-        merkleRoot
-      );
+      await contracts.grantElections
+        .connect(beneficiary)
+        .proposeFinalization(electionId, merkleRoot);
+      await contracts.grantElections
+        .connect(beneficiary2)
+        .approveFinalization(electionId, merkleRoot);
       const currentBlockNumber = await ethers.provider.getBlockNumber();
       const currentBlock = await ethers.provider._getBlock(currentBlockNumber);
       const result = contracts.grantElections.initialize(

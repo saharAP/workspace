@@ -84,8 +84,8 @@ contract GrantElections is ParticipationReward {
   ElectionConfiguration[3] public electionDefaults;
   uint256 public incentiveBudget;
 
-  mapping(address => bool) proposer;
-  mapping(address => bool) approver;
+  mapping(address => bool) public proposer;
+  mapping(address => bool) public approver;
 
   /* ========== EVENTS ========== */
 
@@ -98,6 +98,10 @@ contract GrantElections is ParticipationReward {
   );
   event FinalizationProposed(uint256 _electionId, bytes32 _merkleRoot);
   event ElectionFinalized(uint256 _electionId, bytes32 _merkleRoot);
+  event ProposerAdded(address proposer);
+  event ProposerRemoved(address proposer);
+  event ApproverAdded(address approver);
+  event ApproverRemoved(address approver);
 
   /* ========== CONSTRUCTOR ========== */
 
