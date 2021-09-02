@@ -9,5 +9,5 @@ export default function Example() {
         <span className="pr-2 bg-white text-sm text-gray-500">Continue</span>
       </div>
     </div>
-  );
+  )
 }

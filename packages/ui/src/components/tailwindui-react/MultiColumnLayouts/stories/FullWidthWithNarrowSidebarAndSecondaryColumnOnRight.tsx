@@ -14,7 +14,8 @@
   }
   ```
 */
-import { Dialog, Menu, Transition } from '@headlessui/react';
+import { Fragment, useState } from 'react'
+import { Dialog, Menu, Transition } from '@headlessui/react'
 import {
   CogIcon,
   CollectionIcon,
@@ -25,29 +26,32 @@ import {
   UserGroupIcon,
   ViewGridIcon,
   XIcon,
-} from '@heroicons/react/outline';
-import { SearchIcon } from '@heroicons/react/solid';
-import { Fragment, useState } from 'react';
+} from '@heroicons/react/outline'
+import { SearchIcon } from '@heroicons/react/solid'
 
 const sidebarNavigation = [
+
   { name: 'Home', href: '#', icon: HomeIcon, current: false },
   { name: 'All Files', href: '#', icon: ViewGridIcon, current: false },
   { name: 'Photos', href: '#', icon: PhotographIcon, current: true },
   { name: 'Shared', href: '#', icon: UserGroupIcon, current: false },
   { name: 'Albums', href: '#', icon: CollectionIcon, current: false },
   { name: 'Settings', href: '#', icon: CogIcon, current: false },
-];
+
+]
 const userNavigation = [
+
   { name: 'Your Profile', href: '#' },
   { name: 'Sign out', href: '#' },
-];
+
+]
 
 function classNames(...classes) {
-  return classes.filter(Boolean).join(' ');
+  return classes.filter(Boolean).join(' ')
 }
 
 export default function Example() {
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
 
   return (
     <div className="h-screen bg-gray-50 flex overflow-hidden">
@@ -67,19 +71,15 @@ export default function Example() {
                 key={item.name}
                 href={item.href}
                 className={classNames(
-                  item.current
-                    ? 'bg-indigo-800 text-white'
-                    : 'text-indigo-100 hover:bg-indigo-800 hover:text-white',
-                  'group w-full p-3 rounded-md flex flex-col items-center text-xs font-medium',
+                  item.current ? 'bg-indigo-800 text-white' : 'text-indigo-100 hover:bg-indigo-800 hover:text-white',
+                  'group w-full p-3 rounded-md flex flex-col items-center text-xs font-medium'
                 )}
                 aria-current={item.current ? 'page' : undefined}
               >
                 <item.icon
                   className={classNames(
-                    item.current
-                      ? 'text-white'
-                      : 'text-indigo-300 group-hover:text-white',
-                    'h-6 w-6',
+                    item.current ? 'text-white' : 'text-indigo-300 group-hover:text-white',
+                    'h-6 w-6'
                   )}
                   aria-hidden="true"
                 />
@@ -130,10 +130,7 @@ export default function Example() {
                       className="h-12 w-12 rounded-full flex items-center justify-center focus:outline-none focus:ring-2 focus:ring-white"
                       onClick={() => setMobileMenuOpen(false)}
                     >
-                      <XIcon
-                        className="h-6 w-6 text-white"
-                        aria-hidden="true"
-                      />
+                      <XIcon className="h-6 w-6 text-white" aria-hidden="true" />
                       <span className="sr-only">Close sidebar</span>
                     </button>
                   </div>
@@ -156,16 +153,14 @@ export default function Example() {
                             item.current
                               ? 'bg-indigo-800 text-white'
                               : 'text-indigo-100 hover:bg-indigo-800 hover:text-white',
-                            'group py-2 px-3 rounded-md flex items-center text-sm font-medium',
+                            'group py-2 px-3 rounded-md flex items-center text-sm font-medium'
                           )}
                           aria-current={item.current ? 'page' : undefined}
                         >
                           <item.icon
                             className={classNames(
-                              item.current
-                                ? 'text-white'
-                                : 'text-indigo-300 group-hover:text-white',
-                              'mr-3 h-6 w-6',
+                              item.current ? 'text-white' : 'text-indigo-300 group-hover:text-white',
+                              'mr-3 h-6 w-6'
                             )}
                             aria-hidden="true"
                           />
@@ -204,10 +199,7 @@ export default function Example() {
                   </label>
                   <div className="relative w-full text-gray-400 focus-within:text-gray-600">
                     <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center">
-                      <SearchIcon
-                        className="flex-shrink-0 h-5 w-5"
-                        aria-hidden="true"
-                      />
+                      <SearchIcon className="flex-shrink-0 h-5 w-5" aria-hidden="true" />
                     </div>
                     <input
                       name="search-field"
@@ -249,7 +241,7 @@ export default function Example() {
                               href={item.href}
                               className={classNames(
                                 active ? 'bg-gray-100' : '',
-                                'block px-4 py-2 text-sm text-gray-700',
+                                'block px-4 py-2 text-sm text-gray-700'
                               )}
                             >
                               {item.name}
@@ -295,5 +287,5 @@ export default function Example() {
         </div>
       </div>
     </div>
-  );
+  )
 }

@@ -14,31 +14,37 @@
   }
   ```
 */
-import { Menu, Popover, Transition } from '@headlessui/react';
-import { BellIcon, MenuIcon, XIcon } from '@heroicons/react/outline';
-import { SearchIcon } from '@heroicons/react/solid';
-import { Fragment } from 'react';
+import { Fragment } from 'react'
+import { Menu, Popover, Transition } from '@headlessui/react'
+import { SearchIcon } from '@heroicons/react/solid'
+import { BellIcon, MenuIcon, XIcon } from '@heroicons/react/outline'
 
 const user = {
+
   name: 'Chelsea Hagon',
   email: 'chelseahagon@example.com',
   imageUrl:
     'https://images.unsplash.com/photo-1550525811-e5869dd03032?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
-};
+
+}
 const navigation = [
+
   { name: 'Dashboard', href: '#', current: true },
   { name: 'Calendar', href: '#', current: false },
   { name: 'Teams', href: '#', current: false },
   { name: 'Directory', href: '#', current: false },
-];
+
+]
 const userNavigation = [
+
   { name: 'Your Profile', href: '#' },
   { name: 'Settings', href: '#' },
   { name: 'Sign out', href: '#' },
-];
+
+]
 
 function classNames(...classes) {
-  return classes.filter(Boolean).join(' ');
+  return classes.filter(Boolean).join(' ')
 }
 
 export default function Example() {
@@ -50,7 +56,7 @@ export default function Example() {
         className={({ open }) =>
           classNames(
             open ? 'fixed inset-0 z-40 overflow-y-auto' : '',
-            'bg-white shadow-sm lg:static lg:overflow-y-visible',
+            'bg-white shadow-sm lg:static lg:overflow-y-visible'
           )
         }
       >
@@ -77,10 +83,7 @@ export default function Example() {
                       </label>
                       <div className="relative">
                         <div className="pointer-events-none absolute inset-y-0 left-0 pl-3 flex items-center">
-                          <SearchIcon
-                            className="h-5 w-5 text-gray-400"
-                            aria-hidden="true"
-                          />
+                          <SearchIcon className="h-5 w-5 text-gray-400" aria-hidden="true" />
                         </div>
                         <input
                           id="search"
@@ -118,11 +121,7 @@ export default function Example() {
                     <div>
                       <Menu.Button className="bg-white rounded-full flex focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
                         <span className="sr-only">Open user menu</span>
-                        <img
-                          className="h-8 w-8 rounded-full"
-                          src={user.imageUrl}
-                          alt=""
-                        />
+                        <img className="h-8 w-8 rounded-full" src={user.imageUrl} alt="" />
                       </Menu.Button>
                     </div>
                     <Transition
@@ -142,7 +141,7 @@ export default function Example() {
                                 href={item.href}
                                 className={classNames(
                                   active ? 'bg-gray-100' : '',
-                                  'block py-2 px-4 text-sm text-gray-700',
+                                  'block py-2 px-4 text-sm text-gray-700'
                                 )}
                               >
                                 {item.name}
@@ -172,10 +171,8 @@ export default function Example() {
                     href={item.href}
                     aria-current={item.current ? 'page' : undefined}
                     className={classNames(
-                      item.current
-                        ? 'bg-gray-100 text-gray-900'
-                        : 'hover:bg-gray-50',
-                      'block rounded-md py-2 px-3 text-base font-medium',
+                      item.current ? 'bg-gray-100 text-gray-900' : 'hover:bg-gray-50',
+                      'block rounded-md py-2 px-3 text-base font-medium'
                     )}
                   >
                     {item.name}
@@ -185,19 +182,11 @@ export default function Example() {
               <div className="border-t border-gray-200 pt-4 pb-3">
                 <div className="max-w-3xl mx-auto px-4 flex items-center sm:px-6">
                   <div className="flex-shrink-0">
-                    <img
-                      className="h-10 w-10 rounded-full"
-                      src={user.imageUrl}
-                      alt=""
-                    />
+                    <img className="h-10 w-10 rounded-full" src={user.imageUrl} alt="" />
                   </div>
                   <div className="ml-3">
-                    <div className="text-base font-medium text-gray-800">
-                      {user.name}
-                    </div>
-                    <div className="text-sm font-medium text-gray-500">
-                      {user.email}
-                    </div>
+                    <div className="text-base font-medium text-gray-800">{user.name}</div>
+                    <div className="text-sm font-medium text-gray-500">{user.email}</div>
                   </div>
                   <button
                     type="button"
@@ -224,5 +213,5 @@ export default function Example() {
         )}
       </Popover>
     </>
-  );
+  )
 }

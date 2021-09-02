@@ -19,7 +19,7 @@ export const ChartWithOutData = Template.bind({});
 ChartWithOutData.args = {
   data: [],
   height: 200,
-  transactionsDataKey: 'numTransactions',
-  dateDataKey: 'date',
-  co2EmissionDataKey: 'co2Emissions',
+  transactionsDataKey: "numTransactions",
+  dateDataKey: "date",
+  co2EmissionDataKey: "co2Emissions",
 };

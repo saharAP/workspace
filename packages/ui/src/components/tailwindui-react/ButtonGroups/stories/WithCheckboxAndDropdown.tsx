@@ -41,5 +41,5 @@ export default function Example() {
         <option>All messages</option>
       </select>
     </span>
-  );
+  )
 }

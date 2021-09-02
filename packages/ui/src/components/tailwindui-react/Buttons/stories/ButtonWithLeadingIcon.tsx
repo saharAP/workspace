@@ -1,5 +1,5 @@
 /* This example requires Tailwind CSS v2.0+ */
-import { MailIcon } from '@heroicons/react/solid';
+import { MailIcon } from '@heroicons/react/solid'
 
 export default function Example() {
   return (
@@ -33,5 +33,5 @@ export default function Example() {
         Button text
       </button>
     </>
-  );
+  )
 }

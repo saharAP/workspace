@@ -23,7 +23,8 @@
   }
   ```
 */
-import { Popover, Transition } from '@headlessui/react';
+import { Fragment } from 'react'
+import { Popover, Transition } from '@headlessui/react'
 import {
   BookmarkAltIcon,
   CalendarIcon,
@@ -42,15 +43,14 @@ import {
   ViewGridIcon,
   ViewListIcon,
   XIcon,
-} from '@heroicons/react/outline';
-import { ChevronDownIcon } from '@heroicons/react/solid';
-import { Fragment } from 'react';
+} from '@heroicons/react/outline'
+import { ChevronDownIcon } from '@heroicons/react/solid'
 
 const solutions = [
+
   {
     name: 'Analytics',
-    description:
-      'Get a better understanding of where your traffic is coming from.',
+    description: 'Get a better understanding of where your traffic is coming from.',
     href: '#',
     icon: ChartBarIcon,
   },
@@ -60,12 +60,7 @@ const solutions = [
     href: '#',
     icon: CursorClickIcon,
   },
-  {
-    name: 'Security',
-    description: "Your customers' data will be safe and secure.",
-    href: '#',
-    icon: ShieldCheckIcon,
-  },
+  { name: 'Security', description: "Your customers' data will be safe and secure.", href: '#', icon: ShieldCheckIcon },
   {
     name: 'Integrations',
     description: "Connect with third-party tools that you're already using.",
@@ -74,55 +69,50 @@ const solutions = [
   },
   {
     name: 'Automations',
-    description:
-      'Build strategic funnels that will drive your customers to convert',
+    description: 'Build strategic funnels that will drive your customers to convert',
     href: '#',
     icon: RefreshIcon,
   },
-];
+
+]
 const callsToAction = [
+
   { name: 'Watch Demo', href: '#', icon: PlayIcon },
   { name: 'Contact Sales', href: '#', icon: PhoneIcon },
-];
+
+]
 const resources = [
+
   {
     name: 'Help Center',
-    description:
-      'Get all of your questions answered in our forums or contact support.',
+    description: 'Get all of your questions answered in our forums or contact support.',
     href: '#',
     icon: SupportIcon,
   },
   {
     name: 'Guides',
-    description:
-      'Learn how to maximize our platform to get the most out of it.',
+    description: 'Learn how to maximize our platform to get the most out of it.',
     href: '#',
     icon: BookmarkAltIcon,
   },
   {
     name: 'Events',
-    description:
-      'See what meet-ups and other events we might be planning near you.',
+    description: 'See what meet-ups and other events we might be planning near you.',
     href: '#',
     icon: CalendarIcon,
   },
-  {
-    name: 'Security',
-    description: 'Understand how we take your privacy seriously.',
-    href: '#',
-    icon: ShieldCheckIcon,
-  },
-];
+  { name: 'Security', description: 'Understand how we take your privacy seriously.', href: '#', icon: ShieldCheckIcon },
+
+]
 const recentPosts = [
+
   { id: 1, name: 'Boost your conversion rate', href: '#' },
-  {
-    id: 2,
-    name: 'How to use search engine optimization to drive traffic to your site',
-    href: '#',
-  },
+  { id: 2, name: 'How to use search engine optimization to drive traffic to your site', href: '#' },
   { id: 3, name: 'Improve your customer experience', href: '#' },
-];
+
+]
 const features = [
+
   {
     name: 'List view',
     description:
@@ -147,30 +137,27 @@ const features = [
       'Tincidunt sollicitudin interdum nunc sit risus at bibendum vitae. Urna, quam ut sit justo non, consectetur et varius.',
     icon: UsersIcon,
   },
-];
+
+]
 const checklist = [
+
   'Unlimited projects',
   'No per user fees',
   'Unlimited storage',
   '24/7 support',
   'Cancel any time',
   '14 days free',
-];
+
+]
 const logos = [
-  {
-    name: 'Workcation',
-    url: 'https://tailwindui.com/img/logos/workcation-logo-cyan-900.svg',
-  },
-  {
-    name: 'Tuple',
-    url: 'https://tailwindui.com/img/logos/tuple-logo-cyan-900.svg',
-  },
-  {
-    name: 'Level',
-    url: 'https://tailwindui.com/img/logos/level-logo-cyan-900.svg',
-  },
-];
+
+  { name: 'Workcation', url: 'https://tailwindui.com/img/logos/workcation-logo-cyan-900.svg' },
+  { name: 'Tuple', url: 'https://tailwindui.com/img/logos/tuple-logo-cyan-900.svg' },
+  { name: 'Level', url: 'https://tailwindui.com/img/logos/level-logo-cyan-900.svg' },
+
+]
 const faqs = [
+
   {
     id: 1,
     question: "What's the best thing about Switzerland?",
@@ -192,8 +179,7 @@ const faqs = [
   {
     id: 4,
     question: 'What do you call someone with no body and no nose?',
-    answer:
-      'Nobody knows. Lorem ipsum dolor sit amet consectetur adipisicing elit. Quas cupiditate laboriosam fugiat.',
+    answer: 'Nobody knows. Lorem ipsum dolor sit amet consectetur adipisicing elit. Quas cupiditate laboriosam fugiat.',
   },
   {
     id: 5,
@@ -207,8 +193,10 @@ const faqs = [
     answer:
       "He couldn't see himself doing it. Lorem ipsum dolor sit amet consectetur adipisicing elit. Quas cupiditate laboriosam fugiat.",
   },
-];
+
+]
 const footerNavigation = {
+
   solutions: [
     { name: 'Marketing', href: '#' },
     { name: 'Analytics', href: '#' },
@@ -296,10 +284,11 @@ const footerNavigation = {
       ),
     },
   ],
-};
+
+}
 
 function classNames(...classes) {
-  return classes.filter(Boolean).join(' ');
+  return classes.filter(Boolean).join(' ')
 }
 
 export default function Example() {
@@ -332,14 +321,14 @@ export default function Example() {
                       <Popover.Button
                         className={classNames(
                           open ? 'text-gray-900' : 'text-gray-500',
-                          'group bg-gray-50 rounded-md inline-flex items-center text-base font-medium hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-cyan-500',
+                          'group bg-gray-50 rounded-md inline-flex items-center text-base font-medium hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-cyan-500'
                         )}
                       >
                         <span>Solutions</span>
                         <ChevronDownIcon
                           className={classNames(
                             open ? 'text-gray-600' : 'text-gray-400',
-                            'ml-2 h-5 w-5 group-hover:text-gray-500',
+                            'ml-2 h-5 w-5 group-hover:text-gray-500'
                           )}
                           aria-hidden="true"
                         />
@@ -363,17 +352,10 @@ export default function Example() {
                                   href={item.href}
                                   className="-m-3 p-3 flex items-start rounded-lg hover:bg-gray-50"
                                 >
-                                  <item.icon
-                                    className="flex-shrink-0 h-6 w-6 text-cyan-600"
-                                    aria-hidden="true"
-                                  />
+                                  <item.icon className="flex-shrink-0 h-6 w-6 text-cyan-600" aria-hidden="true" />
                                   <div className="ml-4">
-                                    <p className="text-base font-medium text-gray-900">
-                                      {item.name}
-                                    </p>
-                                    <p className="mt-1 text-sm text-gray-500">
-                                      {item.description}
-                                    </p>
+                                    <p className="text-base font-medium text-gray-900">{item.name}</p>
+                                    <p className="mt-1 text-sm text-gray-500">{item.description}</p>
                                   </div>
                                 </a>
                               ))}
@@ -385,10 +367,7 @@ export default function Example() {
                                     href={item.href}
                                     className="-m-3 p-3 flex items-center rounded-md text-base font-medium text-gray-900 hover:bg-gray-100"
                                   >
-                                    <item.icon
-                                      className="flex-shrink-0 h-6 w-6 text-gray-400"
-                                      aria-hidden="true"
-                                    />
+                                    <item.icon className="flex-shrink-0 h-6 w-6 text-gray-400" aria-hidden="true" />
                                     <span className="ml-3">{item.name}</span>
                                   </a>
                                 </div>
@@ -401,16 +380,10 @@ export default function Example() {
                   )}
                 </Popover>
 
-                <a
-                  href="#"
-                  className="text-base font-medium text-gray-500 hover:text-gray-900"
-                >
+                <a href="#" className="text-base font-medium text-gray-500 hover:text-gray-900">
                   Pricing
                 </a>
-                <a
-                  href="#"
-                  className="text-base font-medium text-gray-500 hover:text-gray-900"
-                >
+                <a href="#" className="text-base font-medium text-gray-500 hover:text-gray-900">
                   Docs
                 </a>
 
@@ -420,14 +393,14 @@ export default function Example() {
                       <Popover.Button
                         className={classNames(
                           open ? 'text-gray-900' : 'text-gray-500',
-                          'group bg-gray-50 rounded-md inline-flex items-center text-base font-medium hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-cyan-500',
+                          'group bg-gray-50 rounded-md inline-flex items-center text-base font-medium hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-cyan-500'
                         )}
                       >
                         <span>More</span>
                         <ChevronDownIcon
                           className={classNames(
                             open ? 'text-gray-600' : 'text-gray-400',
-                            'ml-2 h-5 w-5 group-hover:text-gray-500',
+                            'ml-2 h-5 w-5 group-hover:text-gray-500'
                           )}
                           aria-hidden="true"
                         />
@@ -451,17 +424,10 @@ export default function Example() {
                                   href="#"
                                   className="-m-3 p-3 flex items-start rounded-lg hover:bg-gray-50"
                                 >
-                                  <item.icon
-                                    className="flex-shrink-0 h-6 w-6 text-cyan-600"
-                                    aria-hidden="true"
-                                  />
+                                  <item.icon className="flex-shrink-0 h-6 w-6 text-cyan-600" aria-hidden="true" />
                                   <div className="ml-4">
-                                    <p className="text-base font-medium text-gray-900">
-                                      {item.name}
-                                    </p>
-                                    <p className="mt-1 text-sm text-gray-500">
-                                      {item.description}
-                                    </p>
+                                    <p className="text-base font-medium text-gray-900">{item.name}</p>
+                                    <p className="mt-1 text-sm text-gray-500">{item.description}</p>
                                   </div>
                                 </a>
                               ))}
@@ -473,14 +439,8 @@ export default function Example() {
                                 </h3>
                                 <ul className="mt-4 space-y-4">
                                   {recentPosts.map((post) => (
-                                    <li
-                                      key={post.id}
-                                      className="text-base truncate"
-                                    >
-                                      <a
-                                        href={post.href}
-                                        className="font-medium text-gray-900 hover:text-gray-800"
-                                      >
+                                    <li key={post.id} className="text-base truncate">
+                                      <a href={post.href} className="font-medium text-gray-900 hover:text-gray-800">
                                         {post.name}
                                       </a>
                                     </li>
@@ -488,12 +448,8 @@ export default function Example() {
                                 </ul>
                               </div>
                               <div className="mt-5 text-sm">
-                                <a
-                                  href="#"
-                                  className="font-medium text-cyan-700 hover:text-cyan-600"
-                                >
-                                  View all posts{' '}
-                                  <span aria-hidden="true">&rarr;</span>
+                                <a href="#" className="font-medium text-cyan-700 hover:text-cyan-600">
+                                  View all posts <span aria-hidden="true">&rarr;</span>
                                 </a>
                               </div>
                             </div>
@@ -505,10 +461,7 @@ export default function Example() {
                 </Popover>
               </Popover.Group>
               <div className="hidden md:flex items-center justify-end space-x-8 md:flex-1 lg:w-0">
-                <a
-                  href="#"
-                  className="whitespace-nowrap text-base font-medium text-gray-500 hover:text-gray-900"
-                >
+                <a href="#" className="whitespace-nowrap text-base font-medium text-gray-500 hover:text-gray-900">
                   Sign in
                 </a>
                 <a
@@ -559,13 +512,8 @@ export default function Example() {
                           href={item.href}
                           className="-m-3 p-3 flex items-center rounded-md hover:bg-gray-50"
                         >
-                          <item.icon
-                            className="flex-shrink-0 h-6 w-6 text-cyan-600"
-                            aria-hidden="true"
-                          />
-                          <span className="ml-3 text-base font-medium text-gray-900">
-                            {item.name}
-                          </span>
+                          <item.icon className="flex-shrink-0 h-6 w-6 text-cyan-600" aria-hidden="true" />
+                          <span className="ml-3 text-base font-medium text-gray-900">{item.name}</span>
                         </a>
                       ))}
                     </nav>
@@ -573,31 +521,19 @@ export default function Example() {
                 </div>
                 <div className="py-6 px-5 space-y-6">
                   <div className="grid grid-cols-2 gap-y-4 gap-x-8">
-                    <a
-                      href="#"
-                      className="text-base font-medium text-gray-900 hover:text-gray-700"
-                    >
+                    <a href="#" className="text-base font-medium text-gray-900 hover:text-gray-700">
                       Pricing
                     </a>
 
-                    <a
-                      href="#"
-                      className="text-base font-medium text-gray-900 hover:text-gray-700"
-                    >
+                    <a href="#" className="text-base font-medium text-gray-900 hover:text-gray-700">
                       Docs
                     </a>
 
-                    <a
-                      href="#"
-                      className="text-base font-medium text-gray-900 hover:text-gray-700"
-                    >
+                    <a href="#" className="text-base font-medium text-gray-900 hover:text-gray-700">
                       Blog
                     </a>
 
-                    <a
-                      href="#"
-                      className="text-base font-medium text-gray-900 hover:text-gray-700"
-                    >
+                    <a href="#" className="text-base font-medium text-gray-900 hover:text-gray-700">
                       Contact Sales
                     </a>
                     {resources.map((item) => (
@@ -633,15 +569,12 @@ export default function Example() {
         {/* Header section */}
         <div className="max-w-7xl mx-auto py-16 px-4 sm:py-24 sm:px-6 lg:px-8">
           <div className="text-center">
-            <h1 className="text-base font-semibold text-cyan-600 uppercase tracking-wide">
-              Pricing
-            </h1>
+            <h1 className="text-base font-semibold text-cyan-600 uppercase tracking-wide">Pricing</h1>
             <p className="mt-1 text-4xl font-extrabold text-gray-900 sm:text-5xl sm:tracking-tight lg:text-6xl">
               Take control of your team.
             </p>
             <p className="max-w-xl mx-auto mt-5 text-xl text-gray-500">
-              Start building for free, then add a site plan to go live. Account
-              plans unlock additional features.
+              Start building for free, then add a site plan to go live. Account plans unlock additional features.
             </p>
           </div>
         </div>
@@ -655,9 +588,7 @@ export default function Example() {
         <div className="relative max-w-7xl mx-auto lg:grid lg:grid-cols-2 lg:px-8">
           <div className="bg-white py-16 px-4 sm:py-24 sm:px-6 lg:px-0 lg:pr-8">
             <div className="max-w-lg mx-auto lg:mx-0">
-              <h2 className="text-base font-semibold tracking-wide text-cyan-600 uppercase">
-                Full-featured
-              </h2>
+              <h2 className="text-base font-semibold tracking-wide text-cyan-600 uppercase">Full-featured</h2>
               <p className="mt-2 text-2xl font-extrabold text-gray-900 sm:text-3xl">
                 Everything you need to talk with your customers
               </p>
@@ -666,18 +597,11 @@ export default function Example() {
                   <div key={feature.name} className="relative">
                     <dt>
                       <div className="absolute h-12 w-12 bg-gradient-to-r from-cyan-600 to-green-400 rounded-md flex items-center justify-center">
-                        <feature.icon
-                          className="h-6 w-6 text-white"
-                          aria-hidden="true"
-                        />
+                        <feature.icon className="h-6 w-6 text-white" aria-hidden="true" />
                       </div>
-                      <p className="ml-16 text-lg leading-6 font-medium text-gray-900">
-                        {feature.name}
-                      </p>
+                      <p className="ml-16 text-lg leading-6 font-medium text-gray-900">{feature.name}</p>
                     </dt>
-                    <dd className="mt-2 ml-16 text-base text-gray-500">
-                      {feature.description}
-                    </dd>
+                    <dd className="mt-2 ml-16 text-base text-gray-500">{feature.description}</dd>
                   </div>
                 ))}
               </dl>
@@ -689,45 +613,28 @@ export default function Example() {
                 <h2 className="sr-only">Price</h2>
                 <p className="relative grid grid-cols-2">
                   <span className="flex flex-col text-center">
-                    <span className="text-5xl font-extrabold text-white tracking-tight">
-                      $99
-                    </span>
-                    <span className="mt-2 text-base font-medium text-cyan-100">
-                      Setup fee
-                    </span>
+                    <span className="text-5xl font-extrabold text-white tracking-tight">$99</span>
+                    <span className="mt-2 text-base font-medium text-cyan-100">Setup fee</span>
                     <span className="sr-only">plus</span>
                   </span>
                   <span
                     className="pointer-events-none absolute h-12 w-full flex items-center justify-center"
                     aria-hidden="true"
                   >
-                    <PlusIcon
-                      className="h-6 w-6 text-cyan-200"
-                      aria-hidden="true"
-                    />
+                    <PlusIcon className="h-6 w-6 text-cyan-200" aria-hidden="true" />
                   </span>
                   <span>
                     <span className="flex flex-col text-center">
-                      <span className="text-5xl font-extrabold text-white tracking-tight">
-                        $4
-                      </span>
-                      <span className="mt-2 text-base font-medium text-cyan-100">
-                        Per month
-                      </span>
+                      <span className="text-5xl font-extrabold text-white tracking-tight">$4</span>
+                      <span className="mt-2 text-base font-medium text-cyan-100">Per month</span>
                     </span>
                   </span>
                 </p>
               </div>
               <ul className="rounded overflow-hidden grid gap-px sm:grid-cols-2">
                 {checklist.map((item) => (
-                  <li
-                    key={item}
-                    className="bg-cyan-700 bg-opacity-50 py-4 px-4 flex items-center text-base text-white"
-                  >
-                    <CheckIcon
-                      className="h-6 w-6 text-cyan-200"
-                      aria-hidden="true"
-                    />
+                  <li key={item} className="bg-cyan-700 bg-opacity-50 py-4 px-4 flex items-center text-base text-white">
+                    <CheckIcon className="h-6 w-6 text-cyan-200" aria-hidden="true" />
                     <span className="ml-3">{item}</span>
                   </li>
                 ))}
@@ -738,10 +645,7 @@ export default function Example() {
               >
                 Get started today
               </a>
-              <a
-                href="#"
-                className="block text-center text-base font-medium text-cyan-100 hover:text-white"
-              >
+              <a href="#" className="block text-center text-base font-medium text-cyan-100 hover:text-white">
                 Try Workflow Lite for free
               </a>
             </div>
@@ -774,16 +678,12 @@ export default function Example() {
 
       {/* FAQs */}
       <div className="max-w-7xl mx-auto py-16 px-4 sm:py-24 sm:px-6 lg:px-8">
-        <h2 className="text-3xl font-extrabold text-gray-900 text-center">
-          Frequently asked questions
-        </h2>
+        <h2 className="text-3xl font-extrabold text-gray-900 text-center">Frequently asked questions</h2>
         <div className="mt-12">
           <dl className="space-y-10 md:space-y-0 md:grid md:grid-cols-2 md:grid-rows-2 md:gap-x-8 md:gap-y-12 lg:grid-cols-3">
             {faqs.map((item) => (
               <div key={item.id}>
-                <dt className="text-lg leading-6 font-medium text-gray-900">
-                  {item.question}
-                </dt>
+                <dt className="text-lg leading-6 font-medium text-gray-900">{item.question}</dt>
                 <dd className="mt-2 text-base text-gray-500">{item.answer}</dd>
               </div>
             ))}
@@ -796,13 +696,10 @@ export default function Example() {
         <div className="max-w-2xl mx-auto py-16 px-4 text-center sm:py-20 sm:px-6 lg:px-8">
           <h2 className="text-3xl font-extrabold text-white sm:text-4xl">
             <span className="block">Boost your productivity.</span>
-            <span className="block text-cyan-900">
-              Start using Workflow today.
-            </span>
+            <span className="block text-cyan-900">Start using Workflow today.</span>
           </h2>
           <p className="mt-4 text-lg leading-6 text-cyan-100">
-            Ac euismod vel sit maecenas id pellentesque eu sed consectetur.
-            Malesuada adipiscing sagittis vel nulla nec.
+            Ac euismod vel sit maecenas id pellentesque eu sed consectetur. Malesuada adipiscing sagittis vel nulla nec.
           </p>
           <a
             href="#"
@@ -821,16 +718,11 @@ export default function Example() {
             <div className="grid grid-cols-2 gap-8 xl:col-span-4">
               <div className="md:grid md:grid-cols-2 md:gap-8">
                 <div>
-                  <h3 className="text-sm font-semibold text-gray-400 tracking-wider uppercase">
-                    Solutions
-                  </h3>
+                  <h3 className="text-sm font-semibold text-gray-400 tracking-wider uppercase">Solutions</h3>
                   <ul className="mt-4 space-y-4">
                     {footerNavigation.solutions.map((item) => (
                       <li key={item.name}>
-                        <a
-                          href={item.href}
-                          className="text-base text-gray-300 hover:text-white"
-                        >
+                        <a href={item.href} className="text-base text-gray-300 hover:text-white">
                           {item.name}
                         </a>
                       </li>
@@ -838,16 +730,11 @@ export default function Example() {
                   </ul>
                 </div>
                 <div className="mt-12 md:mt-0">
-                  <h3 className="text-sm font-semibold text-gray-400 tracking-wider uppercase">
-                    Support
-                  </h3>
+                  <h3 className="text-sm font-semibold text-gray-400 tracking-wider uppercase">Support</h3>
                   <ul className="mt-4 space-y-4">
                     {footerNavigation.support.map((item) => (
                       <li key={item.name}>
-                        <a
-                          href={item.href}
-                          className="text-base text-gray-300 hover:text-white"
-                        >
+                        <a href={item.href} className="text-base text-gray-300 hover:text-white">
                           {item.name}
                         </a>
                       </li>
@@ -857,16 +744,11 @@ export default function Example() {
               </div>
               <div className="md:grid md:grid-cols-2 md:gap-8">
                 <div>
-                  <h3 className="text-sm font-semibold text-gray-400 tracking-wider uppercase">
-                    Company
-                  </h3>
+                  <h3 className="text-sm font-semibold text-gray-400 tracking-wider uppercase">Company</h3>
                   <ul className="mt-4 space-y-4">
                     {footerNavigation.company.map((item) => (
                       <li key={item.name}>
-                        <a
-                          href={item.href}
-                          className="text-base text-gray-300 hover:text-white"
-                        >
+                        <a href={item.href} className="text-base text-gray-300 hover:text-white">
                           {item.name}
                         </a>
                       </li>
@@ -874,16 +756,11 @@ export default function Example() {
                   </ul>
                 </div>
                 <div className="mt-12 md:mt-0">
-                  <h3 className="text-sm font-semibold text-gray-400 tracking-wider uppercase">
-                    Legal
-                  </h3>
+                  <h3 className="text-sm font-semibold text-gray-400 tracking-wider uppercase">Legal</h3>
                   <ul className="mt-4 space-y-4">
                     {footerNavigation.legal.map((item) => (
                       <li key={item.name}>
-                        <a
-                          href={item.href}
-                          className="text-base text-gray-300 hover:text-white"
-                        >
+                        <a href={item.href} className="text-base text-gray-300 hover:text-white">
                           {item.name}
                         </a>
                       </li>
@@ -893,9 +770,7 @@ export default function Example() {
               </div>
             </div>
             <div className="mt-12 xl:mt-0">
-              <h3 className="text-sm font-semibold text-gray-400 tracking-wider uppercase">
-                Language &amp; Currency
-              </h3>
+              <h3 className="text-sm font-semibold text-gray-400 tracking-wider uppercase">Language &amp; Currency</h3>
               <form className="mt-4 space-y-4 sm:max-w-xs">
                 <fieldset className="w-full">
                   <label htmlFor="language" className="sr-only">
@@ -915,10 +790,7 @@ export default function Example() {
                       <option>Spanish</option>
                     </select>
                     <div className="pointer-events-none absolute inset-y-0 right-0 px-2 flex items-center">
-                      <ChevronDownIcon
-                        className="h-4 w-4 text-white"
-                        aria-hidden="true"
-                      />
+                      <ChevronDownIcon className="h-4 w-4 text-white" aria-hidden="true" />
                     </div>
                   </div>
                 </fieldset>
@@ -943,10 +815,7 @@ export default function Example() {
                       <option>USD</option>
                     </select>
                     <div className="pointer-events-none absolute inset-y-0 right-0 px-2 flex items-center">
-                      <ChevronDownIcon
-                        className="h-4 w-4 text-white"
-                        aria-hidden="true"
-                      />
+                      <ChevronDownIcon className="h-4 w-4 text-white" aria-hidden="true" />
                     </div>
                   </div>
                 </fieldset>
@@ -959,8 +828,7 @@ export default function Example() {
                 Subscribe to our newsletter
               </h3>
               <p className="text-base text-gray-300">
-                The latest news, articles, and resources, sent to your inbox
-                weekly.
+                The latest news, articles, and resources, sent to your inbox weekly.
               </p>
             </div>
             <form className="sm:flex sm:max-w-md">
@@ -989,11 +857,7 @@ export default function Example() {
           <div className="mt-8 border-t border-gray-700 pt-8 md:flex md:items-center md:justify-between">
             <div className="flex space-x-6 md:order-2">
               {footerNavigation.social.map((item) => (
-                <a
-                  key={item.name}
-                  href={item.href}
-                  className="text-gray-400 hover:text-gray-300"
-                >
+                <a key={item.name} href={item.href} className="text-gray-400 hover:text-gray-300">
                   <span className="sr-only">{item.name}</span>
                   <item.icon className="h-6 w-6" aria-hidden="true" />
                 </a>
@@ -1006,5 +870,5 @@ export default function Example() {
         </div>
       </footer>
     </div>
-  );
+  )
 }

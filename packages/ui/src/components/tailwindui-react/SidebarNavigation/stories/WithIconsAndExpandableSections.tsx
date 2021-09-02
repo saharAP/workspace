@@ -1,15 +1,9 @@
 /* This example requires Tailwind CSS v2.0+ */
-import { Disclosure } from '@headlessui/react';
-import {
-  CalendarIcon,
-  ChartBarIcon,
-  FolderIcon,
-  HomeIcon,
-  InboxIcon,
-  UsersIcon,
-} from '@heroicons/react/outline';
+import { Disclosure } from '@headlessui/react'
+import { CalendarIcon, ChartBarIcon, FolderIcon, HomeIcon, InboxIcon, UsersIcon } from '@heroicons/react/outline'
 
 const navigation = [
+
   { name: 'Dashboard', icon: HomeIcon, current: true, href: '#' },
   {
     name: 'Team',
@@ -66,10 +60,11 @@ const navigation = [
       { name: 'Settings', href: '#' },
     ],
   },
-];
+
+]
 
 function classNames(...classes) {
-  return classes.filter(Boolean).join(' ');
+  return classes.filter(Boolean).join(' ')
 }
 
 export default function Example() {
@@ -93,15 +88,13 @@ export default function Example() {
                     item.current
                       ? 'bg-gray-100 text-gray-900'
                       : 'bg-white text-gray-600 hover:bg-gray-50 hover:text-gray-900',
-                    'group w-full flex items-center pl-2 py-2 text-sm font-medium rounded-md',
+                    'group w-full flex items-center pl-2 py-2 text-sm font-medium rounded-md'
                   )}
                 >
                   <item.icon
                     className={classNames(
-                      item.current
-                        ? 'text-gray-500'
-                        : 'text-gray-400 group-hover:text-gray-500',
-                      'mr-3 flex-shrink-0 h-6 w-6',
+                      item.current ? 'text-gray-500' : 'text-gray-400 group-hover:text-gray-500',
+                      'mr-3 flex-shrink-0 h-6 w-6'
                     )}
                     aria-hidden="true"
                   />
@@ -117,7 +110,7 @@ export default function Example() {
                         item.current
                           ? 'bg-gray-100 text-gray-900'
                           : 'bg-white text-gray-600 hover:bg-gray-50 hover:text-gray-900',
-                        'group w-full flex items-center pl-2 pr-1 py-2 text-left text-sm font-medium rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500',
+                        'group w-full flex items-center pl-2 pr-1 py-2 text-left text-sm font-medium rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500'
                       )}
                     >
                       <item.icon
@@ -128,7 +121,7 @@ export default function Example() {
                       <svg
                         className={classNames(
                           open ? 'text-gray-400 rotate-90' : 'text-gray-300',
-                          'ml-3 flex-shrink-0 h-5 w-5 transform group-hover:text-gray-400 transition-colors ease-in-out duration-150',
+                          'ml-3 flex-shrink-0 h-5 w-5 transform group-hover:text-gray-400 transition-colors ease-in-out duration-150'
                         )}
                         viewBox="0 0 20 20"
                         aria-hidden="true"
@@ -150,10 +143,10 @@ export default function Example() {
                   </>
                 )}
               </Disclosure>
-            ),
+            )
           )}
         </nav>
       </div>
     </div>
-  );
+  )
 }

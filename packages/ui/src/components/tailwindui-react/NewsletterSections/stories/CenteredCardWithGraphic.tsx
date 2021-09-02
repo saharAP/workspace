@@ -20,13 +20,7 @@ export default function Example() {
       <div className="relative sm:py-16">
         <div aria-hidden="true" className="hidden sm:block">
           <div className="absolute inset-y-0 left-0 w-1/2 bg-gray-50 rounded-r-3xl" />
-          <svg
-            className="absolute top-8 left-1/2 -ml-3"
-            width={404}
-            height={392}
-            fill="none"
-            viewBox="0 0 404 392"
-          >
+          <svg className="absolute top-8 left-1/2 -ml-3" width={404} height={392} fill="none" viewBox="0 0 404 392">
             <defs>
               <pattern
                 id="8228f071-bcee-4ec8-905a-2a059a2cc4fb"
@@ -36,29 +30,15 @@ export default function Example() {
                 height={20}
                 patternUnits="userSpaceOnUse"
               >
-                <rect
-                  x={0}
-                  y={0}
-                  width={4}
-                  height={4}
-                  className="text-gray-200"
-                  fill="currentColor"
-                />
+                <rect x={0} y={0} width={4} height={4} className="text-gray-200" fill="currentColor" />
               </pattern>
             </defs>
-            <rect
-              width={404}
-              height={392}
-              fill="url(#8228f071-bcee-4ec8-905a-2a059a2cc4fb)"
-            />
+            <rect width={404} height={392} fill="url(#8228f071-bcee-4ec8-905a-2a059a2cc4fb)" />
           </svg>
         </div>
         <div className="mx-auto max-w-md px-4 sm:max-w-3xl sm:px-6 lg:max-w-7xl lg:px-8">
           <div className="relative rounded-2xl px-6 py-10 bg-indigo-600 overflow-hidden shadow-xl sm:px-12 sm:py-20">
-            <div
-              aria-hidden="true"
-              className="absolute inset-0 -mt-72 sm:-mt-32 md:mt-0"
-            >
+            <div aria-hidden="true" className="absolute inset-0 -mt-72 sm:-mt-32 md:mt-0">
               <svg
                 className="absolute inset-0 h-full w-full"
                 preserveAspectRatio="xMidYMid slice"
@@ -84,8 +64,8 @@ export default function Example() {
                   Get notified when we&rsquo;re launching.
                 </h2>
                 <p className="mt-6 mx-auto max-w-2xl text-lg text-indigo-200">
-                  Sagittis scelerisque nulla cursus in enim consectetur quam.
-                  Dictum urna sed consectetur neque tristique pellentesque.
+                  Sagittis scelerisque nulla cursus in enim consectetur quam. Dictum urna sed consectetur neque
+                  tristique pellentesque.
                 </p>
               </div>
               <form action="#" className="mt-12 sm:mx-auto sm:max-w-lg sm:flex">
@@ -114,5 +94,5 @@ export default function Example() {
         </div>
       </div>
     </div>
-  );
+  )
 }

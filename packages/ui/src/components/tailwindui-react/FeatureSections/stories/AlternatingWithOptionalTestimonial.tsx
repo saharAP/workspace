@@ -1,5 +1,5 @@
 /* This example requires Tailwind CSS v2.0+ */
-import { InboxIcon, SparklesIcon } from '@heroicons/react/outline';
+import { InboxIcon, SparklesIcon } from '@heroicons/react/outline'
 
 export default function Example() {
   return (
@@ -10,10 +10,7 @@ export default function Example() {
             <div>
               <div>
                 <span className="h-12 w-12 rounded-md flex items-center justify-center bg-indigo-600">
-                  <InboxIcon
-                    className="h-6 w-6 text-white"
-                    aria-hidden="true"
-                  />
+                  <InboxIcon className="h-6 w-6 text-white" aria-hidden="true" />
                 </span>
               </div>
               <div className="mt-6">
@@ -21,10 +18,9 @@ export default function Example() {
                   Stay on top of customer support
                 </h2>
                 <p className="mt-4 text-lg text-gray-500">
-                  Semper curabitur ullamcorper posuere nunc sed. Ornare iaculis
-                  bibendum malesuada faucibus lacinia porttitor. Pulvinar
-                  laoreet sagittis viverra duis. In venenatis sem arcu pretium
-                  pharetra at. Lectus viverra dui tellus ornare pharetra.
+                  Semper curabitur ullamcorper posuere nunc sed. Ornare iaculis bibendum malesuada faucibus lacinia
+                  porttitor. Pulvinar laoreet sagittis viverra duis. In venenatis sem arcu pretium pharetra at. Lectus
+                  viverra dui tellus ornare pharetra.
                 </p>
                 <div className="mt-6">
                   <a
@@ -40,9 +36,8 @@ export default function Example() {
               <blockquote>
                 <div>
                   <p className="text-base text-gray-500">
-                    &ldquo;Cras velit quis eros eget rhoncus lacus ultrices sed
-                    diam. Sit orci risus aenean curabitur donec aliquet. Mi
-                    venenatis in euismod ut.&rdquo;
+                    &ldquo;Cras velit quis eros eget rhoncus lacus ultrices sed diam. Sit orci risus aenean curabitur
+                    donec aliquet. Mi venenatis in euismod ut.&rdquo;
                   </p>
                 </div>
                 <footer className="mt-3">
@@ -54,9 +49,7 @@ export default function Example() {
                         alt=""
                       />
                     </div>
-                    <div className="text-base font-medium text-gray-700">
-                      Marcia Hill, Digital Marketing Manager
-                    </div>
+                    <div className="text-base font-medium text-gray-700">Marcia Hill, Digital Marketing Manager</div>
                   </div>
                 </footer>
               </blockquote>
@@ -79,10 +72,7 @@ export default function Example() {
             <div>
               <div>
                 <span className="h-12 w-12 rounded-md flex items-center justify-center bg-indigo-600">
-                  <SparklesIcon
-                    className="h-6 w-6 text-white"
-                    aria-hidden="true"
-                  />
+                  <SparklesIcon className="h-6 w-6 text-white" aria-hidden="true" />
                 </span>
               </div>
               <div className="mt-6">
@@ -90,10 +80,9 @@ export default function Example() {
                   Better understand your customers
                 </h2>
                 <p className="mt-4 text-lg text-gray-500">
-                  Semper curabitur ullamcorper posuere nunc sed. Ornare iaculis
-                  bibendum malesuada faucibus lacinia porttitor. Pulvinar
-                  laoreet sagittis viverra duis. In venenatis sem arcu pretium
-                  pharetra at. Lectus viverra dui tellus ornare pharetra.
+                  Semper curabitur ullamcorper posuere nunc sed. Ornare iaculis bibendum malesuada faucibus lacinia
+                  porttitor. Pulvinar laoreet sagittis viverra duis. In venenatis sem arcu pretium pharetra at. Lectus
+                  viverra dui tellus ornare pharetra.
                 </p>
                 <div className="mt-6">
                   <a
@@ -118,5 +107,5 @@ export default function Example() {
         </div>
       </div>
     </div>
-  );
+  )
 }

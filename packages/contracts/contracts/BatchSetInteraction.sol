@@ -164,9 +164,9 @@ contract BatchSetInteraction is Owned {
 
     for (uint256 i; i < underlyingToken.length; i++) {
       uint256 allocation = batch
-      .suppliedToken
-      .mul(underlyingToken[i].allocation)
-      .div(100e18);
+        .suppliedToken
+        .mul(underlyingToken[i].allocation)
+        .div(100e18);
       uint256 crvLPTokenAmount = _sendToCurve(
         allocation,
         underlyingToken[i].curveMetaPool

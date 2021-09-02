@@ -2,9 +2,10 @@
 /* tslint:disable */
 /* eslint-disable */
 
-import { Contract, ContractFactory, Overrides } from "@ethersproject/contracts";
+import { Signer, BigNumberish } from "ethers";
 import { Provider, TransactionRequest } from "@ethersproject/providers";
-import { BigNumberish, Signer } from "ethers";
+import { Contract, ContractFactory, Overrides } from "@ethersproject/contracts";
+
 import type { SetToken } from "./SetToken";
 
 export class SetTokenFactory extends ContractFactory {

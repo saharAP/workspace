@@ -14,8 +14,8 @@
   }
   ```
 */
-import { Menu, Popover, Transition } from '@headlessui/react';
-import { BellIcon, MenuIcon, XIcon } from '@heroicons/react/outline';
+import { Fragment } from 'react'
+import { Menu, Popover, Transition } from '@headlessui/react'
 import {
   ArrowNarrowLeftIcon,
   CheckIcon,
@@ -25,41 +25,54 @@ import {
   SearchIcon,
   ThumbUpIcon,
   UserIcon,
-} from '@heroicons/react/solid';
-import { Fragment } from 'react';
+} from '@heroicons/react/solid'
+import { BellIcon, MenuIcon, XIcon } from '@heroicons/react/outline'
 
 const user = {
+
   name: 'Whitney Francis',
   email: 'whitney@example.com',
   imageUrl:
     'https://images.unsplash.com/photo-1517365830460-955ce3ccd263?ixlib=rb-=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=8&w=256&h=256&q=80',
-};
+
+}
 const navigation = [
+
   { name: 'Dashboard', href: '#' },
   { name: 'Jobs', href: '#' },
   { name: 'Applicants', href: '#' },
   { name: 'Company', href: '#' },
-];
+
+]
 const breadcrumbs = [
+
   { name: 'Jobs', href: '#', current: false },
   { name: 'Front End Developer', href: '#', current: false },
   { name: 'Applicants', href: '#', current: true },
-];
+
+]
 const userNavigation = [
+
   { name: 'Your Profile', href: '#' },
   { name: 'Settings', href: '#' },
   { name: 'Sign out', href: '#' },
-];
+
+]
 const attachments = [
+
   { name: 'resume_front_end_developer.pdf', href: '#' },
   { name: 'coverletter_front_end_developer.pdf', href: '#' },
-];
+
+]
 const eventTypes = {
+
   applied: { icon: UserIcon, bgColorClass: 'bg-gray-400' },
   advanced: { icon: ThumbUpIcon, bgColorClass: 'bg-blue-500' },
   completed: { icon: CheckIcon, bgColorClass: 'bg-green-500' },
-};
+
+}
 const timeline = [
+
   {
     id: 1,
     type: eventTypes.applied,
@@ -100,33 +113,39 @@ const timeline = [
     date: 'Oct 4',
     datetime: '2020-10-04',
   },
-];
+
+]
 const comments = [
+
   {
     id: 1,
     name: 'Leslie Alexander',
     date: '4d ago',
     imageId: '1494790108377-be9c29b29330',
-    body: 'Ducimus quas delectus ad maxime totam doloribus reiciendis ex. Tempore dolorem maiores. Similique voluptatibus tempore non ut.',
+    body:
+      'Ducimus quas delectus ad maxime totam doloribus reiciendis ex. Tempore dolorem maiores. Similique voluptatibus tempore non ut.',
   },
   {
     id: 2,
     name: 'Michael Foster',
     date: '4d ago',
     imageId: '1519244703995-f4e0f30006d5',
-    body: 'Et ut autem. Voluptatem eum dolores sint necessitatibus quos. Quis eum qui dolorem accusantium voluptas voluptatem ipsum. Quo facere iusto quia accusamus veniam id explicabo et aut.',
+    body:
+      'Et ut autem. Voluptatem eum dolores sint necessitatibus quos. Quis eum qui dolorem accusantium voluptas voluptatem ipsum. Quo facere iusto quia accusamus veniam id explicabo et aut.',
   },
   {
     id: 3,
     name: 'Dries Vincent',
     date: '4d ago',
     imageId: '1506794778202-cad84cf45f1d',
-    body: 'Expedita consequatur sit ea voluptas quo ipsam recusandae. Ab sint et voluptatem repudiandae voluptatem et eveniet. Nihil quas consequatur autem. Perferendis rerum et.',
+    body:
+      'Expedita consequatur sit ea voluptas quo ipsam recusandae. Ab sint et voluptatem repudiandae voluptatem et eveniet. Nihil quas consequatur autem. Perferendis rerum et.',
   },
-];
+
+]
 
 function classNames(...classes) {
-  return classes.filter(Boolean).join(' ');
+  return classes.filter(Boolean).join(' ')
 }
 
 export default function Example() {
@@ -145,16 +164,9 @@ export default function Example() {
                   />
                 </a>
               </div>
-              <nav
-                aria-label="Global"
-                className="hidden lg:ml-6 lg:flex lg:items-center lg:space-x-4"
-              >
+              <nav aria-label="Global" className="hidden lg:ml-6 lg:flex lg:items-center lg:space-x-4">
                 {navigation.map((item) => (
-                  <a
-                    key={item.name}
-                    href={item.href}
-                    className="px-3 py-2 text-gray-900 text-sm font-medium"
-                  >
+                  <a key={item.name} href={item.href} className="px-3 py-2 text-gray-900 text-sm font-medium">
                     {item.name}
                   </a>
                 ))}
@@ -167,10 +179,7 @@ export default function Example() {
                 </label>
                 <div className="relative">
                   <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                    <SearchIcon
-                      className="h-5 w-5 text-gray-400"
-                      aria-hidden="true"
-                    />
+                    <SearchIcon className="h-5 w-5 text-gray-400" aria-hidden="true" />
                   </div>
                   <input
                     id="search"
@@ -200,10 +209,7 @@ export default function Example() {
                   leaveFrom="opacity-100"
                   leaveTo="opacity-0"
                 >
-                  <Popover.Overlay
-                    className="z-20 fixed inset-0 bg-black bg-opacity-25"
-                    aria-hidden="true"
-                  />
+                  <Popover.Overlay className="z-20 fixed inset-0 bg-black bg-opacity-25" aria-hidden="true" />
                 </Transition.Child>
 
                 <Transition.Child
@@ -251,19 +257,11 @@ export default function Example() {
                       <div className="pt-4 pb-2">
                         <div className="flex items-center px-5">
                           <div className="flex-shrink-0">
-                            <img
-                              className="h-10 w-10 rounded-full"
-                              src={user.imageUrl}
-                              alt=""
-                            />
+                            <img className="h-10 w-10 rounded-full" src={user.imageUrl} alt="" />
                           </div>
                           <div className="ml-3">
-                            <div className="text-base font-medium text-gray-800">
-                              {user.name}
-                            </div>
-                            <div className="text-sm font-medium text-gray-500">
-                              {user.email}
-                            </div>
+                            <div className="text-base font-medium text-gray-800">{user.name}</div>
+                            <div className="text-sm font-medium text-gray-500">{user.email}</div>
                           </div>
                           <button className="ml-auto flex-shrink-0 bg-white p-1 text-gray-400 rounded-full hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
                             <span className="sr-only">View notifications</span>
@@ -301,11 +299,7 @@ export default function Example() {
                 <div>
                   <Menu.Button className="bg-white rounded-full flex text-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
                     <span className="sr-only">Open user menu</span>
-                    <img
-                      className="h-8 w-8 rounded-full"
-                      src={user.imageUrl}
-                      alt=""
-                    />
+                    <img className="h-8 w-8 rounded-full" src={user.imageUrl} alt="" />
                   </Menu.Button>
                 </div>
                 <Transition
@@ -323,10 +317,7 @@ export default function Example() {
                         {({ active }) => (
                           <a
                             href={item.href}
-                            className={classNames(
-                              active ? 'bg-gray-100' : '',
-                              'block px-4 py-2 text-sm text-gray-700',
-                            )}
+                            className={classNames(active ? 'bg-gray-100' : '', 'block px-4 py-2 text-sm text-gray-700')}
                           >
                             {item.name}
                           </a>
@@ -360,10 +351,7 @@ export default function Example() {
                   <li>
                     <div>
                       <a href="#" className="text-gray-400 hover:text-gray-500">
-                        <HomeIcon
-                          className="flex-shrink-0 h-5 w-5"
-                          aria-hidden="true"
-                        />
+                        <HomeIcon className="flex-shrink-0 h-5 w-5" aria-hidden="true" />
                         <span className="sr-only">Home</span>
                       </a>
                     </div>
@@ -408,16 +396,11 @@ export default function Example() {
                   src="https://images.unsplash.com/photo-1463453091185-61582044d556?ixlib=rb-=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=8&w=1024&h=1024&q=80"
                   alt=""
                 />
-                <span
-                  className="absolute inset-0 shadow-inner rounded-full"
-                  aria-hidden="true"
-                />
+                <span className="absolute inset-0 shadow-inner rounded-full" aria-hidden="true" />
               </div>
             </div>
             <div>
-              <h1 className="text-2xl font-bold text-gray-900">
-                Ricardo Cooper
-              </h1>
+              <h1 className="text-2xl font-bold text-gray-900">Ricardo Cooper</h1>
               <p className="text-sm font-medium text-gray-500">
                 Applied for{' '}
                 <a href="#" className="text-gray-900">
@@ -449,64 +432,39 @@ export default function Example() {
             <section aria-labelledby="applicant-information-title">
               <div className="bg-white shadow sm:rounded-lg">
                 <div className="px-4 py-5 sm:px-6">
-                  <h2
-                    id="applicant-information-title"
-                    className="text-lg leading-6 font-medium text-gray-900"
-                  >
+                  <h2 id="applicant-information-title" className="text-lg leading-6 font-medium text-gray-900">
                     Applicant Information
                   </h2>
-                  <p className="mt-1 max-w-2xl text-sm text-gray-500">
-                    Personal details and application.
-                  </p>
+                  <p className="mt-1 max-w-2xl text-sm text-gray-500">Personal details and application.</p>
                 </div>
                 <div className="border-t border-gray-200 px-4 py-5 sm:px-6">
                   <dl className="grid grid-cols-1 gap-x-4 gap-y-8 sm:grid-cols-2">
                     <div className="sm:col-span-1">
-                      <dt className="text-sm font-medium text-gray-500">
-                        Application for
-                      </dt>
-                      <dd className="mt-1 text-sm text-gray-900">
-                        Backend Developer
-                      </dd>
+                      <dt className="text-sm font-medium text-gray-500">Application for</dt>
+                      <dd className="mt-1 text-sm text-gray-900">Backend Developer</dd>
                     </div>
                     <div className="sm:col-span-1">
-                      <dt className="text-sm font-medium text-gray-500">
-                        Email address
-                      </dt>
-                      <dd className="mt-1 text-sm text-gray-900">
-                        ricardocooper@example.com
-                      </dd>
+                      <dt className="text-sm font-medium text-gray-500">Email address</dt>
+                      <dd className="mt-1 text-sm text-gray-900">ricardocooper@example.com</dd>
                     </div>
                     <div className="sm:col-span-1">
-                      <dt className="text-sm font-medium text-gray-500">
-                        Salary expectation
-                      </dt>
+                      <dt className="text-sm font-medium text-gray-500">Salary expectation</dt>
                       <dd className="mt-1 text-sm text-gray-900">$120,000</dd>
                     </div>
                     <div className="sm:col-span-1">
-                      <dt className="text-sm font-medium text-gray-500">
-                        Phone
-                      </dt>
+                      <dt className="text-sm font-medium text-gray-500">Phone</dt>
+                      <dd className="mt-1 text-sm text-gray-900">+1 555-555-5555</dd>
+                    </div>
+                    <div className="sm:col-span-2">
+                      <dt className="text-sm font-medium text-gray-500">About</dt>
                       <dd className="mt-1 text-sm text-gray-900">
-                        +1 555-555-5555
+                        Fugiat ipsum ipsum deserunt culpa aute sint do nostrud anim incididunt cillum culpa consequat.
+                        Excepteur qui ipsum aliquip consequat sint. Sit id mollit nulla mollit nostrud in ea officia
+                        proident. Irure nostrud pariatur mollit ad adipisicing reprehenderit deserunt qui eu.
                       </dd>
                     </div>
                     <div className="sm:col-span-2">
-                      <dt className="text-sm font-medium text-gray-500">
-                        About
-                      </dt>
-                      <dd className="mt-1 text-sm text-gray-900">
-                        Fugiat ipsum ipsum deserunt culpa aute sint do nostrud
-                        anim incididunt cillum culpa consequat. Excepteur qui
-                        ipsum aliquip consequat sint. Sit id mollit nulla mollit
-                        nostrud in ea officia proident. Irure nostrud pariatur
-                        mollit ad adipisicing reprehenderit deserunt qui eu.
-                      </dd>
-                    </div>
-                    <div className="sm:col-span-2">
-                      <dt className="text-sm font-medium text-gray-500">
-                        Attachments
-                      </dt>
+                      <dt className="text-sm font-medium text-gray-500">Attachments</dt>
                       <dd className="mt-1 text-sm text-gray-900">
                         <ul className="border border-gray-200 rounded-md divide-y divide-gray-200">
                           {attachments.map((attachment) => (
@@ -515,19 +473,11 @@ export default function Example() {
                               className="pl-3 pr-4 py-3 flex items-center justify-between text-sm"
                             >
                               <div className="w-0 flex-1 flex items-center">
-                                <PaperClipIcon
-                                  className="flex-shrink-0 h-5 w-5 text-gray-400"
-                                  aria-hidden="true"
-                                />
-                                <span className="ml-2 flex-1 w-0 truncate">
-                                  {attachment.name}
-                                </span>
+                                <PaperClipIcon className="flex-shrink-0 h-5 w-5 text-gray-400" aria-hidden="true" />
+                                <span className="ml-2 flex-1 w-0 truncate">{attachment.name}</span>
                               </div>
                               <div className="ml-4 flex-shrink-0">
-                                <a
-                                  href={attachment.href}
-                                  className="font-medium text-blue-600 hover:text-blue-500"
-                                >
+                                <a href={attachment.href} className="font-medium text-blue-600 hover:text-blue-500">
                                   Download
                                 </a>
                               </div>
@@ -554,10 +504,7 @@ export default function Example() {
               <div className="bg-white shadow sm:rounded-lg sm:overflow-hidden">
                 <div className="divide-y divide-gray-200">
                   <div className="px-4 py-5 sm:px-6">
-                    <h2
-                      id="notes-title"
-                      className="text-lg font-medium text-gray-900"
-                    >
+                    <h2 id="notes-title" className="text-lg font-medium text-gray-900">
                       Notes
                     </h2>
                   </div>
@@ -575,10 +522,7 @@ export default function Example() {
                             </div>
                             <div>
                               <div className="text-sm">
-                                <a
-                                  href="#"
-                                  className="font-medium text-gray-900"
-                                >
+                                <a href="#" className="font-medium text-gray-900">
                                   {comment.name}
                                 </a>
                               </div>
@@ -586,16 +530,9 @@ export default function Example() {
                                 <p>{comment.body}</p>
                               </div>
                               <div className="mt-2 text-sm space-x-2">
-                                <span className="text-gray-500 font-medium">
-                                  {comment.date}
-                                </span>{' '}
-                                <span className="text-gray-500 font-medium">
-                                  &middot;
-                                </span>{' '}
-                                <button
-                                  type="button"
-                                  className="text-gray-900 font-medium"
-                                >
+                                <span className="text-gray-500 font-medium">{comment.date}</span>{' '}
+                                <span className="text-gray-500 font-medium">&middot;</span>{' '}
+                                <button type="button" className="text-gray-900 font-medium">
                                   Reply
                                 </button>
                               </div>
@@ -609,11 +546,7 @@ export default function Example() {
                 <div className="bg-gray-50 px-4 py-6 sm:px-6">
                   <div className="flex space-x-3">
                     <div className="flex-shrink-0">
-                      <img
-                        className="h-10 w-10 rounded-full"
-                        src={user.imageUrl}
-                        alt=""
-                      />
+                      <img className="h-10 w-10 rounded-full" src={user.imageUrl} alt="" />
                     </div>
                     <div className="min-w-0 flex-1">
                       <form action="#">
@@ -656,15 +589,9 @@ export default function Example() {
             </section>
           </div>
 
-          <section
-            aria-labelledby="timeline-title"
-            className="lg:col-start-3 lg:col-span-1"
-          >
+          <section aria-labelledby="timeline-title" className="lg:col-start-3 lg:col-span-1">
             <div className="bg-white px-4 py-5 shadow sm:rounded-lg sm:px-6">
-              <h2
-                id="timeline-title"
-                className="text-lg font-medium text-gray-900"
-              >
+              <h2 id="timeline-title" className="text-lg font-medium text-gray-900">
                 Timeline
               </h2>
 
@@ -675,33 +602,24 @@ export default function Example() {
                     <li key={item.id}>
                       <div className="relative pb-8">
                         {itemIdx !== timeline.length - 1 ? (
-                          <span
-                            className="absolute top-4 left-4 -ml-px h-full w-0.5 bg-gray-200"
-                            aria-hidden="true"
-                          />
+                          <span className="absolute top-4 left-4 -ml-px h-full w-0.5 bg-gray-200" aria-hidden="true" />
                         ) : null}
                         <div className="relative flex space-x-3">
                           <div>
                             <span
                               className={classNames(
                                 item.type.bgColorClass,
-                                'h-8 w-8 rounded-full flex items-center justify-center ring-8 ring-white',
+                                'h-8 w-8 rounded-full flex items-center justify-center ring-8 ring-white'
                               )}
                             >
-                              <item.type.icon
-                                className="w-5 h-5 text-white"
-                                aria-hidden="true"
-                              />
+                              <item.type.icon className="w-5 h-5 text-white" aria-hidden="true" />
                             </span>
                           </div>
                           <div className="min-w-0 flex-1 pt-1.5 flex justify-between space-x-4">
                             <div>
                               <p className="text-sm text-gray-500">
                                 {item.content}{' '}
-                                <a
-                                  href="#"
-                                  className="font-medium text-gray-900"
-                                >
+                                <a href="#" className="font-medium text-gray-900">
                                   {item.target}
                                 </a>
                               </p>
@@ -729,5 +647,5 @@ export default function Example() {
         </div>
       </main>
     </div>
-  );
+  )
 }

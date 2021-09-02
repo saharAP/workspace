@@ -3,18 +3,12 @@ export default function Example() {
   return (
     <div className="bg-white shadow sm:rounded-lg">
       <div className="px-4 py-5 sm:p-6">
-        <h3 className="text-lg leading-6 font-medium text-gray-900">
-          Payment method
-        </h3>
+        <h3 className="text-lg leading-6 font-medium text-gray-900">Payment method</h3>
         <div className="mt-5">
           <div className="rounded-md bg-gray-50 px-6 py-5 sm:flex sm:items-start sm:justify-between">
             <h4 className="sr-only">Visa</h4>
             <div className="sm:flex sm:items-start">
-              <svg
-                className="h-8 w-auto sm:flex-shrink-0 sm:h-6"
-                viewBox="0 0 36 24"
-                aria-hidden="true"
-              >
+              <svg className="h-8 w-auto sm:flex-shrink-0 sm:h-6" viewBox="0 0 36 24" aria-hidden="true">
                 <rect width={36} height={24} fill="#224DBA" rx={4} />
                 <path
                   fill="#fff"
@@ -22,17 +16,13 @@ export default function Example() {
                 />
               </svg>
               <div className="mt-3 sm:mt-0 sm:ml-4">
-                <div className="text-sm font-medium text-gray-900">
-                  Ending with 4242
-                </div>
+                <div className="text-sm font-medium text-gray-900">Ending with 4242</div>
                 <div className="mt-1 text-sm text-gray-600 sm:flex sm:items-center">
                   <div>Expires 12/20</div>
                   <span className="hidden sm:mx-2 sm:inline" aria-hidden="true">
                     &middot;
                   </span>
-                  <div className="mt-1 sm:mt-0">
-                    Last updated on 22 Aug 2017
-                  </div>
+                  <div className="mt-1 sm:mt-0">Last updated on 22 Aug 2017</div>
                 </div>
               </div>
             </div>
@@ -48,5 +38,5 @@ export default function Example() {
         </div>
       </div>
     </div>
-  );
+  )
 }

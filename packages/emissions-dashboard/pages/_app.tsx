@@ -1,7 +1,7 @@
-import { Web3Provider } from '@ethersproject/providers';
-import { Web3ReactProvider } from '@web3-react/core';
+import React, { useEffect } from 'react';
 import Head from 'next/head';
-import React, { Fragment, useEffect } from 'react';
+import { Web3ReactProvider } from '@web3-react/core';
+import { Web3Provider } from '@ethersproject/providers';
 import { StateProvider } from '../context/store';
 import '../styles/globals.css';
 
@@ -23,7 +23,7 @@ export default function DashboardApp(props) {
   }, []);
 
   return (
-    <Fragment>
+    <React.Fragment>
       <Head>
         <title>Smart Carbon Emissions Dashboard</title>
         <meta
@@ -42,6 +42,6 @@ export default function DashboardApp(props) {
           <Component {...pageProps} />
         </StateProvider>
       </Web3ReactProvider>
-    </Fragment>
+    </React.Fragment>
   );
 }

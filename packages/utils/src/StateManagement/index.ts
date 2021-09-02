@@ -1,1 +1,1 @@
-export { default as getInitialStateFromLocalStorage } from './getInitialStateFromLocalStorage';
+export {default as getInitialStateFromLocalStorage} from "./getInitialStateFromLocalStorage";

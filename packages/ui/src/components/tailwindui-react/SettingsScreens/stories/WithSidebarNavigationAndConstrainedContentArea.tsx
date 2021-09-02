@@ -14,7 +14,8 @@
   }
   ```
 */
-import { Dialog, Switch, Transition } from '@headlessui/react';
+import { Fragment, useState } from 'react'
+import { Dialog, Switch, Transition } from '@headlessui/react'
 import {
   BellIcon,
   BriefcaseIcon,
@@ -26,50 +27,49 @@ import {
   QuestionMarkCircleIcon,
   UsersIcon,
   XIcon,
-} from '@heroicons/react/outline';
-import { SearchIcon } from '@heroicons/react/solid';
-import { Fragment, useState } from 'react';
+} from '@heroicons/react/outline'
+import { SearchIcon } from '@heroicons/react/solid'
 
 const navigation = [
+
   { name: 'Home', href: '#', icon: HomeIcon, current: false },
   { name: 'Jobs', href: '#', icon: BriefcaseIcon, current: false },
   { name: 'Applications', href: '#', icon: DocumentSearchIcon, current: false },
   { name: 'Messages', href: '#', icon: ChatIcon, current: false },
   { name: 'Team', href: '#', icon: UsersIcon, current: false },
   { name: 'Settings', href: '#', icon: CogIcon, current: true },
-];
+
+]
 const secondaryNavigation = [
+
   { name: 'Help', href: '#', icon: QuestionMarkCircleIcon },
   { name: 'Logout', href: '#', icon: CogIcon },
-];
+
+]
 const tabs = [
+
   { name: 'General', href: '#', current: true },
   { name: 'Password', href: '#', current: false },
   { name: 'Notifications', href: '#', current: false },
   { name: 'Plan', href: '#', current: false },
   { name: 'Billing', href: '#', current: false },
   { name: 'Team Members', href: '#', current: false },
-];
+
+]
 
 function classNames(...classes) {
-  return classes.filter(Boolean).join(' ');
+  return classes.filter(Boolean).join(' ')
 }
 
 export default function Example() {
-  const [sidebarOpen, setSidebarOpen] = useState(false);
-  const [automaticTimezoneEnabled, setAutomaticTimezoneEnabled] =
-    useState(true);
-  const [autoUpdateApplicantDataEnabled, setAutoUpdateApplicantDataEnabled] =
-    useState(false);
+  const [sidebarOpen, setSidebarOpen] = useState(false)
+  const [automaticTimezoneEnabled, setAutomaticTimezoneEnabled] = useState(true)
+  const [autoUpdateApplicantDataEnabled, setAutoUpdateApplicantDataEnabled] = useState(false)
 
   return (
     <div className="relative h-screen bg-white overflow-hidden flex">
       <Transition.Root show={sidebarOpen} as={Fragment}>
-        <Dialog
-          as="div"
-          className="fixed inset-0 z-40 flex md:hidden"
-          onClose={setSidebarOpen}
-        >
+        <Dialog as="div" className="fixed inset-0 z-40 flex md:hidden" onClose={setSidebarOpen}>
           <Transition.Child
             as={Fragment}
             enter="transition-opacity ease-linear duration-300"
@@ -128,16 +128,14 @@ export default function Example() {
                           item.current
                             ? 'bg-purple-50 border-purple-600 text-purple-600'
                             : 'border-transparent text-gray-600 hover:bg-gray-50 hover:text-gray-900',
-                          'group border-l-4 py-2 px-3 flex items-center text-base font-medium',
+                          'group border-l-4 py-2 px-3 flex items-center text-base font-medium'
                         )}
                         aria-current={item.current ? 'page' : undefined}
                       >
                         <item.icon
                           className={classNames(
-                            item.current
-                              ? 'text-purple-500'
-                              : 'text-gray-400 group-hover:text-gray-500',
-                            'mr-4 flex-shrink-0 h-6 w-6',
+                            item.current ? 'text-purple-500' : 'text-gray-400 group-hover:text-gray-500',
+                            'mr-4 flex-shrink-0 h-6 w-6'
                           )}
                           aria-hidden="true"
                         />
@@ -192,15 +190,13 @@ export default function Example() {
                       item.current
                         ? 'bg-purple-50 border-purple-600 text-purple-600'
                         : 'border-transparent text-gray-600 hover:text-gray-900 hover:bg-gray-50',
-                      'group border-l-4 py-2 px-3 flex items-center text-sm font-medium',
+                      'group border-l-4 py-2 px-3 flex items-center text-sm font-medium'
                     )}
                   >
                     <item.icon
                       className={classNames(
-                        item.current
-                          ? 'text-purple-500'
-                          : 'text-gray-400 group-hover:text-gray-500',
-                        'mr-3 flex-shrink-0 h-6 w-6',
+                        item.current ? 'text-purple-500' : 'text-gray-400 group-hover:text-gray-500',
+                        'mr-3 flex-shrink-0 h-6 w-6'
                       )}
                       aria-hidden="true"
                     />
@@ -216,10 +212,7 @@ export default function Example() {
                   href={item.href}
                   className="group border-l-4 border-transparent py-2 px-3 flex items-center text-sm font-medium text-gray-600 hover:text-gray-900 hover:bg-gray-50"
                 >
-                  <item.icon
-                    className="text-gray-400 group-hover:text-gray-500 mr-3 h-6 w-6"
-                    aria-hidden="true"
-                  />
+                  <item.icon className="text-gray-400 group-hover:text-gray-500 mr-3 h-6 w-6" aria-hidden="true" />
                   {item.name}
                 </a>
               ))}
@@ -247,10 +240,7 @@ export default function Example() {
                   </label>
                   <div className="relative w-full text-gray-400 focus-within:text-gray-600">
                     <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center">
-                      <SearchIcon
-                        className="flex-shrink-0 h-5 w-5"
-                        aria-hidden="true"
-                      />
+                      <SearchIcon className="flex-shrink-0 h-5 w-5" aria-hidden="true" />
                     </div>
                     <input
                       name="search-field"
@@ -283,9 +273,7 @@ export default function Example() {
           <div className="relative max-w-4xl mx-auto md:px-8 xl:px-0">
             <div className="pt-10 pb-16">
               <div className="px-4 sm:px-6 md:px-0">
-                <h1 className="text-3xl font-extrabold text-gray-900">
-                  Settings
-                </h1>
+                <h1 className="text-3xl font-extrabold text-gray-900">Settings</h1>
               </div>
               <div className="px-4 sm:px-6 md:px-0">
                 <div className="py-6">
@@ -316,7 +304,7 @@ export default function Example() {
                               tab.current
                                 ? 'border-purple-500 text-purple-600'
                                 : 'border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700',
-                              'whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm',
+                              'whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm'
                             )}
                           >
                             {tab.name}
@@ -329,20 +317,15 @@ export default function Example() {
                   {/* Description list with inline editing */}
                   <div className="mt-10 divide-y divide-gray-200">
                     <div className="space-y-1">
-                      <h3 className="text-lg leading-6 font-medium text-gray-900">
-                        Profile
-                      </h3>
+                      <h3 className="text-lg leading-6 font-medium text-gray-900">Profile</h3>
                       <p className="max-w-2xl text-sm text-gray-500">
-                        This information will be displayed publicly so be
-                        careful what you share.
+                        This information will be displayed publicly so be careful what you share.
                       </p>
                     </div>
                     <div className="mt-6">
                       <dl className="divide-y divide-gray-200">
                         <div className="py-4 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4">
-                          <dt className="text-sm font-medium text-gray-500">
-                            Name
-                          </dt>
+                          <dt className="text-sm font-medium text-gray-500">Name</dt>
                           <dd className="mt-1 flex text-sm text-gray-900 sm:mt-0 sm:col-span-2">
                             <span className="flex-grow">Chelsea Hagon</span>
                             <span className="ml-4 flex-shrink-0">
@@ -356,9 +339,7 @@ export default function Example() {
                           </dd>
                         </div>
                         <div className="py-4 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:pt-5">
-                          <dt className="text-sm font-medium text-gray-500">
-                            Photo
-                          </dt>
+                          <dt className="text-sm font-medium text-gray-500">Photo</dt>
                           <dd className="mt-1 flex text-sm text-gray-900 sm:mt-0 sm:col-span-2">
                             <span className="flex-grow">
                               <img
@@ -374,10 +355,7 @@ export default function Example() {
                               >
                                 Update
                               </button>
-                              <span
-                                className="text-gray-300"
-                                aria-hidden="true"
-                              >
+                              <span className="text-gray-300" aria-hidden="true">
                                 |
                               </span>
                               <button
@@ -390,13 +368,9 @@ export default function Example() {
                           </dd>
                         </div>
                         <div className="py-4 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:pt-5">
-                          <dt className="text-sm font-medium text-gray-500">
-                            Email
-                          </dt>
+                          <dt className="text-sm font-medium text-gray-500">Email</dt>
                           <dd className="mt-1 flex text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-                            <span className="flex-grow">
-                              chelsea.hagon@example.com
-                            </span>
+                            <span className="flex-grow">chelsea.hagon@example.com</span>
                             <span className="ml-4 flex-shrink-0">
                               <button
                                 type="button"
@@ -408,13 +382,9 @@ export default function Example() {
                           </dd>
                         </div>
                         <div className="py-4 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:border-b sm:border-gray-200">
-                          <dt className="text-sm font-medium text-gray-500">
-                            Job title
-                          </dt>
+                          <dt className="text-sm font-medium text-gray-500">Job title</dt>
                           <dd className="mt-1 flex text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-                            <span className="flex-grow">
-                              Human Resources Manager
-                            </span>
+                            <span className="flex-grow">Human Resources Manager</span>
                             <span className="ml-4 flex-shrink-0">
                               <button
                                 type="button"
@@ -431,9 +401,7 @@ export default function Example() {
 
                   <div className="mt-10 divide-y divide-gray-200">
                     <div className="space-y-1">
-                      <h3 className="text-lg leading-6 font-medium text-gray-900">
-                        Account
-                      </h3>
+                      <h3 className="text-lg leading-6 font-medium text-gray-900">Account</h3>
                       <p className="max-w-2xl text-sm text-gray-500">
                         Manage how information is displayed on your account.
                       </p>
@@ -441,9 +409,7 @@ export default function Example() {
                     <div className="mt-6">
                       <dl className="divide-y divide-gray-200">
                         <div className="py-4 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4">
-                          <dt className="text-sm font-medium text-gray-500">
-                            Language
-                          </dt>
+                          <dt className="text-sm font-medium text-gray-500">Language</dt>
                           <dd className="mt-1 flex text-sm text-gray-900 sm:mt-0 sm:col-span-2">
                             <span className="flex-grow">English</span>
                             <span className="ml-4 flex-shrink-0">
@@ -457,9 +423,7 @@ export default function Example() {
                           </dd>
                         </div>
                         <div className="py-4 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:pt-5">
-                          <dt className="text-sm font-medium text-gray-500">
-                            Date format
-                          </dt>
+                          <dt className="text-sm font-medium text-gray-500">Date format</dt>
                           <dd className="mt-1 flex text-sm text-gray-900 sm:mt-0 sm:col-span-2">
                             <span className="flex-grow">DD-MM-YYYY</span>
                             <span className="ml-4 flex-shrink-0 flex items-start space-x-4">
@@ -469,10 +433,7 @@ export default function Example() {
                               >
                                 Update
                               </button>
-                              <span
-                                className="text-gray-300"
-                                aria-hidden="true"
-                              >
+                              <span className="text-gray-300" aria-hidden="true">
                                 |
                               </span>
                               <button
@@ -484,15 +445,8 @@ export default function Example() {
                             </span>
                           </dd>
                         </div>
-                        <Switch.Group
-                          as="div"
-                          className="py-4 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:pt-5"
-                        >
-                          <Switch.Label
-                            as="dt"
-                            className="text-sm font-medium text-gray-500"
-                            passive
-                          >
+                        <Switch.Group as="div" className="py-4 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:pt-5">
+                          <Switch.Label as="dt" className="text-sm font-medium text-gray-500" passive>
                             Automatic timezone
                           </Switch.Label>
                           <dd className="mt-1 flex text-sm text-gray-900 sm:mt-0 sm:col-span-2">
@@ -500,19 +454,15 @@ export default function Example() {
                               checked={automaticTimezoneEnabled}
                               onChange={setAutomaticTimezoneEnabled}
                               className={classNames(
-                                automaticTimezoneEnabled
-                                  ? 'bg-purple-600'
-                                  : 'bg-gray-200',
-                                'relative inline-flex flex-shrink-0 h-6 w-11 border-2 border-transparent rounded-full cursor-pointer transition-colors ease-in-out duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500 sm:ml-auto',
+                                automaticTimezoneEnabled ? 'bg-purple-600' : 'bg-gray-200',
+                                'relative inline-flex flex-shrink-0 h-6 w-11 border-2 border-transparent rounded-full cursor-pointer transition-colors ease-in-out duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500 sm:ml-auto'
                               )}
                             >
                               <span
                                 aria-hidden="true"
                                 className={classNames(
-                                  automaticTimezoneEnabled
-                                    ? 'translate-x-5'
-                                    : 'translate-x-0',
-                                  'inline-block h-5 w-5 rounded-full bg-white shadow transform ring-0 transition ease-in-out duration-200',
+                                  automaticTimezoneEnabled ? 'translate-x-5' : 'translate-x-0',
+                                  'inline-block h-5 w-5 rounded-full bg-white shadow transform ring-0 transition ease-in-out duration-200'
                                 )}
                               />
                             </Switch>
@@ -522,11 +472,7 @@ export default function Example() {
                           as="div"
                           className="py-4 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:border-b sm:border-gray-200"
                         >
-                          <Switch.Label
-                            as="dt"
-                            className="text-sm font-medium text-gray-500"
-                            passive
-                          >
+                          <Switch.Label as="dt" className="text-sm font-medium text-gray-500" passive>
                             Auto-update applicant data
                           </Switch.Label>
                           <dd className="mt-1 flex text-sm text-gray-900 sm:mt-0 sm:col-span-2">
@@ -534,19 +480,15 @@ export default function Example() {
                               checked={autoUpdateApplicantDataEnabled}
                               onChange={setAutoUpdateApplicantDataEnabled}
                               className={classNames(
-                                autoUpdateApplicantDataEnabled
-                                  ? 'bg-purple-600'
-                                  : 'bg-gray-200',
-                                'relative inline-flex flex-shrink-0 h-6 w-11 border-2 border-transparent rounded-full cursor-pointer transition-colors ease-in-out duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500 sm:ml-auto',
+                                autoUpdateApplicantDataEnabled ? 'bg-purple-600' : 'bg-gray-200',
+                                'relative inline-flex flex-shrink-0 h-6 w-11 border-2 border-transparent rounded-full cursor-pointer transition-colors ease-in-out duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500 sm:ml-auto'
                               )}
                             >
                               <span
                                 aria-hidden="true"
                                 className={classNames(
-                                  autoUpdateApplicantDataEnabled
-                                    ? 'translate-x-5'
-                                    : 'translate-x-0',
-                                  'inline-block h-5 w-5 rounded-full bg-white shadow transform ring-0 transition ease-in-out duration-200',
+                                  autoUpdateApplicantDataEnabled ? 'translate-x-5' : 'translate-x-0',
+                                  'inline-block h-5 w-5 rounded-full bg-white shadow transform ring-0 transition ease-in-out duration-200'
                                 )}
                               />
                             </Switch>
@@ -562,5 +504,5 @@ export default function Example() {
         </main>
       </div>
     </div>
-  );
+  )
 }

@@ -27,5 +27,5 @@ export function scaleNumberToBigNumber(value: number): BigNumber {
   if (typeof value === 'number') {
     return utils.parseEther(String(value));
   }
-  return utils.parseEther('0');
+  return utils.parseEther("0")
 }

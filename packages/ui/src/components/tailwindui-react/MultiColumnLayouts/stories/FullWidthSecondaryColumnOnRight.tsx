@@ -1,5 +1,6 @@
 /* This example requires Tailwind CSS v2.0+ */
-import { Dialog, Transition } from '@headlessui/react';
+import { Fragment, useState } from 'react'
+import { Dialog, Transition } from '@headlessui/react'
 import {
   CalendarIcon,
   HomeIcon,
@@ -9,33 +10,30 @@ import {
   SpeakerphoneIcon,
   UserGroupIcon,
   XIcon,
-} from '@heroicons/react/outline';
-import { Fragment, useState } from 'react';
+} from '@heroicons/react/outline'
 
 const navigation = [
+
   { name: 'Dashboard', href: '#', icon: HomeIcon, current: true },
   { name: 'Calendar', href: '#', icon: CalendarIcon, current: false },
   { name: 'Teams', href: '#', icon: UserGroupIcon, current: false },
   { name: 'Directory', href: '#', icon: SearchCircleIcon, current: false },
   { name: 'Announcements', href: '#', icon: SpeakerphoneIcon, current: false },
   { name: 'Office Map', href: '#', icon: MapIcon, current: false },
-];
+
+]
 
 function classNames(...classes) {
-  return classes.filter(Boolean).join(' ');
+  return classes.filter(Boolean).join(' ')
 }
 
 export default function Example() {
-  const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [sidebarOpen, setSidebarOpen] = useState(false)
 
   return (
     <div className="h-screen flex overflow-hidden bg-white">
       <Transition.Root show={sidebarOpen} as={Fragment}>
-        <Dialog
-          as="div"
-          className="fixed inset-0 flex z-40 lg:hidden"
-          onClose={setSidebarOpen}
-        >
+        <Dialog as="div" className="fixed inset-0 flex z-40 lg:hidden" onClose={setSidebarOpen}>
           <Transition.Child
             as={Fragment}
             enter="transition-opacity ease-linear duration-300"
@@ -95,15 +93,13 @@ export default function Example() {
                           item.current
                             ? 'bg-gray-100 text-gray-900'
                             : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900',
-                          'group flex items-center px-2 py-2 text-base font-medium rounded-md',
+                          'group flex items-center px-2 py-2 text-base font-medium rounded-md'
                         )}
                       >
                         <item.icon
                           className={classNames(
-                            item.current
-                              ? 'text-gray-500'
-                              : 'text-gray-400 group-hover:text-gray-500',
-                            'mr-4 h-6 w-6',
+                            item.current ? 'text-gray-500' : 'text-gray-400 group-hover:text-gray-500',
+                            'mr-4 h-6 w-6'
                           )}
                           aria-hidden="true"
                         />
@@ -124,12 +120,8 @@ export default function Example() {
                       />
                     </div>
                     <div className="ml-3">
-                      <p className="text-base font-medium text-gray-700 group-hover:text-gray-900">
-                        Whitney Francis
-                      </p>
-                      <p className="text-sm font-medium text-gray-500 group-hover:text-gray-700">
-                        View profile
-                      </p>
+                      <p className="text-base font-medium text-gray-700 group-hover:text-gray-900">Whitney Francis</p>
+                      <p className="text-sm font-medium text-gray-500 group-hover:text-gray-700">View profile</p>
                     </div>
                   </div>
                 </a>
@@ -165,15 +157,13 @@ export default function Example() {
                         item.current
                           ? 'bg-gray-200 text-gray-900'
                           : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900',
-                        'group flex items-center px-2 py-2 text-sm font-medium rounded-md',
+                        'group flex items-center px-2 py-2 text-sm font-medium rounded-md'
                       )}
                     >
                       <item.icon
                         className={classNames(
-                          item.current
-                            ? 'text-gray-500'
-                            : 'text-gray-400 group-hover:text-gray-500',
-                          'mr-3 h-6 w-6',
+                          item.current ? 'text-gray-500' : 'text-gray-400 group-hover:text-gray-500',
+                          'mr-3 h-6 w-6'
                         )}
                         aria-hidden="true"
                       />
@@ -194,12 +184,8 @@ export default function Example() {
                     />
                   </div>
                   <div className="ml-3">
-                    <p className="text-sm font-medium text-gray-700 group-hover:text-gray-900">
-                      Whitney Francis
-                    </p>
-                    <p className="text-xs font-medium text-gray-500 group-hover:text-gray-700">
-                      View profile
-                    </p>
+                    <p className="text-sm font-medium text-gray-700 group-hover:text-gray-900">Whitney Francis</p>
+                    <p className="text-xs font-medium text-gray-500 group-hover:text-gray-700">View profile</p>
                   </div>
                 </div>
               </a>
@@ -247,5 +233,5 @@ export default function Example() {
         </div>
       </div>
     </div>
-  );
+  )
 }

@@ -1,11 +1,11 @@
 /* This example requires Tailwind CSS v2.0+ */
-import { Transition } from '@headlessui/react';
-import { InboxIcon } from '@heroicons/react/outline';
-import { XIcon } from '@heroicons/react/solid';
-import { Fragment, useState } from 'react';
+import { Fragment, useState } from 'react'
+import { Transition } from '@headlessui/react'
+import { InboxIcon } from '@heroicons/react/outline'
+import { XIcon } from '@heroicons/react/solid'
 
 export default function Example() {
-  const [show, setShow] = useState(true);
+  const [show, setShow] = useState(true)
 
   return (
     <>
@@ -30,18 +30,12 @@ export default function Example() {
               <div className="p-4">
                 <div className="flex items-start">
                   <div className="flex-shrink-0">
-                    <InboxIcon
-                      className="h-6 w-6 text-gray-400"
-                      aria-hidden="true"
-                    />
+                    <InboxIcon className="h-6 w-6 text-gray-400" aria-hidden="true" />
                   </div>
                   <div className="ml-3 w-0 flex-1 pt-0.5">
-                    <p className="text-sm font-medium text-gray-900">
-                      Discussion moved
-                    </p>
+                    <p className="text-sm font-medium text-gray-900">Discussion moved</p>
                     <p className="mt-1 text-sm text-gray-500">
-                      Lorem ipsum dolor sit amet consectetur adipisicing elit
-                      oluptatum tenetur.
+                      Lorem ipsum dolor sit amet consectetur adipisicing elit oluptatum tenetur.
                     </p>
                     <div className="mt-3 flex space-x-7">
                       <button className="bg-white rounded-md text-sm font-medium text-indigo-600 hover:text-indigo-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
@@ -56,7 +50,7 @@ export default function Example() {
                     <button
                       className="bg-white rounded-md inline-flex text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
                       onClick={() => {
-                        setShow(false);
+                        setShow(false)
                       }}
                     >
                       <span className="sr-only">Close</span>
@@ -70,5 +64,5 @@ export default function Example() {
         </div>
       </div>
     </>
-  );
+  )
 }

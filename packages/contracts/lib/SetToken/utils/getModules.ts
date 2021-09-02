@@ -1,8 +1,8 @@
-import { Configuration } from "../Configuration";
+import { Configuration } from '../Configuration';
 
 export const getModules = (configuration: Configuration) => {
-  const {
-    core: { modules },
-  } = configuration;
-  return Object.keys(modules).map((moduleName) => modules[moduleName]);
-};
+  const { core: { modules } } = configuration;
+  return Object.keys(modules).map(
+    (moduleName) => modules[moduleName]
+  );
+} 

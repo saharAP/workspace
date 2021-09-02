@@ -2,9 +2,10 @@
 /* tslint:disable */
 /* eslint-disable */
 
-import { Contract, ContractFactory, Overrides } from "@ethersproject/contracts";
-import { Provider, TransactionRequest } from "@ethersproject/providers";
 import { Signer } from "ethers";
+import { Provider, TransactionRequest } from "@ethersproject/providers";
+import { Contract, ContractFactory, Overrides } from "@ethersproject/contracts";
+
 import type { StreamingFeeModule } from "./StreamingFeeModule";
 
 export class StreamingFeeModuleFactory extends ContractFactory {

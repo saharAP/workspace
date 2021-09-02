@@ -65,10 +65,10 @@ const user = {
 };
 
 const navigation = [
-  { name: 'Dashboard', href: '#', current: true },
-  { name: 'Team', href: '#', current: false },
-  { name: 'Projects', href: '#', current: false },
-  { name: 'Calendar', href: '#', current: false },
+    { name: 'Dashboard', href: '#', current: true },
+    { name: 'Team', href: '#', current: false },
+    { name: 'Projects', href: '#', current: false },
+    { name: 'Calendar', href: '#', current: false },
 ];
 
 const userNavigation = [
@@ -102,21 +102,25 @@ export default {
     (Story) => (
       <>
         <NavBar
-          title="Smart Contract Emissions Dashboard"
-          headerNavigation={navigation}
-          userNavigation={userNavigation}
-          user={user}
-          logo="https://tailwindui.com/img/logos/workflow-mark-indigo-600.svg"
-          contractProps={{
-            open: false,
+        title='Smart Contract Emissions Dashboard'
+        headerNavigation={navigation}
+        userNavigation={userNavigation}
+        user={user}
+        logo='https://tailwindui.com/img/logos/workflow-mark-indigo-600.svg'
+        contractProps={
+          {
+            open:false,
             setOpen: () => {},
             addContract: () => {},
-          }}
-          contractErrorProps={{
+          }
+        }
+        contractErrorProps={
+          {
             errorMessage: 'Fatal error, run your life',
             setErrorMessage: () => {},
             openAddContractModal: () => {},
-          }}
+          }
+        }
         />
         <Story />
       </>
@@ -128,8 +132,8 @@ const Template: Story = (args) => <EmissionsDashboardPage {...args} />;
 
 export const Primary = Template.bind({});
 Primary.args = {
-  contractProps: {
-    open: false,
+  contractProps:{
+    open:false,
     setOpen: () => {},
     addContract: () => {},
   },
@@ -137,5 +141,5 @@ Primary.args = {
     errorMessage: 'Fatal error, run your life',
     setErrorMessage: () => {},
     openAddContractModal: () => {},
-  },
+  }
 };

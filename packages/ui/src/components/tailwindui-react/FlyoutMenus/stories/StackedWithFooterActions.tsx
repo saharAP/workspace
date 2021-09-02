@@ -1,5 +1,7 @@
 /* This example requires Tailwind CSS v2.0+ */
-import { Popover, Transition } from '@headlessui/react';
+import { Fragment } from 'react'
+import { Popover, Transition } from '@headlessui/react'
+import { ChevronDownIcon } from '@heroicons/react/solid'
 import {
   ChartBarIcon,
   CursorClickIcon,
@@ -8,15 +10,13 @@ import {
   RefreshIcon,
   ShieldCheckIcon,
   ViewGridIcon,
-} from '@heroicons/react/outline';
-import { ChevronDownIcon } from '@heroicons/react/solid';
-import { Fragment } from 'react';
+} from '@heroicons/react/outline'
 
 const solutions = [
+
   {
     name: 'Analytics',
-    description:
-      'Get a better understanding of where your traffic is coming from.',
+    description: 'Get a better understanding of where your traffic is coming from.',
     href: '#',
     icon: ChartBarIcon,
   },
@@ -26,12 +26,7 @@ const solutions = [
     href: '#',
     icon: CursorClickIcon,
   },
-  {
-    name: 'Security',
-    description: "Your customers' data will be safe and secure.",
-    href: '#',
-    icon: ShieldCheckIcon,
-  },
+  { name: 'Security', description: "Your customers' data will be safe and secure.", href: '#', icon: ShieldCheckIcon },
   {
     name: 'Integrations',
     description: "Connect with third-party tools that you're already using.",
@@ -40,19 +35,21 @@ const solutions = [
   },
   {
     name: 'Automations',
-    description:
-      'Build strategic funnels that will drive your customers to convert',
+    description: 'Build strategic funnels that will drive your customers to convert',
     href: '#',
     icon: RefreshIcon,
   },
-];
+
+]
 const callsToAction = [
+
   { name: 'Watch Demo', href: '#', icon: PlayIcon },
   { name: 'Contact Sales', href: '#', icon: PhoneIcon },
-];
+
+]
 
 function classNames(...classes) {
-  return classes.filter(Boolean).join(' ');
+  return classes.filter(Boolean).join(' ')
 }
 
 export default function Example() {
@@ -63,15 +60,12 @@ export default function Example() {
           <Popover.Button
             className={classNames(
               open ? 'text-gray-900' : 'text-gray-500',
-              'group bg-white rounded-md inline-flex items-center text-base font-medium hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500',
+              'group bg-white rounded-md inline-flex items-center text-base font-medium hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500'
             )}
           >
             <span>Solutions</span>
             <ChevronDownIcon
-              className={classNames(
-                open ? 'text-gray-600' : 'text-gray-400',
-                'ml-2 h-5 w-5 group-hover:text-gray-500',
-              )}
+              className={classNames(open ? 'text-gray-600' : 'text-gray-400', 'ml-2 h-5 w-5 group-hover:text-gray-500')}
               aria-hidden="true"
             />
           </Popover.Button>
@@ -94,17 +88,10 @@ export default function Example() {
                       href={item.href}
                       className="-m-3 p-3 flex items-start rounded-lg hover:bg-gray-50 transition ease-in-out duration-150"
                     >
-                      <item.icon
-                        className="flex-shrink-0 h-6 w-6 text-indigo-600"
-                        aria-hidden="true"
-                      />
+                      <item.icon className="flex-shrink-0 h-6 w-6 text-indigo-600" aria-hidden="true" />
                       <div className="ml-4">
-                        <p className="text-base font-medium text-gray-900">
-                          {item.name}
-                        </p>
-                        <p className="mt-1 text-sm text-gray-500">
-                          {item.description}
-                        </p>
+                        <p className="text-base font-medium text-gray-900">{item.name}</p>
+                        <p className="mt-1 text-sm text-gray-500">{item.description}</p>
                       </div>
                     </a>
                   ))}
@@ -116,10 +103,7 @@ export default function Example() {
                         href={item.href}
                         className="-m-3 p-3 flex items-center rounded-md text-base font-medium text-gray-900 hover:bg-gray-100 transition ease-in-out duration-150"
                       >
-                        <item.icon
-                          className="flex-shrink-0 h-6 w-6 text-gray-400"
-                          aria-hidden="true"
-                        />
+                        <item.icon className="flex-shrink-0 h-6 w-6 text-gray-400" aria-hidden="true" />
                         <span className="ml-3">{item.name}</span>
                       </a>
                     </div>
@@ -131,5 +115,5 @@ export default function Example() {
         </>
       )}
     </Popover>
-  );
+  )
 }

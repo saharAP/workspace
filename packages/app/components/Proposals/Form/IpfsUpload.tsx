@@ -1,4 +1,5 @@
-import { IpfsClient, UploadResult } from '@popcorn/utils';
+import { IpfsClient } from '@popcorn/utils';
+import { UploadResult } from '@popcorn/utils';
 import ProgressBar from 'components/ProgressBar';
 import React, { useEffect, useState } from 'react';
 import { useDropzone } from 'react-dropzone';
@@ -48,8 +49,7 @@ async function uploadMultipleFiles(
     setLocalState(uploadResults.map((result) => result.hash));
     toast.dismiss();
     success(
-      `${
-        fileType === 'image/*' ? 'Images' : 'Files'
+      `${fileType === 'image/*' ? 'Images' : 'Files'
       } successfully uploaded to IPFS`,
     );
   } else if (uploadResults.every(isFailedUpload)) {
@@ -63,16 +63,13 @@ async function uploadMultipleFiles(
     const unsuccessfulUploads = uploadResults.filter(isFailedUpload);
     setLocalState(successfulUploads.map((result) => result.hash));
     success(
-      `${successfulUploads.length} ${
-        fileType === 'image/*' ? 'images' : 'files'
+      `${successfulUploads.length} ${fileType === 'image/*' ? 'images' : 'files'
       } were successfully upload to IPFS`,
     );
     uploadError(
-      `${successfulUploads.length} ${
-        fileType === 'image/*' ? 'images' : 'files'
+      `${successfulUploads.length} ${fileType === 'image/*' ? 'images' : 'files'
       } were unsuccessfully uploaded to IPFS 
-      with status ${unsuccessfulUploads[0].status}: ${
-        unsuccessfulUploads[0].errorDetails
+      with status ${unsuccessfulUploads[0].status}: ${unsuccessfulUploads[0].errorDetails
       }`,
     );
   }

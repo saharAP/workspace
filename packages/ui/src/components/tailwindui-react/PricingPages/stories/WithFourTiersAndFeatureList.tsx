@@ -14,7 +14,8 @@
   }
   ```
 */
-import { Popover, Transition } from '@headlessui/react';
+import { Fragment } from 'react'
+import { Popover, Transition } from '@headlessui/react'
 import {
   BookmarkAltIcon,
   CalendarIcon,
@@ -29,18 +30,14 @@ import {
   SupportIcon,
   ViewGridIcon,
   XIcon,
-} from '@heroicons/react/outline';
-import {
-  CheckIcon as CheckIconSolid,
-  ChevronDownIcon,
-} from '@heroicons/react/solid';
-import { Fragment } from 'react';
+} from '@heroicons/react/outline'
+import { CheckIcon as CheckIconSolid, ChevronDownIcon } from '@heroicons/react/solid'
 
 const solutions = [
+
   {
     name: 'Analytics',
-    description:
-      'Get a better understanding of where your traffic is coming from.',
+    description: 'Get a better understanding of where your traffic is coming from.',
     href: '#',
     icon: ChartBarIcon,
   },
@@ -50,12 +47,7 @@ const solutions = [
     href: '#',
     icon: CursorClickIcon,
   },
-  {
-    name: 'Security',
-    description: "Your customers' data will be safe and secure.",
-    href: '#',
-    icon: ShieldCheckIcon,
-  },
+  { name: 'Security', description: "Your customers' data will be safe and secure.", href: '#', icon: ShieldCheckIcon },
   {
     name: 'Integrations',
     description: "Connect with third-party tools that you're already using.",
@@ -64,38 +56,38 @@ const solutions = [
   },
   {
     name: 'Automations',
-    description:
-      'Build strategic funnels that will drive your customers to convert',
+    description: 'Build strategic funnels that will drive your customers to convert',
     href: '#',
     icon: RefreshIcon,
   },
-];
+
+]
 const callsToAction = [
+
   { name: 'Watch Demo', href: '#', icon: PlayIcon },
   { name: 'Contact Sales', href: '#', icon: PhoneIcon },
-];
+
+]
 const resources = [
+
   {
     id: 1,
     name: 'Help Center',
-    description:
-      'Get all of your questions answered in our forums or contact support.',
+    description: 'Get all of your questions answered in our forums or contact support.',
     href: '#',
     icon: SupportIcon,
   },
   {
     id: 2,
     name: 'Guides',
-    description:
-      'Learn how to maximize our platform to get the most out of it.',
+    description: 'Learn how to maximize our platform to get the most out of it.',
     href: '#',
     icon: BookmarkAltIcon,
   },
   {
     id: 3,
     name: 'Events',
-    description:
-      'See what meet-ups and other events we might be planning near you.',
+    description: 'See what meet-ups and other events we might be planning near you.',
     href: '#',
     icon: CalendarIcon,
   },
@@ -106,26 +98,23 @@ const resources = [
     href: '#',
     icon: ShieldCheckIcon,
   },
-];
+
+]
 const recentPosts = [
+
   { id: 1, name: 'Boost your conversion rate', href: '#' },
-  {
-    id: 2,
-    name: 'How to use search engine optimization to drive traffic to your site',
-    href: '#',
-  },
+  { id: 2, name: 'How to use search engine optimization to drive traffic to your site', href: '#' },
   { id: 3, name: 'Improve your customer experience', href: '#' },
-];
+
+]
 const tiers = [
+
   {
     name: 'Hobby',
     href: '#',
     priceMonthly: 12,
     description: 'All the basics for starting a new business',
-    features: [
-      'Potenti felis, in cras at at ligula nunc.',
-      'Orci neque eget pellentesque.',
-    ],
+    features: ['Potenti felis, in cras at at ligula nunc.', 'Orci neque eget pellentesque.'],
   },
   {
     name: 'Freelancer',
@@ -165,72 +154,55 @@ const tiers = [
       'Risus cursus ullamcorper.',
     ],
   },
-];
+
+]
 const features = [
+
   {
     name: 'Invite team members',
-    description:
-      'Tempor tellus in aliquet eu et sit nulla tellus. Suspendisse est, molestie blandit quis ac. Lacus.',
+    description: 'Tempor tellus in aliquet eu et sit nulla tellus. Suspendisse est, molestie blandit quis ac. Lacus.',
   },
   {
     name: 'Notifications',
-    description:
-      'Ornare donec rhoncus vitae nisl velit, neque, mauris dictum duis. Nibh urna non parturient.',
+    description: 'Ornare donec rhoncus vitae nisl velit, neque, mauris dictum duis. Nibh urna non parturient.',
   },
   {
     name: 'List view',
-    description:
-      'Etiam cras augue ornare pretium sit malesuada morbi orci, venenatis. Dictum lacus.',
+    description: 'Etiam cras augue ornare pretium sit malesuada morbi orci, venenatis. Dictum lacus.',
   },
   {
     name: 'Boards',
-    description:
-      'Interdum quam pulvinar turpis tortor, egestas quis diam amet, natoque. Mauris sagittis.',
+    description: 'Interdum quam pulvinar turpis tortor, egestas quis diam amet, natoque. Mauris sagittis.',
   },
   {
     name: 'Keyboard shortcuts',
-    description:
-      'Ullamcorper in ipsum ac feugiat. Senectus at aliquam vulputate mollis nec. In at risus odio.',
+    description: 'Ullamcorper in ipsum ac feugiat. Senectus at aliquam vulputate mollis nec. In at risus odio.',
   },
   {
     name: 'Reporting',
-    description:
-      'Magna a vel sagittis aliquam eu amet. Et lorem auctor quam nunc odio. Sed bibendum.',
+    description: 'Magna a vel sagittis aliquam eu amet. Et lorem auctor quam nunc odio. Sed bibendum.',
   },
   {
     name: 'Calendars',
-    description:
-      'Sed mi, dapibus turpis orci posuere integer. A porta viverra posuere adipiscing turpis.',
+    description: 'Sed mi, dapibus turpis orci posuere integer. A porta viverra posuere adipiscing turpis.',
   },
   {
     name: 'Mobile app',
-    description:
-      'Quisque sapien nunc nisl eros. Facilisis sagittis maecenas id dignissim tristique proin sed.',
+    description: 'Quisque sapien nunc nisl eros. Facilisis sagittis maecenas id dignissim tristique proin sed.',
   },
-];
+
+]
 const logos = [
-  {
-    name: 'Tuple',
-    url: 'https://tailwindui.com/img/logos/tuple-logo-purple-200.svg',
-  },
-  {
-    name: 'Mirage',
-    url: 'https://tailwindui.com/img/logos/mirage-logo-purple-200.svg',
-  },
-  {
-    name: 'StaticKit',
-    url: 'https://tailwindui.com/img/logos/statickit-logo-purple-200.svg',
-  },
-  {
-    name: 'Transistor',
-    url: 'https://tailwindui.com/img/logos/transistor-logo-purple-200.svg',
-  },
-  {
-    name: 'Workcation',
-    url: 'https://tailwindui.com/img/logos/workcation-logo-purple-200.svg',
-  },
-];
+
+  { name: 'Tuple', url: 'https://tailwindui.com/img/logos/tuple-logo-purple-200.svg' },
+  { name: 'Mirage', url: 'https://tailwindui.com/img/logos/mirage-logo-purple-200.svg' },
+  { name: 'StaticKit', url: 'https://tailwindui.com/img/logos/statickit-logo-purple-200.svg' },
+  { name: 'Transistor', url: 'https://tailwindui.com/img/logos/transistor-logo-purple-200.svg' },
+  { name: 'Workcation', url: 'https://tailwindui.com/img/logos/workcation-logo-purple-200.svg' },
+
+]
 const faqs = [
+
   {
     id: 1,
     question: 'How do you make holy water?',
@@ -246,8 +218,7 @@ const faqs = [
   {
     id: 3,
     question: 'What do you call someone with no body and no nose?',
-    answer:
-      'Nobody knows. Lorem ipsum dolor sit amet consectetur adipisicing elit. Quas cupiditate laboriosam fugiat.',
+    answer: 'Nobody knows. Lorem ipsum dolor sit amet consectetur adipisicing elit. Quas cupiditate laboriosam fugiat.',
   },
   {
     id: 4,
@@ -255,8 +226,10 @@ const faqs = [
     answer:
       "Because they're so good at it. Lorem ipsum dolor sit amet consectetur adipisicing elit. Quas cupiditate laboriosam fugiat.",
   },
-];
+
+]
 const footerNavigation = {
+
   solutions: [
     { name: 'Marketing', href: '#' },
     { name: 'Analytics', href: '#' },
@@ -344,10 +317,11 @@ const footerNavigation = {
       ),
     },
   ],
-};
+
+}
 
 function classNames(...classes) {
-  return classes.filter(Boolean).join(' ');
+  return classes.filter(Boolean).join(' ')
 }
 
 export default function Example() {
@@ -379,14 +353,14 @@ export default function Example() {
                     <Popover.Button
                       className={classNames(
                         open ? 'text-gray-900' : 'text-gray-500',
-                        'group bg-white rounded-md inline-flex items-center text-base font-medium hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500',
+                        'group bg-white rounded-md inline-flex items-center text-base font-medium hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500'
                       )}
                     >
                       <span>Solutions</span>
                       <ChevronDownIcon
                         className={classNames(
                           open ? 'text-gray-600' : 'text-gray-400',
-                          'ml-2 h-5 w-5 group-hover:text-gray-500',
+                          'ml-2 h-5 w-5 group-hover:text-gray-500'
                         )}
                         aria-hidden="true"
                       />
@@ -410,17 +384,10 @@ export default function Example() {
                                 href={item.href}
                                 className="-m-3 p-3 flex items-start rounded-lg hover:bg-gray-50"
                               >
-                                <item.icon
-                                  className="flex-shrink-0 h-6 w-6 text-purple-600"
-                                  aria-hidden="true"
-                                />
+                                <item.icon className="flex-shrink-0 h-6 w-6 text-purple-600" aria-hidden="true" />
                                 <div className="ml-4">
-                                  <p className="text-base font-medium text-gray-900">
-                                    {item.name}
-                                  </p>
-                                  <p className="mt-1 text-sm text-gray-500">
-                                    {item.description}
-                                  </p>
+                                  <p className="text-base font-medium text-gray-900">{item.name}</p>
+                                  <p className="mt-1 text-sm text-gray-500">{item.description}</p>
                                 </div>
                               </a>
                             ))}
@@ -432,10 +399,7 @@ export default function Example() {
                                   href={item.href}
                                   className="-m-3 p-3 flex items-center rounded-md text-base font-medium text-gray-900 hover:bg-gray-100"
                                 >
-                                  <item.icon
-                                    className="flex-shrink-0 h-6 w-6 text-gray-400"
-                                    aria-hidden="true"
-                                  />
+                                  <item.icon className="flex-shrink-0 h-6 w-6 text-gray-400" aria-hidden="true" />
                                   <span className="ml-3">{item.name}</span>
                                 </a>
                               </div>
@@ -448,16 +412,10 @@ export default function Example() {
                 )}
               </Popover>
 
-              <a
-                href="#"
-                className="text-base font-medium text-gray-500 hover:text-gray-900"
-              >
+              <a href="#" className="text-base font-medium text-gray-500 hover:text-gray-900">
                 Pricing
               </a>
-              <a
-                href="#"
-                className="text-base font-medium text-gray-500 hover:text-gray-900"
-              >
+              <a href="#" className="text-base font-medium text-gray-500 hover:text-gray-900">
                 Docs
               </a>
 
@@ -467,14 +425,14 @@ export default function Example() {
                     <Popover.Button
                       className={classNames(
                         open ? 'text-gray-900' : 'text-gray-500',
-                        'group bg-white rounded-md inline-flex items-center text-base font-medium hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500',
+                        'group bg-white rounded-md inline-flex items-center text-base font-medium hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500'
                       )}
                     >
                       <span>More</span>
                       <ChevronDownIcon
                         className={classNames(
                           open ? 'text-gray-600' : 'text-gray-400',
-                          'ml-2 h-5 w-5 group-hover:text-gray-500',
+                          'ml-2 h-5 w-5 group-hover:text-gray-500'
                         )}
                         aria-hidden="true"
                       />
@@ -498,17 +456,10 @@ export default function Example() {
                                 href="#"
                                 className="-m-3 p-3 flex items-start rounded-lg hover:bg-gray-50"
                               >
-                                <item.icon
-                                  className="flex-shrink-0 h-6 w-6 text-purple-600"
-                                  aria-hidden="true"
-                                />
+                                <item.icon className="flex-shrink-0 h-6 w-6 text-purple-600" aria-hidden="true" />
                                 <div className="ml-4">
-                                  <p className="text-base font-medium text-gray-900">
-                                    {item.name}
-                                  </p>
-                                  <p className="mt-1 text-sm text-gray-500">
-                                    {item.description}
-                                  </p>
+                                  <p className="text-base font-medium text-gray-900">{item.name}</p>
+                                  <p className="mt-1 text-sm text-gray-500">{item.description}</p>
                                 </div>
                               </a>
                             ))}
@@ -520,14 +471,8 @@ export default function Example() {
                               </h3>
                               <ul className="mt-4 space-y-4">
                                 {recentPosts.map((post) => (
-                                  <li
-                                    key={post.id}
-                                    className="text-base truncate"
-                                  >
-                                    <a
-                                      href={post.href}
-                                      className="font-medium text-gray-900 hover:text-gray-700"
-                                    >
+                                  <li key={post.id} className="text-base truncate">
+                                    <a href={post.href} className="font-medium text-gray-900 hover:text-gray-700">
                                       {post.name}
                                     </a>
                                   </li>
@@ -535,13 +480,9 @@ export default function Example() {
                               </ul>
                             </div>
                             <div className="mt-5 text-sm">
-                              <a
-                                href="#"
-                                className="font-medium text-purple-600 hover:text-purple-500"
-                              >
+                              <a href="#" className="font-medium text-purple-600 hover:text-purple-500">
                                 {' '}
-                                View all posts{' '}
-                                <span aria-hidden="true">&rarr;</span>
+                                View all posts <span aria-hidden="true">&rarr;</span>
                               </a>
                             </div>
                           </div>
@@ -553,10 +494,7 @@ export default function Example() {
               </Popover>
             </Popover.Group>
             <div className="hidden md:flex items-center justify-end space-x-8 md:flex-1 lg:w-0">
-              <a
-                href="#"
-                className="whitespace-nowrap text-base font-medium text-gray-500 hover:text-gray-900"
-              >
+              <a href="#" className="whitespace-nowrap text-base font-medium text-gray-500 hover:text-gray-900">
                 Sign in
               </a>
               <a
@@ -607,13 +545,8 @@ export default function Example() {
                         href={item.href}
                         className="-m-3 p-3 flex items-center rounded-md hover:bg-gray-50"
                       >
-                        <item.icon
-                          className="flex-shrink-0 h-6 w-6 text-purple-600"
-                          aria-hidden="true"
-                        />
-                        <span className="ml-3 text-base font-medium text-gray-900">
-                          {item.name}
-                        </span>
+                        <item.icon className="flex-shrink-0 h-6 w-6 text-purple-600" aria-hidden="true" />
+                        <span className="ml-3 text-base font-medium text-gray-900">{item.name}</span>
                       </a>
                     ))}
                   </nav>
@@ -621,31 +554,19 @@ export default function Example() {
               </div>
               <div className="py-6 px-5 space-y-6">
                 <div className="grid grid-cols-2 gap-y-4 gap-x-8">
-                  <a
-                    href="#"
-                    className="text-base font-medium text-gray-900 hover:text-gray-700"
-                  >
+                  <a href="#" className="text-base font-medium text-gray-900 hover:text-gray-700">
                     Pricing
                   </a>
 
-                  <a
-                    href="#"
-                    className="text-base font-medium text-gray-900 hover:text-gray-700"
-                  >
+                  <a href="#" className="text-base font-medium text-gray-900 hover:text-gray-700">
                     Docs
                   </a>
 
-                  <a
-                    href="#"
-                    className="text-base font-medium text-gray-900 hover:text-gray-700"
-                  >
+                  <a href="#" className="text-base font-medium text-gray-900 hover:text-gray-700">
                     Blog
                   </a>
 
-                  <a
-                    href="#"
-                    className="text-base font-medium text-gray-900 hover:text-gray-700"
-                  >
+                  <a href="#" className="text-base font-medium text-gray-900 hover:text-gray-700">
                     Contact Sales
                   </a>
                   {resources.map((item) => (
@@ -667,10 +588,7 @@ export default function Example() {
                   </a>
                   <p className="text-center text-base font-medium text-gray-500">
                     Existing customer?{' '}
-                    <a
-                      href="#"
-                      className="text-purple-600 hover:text-purple-500"
-                    >
+                    <a href="#" className="text-purple-600 hover:text-purple-500">
                       Sign in
                     </a>
                   </p>
@@ -685,12 +603,9 @@ export default function Example() {
       <div className="bg-gradient-to-b from-white to-gray-50">
         <div className="max-w-7xl mx-auto pt-24 px-4 sm:px-6 lg:px-8">
           <div className="sm:flex sm:flex-col sm:align-center">
-            <h1 className="text-5xl font-extrabold text-gray-900 sm:text-center">
-              Pricing Plans
-            </h1>
+            <h1 className="text-5xl font-extrabold text-gray-900 sm:text-center">Pricing Plans</h1>
             <p className="mt-5 text-xl text-gray-500 sm:text-center">
-              Start building for free, then add a site plan to go live. Account
-              plans unlock additional features.
+              Start building for free, then add a site plan to go live. Account plans unlock additional features.
             </p>
             <div className="relative mt-6 bg-gray-100 rounded-lg p-0.5 flex self-center sm:mt-8">
               <button
@@ -709,24 +624,13 @@ export default function Example() {
           </div>
           <div className="mt-12 space-y-4 sm:mt-16 sm:space-y-0 sm:grid sm:grid-cols-2 sm:gap-6 lg:max-w-4xl lg:mx-auto xl:max-w-none xl:mx-0 xl:grid-cols-4">
             {tiers.map((tier) => (
-              <div
-                key={tier.name}
-                className="border border-gray-200 rounded-lg shadow-sm divide-y divide-gray-200"
-              >
+              <div key={tier.name} className="border border-gray-200 rounded-lg shadow-sm divide-y divide-gray-200">
                 <div className="p-6">
-                  <h2 className="text-lg leading-6 font-medium text-gray-900">
-                    {tier.name}
-                  </h2>
-                  <p className="mt-4 text-sm text-gray-500">
-                    {tier.description}
-                  </p>
+                  <h2 className="text-lg leading-6 font-medium text-gray-900">{tier.name}</h2>
+                  <p className="mt-4 text-sm text-gray-500">{tier.description}</p>
                   <p className="mt-8">
-                    <span className="text-4xl font-extrabold text-gray-900">
-                      ${tier.priceMonthly}
-                    </span>{' '}
-                    <span className="text-base font-medium text-gray-500">
-                      /mo
-                    </span>
+                    <span className="text-4xl font-extrabold text-gray-900">${tier.priceMonthly}</span>{' '}
+                    <span className="text-base font-medium text-gray-500">/mo</span>
                   </p>
                   <a
                     href={tier.href}
@@ -736,16 +640,11 @@ export default function Example() {
                   </a>
                 </div>
                 <div className="pt-6 pb-8 px-6">
-                  <h3 className="text-xs font-medium text-gray-900 tracking-wide uppercase">
-                    What's included
-                  </h3>
+                  <h3 className="text-xs font-medium text-gray-900 tracking-wide uppercase">What's included</h3>
                   <ul className="mt-6 space-y-4">
                     {tier.features.map((feature) => (
                       <li key={feature} className="flex space-x-3">
-                        <CheckIconSolid
-                          className="flex-shrink-0 h-5 w-5 text-green-500"
-                          aria-hidden="true"
-                        />
+                        <CheckIconSolid className="flex-shrink-0 h-5 w-5 text-green-500" aria-hidden="true" />
                         <span className="text-sm text-gray-500">{feature}</span>
                       </li>
                     ))}
@@ -759,29 +658,20 @@ export default function Example() {
         {/* Feature list */}
         <div className="max-w-7xl mx-auto py-16 px-4 sm:px-6 lg:py-24 lg:px-8">
           <div className="max-w-3xl mx-auto text-center">
-            <h2 className="text-3xl font-extrabold text-gray-900">
-              All-in-one platform
-            </h2>
+            <h2 className="text-3xl font-extrabold text-gray-900">All-in-one platform</h2>
             <p className="mt-4 text-lg text-gray-500">
-              Ac euismod vel sit maecenas id pellentesque eu sed consectetur.
-              Malesuada adipiscing sagittis vel nulla nec.
+              Ac euismod vel sit maecenas id pellentesque eu sed consectetur. Malesuada adipiscing sagittis vel nulla
+              nec.
             </p>
           </div>
           <dl className="mt-12 space-y-10 sm:space-y-0 sm:grid sm:grid-cols-2 sm:gap-x-6 sm:gap-y-12 lg:grid-cols-4 lg:gap-x-8">
             {features.map((feature) => (
               <div key={feature.name} className="relative">
                 <dt>
-                  <CheckIconOutline
-                    className="absolute h-6 w-6 text-green-500"
-                    aria-hidden="true"
-                  />
-                  <p className="ml-9 text-lg leading-6 font-medium text-gray-900">
-                    {feature.name}
-                  </p>
+                  <CheckIconOutline className="absolute h-6 w-6 text-green-500" aria-hidden="true" />
+                  <p className="ml-9 text-lg leading-6 font-medium text-gray-900">{feature.name}</p>
                 </dt>
-                <dd className="mt-2 ml-9 flex text-base text-gray-500 lg:py-0 lg:pb-4">
-                  {feature.description}
-                </dd>
+                <dd className="mt-2 ml-9 flex text-base text-gray-500 lg:py-0 lg:pb-4">{feature.description}</dd>
               </div>
             ))}
           </dl>
@@ -792,16 +682,11 @@ export default function Example() {
       <div className="bg-purple-600">
         <div className="max-w-7xl mx-auto py-16 px-4 sm:py-20 sm:px-6 lg:px-8">
           <div className="lg:space-y-10">
-            <h2 className="text-3xl font-extrabold text-white">
-              The world's most innovative companies use Workflow
-            </h2>
+            <h2 className="text-3xl font-extrabold text-white">The world's most innovative companies use Workflow</h2>
             <div className="mt-8 flow-root lg:mt-0">
               <div className="-mt-4 -ml-8 flex flex-wrap justify-between lg:-ml-4">
                 {logos.map((logo) => (
-                  <div
-                    key={logo.name}
-                    className="mt-4 ml-8 flex flex-grow flex-shrink-0 lg:flex-grow-0 lg:ml-4"
-                  >
+                  <div key={logo.name} className="mt-4 ml-8 flex flex-grow flex-shrink-0 lg:flex-grow-0 lg:ml-4">
                     <img className="h-12" src={logo.url} alt={logo.name} />
                   </div>
                 ))}
@@ -815,15 +700,10 @@ export default function Example() {
       <div className="max-w-7xl mx-auto py-16 px-4 sm:px-6 lg:py-20 lg:px-8">
         <div className="lg:grid lg:grid-cols-3 lg:gap-8">
           <div className="space-y-4">
-            <h2 className="text-3xl font-extrabold text-gray-900">
-              Frequently asked questions
-            </h2>
+            <h2 className="text-3xl font-extrabold text-gray-900">Frequently asked questions</h2>
             <p className="text-lg text-gray-500">
               Can’t find the answer you’re looking for? Reach out to our{' '}
-              <a
-                href="#"
-                className="font-medium text-purple-600 hover:text-purple-500"
-              >
+              <a href="#" className="font-medium text-purple-600 hover:text-purple-500">
                 customer support
               </a>{' '}
               team.
@@ -833,9 +713,7 @@ export default function Example() {
             <dl className="space-y-12">
               {faqs.map((faq) => (
                 <div key={faq.id}>
-                  <dt className="text-lg leading-6 font-medium text-gray-900">
-                    {faq.question}
-                  </dt>
+                  <dt className="text-lg leading-6 font-medium text-gray-900">{faq.question}</dt>
                   <dd className="mt-2 text-base text-gray-500">{faq.answer}</dd>
                 </div>
               ))}
@@ -852,16 +730,11 @@ export default function Example() {
             <div className="grid grid-cols-2 gap-8 xl:col-span-4">
               <div className="md:grid md:grid-cols-2 md:gap-8">
                 <div>
-                  <h3 className="text-sm font-semibold text-gray-400 tracking-wider uppercase">
-                    Solutions
-                  </h3>
+                  <h3 className="text-sm font-semibold text-gray-400 tracking-wider uppercase">Solutions</h3>
                   <ul className="mt-4 space-y-4">
                     {footerNavigation.solutions.map((item) => (
                       <li key={item.name}>
-                        <a
-                          href={item.href}
-                          className="text-base text-gray-300 hover:text-white"
-                        >
+                        <a href={item.href} className="text-base text-gray-300 hover:text-white">
                           {item.name}
                         </a>
                       </li>
@@ -869,16 +742,11 @@ export default function Example() {
                   </ul>
                 </div>
                 <div className="mt-12 md:mt-0">
-                  <h3 className="text-sm font-semibold text-gray-400 tracking-wider uppercase">
-                    Support
-                  </h3>
+                  <h3 className="text-sm font-semibold text-gray-400 tracking-wider uppercase">Support</h3>
                   <ul className="mt-4 space-y-4">
                     {footerNavigation.support.map((item) => (
                       <li key={item.name}>
-                        <a
-                          href={item.href}
-                          className="text-base text-gray-300 hover:text-white"
-                        >
+                        <a href={item.href} className="text-base text-gray-300 hover:text-white">
                           {item.name}
                         </a>
                       </li>
@@ -888,16 +756,11 @@ export default function Example() {
               </div>
               <div className="md:grid md:grid-cols-2 md:gap-8">
                 <div>
-                  <h3 className="text-sm font-semibold text-gray-400 tracking-wider uppercase">
-                    Company
-                  </h3>
+                  <h3 className="text-sm font-semibold text-gray-400 tracking-wider uppercase">Company</h3>
                   <ul className="mt-4 space-y-4">
                     {footerNavigation.company.map((item) => (
                       <li key={item.name}>
-                        <a
-                          href={item.href}
-                          className="text-base text-gray-300 hover:text-white"
-                        >
+                        <a href={item.href} className="text-base text-gray-300 hover:text-white">
                           {item.name}
                         </a>
                       </li>
@@ -905,16 +768,11 @@ export default function Example() {
                   </ul>
                 </div>
                 <div className="mt-12 md:mt-0">
-                  <h3 className="text-sm font-semibold text-gray-400 tracking-wider uppercase">
-                    Legal
-                  </h3>
+                  <h3 className="text-sm font-semibold text-gray-400 tracking-wider uppercase">Legal</h3>
                   <ul className="mt-4 space-y-4">
                     {footerNavigation.legal.map((item) => (
                       <li key={item.name}>
-                        <a
-                          href={item.href}
-                          className="text-base text-gray-300 hover:text-white"
-                        >
+                        <a href={item.href} className="text-base text-gray-300 hover:text-white">
                           {item.name}
                         </a>
                       </li>
@@ -924,9 +782,7 @@ export default function Example() {
               </div>
             </div>
             <div className="mt-12 xl:mt-0">
-              <h3 className="text-sm font-semibold text-gray-400 tracking-wider uppercase">
-                Language &amp; Currency
-              </h3>
+              <h3 className="text-sm font-semibold text-gray-400 tracking-wider uppercase">Language &amp; Currency</h3>
               <form className="mt-4 space-y-4 sm:max-w-xs">
                 <fieldset className="w-full">
                   <label htmlFor="language" className="sr-only">
@@ -946,10 +802,7 @@ export default function Example() {
                       <option>Spanish</option>
                     </select>
                     <div className="pointer-events-none absolute inset-y-0 right-0 px-2 flex items-center">
-                      <ChevronDownIcon
-                        className="h-4 w-4 text-white"
-                        aria-hidden="true"
-                      />
+                      <ChevronDownIcon className="h-4 w-4 text-white" aria-hidden="true" />
                     </div>
                   </div>
                 </fieldset>
@@ -974,10 +827,7 @@ export default function Example() {
                       <option>USD</option>
                     </select>
                     <div className="pointer-events-none absolute inset-y-0 right-0 px-2 flex items-center">
-                      <ChevronDownIcon
-                        className="h-4 w-4 text-white"
-                        aria-hidden="true"
-                      />
+                      <ChevronDownIcon className="h-4 w-4 text-white" aria-hidden="true" />
                     </div>
                   </div>
                 </fieldset>
@@ -990,8 +840,7 @@ export default function Example() {
                 Subscribe to our newsletter
               </h3>
               <p className="text-base text-gray-300">
-                The latest news, articles, and resources, sent to your inbox
-                weekly.
+                The latest news, articles, and resources, sent to your inbox weekly.
               </p>
             </div>
             <form className="sm:flex sm:max-w-md">
@@ -1020,11 +869,7 @@ export default function Example() {
           <div className="mt-8 border-t border-gray-700 pt-8 md:flex md:items-center md:justify-between">
             <div className="flex space-x-6 md:order-2">
               {footerNavigation.social.map((item) => (
-                <a
-                  key={item.name}
-                  href="#"
-                  className="text-gray-400 hover:text-gray-300"
-                >
+                <a key={item.name} href="#" className="text-gray-400 hover:text-gray-300">
                   <span className="sr-only">{item.name}</span>
                   <item.icon className="h-6 w-6" aria-hidden="true" />
                 </a>
@@ -1037,5 +882,5 @@ export default function Example() {
         </div>
       </footer>
     </div>
-  );
+  )
 }

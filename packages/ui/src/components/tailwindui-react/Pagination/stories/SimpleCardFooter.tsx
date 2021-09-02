@@ -7,8 +7,7 @@ export default function Example() {
     >
       <div className="hidden sm:block">
         <p className="text-sm text-gray-700">
-          Showing <span className="font-medium">1</span> to{' '}
-          <span className="font-medium">10</span> of{' '}
+          Showing <span className="font-medium">1</span> to <span className="font-medium">10</span> of{' '}
           <span className="font-medium">20</span> results
         </p>
       </div>
@@ -27,5 +26,5 @@ export default function Example() {
         </a>
       </div>
     </nav>
-  );
+  )
 }

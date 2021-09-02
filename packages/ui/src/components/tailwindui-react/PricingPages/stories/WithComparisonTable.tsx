@@ -24,7 +24,8 @@
   }
   ```
 */
-import { Popover, Transition } from '@headlessui/react';
+import { Fragment } from 'react'
+import { Popover, Transition } from '@headlessui/react'
 import {
   BookmarkAltIcon,
   CalendarIcon,
@@ -38,15 +39,14 @@ import {
   SupportIcon,
   ViewGridIcon,
   XIcon,
-} from '@heroicons/react/outline';
-import { CheckIcon, ChevronDownIcon, MinusIcon } from '@heroicons/react/solid';
-import { Fragment } from 'react';
+} from '@heroicons/react/outline'
+import { CheckIcon, ChevronDownIcon, MinusIcon } from '@heroicons/react/solid'
 
 const solutions = [
+
   {
     name: 'Analytics',
-    description:
-      'Get a better understanding of where your traffic is coming from.',
+    description: 'Get a better understanding of where your traffic is coming from.',
     href: '#',
     icon: ChartBarIcon,
   },
@@ -56,12 +56,7 @@ const solutions = [
     href: '#',
     icon: CursorClickIcon,
   },
-  {
-    name: 'Security',
-    description: "Your customers' data will be safe and secure.",
-    href: '#',
-    icon: ShieldCheckIcon,
-  },
+  { name: 'Security', description: "Your customers' data will be safe and secure.", href: '#', icon: ShieldCheckIcon },
   {
     name: 'Integrations',
     description: "Connect with third-party tools that you're already using.",
@@ -70,61 +65,51 @@ const solutions = [
   },
   {
     name: 'Automations',
-    description:
-      'Build strategic funnels that will drive your customers to convert',
+    description: 'Build strategic funnels that will drive your customers to convert',
     href: '#',
     icon: RefreshIcon,
   },
-];
+
+]
 const callsToAction = [
+
   { name: 'Watch Demo', href: '#', icon: PlayIcon },
   { name: 'Contact Sales', href: '#', icon: PhoneIcon },
-];
+
+]
 const resources = [
+
   {
     name: 'Help Center',
-    description:
-      'Get all of your questions answered in our forums or contact support.',
+    description: 'Get all of your questions answered in our forums or contact support.',
     href: '#',
     icon: SupportIcon,
   },
   {
     name: 'Guides',
-    description:
-      'Learn how to maximize our platform to get the most out of it.',
+    description: 'Learn how to maximize our platform to get the most out of it.',
     href: '#',
     icon: BookmarkAltIcon,
   },
   {
     name: 'Events',
-    description:
-      'See what meet-ups and other events we might be planning near you.',
+    description: 'See what meet-ups and other events we might be planning near you.',
     href: '#',
     icon: CalendarIcon,
   },
-  {
-    name: 'Security',
-    description: 'Understand how we take your privacy seriously.',
-    href: '#',
-    icon: ShieldCheckIcon,
-  },
-];
+  { name: 'Security', description: 'Understand how we take your privacy seriously.', href: '#', icon: ShieldCheckIcon },
+
+]
 const recentPosts = [
+
   { id: 1, name: 'Boost your conversion rate', href: '#' },
-  {
-    id: 2,
-    name: 'How to use search engine optimization to drive traffic to your site',
-    href: '#',
-  },
+  { id: 2, name: 'How to use search engine optimization to drive traffic to your site', href: '#' },
   { id: 3, name: 'Improve your customer experience', href: '#' },
-];
+
+]
 const tiers = [
-  {
-    name: 'Basic',
-    href: '#',
-    priceMonthly: 9,
-    description: 'Quis suspendisse ut fermentum neque vivamus non tellus.',
-  },
+
+  { name: 'Basic', href: '#', priceMonthly: 9, description: 'Quis suspendisse ut fermentum neque vivamus non tellus.' },
   {
     name: 'Essential',
     href: '#',
@@ -135,70 +120,43 @@ const tiers = [
     name: 'Premium',
     href: '#',
     priceMonthly: 59,
-    description:
-      'Orci volutpat ut sed sed neque, dui eget. Quis tristique non.',
+    description: 'Orci volutpat ut sed sed neque, dui eget. Quis tristique non.',
   },
-];
+
+]
 const sections = [
+
   {
     name: 'Features',
     features: [
-      {
-        name: 'Molestie lobortis massa.',
-        tiers: { Basic: true, Essential: true, Premium: true },
-      },
-      {
-        name: 'Urna purus felis.',
-        tiers: { Basic: true, Essential: true, Premium: true },
-      },
-      {
-        name: 'Tellus pulvinar sit dictum.',
-        tiers: { Essential: true, Premium: true },
-      },
-      {
-        name: 'Convallis.',
-        tiers: { Essential: 'Up to 20 users', Premium: 'Up to 50 users' },
-      },
+      { name: 'Molestie lobortis massa.', tiers: { Basic: true, Essential: true, Premium: true } },
+      { name: 'Urna purus felis.', tiers: { Basic: true, Essential: true, Premium: true } },
+      { name: 'Tellus pulvinar sit dictum.', tiers: { Essential: true, Premium: true } },
+      { name: 'Convallis.', tiers: { Essential: 'Up to 20 users', Premium: 'Up to 50 users' } },
     ],
   },
   {
     name: 'Reporting',
     features: [
-      {
-        name: 'Adipiscing.',
-        tiers: { Basic: true, Essential: true, Premium: true },
-      },
-      {
-        name: 'Eget risus integer.',
-        tiers: { Essential: true, Premium: true },
-      },
+      { name: 'Adipiscing.', tiers: { Basic: true, Essential: true, Premium: true } },
+      { name: 'Eget risus integer.', tiers: { Essential: true, Premium: true } },
       { name: 'Gravida leo urna velit.', tiers: { Premium: true } },
-      {
-        name: 'Elementum ut dapibus mi feugiat cras nisl.',
-        tiers: { Premium: true },
-      },
+      { name: 'Elementum ut dapibus mi feugiat cras nisl.', tiers: { Premium: true } },
     ],
   },
   {
     name: 'Support',
     features: [
-      {
-        name: 'Sit dignissim.',
-        tiers: { Basic: true, Essential: true, Premium: true },
-      },
+      { name: 'Sit dignissim.', tiers: { Basic: true, Essential: true, Premium: true } },
       { name: 'Congue at nibh et.', tiers: { Essential: true, Premium: true } },
-      {
-        name: 'Volutpat feugiat mattis.',
-        tiers: { Essential: true, Premium: true },
-      },
-      {
-        name: 'Tristique pellentesque ornare diam sapien.',
-        tiers: { Premium: true },
-      },
+      { name: 'Volutpat feugiat mattis.', tiers: { Essential: true, Premium: true } },
+      { name: 'Tristique pellentesque ornare diam sapien.', tiers: { Premium: true } },
     ],
   },
-];
+
+]
 const faqs = [
+
   {
     id: 1,
     question: "What's the best thing about Switzerland?",
@@ -220,8 +178,7 @@ const faqs = [
   {
     id: 4,
     question: 'What do you call someone with no body and no nose?',
-    answer:
-      'Nobody knows. Lorem ipsum dolor sit amet consectetur adipisicing elit. Quas cupiditate laboriosam fugiat.',
+    answer: 'Nobody knows. Lorem ipsum dolor sit amet consectetur adipisicing elit. Quas cupiditate laboriosam fugiat.',
   },
   {
     id: 5,
@@ -235,8 +192,10 @@ const faqs = [
     answer:
       "He couldn't see himself doing it. Lorem ipsum dolor sit amet consectetur adipisicing elit. Quas cupiditate laboriosam fugiat.",
   },
-];
+
+]
 const footerNavigation = {
+
   solutions: [
     { name: 'Marketing', href: '#' },
     { name: 'Analytics', href: '#' },
@@ -324,10 +283,11 @@ const footerNavigation = {
       ),
     },
   ],
-};
+
+}
 
 function classNames(...classes) {
-  return classes.filter(Boolean).join(' ');
+  return classes.filter(Boolean).join(' ')
 }
 
 export default function Example() {
@@ -361,14 +321,14 @@ export default function Example() {
                       <Popover.Button
                         className={classNames(
                           open ? 'text-white' : 'text-indigo-300',
-                          'group bg-indigo-900 rounded-md inline-flex items-center text-base font-medium hover:text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-indigo-900 focus:ring-white',
+                          'group bg-indigo-900 rounded-md inline-flex items-center text-base font-medium hover:text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-indigo-900 focus:ring-white'
                         )}
                       >
                         <span>Solutions</span>
                         <ChevronDownIcon
                           className={classNames(
                             open ? 'text-white' : 'text-indigo-300',
-                            'ml-2 h-5 w-5 group-hover:text-white',
+                            'ml-2 h-5 w-5 group-hover:text-white'
                           )}
                           aria-hidden="true"
                         />
@@ -392,17 +352,10 @@ export default function Example() {
                                   href={item.href}
                                   className="-m-3 rounded-lg p-3 flex items-start hover:bg-gray-50"
                                 >
-                                  <item.icon
-                                    className="flex-shrink-0 h-6 w-6 text-indigo-600"
-                                    aria-hidden="true"
-                                  />
+                                  <item.icon className="flex-shrink-0 h-6 w-6 text-indigo-600" aria-hidden="true" />
                                   <div className="ml-4">
-                                    <p className="text-base font-medium text-gray-900">
-                                      {item.name}
-                                    </p>
-                                    <p className="mt-1 text-sm text-gray-500">
-                                      {item.description}
-                                    </p>
+                                    <p className="text-base font-medium text-gray-900">{item.name}</p>
+                                    <p className="mt-1 text-sm text-gray-500">{item.description}</p>
                                   </div>
                                 </a>
                               ))}
@@ -414,10 +367,7 @@ export default function Example() {
                                     href={item.href}
                                     className="-m-3 rounded-md p-3 flex items-center text-base font-medium text-gray-900 hover:bg-gray-100"
                                   >
-                                    <item.icon
-                                      className="flex-shrink-0 h-6 w-6 text-gray-400"
-                                      aria-hidden="true"
-                                    />
+                                    <item.icon className="flex-shrink-0 h-6 w-6 text-gray-400" aria-hidden="true" />
                                     <span className="ml-3">{item.name}</span>
                                   </a>
                                 </div>
@@ -430,16 +380,10 @@ export default function Example() {
                   )}
                 </Popover>
 
-                <a
-                  href="#"
-                  className="text-base font-medium text-indigo-300 hover:text-white"
-                >
+                <a href="#" className="text-base font-medium text-indigo-300 hover:text-white">
                   Pricing
                 </a>
-                <a
-                  href="#"
-                  className="text-base font-medium text-indigo-300 hover:text-white"
-                >
+                <a href="#" className="text-base font-medium text-indigo-300 hover:text-white">
                   Docs
                 </a>
 
@@ -449,14 +393,14 @@ export default function Example() {
                       <Popover.Button
                         className={classNames(
                           open ? 'text-white' : 'text-indigo-300',
-                          'group bg-indigo-900 rounded-md inline-flex items-center text-base font-medium hover:text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-indigo-900 focus:ring-white',
+                          'group bg-indigo-900 rounded-md inline-flex items-center text-base font-medium hover:text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-indigo-900 focus:ring-white'
                         )}
                       >
                         <span>More</span>
                         <ChevronDownIcon
                           className={classNames(
                             open ? 'text-white' : 'text-indigo-300',
-                            'ml-2 h-5 w-5 group-hover:text-white',
+                            'ml-2 h-5 w-5 group-hover:text-white'
                           )}
                           aria-hidden="true"
                         />
@@ -480,17 +424,10 @@ export default function Example() {
                                   href={item.href}
                                   className="-m-3 p-3 flex items-start rounded-lg hover:bg-gray-50"
                                 >
-                                  <item.icon
-                                    className="flex-shrink-0 h-6 w-6 text-indigo-600"
-                                    aria-hidden="true"
-                                  />
+                                  <item.icon className="flex-shrink-0 h-6 w-6 text-indigo-600" aria-hidden="true" />
                                   <div className="ml-4">
-                                    <p className="text-base font-medium text-gray-900">
-                                      {item.name}
-                                    </p>
-                                    <p className="mt-1 text-sm text-gray-500">
-                                      {item.description}
-                                    </p>
+                                    <p className="text-base font-medium text-gray-900">{item.name}</p>
+                                    <p className="mt-1 text-sm text-gray-500">{item.description}</p>
                                   </div>
                                 </a>
                               ))}
@@ -502,14 +439,8 @@ export default function Example() {
                                 </h3>
                                 <ul className="mt-4 space-y-4">
                                   {recentPosts.map((post) => (
-                                    <li
-                                      key={post.id}
-                                      className="text-base truncate"
-                                    >
-                                      <a
-                                        href={post.href}
-                                        className="font-medium text-gray-900 hover:text-gray-700"
-                                      >
+                                    <li key={post.id} className="text-base truncate">
+                                      <a href={post.href} className="font-medium text-gray-900 hover:text-gray-700">
                                         {post.name}
                                       </a>
                                     </li>
@@ -517,13 +448,9 @@ export default function Example() {
                                 </ul>
                               </div>
                               <div className="mt-5 text-sm">
-                                <a
-                                  href="#"
-                                  className="font-medium text-indigo-600 hover:text-indigo-500"
-                                >
+                                <a href="#" className="font-medium text-indigo-600 hover:text-indigo-500">
                                   {' '}
-                                  View all posts{' '}
-                                  <span aria-hidden="true">&rarr;</span>
+                                  View all posts <span aria-hidden="true">&rarr;</span>
                                 </a>
                               </div>
                             </div>
@@ -535,10 +462,7 @@ export default function Example() {
                 </Popover>
               </Popover.Group>
               <div className="hidden md:flex items-center justify-end space-x-8 md:flex-1 lg:w-0">
-                <a
-                  href="#"
-                  className="whitespace-nowrap text-base font-medium text-indigo-300 hover:text-white"
-                >
+                <a href="#" className="whitespace-nowrap text-base font-medium text-indigo-300 hover:text-white">
                   Sign in
                 </a>
                 <a
@@ -589,13 +513,8 @@ export default function Example() {
                           href={item.href}
                           className="-m-3 p-3 flex items-center rounded-md hover:bg-gray-50"
                         >
-                          <item.icon
-                            className="flex-shrink-0 h-6 w-6 text-indigo-600"
-                            aria-hidden="true"
-                          />
-                          <span className="ml-3 text-base font-medium text-gray-900">
-                            {item.name}
-                          </span>
+                          <item.icon className="flex-shrink-0 h-6 w-6 text-indigo-600" aria-hidden="true" />
+                          <span className="ml-3 text-base font-medium text-gray-900">{item.name}</span>
                         </a>
                       ))}
                     </nav>
@@ -603,31 +522,19 @@ export default function Example() {
                 </div>
                 <div className="py-6 px-5 space-y-6">
                   <div className="grid grid-cols-2 gap-y-4 gap-x-8">
-                    <a
-                      href="#"
-                      className="text-base font-medium text-gray-900 hover:text-gray-700"
-                    >
+                    <a href="#" className="text-base font-medium text-gray-900 hover:text-gray-700">
                       Pricing
                     </a>
 
-                    <a
-                      href="#"
-                      className="text-base font-medium text-gray-900 hover:text-gray-700"
-                    >
+                    <a href="#" className="text-base font-medium text-gray-900 hover:text-gray-700">
                       Docs
                     </a>
 
-                    <a
-                      href="#"
-                      className="text-base font-medium text-gray-900 hover:text-gray-700"
-                    >
+                    <a href="#" className="text-base font-medium text-gray-900 hover:text-gray-700">
                       Blog
                     </a>
 
-                    <a
-                      href="#"
-                      className="text-base font-medium text-gray-900 hover:text-gray-700"
-                    >
+                    <a href="#" className="text-base font-medium text-gray-900 hover:text-gray-700">
                       Contact Sales
                     </a>
                     {resources.map((item) => (
@@ -649,10 +556,7 @@ export default function Example() {
                     </a>
                     <p className="mt-6 text-center text-base font-medium text-gray-500">
                       Existing customer?
-                      <a
-                        href="#"
-                        className="text-indigo-600 hover:text-indigo-500"
-                      >
+                      <a href="#" className="text-indigo-600 hover:text-indigo-500">
                         Sign in
                       </a>
                     </p>
@@ -671,15 +575,11 @@ export default function Example() {
                 Pricing Plans
               </h2>
               <p className="mt-5 text-xl text-indigo-300">
-                Start building for free, then add a site plan to go live.
-                Account plans unlock additional features.
+                Start building for free, then add a site plan to go live. Account plans unlock additional features.
               </p>
             </div>
             <div className="mt-10 w-full max-w-xs lg:mt-0">
-              <label
-                htmlFor="currency"
-                className="block text-base font-medium text-indigo-300"
-              >
+              <label htmlFor="currency" className="block text-base font-medium text-indigo-300">
                 Currency
               </label>
               <div className="mt-1.5 relative">
@@ -700,10 +600,7 @@ export default function Example() {
                   <option className="bg-gray-900">United Kingdom (GBP)</option>
                 </select>
                 <div className="pointer-events-none absolute inset-y-0 right-0 px-2 flex items-center">
-                  <ChevronDownIcon
-                    className="h-4 w-4 text-indigo-300"
-                    aria-hidden="true"
-                  />
+                  <ChevronDownIcon className="h-4 w-4 text-indigo-300" aria-hidden="true" />
                 </div>
               </div>
             </div>
@@ -718,16 +615,10 @@ export default function Example() {
           {tiers.map((tier) => (
             <section key={tier.name}>
               <div className="px-4 mb-8">
-                <h2 className="text-lg leading-6 font-medium text-gray-900">
-                  {tier.name}
-                </h2>
+                <h2 className="text-lg leading-6 font-medium text-gray-900">{tier.name}</h2>
                 <p className="mt-4">
-                  <span className="text-4xl font-extrabold text-gray-900">
-                    ${tier.priceMonthly}
-                  </span>
-                  <span className="text-base font-medium text-gray-500">
-                    /mo
-                  </span>
+                  <span className="text-4xl font-extrabold text-gray-900">${tier.priceMonthly}</span>
+                  <span className="text-base font-medium text-gray-500">/mo</span>
                 </p>
                 <p className="mt-4 text-sm text-gray-500">{tier.description}</p>
                 <a
@@ -755,40 +646,22 @@ export default function Example() {
                   </thead>
                   <tbody className="divide-y divide-gray-200">
                     {section.features.map((feature) => (
-                      <tr
-                        key={feature.name}
-                        className="border-t border-gray-200"
-                      >
-                        <th
-                          className="py-5 px-4 text-sm font-normal text-gray-500 text-left"
-                          scope="row"
-                        >
+                      <tr key={feature.name} className="border-t border-gray-200">
+                        <th className="py-5 px-4 text-sm font-normal text-gray-500 text-left" scope="row">
                           {feature.name}
                         </th>
                         <td className="py-5 pr-4">
                           {typeof feature.tiers[tier.name] === 'string' ? (
-                            <span className="block text-sm text-gray-700 text-right">
-                              {feature.tiers[tier.name]}
-                            </span>
+                            <span className="block text-sm text-gray-700 text-right">{feature.tiers[tier.name]}</span>
                           ) : (
                             <>
                               {feature.tiers[tier.name] === true ? (
-                                <CheckIcon
-                                  className="ml-auto h-5 w-5 text-green-500"
-                                  aria-hidden="true"
-                                />
+                                <CheckIcon className="ml-auto h-5 w-5 text-green-500" aria-hidden="true" />
                               ) : (
-                                <MinusIcon
-                                  className="ml-auto h-5 w-5 text-gray-400"
-                                  aria-hidden="true"
-                                />
+                                <MinusIcon className="ml-auto h-5 w-5 text-gray-400" aria-hidden="true" />
                               )}
 
-                              <span className="sr-only">
-                                {feature.tiers[tier.name] === true
-                                  ? 'Yes'
-                                  : 'No'}
-                              </span>
+                              <span className="sr-only">{feature.tiers[tier.name] === true ? 'Yes' : 'No'}</span>
                             </>
                           )}
                         </td>
@@ -816,10 +689,7 @@ export default function Example() {
             <caption className="sr-only">Pricing plan comparison</caption>
             <thead>
               <tr>
-                <th
-                  className="pb-4 pl-6 pr-6 text-sm font-medium text-gray-900 text-left"
-                  scope="col"
-                >
+                <th className="pb-4 pl-6 pr-6 text-sm font-medium text-gray-900 text-left" scope="col">
                   <span className="sr-only">Feature by</span>
                   <span>Plans</span>
                 </th>
@@ -836,10 +706,7 @@ export default function Example() {
             </thead>
             <tbody className="border-t border-gray-200 divide-y divide-gray-200">
               <tr>
-                <th
-                  className="py-8 pl-6 pr-6 align-top text-sm font-medium text-gray-900 text-left"
-                  scope="row"
-                >
+                <th className="py-8 pl-6 pr-6 align-top text-sm font-medium text-gray-900 text-left" scope="row">
                   Pricing
                 </th>
                 {tiers.map((tier) => (
@@ -847,16 +714,10 @@ export default function Example() {
                     <div className="h-full flex flex-col justify-between">
                       <div>
                         <p>
-                          <span className="text-4xl font-extrabold text-gray-900">
-                            ${tier.priceMonthly}
-                          </span>
-                          <span className="text-base font-medium text-gray-500">
-                            /mo
-                          </span>
+                          <span className="text-4xl font-extrabold text-gray-900">${tier.priceMonthly}</span>
+                          <span className="text-base font-medium text-gray-500">/mo</span>
                         </p>
-                        <p className="mt-4 text-sm text-gray-500">
-                          {tier.description}
-                        </p>
+                        <p className="mt-4 text-sm text-gray-500">{tier.description}</p>
                       </div>
                       <a
                         href={tier.href}
@@ -881,37 +742,23 @@ export default function Example() {
                   </tr>
                   {section.features.map((feature) => (
                     <tr key={feature.name}>
-                      <th
-                        className="py-5 pl-6 pr-6 text-sm font-normal text-gray-500 text-left"
-                        scope="row"
-                      >
+                      <th className="py-5 pl-6 pr-6 text-sm font-normal text-gray-500 text-left" scope="row">
                         {feature.name}
                       </th>
                       {tiers.map((tier) => (
                         <td key={tier.name} className="py-5 px-6">
                           {typeof feature.tiers[tier.name] === 'string' ? (
-                            <span className="block text-sm text-gray-700">
-                              {feature.tiers[tier.name]}
-                            </span>
+                            <span className="block text-sm text-gray-700">{feature.tiers[tier.name]}</span>
                           ) : (
                             <>
                               {feature.tiers[tier.name] === true ? (
-                                <CheckIcon
-                                  className="h-5 w-5 text-green-500"
-                                  aria-hidden="true"
-                                />
+                                <CheckIcon className="h-5 w-5 text-green-500" aria-hidden="true" />
                               ) : (
-                                <MinusIcon
-                                  className="h-5 w-5 text-gray-400"
-                                  aria-hidden="true"
-                                />
+                                <MinusIcon className="h-5 w-5 text-gray-400" aria-hidden="true" />
                               )}
 
                               <span className="sr-only">
-                                {feature.tiers[tier.name] === true
-                                  ? 'Included'
-                                  : 'Not included'}{' '}
-                                in {tier.name}
+                                {feature.tiers[tier.name] === true ? 'Included' : 'Not included'} in {tier.name}
                               </span>
                             </>
                           )}
@@ -947,25 +794,13 @@ export default function Example() {
       <div className="max-w-7xl mx-auto border-t border-gray-200 py-12 px-4 sm:px-6 lg:py-20 lg:px-8">
         <div className="grid grid-cols-2 gap-8 md:grid-cols-6 lg:grid-cols-5">
           <div className="col-span-1 flex justify-center md:col-span-2 lg:col-span-1">
-            <img
-              className="h-12"
-              src="https://tailwindui.com/img/logos/tuple-logo-gray-400.svg"
-              alt="Tuple"
-            />
+            <img className="h-12" src="https://tailwindui.com/img/logos/tuple-logo-gray-400.svg" alt="Tuple" />
           </div>
           <div className="col-span-1 flex justify-center md:col-span-2 lg:col-span-1">
-            <img
-              className="h-12"
-              src="https://tailwindui.com/img/logos/mirage-logo-gray-400.svg"
-              alt="Mirage"
-            />
+            <img className="h-12" src="https://tailwindui.com/img/logos/mirage-logo-gray-400.svg" alt="Mirage" />
           </div>
           <div className="col-span-1 flex justify-center md:col-span-2 lg:col-span-1">
-            <img
-              className="h-12"
-              src="https://tailwindui.com/img/logos/statickit-logo-gray-400.svg"
-              alt="StaticKit"
-            />
+            <img className="h-12" src="https://tailwindui.com/img/logos/statickit-logo-gray-400.svg" alt="StaticKit" />
           </div>
           <div className="col-span-1 flex justify-center md:col-span-3 lg:col-span-1">
             <img
@@ -987,16 +822,12 @@ export default function Example() {
       <div className="bg-gray-50">
         {/* FAQ */}
         <div className="max-w-7xl mx-auto py-16 px-4 sm:py-24 sm:px-6 lg:px-8">
-          <h2 className="text-3xl font-extrabold text-gray-900 text-center">
-            Frequently asked questions
-          </h2>
+          <h2 className="text-3xl font-extrabold text-gray-900 text-center">Frequently asked questions</h2>
           <div className="mt-12">
             <dl className="space-y-10 md:space-y-0 md:grid md:grid-cols-2 md:grid-rows-2 md:gap-x-8 md:gap-y-12 lg:grid-cols-3">
               {faqs.map((faq) => (
                 <div key={faq.id} className="space-y-2">
-                  <dt className="text-lg leading-6 font-medium text-gray-900">
-                    {faq.question}
-                  </dt>
+                  <dt className="text-lg leading-6 font-medium text-gray-900">{faq.question}</dt>
                   <dd className="text-base text-gray-500">{faq.answer}</dd>
                 </div>
               ))}
@@ -1017,13 +848,11 @@ export default function Example() {
               <div className="lg:self-center">
                 <h2 className="text-3xl font-extrabold text-white sm:text-4xl">
                   <span className="block">Ready to dive in?</span>
-                  <span className="block text-red-900">
-                    Start your free trial today.
-                  </span>
+                  <span className="block text-red-900">Start your free trial today.</span>
                 </h2>
                 <p className="mt-4 text-lg leading-6 text-orange-50">
-                  Ac euismod vel sit maecenas id pellentesque eu sed
-                  consectetur. Malesuada adipiscing sagittis vel nulla nec.
+                  Ac euismod vel sit maecenas id pellentesque eu sed consectetur. Malesuada adipiscing sagittis vel
+                  nulla nec.
                 </p>
                 <a
                   href="#"
@@ -1051,16 +880,11 @@ export default function Example() {
           <div className="grid grid-cols-2 gap-8 xl:col-span-2">
             <div className="md:grid md:grid-cols-2 md:gap-8">
               <div>
-                <h4 className="text-sm font-semibold text-gray-400 tracking-wider uppercase">
-                  Solutions
-                </h4>
+                <h4 className="text-sm font-semibold text-gray-400 tracking-wider uppercase">Solutions</h4>
                 <ul className="mt-4 space-y-4">
                   {footerNavigation.solutions.map((item) => (
                     <li key={item.name}>
-                      <a
-                        href={item.href}
-                        className="text-base text-gray-500 hover:text-gray-900"
-                      >
+                      <a href={item.href} className="text-base text-gray-500 hover:text-gray-900">
                         {item.name}
                       </a>
                     </li>
@@ -1068,16 +892,11 @@ export default function Example() {
                 </ul>
               </div>
               <div className="mt-12 md:mt-0">
-                <h4 className="text-sm font-semibold text-gray-400 tracking-wider uppercase">
-                  Support
-                </h4>
+                <h4 className="text-sm font-semibold text-gray-400 tracking-wider uppercase">Support</h4>
                 <ul className="mt-4 space-y-4">
                   {footerNavigation.support.map((item) => (
                     <li key={item.name}>
-                      <a
-                        href={item.href}
-                        className="text-base text-gray-500 hover:text-gray-900"
-                      >
+                      <a href={item.href} className="text-base text-gray-500 hover:text-gray-900">
                         {item.name}
                       </a>
                     </li>
@@ -1087,16 +906,11 @@ export default function Example() {
             </div>
             <div className="md:grid md:grid-cols-2 md:gap-8">
               <div>
-                <h4 className="text-sm font-semibold text-gray-400 tracking-wider uppercase">
-                  Company
-                </h4>
+                <h4 className="text-sm font-semibold text-gray-400 tracking-wider uppercase">Company</h4>
                 <ul className="mt-4 space-y-4">
                   {footerNavigation.company.map((item) => (
                     <li key={item.name}>
-                      <a
-                        href={item.href}
-                        className="text-base text-gray-500 hover:text-gray-900"
-                      >
+                      <a href={item.href} className="text-base text-gray-500 hover:text-gray-900">
                         {item.name}
                       </a>
                     </li>
@@ -1104,16 +918,11 @@ export default function Example() {
                 </ul>
               </div>
               <div className="mt-12 md:mt-0">
-                <h4 className="text-sm font-semibold text-gray-400 tracking-wider uppercase">
-                  Legal
-                </h4>
+                <h4 className="text-sm font-semibold text-gray-400 tracking-wider uppercase">Legal</h4>
                 <ul className="mt-4 space-y-4">
                   {footerNavigation.legal.map((item) => (
                     <li key={item.name}>
-                      <a
-                        href={item.href}
-                        className="text-base text-gray-500 hover:text-gray-900"
-                      >
+                      <a href={item.href} className="text-base text-gray-500 hover:text-gray-900">
                         {item.name}
                       </a>
                     </li>
@@ -1127,8 +936,7 @@ export default function Example() {
               Subscribe to our newsletter
             </h4>
             <p className="mt-4 text-gray-500 text-base">
-              The latest news, articles, and resources, sent to your inbox
-              weekly.
+              The latest news, articles, and resources, sent to your inbox weekly.
             </p>
             <form className="mt-4 sm:flex sm:max-w-md">
               <label htmlFor="email-address" className="sr-only">
@@ -1157,11 +965,7 @@ export default function Example() {
         <div className="mt-8 border-t border-gray-200 pt-8 md:flex md:items-center md:justify-between">
           <div className="flex space-x-6 md:order-2">
             {footerNavigation.social.map((item) => (
-              <a
-                key={item.name}
-                href={item.href}
-                className="text-gray-400 hover:text-gray-500"
-              >
+              <a key={item.name} href={item.href} className="text-gray-400 hover:text-gray-500">
                 <span className="sr-only">{item.name}</span>
                 <item.icon className="h-6 w-6" aria-hidden="true" />
               </a>
@@ -1173,5 +977,5 @@ export default function Example() {
         </div>
       </footer>
     </div>
-  );
+  )
 }

@@ -3,9 +3,7 @@ async function main() {
   const [deployer] = await ethers.getSigners();
   console.log("Deployer", deployer.address);
 
-  const BeneficiaryRegistry = await ethers.getContractFactory(
-    "BeneficiaryRegistry"
-  );
+  const BeneficiaryRegistry = await ethers.getContractFactory("BeneficiaryRegistry");
   const beneficiaryRegistry = await BeneficiaryRegistry.deploy();
   await beneficiaryRegistry.deployed();
 
