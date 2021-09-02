@@ -263,7 +263,7 @@ describe("HysiBatchInteraction", function () {
           await expect(
             contracts.hysiBatchInteraction
               .connect(depositor)
-              .withdrawFromQueue(batchId, BatchType.Mint, parseEther("10"))
+              .withdrawFromQueue(batchId, parseEther("10"))
           ).to.be.revertedWith("already processed");
         });
         it("reverts when trying to withdraw more than deposited", async function () {
@@ -275,7 +275,7 @@ describe("HysiBatchInteraction", function () {
           await expect(
             contracts.hysiBatchInteraction
               .connect(depositor)
-              .withdrawFromQueue(batchId, BatchType.Mint, parseEther("101"))
+              .withdrawFromQueue(batchId, parseEther("101"))
           ).to.be.revertedWith("not enough shares");
         });
       });
@@ -289,7 +289,7 @@ describe("HysiBatchInteraction", function () {
           expect(
             await contracts.hysiBatchInteraction
               .connect(depositor)
-              .withdrawFromQueue(batchId, BatchType.Mint, parseEther("100"))
+              .withdrawFromQueue(batchId, parseEther("100"))
           )
             .to.emit(contracts.hysiBatchInteraction, "WithdrawnFromQueue")
             .withArgs(batchId, parseEther("100"), depositor.address);
@@ -305,7 +305,7 @@ describe("HysiBatchInteraction", function () {
           expect(
             await contracts.hysiBatchInteraction
               .connect(depositor)
-              .withdrawFromQueue(batchId, BatchType.Mint, parseEther("50"))
+              .withdrawFromQueue(batchId, parseEther("50"))
           ).to.emit(contracts.hysiBatchInteraction, "WithdrawnFromQueue");
           await provider.send("evm_increaseTime", [1800]);
           await provider.send("evm_mine", []);
@@ -611,7 +611,7 @@ describe("HysiBatchInteraction", function () {
           await expect(
             contracts.hysiBatchInteraction
               .connect(depositor)
-              .withdrawFromQueue(batchId, BatchType.Redeem, parseEther("10"))
+              .withdrawFromQueue(batchId, parseEther("10"))
           ).to.be.revertedWith("already processed");
         });
       });
@@ -624,7 +624,7 @@ describe("HysiBatchInteraction", function () {
           expect(
             await contracts.hysiBatchInteraction
               .connect(depositor)
-              .withdrawFromQueue(batchId, BatchType.Redeem, parseEther("100"))
+              .withdrawFromQueue(batchId, parseEther("100"))
           )
             .to.emit(contracts.hysiBatchInteraction, "WithdrawnFromQueue")
             .withArgs(batchId, parseEther("100"), depositor.address);
@@ -640,7 +640,7 @@ describe("HysiBatchInteraction", function () {
           expect(
             await contracts.hysiBatchInteraction
               .connect(depositor)
-              .withdrawFromQueue(batchId, BatchType.Redeem, parseEther("50"))
+              .withdrawFromQueue(batchId, parseEther("50"))
           ).to.emit(contracts.hysiBatchInteraction, "WithdrawnFromQueue");
           await provider.send("evm_increaseTime", [1800]);
           await provider.send("evm_mine", []);

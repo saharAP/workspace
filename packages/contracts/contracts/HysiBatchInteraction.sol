@@ -191,6 +191,7 @@ contract HysiBatchInteraction is Owned {
     require(batch.claimable == false, "already processed");
     require(batch.shareBalance[msg.sender] >= shares_, "not enough shares");
 
+    //At this point the share balance is equal to the supplied token and can be used interchangeably
     batch.shareBalance[msg.sender] = batch.shareBalance[msg.sender].sub(
       shares_
     );
