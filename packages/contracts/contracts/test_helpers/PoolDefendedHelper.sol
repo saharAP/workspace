@@ -2,7 +2,7 @@ pragma solidity >=0.6.0 <0.7.0;
 
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "@openzeppelin/contracts/token/ERC20/SafeERC20.sol";
-import "../Pool.sol";
+import "../pool/Pool.sol";
 
 contract PoolDefendedHelper {
   using SafeERC20 for IERC20;

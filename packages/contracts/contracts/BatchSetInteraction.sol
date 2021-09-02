@@ -13,6 +13,10 @@ import "./Interfaces/Integrations/CurveContracts.sol";
 import "./Interfaces/Integrations/BasicIssuanceModule.sol";
 import "./Interfaces/Integrations/ISetToken.sol";
 
+/**
+ * @title BatchSetInteraction
+ * @notice Use this contract for minting and redeeming HYSI with reduced gas fees.
+ */
 contract BatchSetInteraction is Owned {
   using SafeMath for uint256;
   using SafeERC20 for ThreeCrv;
@@ -160,9 +164,9 @@ contract BatchSetInteraction is Owned {
 
     for (uint256 i; i < underlyingToken.length; i++) {
       uint256 allocation = batch
-      .suppliedToken
-      .mul(underlyingToken[i].allocation)
-      .div(100e18);
+        .suppliedToken
+        .mul(underlyingToken[i].allocation)
+        .div(100e18);
       uint256 crvLPTokenAmount = _sendToCurve(
         allocation,
         underlyingToken[i].curveMetaPool

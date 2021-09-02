@@ -1,47 +1,113 @@
+# {{name}}
+
+
+{{{natspec.userdoc}}}
+
+***
+
 {{{natspec.devdoc}}}
 
 {{#if ownFunctions}}
-    # Functions:
-    {{#ownFunctions}}
-        {{#if (or (eq visibility "public") (eq visibility "external"))}}
-            - [`{{name}}({{args}})`](#{{anchor}})
-        {{/if}}
-    {{/ownFunctions}}
+## Functions:
+{{#ownFunctions}}
+{{#if (or (eq visibility "public") (eq visibility "external"))}}
+- [`{{name}}()`](#{{anchor}})
+{{/if}}
+{{/ownFunctions}}
 {{/if}}
 
 {{#if ownEvents}}
-    # Events:
-    {{#ownEvents}}
-        - [`{{name}}({{args}})`](#{{anchor}})
-    {{/ownEvents}}
+## Events:
+{{#ownEvents}}
+- [`{{name}}`](#{{anchor}})
+{{/ownEvents}}
 {{/if}}
 
+{{#if ownModifiers}}
+## Modifiers:
+{{#ownModifiers}}
+- [`{{name}}()`](#{{anchor}})
+{{/ownModifiers}}
+{{/if}}
+
+***
+
+## Function Definitions:
 {{#ownFunctions}}
-    {{#if (or (eq visibility "public") (eq visibility "external"))}}
-        # Function `{{name}}({{args}}){{#if outputs}} → {{outputs}}{{/if}}` {#{{anchor~}} }
-        {{#if natspec.devdoc}}{{natspec.devdoc}}{{else}}Missing `devdoc` for function `{{name}}`{{/if}}
-        {{#if natspec.params}}
-            ## Parameters:
-            {{#natspec.params}}
-                - `{{param}}`: {{description}}
-            {{/natspec.params}}
-        {{else}}Missing `params` for function `{{name}}`{{/if}}
-        {{#if natspec.returns}}
-            ## Return Values:
-            {{#natspec.returns}}
-                - {{param}} {{description}}
-            {{/natspec.returns}}
-        {{else}}Missing `returns` for function `{{name}}`{{/if}}
-    {{/if}}
+
+{{#if (or (eq visibility "public") (eq visibility "external"))}}
+
+### {{name}}()
+
+```
+{{name}}({{args}}) {{visibility}} {{#if outputs}} returns ({{outputs}}){{/if}}
+```
+
+{{#if natspec.devdoc}}{{natspec.devdoc}}{{/if}}
+
+{{#if natspec.params}}
+
+| Parameter Name | Type | Description |
+|------------|-----| -------|
+{{#natspec.params}}
+| `{{param}}`| {{#lookup ../args.types @index}}{{/lookup}}| {{strip description}}| 
+{{/natspec.params}}
+
+
+{{/if}}
+
+
+{{#if natspec.returns}}
+#### Return Values:
+| Return Name | Type | Description |
+|-------------|-------|------------|
+{{#natspec.returns}}
+|{{param}}| {{#lookup ../args.types @index}}{{/lookup}}|{{description}}|
+{{/natspec.returns}}
+
+{{/if}}
+{{/if}}
 {{/ownFunctions}}
 
+## Events
 {{#ownEvents}}
-    # Event `{{name}}({{args}})` {#{{anchor~}} }
-    {{#if natspec.devdoc}}{{natspec.devdoc}}{{else}}Missing `devdoc` for event `{{name}}`{{/if}}
-    {{#if natspec.params}}
-        ## Parameters:
-        {{#natspec.params}}
-            - `{{param}}`: {{description}}
-        {{/natspec.params}}
-    {{else}}Missing `params` for event `{{name}}`{{/if}}
+### {{name}}
+```
+{{name}}({{args}})
+```
+
+{{#if natspec.devdoc}}
+{{natspec.devdoc}}
+`
+{{/if}}
+{{#if natspec.params}}
+## Parameters:
+{{#natspec.params}}
+- `{{param}}`: {{description}}
+{{/natspec.params}}
+
+{{/if}}
 {{/ownEvents}}
+
+
+{{#if ownModifiers}}
+## Modifiers
+{{#ownModifiers}}
+### `{{name}}()`
+```
+{{name}}({{args}})
+```
+
+{{#if natspec.devdoc}}
+{{natspec.devdoc}}
+
+{{/if}}
+{{#if natspec.params}}
+## Parameters:
+{{#natspec.params}}
+- `{{param}}`: {{description}}
+{{/natspec.params}}
+
+{{/if}}
+{{/ownModifiers}}
+{{/if}}

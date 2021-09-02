@@ -12,6 +12,7 @@ import "./ParticipationReward.sol";
 import "./Governed.sol";
 
 /**
+ * @title BeneficiaryGovernance
  * @notice This contract is for submitting beneficiary nomination proposals and beneficiary takedown proposals
  */
 contract BeneficiaryGovernance is ParticipationReward {
@@ -140,7 +141,7 @@ contract BeneficiaryGovernance is ParticipationReward {
    * @notice checks if someone has voted to a specific proposal or not
    * @param  proposalId id of the proposal
    * @param  voter address opf voter
-   * @return true or false
+   * @return boolean
    */
   function hasVoted(uint256 proposalId, address voter)
     external
@@ -157,7 +158,7 @@ contract BeneficiaryGovernance is ParticipationReward {
    * @param  _beneficiary address of the beneficiary
    * @param  _applicationCid IPFS content hash
    * @param  _type the proposal type (nomination / takedown)
-   * @return proposal id
+   * @return proposalId
    */
   function createProposal(
     address _beneficiary,
@@ -317,7 +318,7 @@ contract BeneficiaryGovernance is ParticipationReward {
   /**
    * @notice gets the voice credits of an address using the staking contract
    * @param  _address address of the voter
-   * @return _voiceCredits
+   * @return _voiceCredits voiceCredits of user
    */
   function getVoiceCredits(address _address)
     internal

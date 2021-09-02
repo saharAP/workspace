@@ -3,4 +3,5 @@ node_modules
 **/_next/**
 **/dist/**
 packages/next/compiled/**
+contract.hbs
 lerna.json
