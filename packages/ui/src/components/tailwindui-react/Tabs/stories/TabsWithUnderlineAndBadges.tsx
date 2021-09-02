@@ -15,15 +15,17 @@
   ```
 */
 const tabs = [
+
   { name: 'Applied', href: '#', count: '52', current: false },
   { name: 'Phone Screening', href: '#', count: '6', current: false },
   { name: 'Interview', href: '#', count: '4', current: true },
   { name: 'Offer', href: '#', current: false },
   { name: 'Disqualified', href: '#', current: false },
-];
+
+]
 
 function classNames(...classes) {
-  return classes.filter(Boolean).join(' ');
+  return classes.filter(Boolean).join(' ')
 }
 
 export default function Example() {
@@ -55,7 +57,7 @@ export default function Example() {
                   tab.current
                     ? 'border-indigo-500 text-indigo-600'
                     : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-200',
-                  'whitespace-nowrap flex py-4 px-1 border-b-2 font-medium text-sm',
+                  'whitespace-nowrap flex py-4 px-1 border-b-2 font-medium text-sm'
                 )}
                 aria-current={tab.current ? 'page' : undefined}
               >
@@ -63,10 +65,8 @@ export default function Example() {
                 {tab.count ? (
                   <span
                     className={classNames(
-                      tab.current
-                        ? 'bg-indigo-100 text-indigo-600'
-                        : 'bg-gray-100 text-gray-900',
-                      'hidden ml-3 py-0.5 px-2.5 rounded-full text-xs font-medium md:inline-block',
+                      tab.current ? 'bg-indigo-100 text-indigo-600' : 'bg-gray-100 text-gray-900',
+                      'hidden ml-3 py-0.5 px-2.5 rounded-full text-xs font-medium md:inline-block'
                     )}
                   >
                     {tab.count}
@@ -78,5 +78,5 @@ export default function Example() {
         </div>
       </div>
     </div>
-  );
+  )
 }

@@ -185,7 +185,10 @@ describe("BeneficiaryVaults", function () {
       expect(vaultData.merkleRoot).to.equal(merkleRoot);
       expect(vaultData.status).to.equal(VaultStatus.Open);
       expect(
-        await contracts.beneficiaryVaults.hasClaimed(0, beneficiary1.address)
+        await contracts.beneficiaryVaults.hasClaimed(
+          0,
+          beneficiary1.address
+        )
       ).to.be.false;
       expect(
         await contracts.beneficiaryVaults.hasClaimed(
@@ -213,14 +216,12 @@ describe("BeneficiaryVaults", function () {
         makeElement(beneficiary1.address, claims[beneficiary1.address])
       );
       await expect(
-        contracts.beneficiaryVaults
-          .connect(beneficiary1)
-          .claimReward(
-            0,
-            proof,
-            beneficiary1.address,
-            claims[beneficiary1.address]
-          )
+        contracts.beneficiaryVaults.connect(beneficiary1).claimReward(
+          0,
+          proof,
+          beneficiary1.address,
+          claims[beneficiary1.address]
+        )
       ).to.be.revertedWith("No reward");
     });
     describe("deposits reward and distribute it", function () {
@@ -321,9 +322,7 @@ describe("BeneficiaryVaults", function () {
           const vault = await contracts.beneficiaryVaults.getVault(0);
           expect(vault.totalAllocated).to.equal(firstReward);
           expect(vault.currentBalance).to.equal(firstReward);
-          expect(
-            await contracts.beneficiaryVaults.totalDistributedBalance()
-          ).to.equal(firstReward);
+          expect(await contracts.beneficiaryVaults.totalDistributedBalance()).to.equal(firstReward);
         });
         it("allocates rewards to multiple vaults evenly", async function () {
           await contracts.mockPop
@@ -353,7 +352,7 @@ describe("BeneficiaryVaults", function () {
             ).to.be.revertedWith("no rewards available");
           });
           it("when a region as no open vaults", async function () {
-            await contracts.beneficiaryVaults.connect(owner).closeVault(0);
+            await contracts.beneficiaryVaults.connect(owner).closeVault(0)
             await contracts.mockPop
               .connect(owner)
               .transfer(contracts.beneficiaryVaults.address, parseEther("1"));

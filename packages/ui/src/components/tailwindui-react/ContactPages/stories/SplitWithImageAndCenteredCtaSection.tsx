@@ -23,18 +23,21 @@
   }
   ```
 */
-import { Popover, Transition } from '@headlessui/react';
-import { MenuIcon, XIcon } from '@heroicons/react/outline';
-import { ExternalLinkIcon } from '@heroicons/react/solid';
-import { Fragment } from 'react';
+import { Fragment } from 'react'
+import { Popover, Transition } from '@headlessui/react'
+import { MenuIcon, XIcon } from '@heroicons/react/outline'
+import { ExternalLinkIcon } from '@heroicons/react/solid'
 
 const navigation = [
+
   { name: 'Work', href: '#' },
   { name: 'Services', href: '#' },
   { name: 'About', href: '#' },
   { name: 'Blog', href: '#' },
-];
+
+]
 const footerNavigation = {
+
   solutions: [
     { name: 'Marketing', href: '#' },
     { name: 'Analytics', href: '#' },
@@ -122,7 +125,8 @@ const footerNavigation = {
       ),
     },
   ],
-};
+
+}
 
 export default function Example() {
   return (
@@ -151,11 +155,7 @@ export default function Example() {
             </div>
             <div className="hidden space-x-10 lg:flex lg:ml-10">
               {navigation.map((item) => (
-                <a
-                  key={item.name}
-                  href={item.href}
-                  className="text-base font-medium text-gray-500 hover:text-gray-600"
-                >
+                <a key={item.name} href={item.href} className="text-base font-medium text-gray-500 hover:text-gray-600">
                   {item.name}
                 </a>
               ))}
@@ -180,10 +180,7 @@ export default function Example() {
           leaveFrom="opacity-100 scale-100"
           leaveTo="opacity-0 scale-95"
         >
-          <Popover.Panel
-            focus
-            className="absolute top-0 inset-x-0 p-2 transition transform origin-top lg:hidden"
-          >
+          <Popover.Panel focus className="absolute top-0 inset-x-0 p-2 transition transform origin-top lg:hidden">
             <div className="rounded-lg shadow-lg bg-white ring-1 ring-black ring-opacity-5 overflow-hidden">
               <div className="px-5 pt-4 flex items-center justify-between">
                 <div>
@@ -234,9 +231,8 @@ export default function Example() {
               Get in touch
             </h1>
             <p className="mt-6 max-w-3xl mx-auto text-xl leading-normal text-gray-500 text-center">
-              Convallis feugiat et aliquet pellentesque dictum nisi, velit.
-              Egestas fermentum adipiscing risus quam ac consectetur mattis
-              turpis tristique.
+              Convallis feugiat et aliquet pellentesque dictum nisi, velit. Egestas fermentum adipiscing risus quam ac
+              consectetur mattis turpis tristique.
             </p>
           </div>
         </div>
@@ -255,24 +251,14 @@ export default function Example() {
           <div className="relative py-16 px-4 sm:py-24 sm:px-6 lg:px-8 lg:max-w-7xl lg:mx-auto lg:py-32 lg:grid lg:grid-cols-2">
             <div className="lg:pr-8">
               <div className="max-w-md mx-auto sm:max-w-lg lg:mx-0">
-                <h2 className="text-3xl font-extrabold tracking-tight sm:text-4xl">
-                  Let's work together
-                </h2>
+                <h2 className="text-3xl font-extrabold tracking-tight sm:text-4xl">Let's work together</h2>
                 <p className="mt-4 text-lg text-gray-500 sm:mt-3">
-                  We’d love to hear from you! Send us a message using the form
-                  opposite, or email us. We’d love to hear from you! Send us a
-                  message using the form opposite, or email us.
+                  We’d love to hear from you! Send us a message using the form opposite, or email us. We’d love to hear
+                  from you! Send us a message using the form opposite, or email us.
                 </p>
-                <form
-                  action="#"
-                  method="POST"
-                  className="mt-9 grid grid-cols-1 gap-y-6 sm:grid-cols-2 sm:gap-x-8"
-                >
+                <form action="#" method="POST" className="mt-9 grid grid-cols-1 gap-y-6 sm:grid-cols-2 sm:gap-x-8">
                   <div>
-                    <label
-                      htmlFor="first-name"
-                      className="block text-sm font-medium text-gray-700"
-                    >
+                    <label htmlFor="first-name" className="block text-sm font-medium text-gray-700">
                       First name
                     </label>
                     <div className="mt-1">
@@ -286,10 +272,7 @@ export default function Example() {
                     </div>
                   </div>
                   <div>
-                    <label
-                      htmlFor="last-name"
-                      className="block text-sm font-medium text-gray-700"
-                    >
+                    <label htmlFor="last-name" className="block text-sm font-medium text-gray-700">
                       Last name
                     </label>
                     <div className="mt-1">
@@ -303,10 +286,7 @@ export default function Example() {
                     </div>
                   </div>
                   <div className="sm:col-span-2">
-                    <label
-                      htmlFor="email"
-                      className="block text-sm font-medium text-gray-700"
-                    >
+                    <label htmlFor="email" className="block text-sm font-medium text-gray-700">
                       Email
                     </label>
                     <div className="mt-1">
@@ -320,10 +300,7 @@ export default function Example() {
                     </div>
                   </div>
                   <div className="sm:col-span-2">
-                    <label
-                      htmlFor="company"
-                      className="block text-sm font-medium text-gray-700"
-                    >
+                    <label htmlFor="company" className="block text-sm font-medium text-gray-700">
                       Company
                     </label>
                     <div className="mt-1">
@@ -338,16 +315,10 @@ export default function Example() {
                   </div>
                   <div className="sm:col-span-2">
                     <div className="flex justify-between">
-                      <label
-                        htmlFor="phone"
-                        className="block text-sm font-medium text-gray-700"
-                      >
+                      <label htmlFor="phone" className="block text-sm font-medium text-gray-700">
                         Phone
                       </label>
-                      <span
-                        id="phone-description"
-                        className="text-sm text-gray-500"
-                      >
+                      <span id="phone-description" className="text-sm text-gray-500">
                         Optional
                       </span>
                     </div>
@@ -364,16 +335,10 @@ export default function Example() {
                   </div>
                   <div className="sm:col-span-2">
                     <div className="flex justify-between">
-                      <label
-                        htmlFor="how-can-we-help"
-                        className="block text-sm font-medium text-gray-700"
-                      >
+                      <label htmlFor="how-can-we-help" className="block text-sm font-medium text-gray-700">
                         How can we help you?
                       </label>
-                      <span
-                        id="how-can-we-help-description"
-                        className="text-sm text-gray-500"
-                      >
+                      <span id="how-can-we-help-description" className="text-sm text-gray-500">
                         Max. 500 characters
                       </span>
                     </div>
@@ -389,9 +354,7 @@ export default function Example() {
                     </div>
                   </div>
                   <fieldset className="sm:col-span-2">
-                    <legend className="block text-sm font-medium text-gray-700">
-                      Expected budget
-                    </legend>
+                    <legend className="block text-sm font-medium text-gray-700">Expected budget</legend>
                     <div className="mt-4 grid grid-cols-1 gap-y-4">
                       <div className="flex items-center">
                         <input
@@ -402,9 +365,7 @@ export default function Example() {
                           className="focus:ring-grape-500 h-4 w-4 text-grape-600 border-gray-300"
                         />
                         <label htmlFor="budget-under-25k" className="ml-3">
-                          <span className="block text-sm text-gray-700">
-                            Less than $25K
-                          </span>
+                          <span className="block text-sm text-gray-700">Less than $25K</span>
                         </label>
                       </div>
                       <div className="flex items-center">
@@ -416,9 +377,7 @@ export default function Example() {
                           className="focus:ring-grape-500 h-4 w-4 text-grape-600 border-gray-300"
                         />
                         <label htmlFor="budget-25k-50k" className="ml-3">
-                          <span className="block text-sm text-gray-700">
-                            $25K – $50K
-                          </span>
+                          <span className="block text-sm text-gray-700">$25K – $50K</span>
                         </label>
                       </div>
                       <div className="flex items-center">
@@ -430,9 +389,7 @@ export default function Example() {
                           className="focus:ring-grape-500 h-4 w-4 text-grape-600 border-gray-300"
                         />
                         <label htmlFor="budget-50k-100k" className="ml-3">
-                          <span className="block text-sm text-gray-700">
-                            $50K – $100K
-                          </span>
+                          <span className="block text-sm text-gray-700">$50K – $100K</span>
                         </label>
                       </div>
                       <div className="flex items-center">
@@ -444,18 +401,13 @@ export default function Example() {
                           className="focus:ring-grape-500 h-4 w-4 text-grape-600 border-gray-300"
                         />
                         <label htmlFor="budget-over-100k" className="ml-3">
-                          <span className="block text-sm text-gray-700">
-                            $100K+
-                          </span>
+                          <span className="block text-sm text-gray-700">$100K+</span>
                         </label>
                       </div>
                     </div>
                   </fieldset>
                   <div className="sm:col-span-2">
-                    <label
-                      htmlFor="how-did-you-hear-about-us"
-                      className="block text-sm font-medium text-gray-700"
-                    >
+                    <label htmlFor="how-did-you-hear-about-us" className="block text-sm font-medium text-gray-700">
                       How did you hear about us?
                     </label>
                     <div className="mt-1">
@@ -485,9 +437,7 @@ export default function Example() {
         <div className="bg-grape-400">
           <div className="max-w-md mx-auto text-center py-16 px-4 sm:max-w-2xl sm:py-24 sm:px-6 lg:px-8 lg:py-32">
             <h2 className="text-3xl font-extrabold sm:text-4xl">
-              <span className="block text-white">
-                Looking for a new career?
-              </span>
+              <span className="block text-white">Looking for a new career?</span>
               <span className="block text-grape-900">We’re hiring.</span>
             </h2>
             <a
@@ -495,10 +445,7 @@ export default function Example() {
               className="mt-8 w-full inline-flex items-center justify-center py-3 px-5 bg-white border border-transparent rounded-md shadow-md text-base font-medium text-grape-600 hover:bg-grape-50 sm:w-auto"
             >
               <span>See open positions</span>
-              <ExternalLinkIcon
-                className="ml-3 h-5 w-5 flex-shrink-0 text-gray-400"
-                aria-hidden="true"
-              />
+              <ExternalLinkIcon className="ml-3 h-5 w-5 flex-shrink-0 text-gray-400" aria-hidden="true" />
             </a>
           </div>
         </div>
@@ -517,16 +464,11 @@ export default function Example() {
                 alt="Company name"
               />
               <p className="text-gray-400 text-base">
-                Making the world a better place through constructing elegant
-                hierarchies.
+                Making the world a better place through constructing elegant hierarchies.
               </p>
               <div className="flex space-x-6">
                 {footerNavigation.social.map((item) => (
-                  <a
-                    key={item.name}
-                    href={item.href}
-                    className="text-gray-400 hover:text-gray-300"
-                  >
+                  <a key={item.name} href={item.href} className="text-gray-400 hover:text-gray-300">
                     <span className="sr-only">{item.name}</span>
                     <item.icon className="h-6 w-6" aria-hidden="true" />
                   </a>
@@ -536,16 +478,11 @@ export default function Example() {
             <div className="mt-12 grid grid-cols-2 gap-8 xl:mt-0 xl:col-span-2">
               <div className="md:grid md:grid-cols-2 md:gap-8">
                 <div>
-                  <h3 className="text-sm font-semibold text-gray-200 tracking-wider uppercase">
-                    Solutions
-                  </h3>
+                  <h3 className="text-sm font-semibold text-gray-200 tracking-wider uppercase">Solutions</h3>
                   <ul className="mt-4 space-y-4">
                     {footerNavigation.solutions.map((item) => (
                       <li key={item.name}>
-                        <a
-                          href={item.href}
-                          className="text-base text-gray-400 hover:text-gray-300"
-                        >
+                        <a href={item.href} className="text-base text-gray-400 hover:text-gray-300">
                           {item.name}
                         </a>
                       </li>
@@ -553,16 +490,11 @@ export default function Example() {
                   </ul>
                 </div>
                 <div className="mt-12 md:mt-0">
-                  <h3 className="text-sm font-semibold text-gray-200 tracking-wider uppercase">
-                    Support
-                  </h3>
+                  <h3 className="text-sm font-semibold text-gray-200 tracking-wider uppercase">Support</h3>
                   <ul className="mt-4 space-y-4">
                     {footerNavigation.support.map((item) => (
                       <li key={item.name}>
-                        <a
-                          href={item.href}
-                          className="text-base text-gray-400 hover:text-gray-300"
-                        >
+                        <a href={item.href} className="text-base text-gray-400 hover:text-gray-300">
                           {item.name}
                         </a>
                       </li>
@@ -572,16 +504,11 @@ export default function Example() {
               </div>
               <div className="md:grid md:grid-cols-2 md:gap-8">
                 <div>
-                  <h3 className="text-sm font-semibold text-gray-200 tracking-wider uppercase">
-                    Company
-                  </h3>
+                  <h3 className="text-sm font-semibold text-gray-200 tracking-wider uppercase">Company</h3>
                   <ul className="mt-4 space-y-4">
                     {footerNavigation.company.map((item) => (
                       <li key={item.name}>
-                        <a
-                          href={item.href}
-                          className="text-base text-gray-400 hover:text-gray-300"
-                        >
+                        <a href={item.href} className="text-base text-gray-400 hover:text-gray-300">
                           {item.name}
                         </a>
                       </li>
@@ -589,16 +516,11 @@ export default function Example() {
                   </ul>
                 </div>
                 <div className="mt-12 md:mt-0">
-                  <h3 className="text-sm font-semibold text-gray-200 tracking-wider uppercase">
-                    Legal
-                  </h3>
+                  <h3 className="text-sm font-semibold text-gray-200 tracking-wider uppercase">Legal</h3>
                   <ul className="mt-4 space-y-4">
                     {footerNavigation.legal.map((item) => (
                       <li key={item.name}>
-                        <a
-                          href={item.href}
-                          className="text-base text-gray-400 hover:text-gray-300"
-                        >
+                        <a href={item.href} className="text-base text-gray-400 hover:text-gray-300">
                           {item.name}
                         </a>
                       </li>
@@ -609,12 +531,10 @@ export default function Example() {
             </div>
           </div>
           <div className="mt-12 border-t border-gray-700 pt-8">
-            <p className="text-base text-gray-400 xl:text-center">
-              &copy; 2020 Workflow, Inc. All rights reserved.
-            </p>
+            <p className="text-base text-gray-400 xl:text-center">&copy; 2020 Workflow, Inc. All rights reserved.</p>
           </div>
         </div>
       </footer>
     </div>
-  );
+  )
 }

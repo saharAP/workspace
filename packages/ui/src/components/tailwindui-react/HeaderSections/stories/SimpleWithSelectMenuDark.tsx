@@ -14,7 +14,7 @@
   }
   ```
 */
-import { ChevronDownIcon } from '@heroicons/react/solid';
+import { ChevronDownIcon } from '@heroicons/react/solid'
 
 export default function Example() {
   return (
@@ -25,15 +25,11 @@ export default function Example() {
             Pricing Plans
           </h2>
           <p className="mt-5 text-xl text-gray-400">
-            Start building for free, then add a site plan to go live. Account
-            plans unlock additional features.
+            Start building for free, then add a site plan to go live. Account plans unlock additional features.
           </p>
         </div>
         <div className="mt-10 w-full max-w-xs">
-          <label
-            htmlFor="currency"
-            className="block text-base font-medium text-gray-300"
-          >
+          <label htmlFor="currency" className="block text-base font-medium text-gray-300">
             Currency
           </label>
           <div className="mt-1.5 relative">
@@ -54,14 +50,11 @@ export default function Example() {
               <option>United Kingdom (GBP)</option>
             </select>
             <div className="pointer-events-none absolute inset-y-0 right-0 px-2 flex items-center">
-              <ChevronDownIcon
-                className="h-4 w-4 text-white"
-                aria-hidden="true"
-              />
+              <ChevronDownIcon className="h-4 w-4 text-white" aria-hidden="true" />
             </div>
           </div>
         </div>
       </div>
     </div>
-  );
+  )
 }

@@ -7,12 +7,7 @@ export default function Example() {
       </div>
       <div className="relative flex justify-center">
         <span className="bg-white px-2 text-gray-500">
-          <svg
-            className="h-5 w-5 text-gray-500"
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 20 20"
-          >
+          <svg className="h-5 w-5 text-gray-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
             <path
               fill="#6B7280"
               fillRule="evenodd"
@@ -23,5 +18,5 @@ export default function Example() {
         </span>
       </div>
     </div>
-  );
+  )
 }

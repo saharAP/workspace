@@ -8,8 +8,7 @@ export default function Example() {
           <span className="block">Start using Workflow today.</span>
         </h2>
         <p className="mt-4 text-lg leading-6 text-indigo-200">
-          Ac euismod vel sit maecenas id pellentesque eu sed consectetur.
-          Malesuada adipiscing sagittis vel nulla nec.
+          Ac euismod vel sit maecenas id pellentesque eu sed consectetur. Malesuada adipiscing sagittis vel nulla nec.
         </p>
         <a
           href="#"
@@ -19,5 +18,5 @@ export default function Example() {
         </a>
       </div>
     </div>
-  );
+  )
 }

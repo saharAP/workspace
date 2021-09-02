@@ -15,12 +15,14 @@
   ```
 */
 const people = [
+
   { id: 1, name: 'Annette Black' },
   { id: 2, name: 'Cody Fisher' },
   { id: 3, name: 'Courtney Henry' },
   { id: 4, name: 'Kathryn Murphy' },
   { id: 5, name: 'Theresa Webb' },
-];
+
+]
 
 export default function Example() {
   return (
@@ -30,10 +32,7 @@ export default function Example() {
         {people.map((person, personIdx) => (
           <div key={personIdx} className="relative flex items-start py-4">
             <div className="min-w-0 flex-1 text-sm">
-              <label
-                htmlFor={`person-${person.id}`}
-                className="font-medium text-gray-700 select-none"
-              >
+              <label htmlFor={`person-${person.id}`} className="font-medium text-gray-700 select-none">
                 {person.name}
               </label>
             </div>
@@ -49,5 +48,5 @@ export default function Example() {
         ))}
       </div>
     </fieldset>
-  );
+  )
 }

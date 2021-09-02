@@ -17,23 +17,15 @@ export default function Example() {
                 />
               </div>
               <div className="mt-4 ml-8 flex flex-grow flex-shrink-0 justify-center lg:flex-grow-0 lg:ml-4">
-                <img
-                  className="h-12"
-                  src="https://tailwindui.com/img/logos/tuple-logo-indigo-900.svg"
-                  alt="Tuple"
-                />
+                <img className="h-12" src="https://tailwindui.com/img/logos/tuple-logo-indigo-900.svg" alt="Tuple" />
               </div>
               <div className="mt-4 ml-8 flex flex-grow flex-shrink-0 justify-center lg:flex-grow-0 lg:ml-4">
-                <img
-                  className="h-12"
-                  src="https://tailwindui.com/img/logos/level-logo-indigo-900.svg"
-                  alt="Level"
-                />
+                <img className="h-12" src="https://tailwindui.com/img/logos/level-logo-indigo-900.svg" alt="Level" />
               </div>
             </div>
           </div>
         </div>
       </div>
     </div>
-  );
+  )
 }

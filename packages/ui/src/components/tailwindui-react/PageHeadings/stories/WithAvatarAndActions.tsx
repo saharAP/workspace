@@ -10,10 +10,7 @@ export default function Example() {
               src="https://images.unsplash.com/photo-1463453091185-61582044d556?ixlib=rb-=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=8&w=1024&h=1024&q=80"
               alt=""
             />
-            <span
-              className="absolute inset-0 shadow-inner rounded-full"
-              aria-hidden="true"
-            />
+            <span className="absolute inset-0 shadow-inner rounded-full" aria-hidden="true" />
           </div>
         </div>
         {/*
@@ -46,5 +43,5 @@ export default function Example() {
         </button>
       </div>
     </div>
-  );
+  )
 }

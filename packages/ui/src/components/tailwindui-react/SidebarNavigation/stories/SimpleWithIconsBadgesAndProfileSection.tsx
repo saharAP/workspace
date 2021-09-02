@@ -1,24 +1,19 @@
 /* This example requires Tailwind CSS v2.0+ */
-import {
-  CalendarIcon,
-  ChartBarIcon,
-  FolderIcon,
-  HomeIcon,
-  InboxIcon,
-  UsersIcon,
-} from '@heroicons/react/outline';
+import { CalendarIcon, ChartBarIcon, FolderIcon, HomeIcon, InboxIcon, UsersIcon } from '@heroicons/react/outline'
 
 const navigation = [
+
   { name: 'Dashboard', icon: HomeIcon, href: '#', current: true },
   { name: 'Team', icon: UsersIcon, href: '#', count: 3, current: false },
   { name: 'Projects', icon: FolderIcon, href: '#', count: 4, current: false },
   { name: 'Calendar', icon: CalendarIcon, href: '#', current: false },
   { name: 'Documents', icon: InboxIcon, href: '#', count: 12, current: false },
   { name: 'Reports', icon: ChartBarIcon, href: '#', current: false },
-];
+
+]
 
 function classNames(...classes) {
-  return classes.filter(Boolean).join(' ');
+  return classes.filter(Boolean).join(' ')
 }
 
 export default function Example() {
@@ -32,10 +27,7 @@ export default function Example() {
             alt="Workflow"
           />
         </div>
-        <nav
-          className="mt-5 flex-1 px-2 bg-white space-y-1"
-          aria-label="Sidebar"
-        >
+        <nav className="mt-5 flex-1 px-2 bg-white space-y-1" aria-label="Sidebar">
           {navigation.map((item) => (
             <a
               key={item.name}
@@ -44,15 +36,13 @@ export default function Example() {
                 item.current
                   ? 'bg-gray-100 text-gray-900 hover:text-gray-900 hover:bg-gray-100'
                   : 'text-gray-600 hover:text-gray-900 hover:bg-gray-50',
-                'group flex items-center px-2 py-2 text-sm font-medium rounded-md',
+                'group flex items-center px-2 py-2 text-sm font-medium rounded-md'
               )}
             >
               <item.icon
                 className={classNames(
-                  item.current
-                    ? 'text-gray-500'
-                    : 'text-gray-400 group-hover:text-gray-500',
-                  'mr-3 flex-shrink-0 h-6 w-6',
+                  item.current ? 'text-gray-500' : 'text-gray-400 group-hover:text-gray-500',
+                  'mr-3 flex-shrink-0 h-6 w-6'
                 )}
                 aria-hidden="true"
               />
@@ -60,10 +50,8 @@ export default function Example() {
               {item.count ? (
                 <span
                   className={classNames(
-                    item.current
-                      ? 'bg-white'
-                      : 'bg-gray-100 group-hover:bg-gray-200',
-                    'ml-3 inline-block py-0.5 px-3 text-xs font-medium rounded-full',
+                    item.current ? 'bg-white' : 'bg-gray-100 group-hover:bg-gray-200',
+                    'ml-3 inline-block py-0.5 px-3 text-xs font-medium rounded-full'
                   )}
                 >
                   {item.count}
@@ -84,16 +72,12 @@ export default function Example() {
               />
             </div>
             <div className="ml-3">
-              <p className="text-sm font-medium text-gray-700 group-hover:text-gray-900">
-                Tom Cook
-              </p>
-              <p className="text-xs font-medium text-gray-500 group-hover:text-gray-700">
-                View profile
-              </p>
+              <p className="text-sm font-medium text-gray-700 group-hover:text-gray-900">Tom Cook</p>
+              <p className="text-xs font-medium text-gray-500 group-hover:text-gray-700">View profile</p>
             </div>
           </div>
         </a>
       </div>
     </div>
-  );
+  )
 }

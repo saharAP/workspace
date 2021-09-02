@@ -1,19 +1,14 @@
 /* This example requires Tailwind CSS v2.0+ */
-import { Dialog, Transition } from '@headlessui/react';
-import { XIcon } from '@heroicons/react/outline';
-import { Fragment, useState } from 'react';
+import { Fragment, useState } from 'react'
+import { Dialog, Transition } from '@headlessui/react'
+import { XIcon } from '@heroicons/react/outline'
 
 export default function Example() {
-  const [open, setOpen] = useState(true);
+  const [open, setOpen] = useState(true)
 
   return (
     <Transition.Root show={open} as={Fragment}>
-      <Dialog
-        as="div"
-        auto-reopen="true"
-        className="fixed inset-0 overflow-hidden"
-        onClose={setOpen}
-      >
+      <Dialog as="div" auto-reopen="true" className="fixed inset-0 overflow-hidden" onClose={setOpen}>
         <div className="absolute inset-0 overflow-hidden">
           <Dialog.Overlay className="absolute inset-0" />
 
@@ -32,9 +27,7 @@ export default function Example() {
                   <div className="min-h-0 flex-1 flex flex-col py-6 overflow-y-scroll">
                     <div className="px-4 sm:px-6">
                       <div className="flex items-start justify-between">
-                        <Dialog.Title className="text-lg font-medium text-gray-900">
-                          Panel title
-                        </Dialog.Title>
+                        <Dialog.Title className="text-lg font-medium text-gray-900">Panel title</Dialog.Title>
                         <div className="ml-3 h-7 flex items-center">
                           <button
                             className="bg-white rounded-md text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500"
@@ -48,10 +41,7 @@ export default function Example() {
                     </div>
                     <div className="mt-6 relative flex-1 px-4 sm:px-6">
                       {/* Replace with your content */}
-                      <div
-                        className="h-full border-2 border-dashed border-gray-200"
-                        aria-hidden="true"
-                      />
+                      <div className="h-full border-2 border-dashed border-gray-200" aria-hidden="true" />
                       {/* /End replace */}
                     </div>
                   </div>
@@ -77,5 +67,5 @@ export default function Example() {
         </div>
       </Dialog>
     </Transition.Root>
-  );
+  )
 }

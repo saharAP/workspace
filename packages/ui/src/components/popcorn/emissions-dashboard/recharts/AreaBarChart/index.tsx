@@ -31,9 +31,9 @@ export const AreaBarChart: React.FC<AreaChartProps> = ({
   transactionsDataKey,
   dateDataKey,
   co2EmissionDataKey,
-  areaColor = '#C7D2FE',
-  barColor = '#4F46E5',
-  gridColor = '#E0E0E0',
+  areaColor = "#C7D2FE",
+  barColor = "#4F46E5",
+  gridColor = "#E0E0E0"
 }) => {
   return (
     <div className="w-screen grid justify-items-stretch">

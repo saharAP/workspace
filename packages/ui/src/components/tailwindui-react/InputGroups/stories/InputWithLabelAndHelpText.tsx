@@ -17,10 +17,7 @@
 export default function Example() {
   return (
     <div>
-      <label
-        htmlFor="email"
-        className="block text-sm font-medium text-gray-700"
-      >
+      <label htmlFor="email" className="block text-sm font-medium text-gray-700">
         Email
       </label>
       <div className="mt-1">
@@ -37,5 +34,5 @@ export default function Example() {
         We'll only use this for spam.
       </p>
     </div>
-  );
+  )
 }

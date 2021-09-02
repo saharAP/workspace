@@ -12,7 +12,7 @@ export interface EmissionSummaryStats {
 interface HeaderNavigation {
   name: string;
   href: string;
-  current: string | boolean;
+  current: string|boolean;
 }
 
 interface UserNavigation {
@@ -38,8 +38,8 @@ export interface NavBarProps {
   logo: string;
   contractProps: {
     open: boolean;
-    setOpen: (state: boolean) => void;
-    addContract: (contract: string) => void;
+    setOpen: (state:boolean) => void;
+    addContract: (contract:string) => void;
   };
   contractErrorProps: {
     errorMessage: string;

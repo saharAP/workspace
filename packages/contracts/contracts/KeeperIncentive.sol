@@ -93,7 +93,7 @@ contract KeeperIncentive is Governed {
 
   function toggleApproval(uint256 _incentiveId) external onlyGovernance {
     incentives[_incentiveId].openToEveryone = !incentives[_incentiveId]
-    .openToEveryone;
+      .openToEveryone;
     emit ApprovalToggled(_incentiveId, incentives[_incentiveId].openToEveryone);
   }
 

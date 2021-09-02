@@ -14,12 +14,13 @@
   }
   ```
 */
-import { Menu, Popover, Transition } from '@headlessui/react';
-import { BellIcon, MenuIcon, XIcon } from '@heroicons/react/outline';
-import { SearchIcon } from '@heroicons/react/solid';
-import { Fragment } from 'react';
+import { Fragment } from 'react'
+import { Menu, Popover, Transition } from '@headlessui/react'
+import { BellIcon, MenuIcon, XIcon } from '@heroicons/react/outline'
+import { SearchIcon } from '@heroicons/react/solid'
 
 const user = {
+
   name: 'Chelsea Hagon',
   handle: 'chelseahagon',
   email: 'chelseahagon@example.com',
@@ -27,17 +28,20 @@ const user = {
   imageId: '1550525811-e5869dd03032',
   imageUrl:
     'https://images.unsplash.com/photo-1550525811-e5869dd03032?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
-};
+
+}
 const navLinks = [
+
   { title: 'Home', active: true },
   { title: 'Profile', active: false },
   { title: 'Resources', active: false },
   { title: 'Company Directory', active: false },
   { title: 'Openings', active: false },
-];
+
+]
 
 function classNames(...classes) {
-  return classes.filter(Boolean).join(' ');
+  return classes.filter(Boolean).join(' ')
 }
 
 export default function Example() {
@@ -75,11 +79,7 @@ export default function Example() {
                     <div>
                       <Menu.Button className="bg-white rounded-full flex text-sm ring-2 ring-white ring-opacity-20 focus:outline-none focus:ring-opacity-100">
                         <span className="sr-only">Open user menu</span>
-                        <img
-                          className="h-8 w-8 rounded-full"
-                          src={user.imageUrl}
-                          alt=""
-                        />
+                        <img className="h-8 w-8 rounded-full" src={user.imageUrl} alt="" />
                       </Menu.Button>
                     </div>
                     <Transition
@@ -95,7 +95,7 @@ export default function Example() {
                               href="#"
                               className={classNames(
                                 active ? 'bg-gray-100' : '',
-                                'block px-4 py-2 text-sm text-gray-700',
+                                'block px-4 py-2 text-sm text-gray-700'
                               )}
                             >
                               Your Profile
@@ -108,7 +108,7 @@ export default function Example() {
                               href="#"
                               className={classNames(
                                 active ? 'bg-gray-100' : '',
-                                'block px-4 py-2 text-sm text-gray-700',
+                                'block px-4 py-2 text-sm text-gray-700'
                               )}
                             >
                               Settings
@@ -121,7 +121,7 @@ export default function Example() {
                               href="#"
                               className={classNames(
                                 active ? 'bg-gray-100' : '',
-                                'block px-4 py-2 text-sm text-gray-700',
+                                'block px-4 py-2 text-sm text-gray-700'
                               )}
                             >
                               Sign out
@@ -177,7 +177,7 @@ export default function Example() {
                           href="#"
                           className={classNames(
                             link.active ? 'text-white' : 'text-indigo-100',
-                            'text-sm font-medium rounded-md bg-white bg-opacity-0 px-3 py-2 hover:bg-opacity-10',
+                            'text-sm font-medium rounded-md bg-white bg-opacity-0 px-3 py-2 hover:bg-opacity-10'
                           )}
                           aria-current={link.active ? 'page' : 'false'}
                         >
@@ -289,16 +289,10 @@ export default function Example() {
                       <div className="pt-4 pb-2">
                         <div className="flex items-center px-5">
                           <div className="flex-shrink-0">
-                            <img
-                              className="h-10 w-10 rounded-full"
-                              src={user.imageUrl}
-                              alt=""
-                            />
+                            <img className="h-10 w-10 rounded-full" src={user.imageUrl} alt="" />
                           </div>
                           <div className="ml-3 min-w-0 flex-1">
-                            <div className="text-base font-medium text-gray-800 truncate">
-                              Rebecca Nicholas
-                            </div>
+                            <div className="text-base font-medium text-gray-800 truncate">Rebecca Nicholas</div>
                             <div className="text-sm font-medium text-gray-500 truncate">
                               rebecca.nicholas@example.com
                             </div>
@@ -371,13 +365,11 @@ export default function Example() {
       <footer>
         <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 lg:max-w-7xl">
           <div className="border-t border-gray-200 py-8 text-sm text-gray-500 text-center sm:text-left">
-            <span className="block sm:inline">
-              &copy; 2021 Tailwind Labs Inc.
-            </span>{' '}
+            <span className="block sm:inline">&copy; 2021 Tailwind Labs Inc.</span>{' '}
             <span className="block sm:inline">All rights reserved.</span>
           </div>
         </div>
       </footer>
     </div>
-  );
+  )
 }

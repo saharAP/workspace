@@ -1,9 +1,11 @@
 /* This example requires Tailwind CSS v2.0+ */
 const steps = [
+
   { id: 'Step 1', name: 'Job details', href: '#', status: 'complete' },
   { id: 'Step 2', name: 'Application form', href: '#', status: 'current' },
   { id: 'Step 3', name: 'Preview', href: '#', status: 'upcoming' },
-];
+
+]
 
 export default function Example() {
   return (
@@ -27,9 +29,7 @@ export default function Example() {
                 className="pl-4 py-2 flex flex-col border-l-4 border-indigo-600 md:pl-0 md:pt-4 md:pb-0 md:border-l-0 md:border-t-4"
                 aria-current="step"
               >
-                <span className="text-xs text-indigo-600 font-semibold tracking-wide uppercase">
-                  {step.id}
-                </span>
+                <span className="text-xs text-indigo-600 font-semibold tracking-wide uppercase">{step.id}</span>
                 <span className="text-sm font-medium">{step.name}</span>
               </a>
             ) : (
@@ -47,5 +47,5 @@ export default function Example() {
         ))}
       </ol>
     </nav>
-  );
+  )
 }

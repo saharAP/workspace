@@ -1,38 +1,30 @@
 /* This example requires Tailwind CSS v2.0+ */
-import { CheckIcon } from '@heroicons/react/outline';
+import { CheckIcon } from '@heroicons/react/outline'
 
-const hobbyFeatures = [
-  'Pariatur quod similique',
-  'Sapiente libero doloribus',
-  'Vel ipsa esse repudiandae',
-];
-const scaleFeatures = [
-  'Pariatur quod similique',
-  'Sapiente libero doloribus',
-  'Vel ipsa esse repudiandae',
-];
+const hobbyFeatures = ['Pariatur quod similique', 'Sapiente libero doloribus', 'Vel ipsa esse repudiandae']
+const scaleFeatures = ['Pariatur quod similique', 'Sapiente libero doloribus', 'Vel ipsa esse repudiandae']
 const growthFeatures = [
+
   'Quia rem est sed impedit magnam',
   'Dolorem vero ratione voluptates',
   'Qui sed ab doloribus voluptatem dolore',
   'Laborum commodi molestiae id et fugiat',
   'Nam ut ipsa nesciunt culpa modi dolor',
-];
+
+]
 
 export default function Example() {
   return (
     <div className="bg-gray-900">
       <div className="pt-12 px-4 sm:px-6 lg:px-8 lg:pt-20">
         <div className="text-center">
-          <h2 className="text-lg leading-6 font-semibold text-gray-300 uppercase tracking-wider">
-            Pricing
-          </h2>
+          <h2 className="text-lg leading-6 font-semibold text-gray-300 uppercase tracking-wider">Pricing</h2>
           <p className="mt-2 text-3xl font-extrabold text-white sm:text-4xl lg:text-5xl">
             The right price for you, whoever you are
           </p>
           <p className="mt-3 max-w-4xl mx-auto text-xl text-gray-300 sm:mt-5 sm:text-2xl">
-            Lorem ipsum dolor sit, amet consectetur adipisicing elit. Velit
-            numquam eligendi quos odit doloribus molestiae voluptatum.
+            Lorem ipsum dolor sit, amet consectetur adipisicing elit. Velit numquam eligendi quos odit doloribus
+            molestiae voluptatum.
           </p>
         </div>
       </div>
@@ -47,22 +39,15 @@ export default function Example() {
                   <div className="flex-1 flex flex-col">
                     <div className="bg-white px-6 py-10">
                       <div>
-                        <h3
-                          className="text-center text-2xl font-medium text-gray-900"
-                          id="tier-hobby"
-                        >
+                        <h3 className="text-center text-2xl font-medium text-gray-900" id="tier-hobby">
                           Hobby
                         </h3>
                         <div className="mt-4 flex items-center justify-center">
                           <span className="px-3 flex items-start text-6xl tracking-tight text-gray-900">
-                            <span className="mt-2 mr-2 text-4xl font-medium">
-                              $
-                            </span>
+                            <span className="mt-2 mr-2 text-4xl font-medium">$</span>
                             <span className="font-extrabold">79</span>
                           </span>
-                          <span className="text-xl font-medium text-gray-500">
-                            /month
-                          </span>
+                          <span className="text-xl font-medium text-gray-500">/month</span>
                         </div>
                       </div>
                     </div>
@@ -71,14 +56,9 @@ export default function Example() {
                         {hobbyFeatures.map((feature) => (
                           <li key={feature} className="flex items-start">
                             <div className="flex-shrink-0">
-                              <CheckIcon
-                                className="flex-shrink-0 h-6 w-6 text-green-500"
-                                aria-hidden="true"
-                              />
+                              <CheckIcon className="flex-shrink-0 h-6 w-6 text-green-500" aria-hidden="true" />
                             </div>
-                            <p className="ml-3 text-base font-medium text-gray-500">
-                              {feature}
-                            </p>
+                            <p className="ml-3 text-base font-medium text-gray-500">{feature}</p>
                           </li>
                         ))}
                       </ul>
@@ -112,22 +92,15 @@ export default function Example() {
                   </div>
                   <div className="bg-white rounded-t-lg px-6 pt-12 pb-10">
                     <div>
-                      <h3
-                        className="text-center text-3xl font-semibold text-gray-900 sm:-mx-6"
-                        id="tier-growth"
-                      >
+                      <h3 className="text-center text-3xl font-semibold text-gray-900 sm:-mx-6" id="tier-growth">
                         Growth
                       </h3>
                       <div className="mt-4 flex items-center justify-center">
                         <span className="px-3 flex items-start text-6xl tracking-tight text-gray-900 sm:text-6xl">
-                          <span className="mt-2 mr-2 text-4xl font-medium">
-                            $
-                          </span>
+                          <span className="mt-2 mr-2 text-4xl font-medium">$</span>
                           <span className="font-extrabold">149</span>
                         </span>
-                        <span className="text-2xl font-medium text-gray-500">
-                          /month
-                        </span>
+                        <span className="text-2xl font-medium text-gray-500">/month</span>
                       </div>
                     </div>
                   </div>
@@ -136,14 +109,9 @@ export default function Example() {
                       {growthFeatures.map((feature) => (
                         <li key={feature} className="flex items-start">
                           <div className="flex-shrink-0">
-                            <CheckIcon
-                              className="flex-shrink-0 h-6 w-6 text-green-500"
-                              aria-hidden="true"
-                            />
+                            <CheckIcon className="flex-shrink-0 h-6 w-6 text-green-500" aria-hidden="true" />
                           </div>
-                          <p className="ml-3 text-base font-medium text-gray-500">
-                            {feature}
-                          </p>
+                          <p className="ml-3 text-base font-medium text-gray-500">{feature}</p>
                         </li>
                       ))}
                     </ul>
@@ -166,22 +134,15 @@ export default function Example() {
                   <div className="flex-1 flex flex-col">
                     <div className="bg-white px-6 py-10">
                       <div>
-                        <h3
-                          className="text-center text-2xl font-medium text-gray-900"
-                          id="tier-scale"
-                        >
+                        <h3 className="text-center text-2xl font-medium text-gray-900" id="tier-scale">
                           Scale
                         </h3>
                         <div className="mt-4 flex items-center justify-center">
                           <span className="px-3 flex items-start text-6xl tracking-tight text-gray-900">
-                            <span className="mt-2 mr-2 text-4xl font-medium">
-                              $
-                            </span>
+                            <span className="mt-2 mr-2 text-4xl font-medium">$</span>
                             <span className="font-extrabold">349</span>
                           </span>
-                          <span className="text-xl font-medium text-gray-500">
-                            /month
-                          </span>
+                          <span className="text-xl font-medium text-gray-500">/month</span>
                         </div>
                       </div>
                     </div>
@@ -190,14 +151,9 @@ export default function Example() {
                         {scaleFeatures.map((feature) => (
                           <li key={feature} className="flex items-start">
                             <div className="flex-shrink-0">
-                              <CheckIcon
-                                className="flex-shrink-0 h-6 w-6 text-green-500"
-                                aria-hidden="true"
-                              />
+                              <CheckIcon className="flex-shrink-0 h-6 w-6 text-green-500" aria-hidden="true" />
                             </div>
-                            <p className="ml-3 text-base font-medium text-gray-500">
-                              {feature}
-                            </p>
+                            <p className="ml-3 text-base font-medium text-gray-500">{feature}</p>
                           </li>
                         ))}
                       </ul>
@@ -221,5 +177,5 @@ export default function Example() {
         </div>
       </div>
     </div>
-  );
+  )
 }

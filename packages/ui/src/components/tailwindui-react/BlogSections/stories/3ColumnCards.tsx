@@ -1,5 +1,6 @@
 /* This example requires Tailwind CSS v2.0+ */
 const posts = [
+
   {
     title: 'Boost your conversion rate',
     href: '#',
@@ -54,7 +55,8 @@ const posts = [
         'https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
     },
   },
-];
+
+]
 
 export default function Example() {
   return (
@@ -64,26 +66,16 @@ export default function Example() {
       </div>
       <div className="relative max-w-7xl mx-auto">
         <div className="text-center">
-          <h2 className="text-3xl tracking-tight font-extrabold text-gray-900 sm:text-4xl">
-            From the blog
-          </h2>
+          <h2 className="text-3xl tracking-tight font-extrabold text-gray-900 sm:text-4xl">From the blog</h2>
           <p className="mt-3 max-w-2xl mx-auto text-xl text-gray-500 sm:mt-4">
-            Lorem ipsum dolor sit amet consectetur, adipisicing elit. Ipsa
-            libero labore natus atque, ducimus sed.
+            Lorem ipsum dolor sit amet consectetur, adipisicing elit. Ipsa libero labore natus atque, ducimus sed.
           </p>
         </div>
         <div className="mt-12 max-w-lg mx-auto grid gap-5 lg:grid-cols-3 lg:max-w-none">
           {posts.map((post) => (
-            <div
-              key={post.title}
-              className="flex flex-col rounded-lg shadow-lg overflow-hidden"
-            >
+            <div key={post.title} className="flex flex-col rounded-lg shadow-lg overflow-hidden">
               <div className="flex-shrink-0">
-                <img
-                  className="h-48 w-full object-cover"
-                  src={post.imageUrl}
-                  alt=""
-                />
+                <img className="h-48 w-full object-cover" src={post.imageUrl} alt="" />
               </div>
               <div className="flex-1 bg-white p-6 flex flex-col justify-between">
                 <div className="flex-1">
@@ -93,23 +85,15 @@ export default function Example() {
                     </a>
                   </p>
                   <a href={post.href} className="block mt-2">
-                    <p className="text-xl font-semibold text-gray-900">
-                      {post.title}
-                    </p>
-                    <p className="mt-3 text-base text-gray-500">
-                      {post.description}
-                    </p>
+                    <p className="text-xl font-semibold text-gray-900">{post.title}</p>
+                    <p className="mt-3 text-base text-gray-500">{post.description}</p>
                   </a>
                 </div>
                 <div className="mt-6 flex items-center">
                   <div className="flex-shrink-0">
                     <a href={post.author.href}>
                       <span className="sr-only">{post.author.name}</span>
-                      <img
-                        className="h-10 w-10 rounded-full"
-                        src={post.author.imageUrl}
-                        alt=""
-                      />
+                      <img className="h-10 w-10 rounded-full" src={post.author.imageUrl} alt="" />
                     </a>
                   </div>
                   <div className="ml-3">
@@ -131,5 +115,5 @@ export default function Example() {
         </div>
       </div>
     </div>
-  );
+  )
 }

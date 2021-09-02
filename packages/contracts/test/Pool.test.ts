@@ -1,17 +1,17 @@
 import { SignerWithAddress } from "@nomiclabs/hardhat-ethers/signers";
-import { expect } from "chai";
-import { deployMockContract, MockContract } from "ethereum-waffle";
-import { BigNumber } from "ethers";
-import { parseEther } from "ethers/lib/utils";
-import { ethers, waffle } from "hardhat";
-import yearnRegistryABI from "../contracts/mocks/abis/yearnRegistry.json";
 import {
   BlockLockHelper,
+  PoolDefendedHelper,
   MockERC20,
   MockYearnV2Vault,
   Pool,
-  PoolDefendedHelper,
 } from "../typechain";
+import { expect } from "chai";
+import { waffle, ethers } from "hardhat";
+import { parseEther } from "ethers/lib/utils";
+import { BigNumber } from "ethers";
+import { deployMockContract, MockContract } from "ethereum-waffle";
+import yearnRegistryABI from "../contracts/mocks/abis/yearnRegistry.json";
 
 const provider = waffle.provider;
 

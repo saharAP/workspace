@@ -1,11 +1,8 @@
 /* This example requires Tailwind CSS v2.0+ */
-import {
-  GlobeAltIcon,
-  LightningBoltIcon,
-  ScaleIcon,
-} from '@heroicons/react/outline';
+import { GlobeAltIcon, LightningBoltIcon, ScaleIcon } from '@heroicons/react/outline'
 
 const features = [
+
   {
     name: 'Competitive exchange rates',
     description:
@@ -24,7 +21,8 @@ const features = [
       'Lorem ipsum, dolor sit amet consectetur adipisicing elit. Maiores impedit perferendis suscipit eaque, iste dolor cupiditate blanditiis ratione.',
     icon: LightningBoltIcon,
   },
-];
+
+]
 
 export default function Example() {
   return (
@@ -38,17 +36,13 @@ export default function Example() {
                 <div className="flex items-center justify-center h-12 w-12 rounded-md bg-indigo-500 text-white">
                   <feature.icon className="h-6 w-6" aria-hidden="true" />
                 </div>
-                <p className="mt-5 text-lg leading-6 font-medium text-gray-900">
-                  {feature.name}
-                </p>
+                <p className="mt-5 text-lg leading-6 font-medium text-gray-900">{feature.name}</p>
               </dt>
-              <dd className="mt-2 text-base text-gray-500">
-                {feature.description}
-              </dd>
+              <dd className="mt-2 text-base text-gray-500">{feature.description}</dd>
             </div>
           ))}
         </dl>
       </div>
     </div>
-  );
+  )
 }

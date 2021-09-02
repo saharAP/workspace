@@ -289,9 +289,9 @@ contract GrantElections is ParticipationReward {
     if (
       block.timestamp >=
       election
-      .startTime
-      .add(election.electionConfiguration.registrationPeriod)
-      .add(election.electionConfiguration.votingPeriod)
+        .startTime
+        .add(election.electionConfiguration.registrationPeriod)
+        .add(election.electionConfiguration.votingPeriod)
     ) {
       election.electionState = ElectionState.Closed;
       if (election.electionConfiguration.useChainLinkVRF) {
@@ -409,8 +409,7 @@ contract GrantElections is ParticipationReward {
 
     uint256 finalizationIncentive = electionDefaults[
       uint8(_election.electionTerm)
-    ]
-    .finalizationIncentive;
+    ].finalizationIncentive;
 
     if (
       incentiveBudget >= finalizationIncentive &&
@@ -459,8 +458,8 @@ contract GrantElections is ParticipationReward {
     onlyGovernance
   {
     electionDefaults[uint8(_term)]
-    .bondRequirements
-    .required = !electionDefaults[uint8(_term)].bondRequirements.required;
+      .bondRequirements
+      .required = !electionDefaults[uint8(_term)].bondRequirements.required;
   }
 
   function addProposer(address _proposer) external onlyGovernance {

@@ -14,16 +14,13 @@
   }
   ```
 */
-import { Dialog, Transition } from '@headlessui/react';
-import { XIcon } from '@heroicons/react/outline';
-import {
-  LinkIcon,
-  PlusIcon,
-  QuestionMarkCircleIcon,
-} from '@heroicons/react/solid';
-import { Fragment, useState } from 'react';
+import { Fragment, useState } from 'react'
+import { Dialog, Transition } from '@headlessui/react'
+import { XIcon } from '@heroicons/react/outline'
+import { LinkIcon, PlusIcon, QuestionMarkCircleIcon } from '@heroicons/react/solid'
 
 const team = [
+
   {
     name: 'Tom Cook',
     email: 'tomcook@example.com',
@@ -59,19 +56,15 @@ const team = [
     imageUrl:
       'https://images.unsplash.com/photo-1502685104226-ee32379fefbe?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
   },
-];
+
+]
 
 export default function Example() {
-  const [open, setOpen] = useState(true);
+  const [open, setOpen] = useState(true)
 
   return (
     <Transition.Root show={open} as={Fragment}>
-      <Dialog
-        as="div"
-        auto-reopen="true"
-        className="fixed inset-0 overflow-hidden"
-        onClose={setOpen}
-      >
+      <Dialog as="div" auto-reopen="true" className="fixed inset-0 overflow-hidden" onClose={setOpen}>
         <div className="absolute inset-0 overflow-hidden">
           <Dialog.Overlay className="absolute inset-0" />
 
@@ -90,9 +83,7 @@ export default function Example() {
                   <div className="flex-1 h-0 overflow-y-auto">
                     <div className="py-6 px-4 bg-indigo-700 sm:px-6">
                       <div className="flex items-center justify-between">
-                        <Dialog.Title className="text-lg font-medium text-white">
-                          New Project
-                        </Dialog.Title>
+                        <Dialog.Title className="text-lg font-medium text-white">New Project</Dialog.Title>
                         <div className="ml-3 h-7 flex items-center">
                           <button
                             type="button"
@@ -106,8 +97,7 @@ export default function Example() {
                       </div>
                       <div className="mt-1">
                         <p className="text-sm text-indigo-300">
-                          Get started by filling in the information below to
-                          create your new project.
+                          Get started by filling in the information below to create your new project.
                         </p>
                       </div>
                     </div>
@@ -115,10 +105,7 @@ export default function Example() {
                       <div className="px-4 divide-y divide-gray-200 sm:px-6">
                         <div className="space-y-6 pt-6 pb-5">
                           <div>
-                            <label
-                              htmlFor="project-name"
-                              className="block text-sm font-medium text-gray-900"
-                            >
+                            <label htmlFor="project-name" className="block text-sm font-medium text-gray-900">
                               Project name
                             </label>
                             <div className="mt-1">
@@ -131,10 +118,7 @@ export default function Example() {
                             </div>
                           </div>
                           <div>
-                            <label
-                              htmlFor="description"
-                              className="block text-sm font-medium text-gray-900"
-                            >
+                            <label htmlFor="description" className="block text-sm font-medium text-gray-900">
                               Description
                             </label>
                             <div className="mt-1">
@@ -148,17 +132,11 @@ export default function Example() {
                             </div>
                           </div>
                           <div>
-                            <h3 className="text-sm font-medium text-gray-900">
-                              Team Members
-                            </h3>
+                            <h3 className="text-sm font-medium text-gray-900">Team Members</h3>
                             <div className="mt-2">
                               <div className="flex space-x-2">
                                 {team.map((person) => (
-                                  <a
-                                    key={person.email}
-                                    href={person.href}
-                                    className="rounded-full hover:opacity-75"
-                                  >
+                                  <a key={person.email} href={person.href} className="rounded-full hover:opacity-75">
                                     <img
                                       className="inline-block h-8 w-8 rounded-full"
                                       src={person.imageUrl}
@@ -170,21 +148,14 @@ export default function Example() {
                                   type="button"
                                   className="flex-shrink-0 bg-white inline-flex h-8 w-8 items-center justify-center rounded-full border-2 border-dashed border-gray-200 text-gray-400 hover:text-gray-500 hover:border-gray-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
                                 >
-                                  <span className="sr-only">
-                                    Add team member
-                                  </span>
-                                  <PlusIcon
-                                    className="h-5 w-5"
-                                    aria-hidden="true"
-                                  />
+                                  <span className="sr-only">Add team member</span>
+                                  <PlusIcon className="h-5 w-5" aria-hidden="true" />
                                 </button>
                               </div>
                             </div>
                           </div>
                           <fieldset>
-                            <legend className="text-sm font-medium text-gray-900">
-                              Privacy
-                            </legend>
+                            <legend className="text-sm font-medium text-gray-900">Privacy</legend>
                             <div className="mt-2 space-y-5">
                               <div className="relative flex items-start">
                                 <div className="absolute flex items-center h-5">
@@ -198,18 +169,11 @@ export default function Example() {
                                   />
                                 </div>
                                 <div className="pl-7 text-sm">
-                                  <label
-                                    htmlFor="privacy-public"
-                                    className="font-medium text-gray-900"
-                                  >
+                                  <label htmlFor="privacy-public" className="font-medium text-gray-900">
                                     Public access
                                   </label>
-                                  <p
-                                    id="privacy-public-description"
-                                    className="text-gray-500"
-                                  >
-                                    Everyone with the link will see this
-                                    project.
+                                  <p id="privacy-public-description" className="text-gray-500">
+                                    Everyone with the link will see this project.
                                   </p>
                                 </div>
                               </div>
@@ -225,18 +189,11 @@ export default function Example() {
                                     />
                                   </div>
                                   <div className="pl-7 text-sm">
-                                    <label
-                                      htmlFor="privacy-private-to-project"
-                                      className="font-medium text-gray-900"
-                                    >
+                                    <label htmlFor="privacy-private-to-project" className="font-medium text-gray-900">
                                       Private to project members
                                     </label>
-                                    <p
-                                      id="privacy-private-to-project-description"
-                                      className="text-gray-500"
-                                    >
-                                      Only members of this project would be able
-                                      to access.
+                                    <p id="privacy-private-to-project-description" className="text-gray-500">
+                                      Only members of this project would be able to access.
                                     </p>
                                   </div>
                                 </div>
@@ -253,18 +210,11 @@ export default function Example() {
                                     />
                                   </div>
                                   <div className="pl-7 text-sm">
-                                    <label
-                                      htmlFor="privacy-private"
-                                      className="font-medium text-gray-900"
-                                    >
+                                    <label htmlFor="privacy-private" className="font-medium text-gray-900">
                                       Private to you
                                     </label>
-                                    <p
-                                      id="privacy-private-description"
-                                      className="text-gray-500"
-                                    >
-                                      You are the only one able to access this
-                                      project.
+                                    <p id="privacy-private-description" className="text-gray-500">
+                                      You are the only one able to access this project.
                                     </p>
                                   </div>
                                 </div>
@@ -286,17 +236,12 @@ export default function Example() {
                             </a>
                           </div>
                           <div className="mt-4 flex text-sm">
-                            <a
-                              href="#"
-                              className="group inline-flex items-center text-gray-500 hover:text-gray-900"
-                            >
+                            <a href="#" className="group inline-flex items-center text-gray-500 hover:text-gray-900">
                               <QuestionMarkCircleIcon
                                 className="h-5 w-5 text-gray-400 group-hover:text-gray-500"
                                 aria-hidden="true"
                               />
-                              <span className="ml-2">
-                                Learn more about sharing
-                              </span>
+                              <span className="ml-2">Learn more about sharing</span>
                             </a>
                           </div>
                         </div>
@@ -325,5 +270,5 @@ export default function Example() {
         </div>
       </Dialog>
     </Transition.Root>
-  );
+  )
 }

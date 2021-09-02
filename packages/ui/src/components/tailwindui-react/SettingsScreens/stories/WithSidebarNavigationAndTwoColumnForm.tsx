@@ -23,13 +23,9 @@
   }
   ```
 */
-import {
-  Disclosure,
-  Menu,
-  RadioGroup,
-  Switch,
-  Transition,
-} from '@headlessui/react';
+import { Fragment, useState } from 'react'
+import { Disclosure, Menu, RadioGroup, Switch, Transition } from '@headlessui/react'
+import { QuestionMarkCircleIcon, SearchIcon } from '@heroicons/react/solid'
 import {
   BellIcon,
   CogIcon,
@@ -39,56 +35,50 @@ import {
   UserCircleIcon,
   ViewGridAddIcon,
   XIcon,
-} from '@heroicons/react/outline';
-import { QuestionMarkCircleIcon, SearchIcon } from '@heroicons/react/solid';
-import { Fragment, useState } from 'react';
+} from '@heroicons/react/outline'
 
 const user = {
+
   name: 'Lisa Marie',
   email: 'lisamarie@example.com',
   imageUrl:
     'https://images.unsplash.com/photo-1517365830460-955ce3ccd263?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=4&w=256&h=256&q=80',
-};
+
+}
 const navigation = [
+
   { name: 'Dashboard', href: '#' },
   { name: 'Jobs', href: '#' },
   { name: 'Applicants', href: '#' },
   { name: 'Company', href: '#' },
-];
+
+]
 const userNavigation = [
+
   { name: 'Your Profile', href: '#' },
   { name: 'Settings', href: '#' },
   { name: 'Sign out', href: '#' },
-];
+
+]
 const subNavigation = [
+
   { name: 'Profile', href: '#', icon: UserCircleIcon, current: false },
   { name: 'Account', href: '#', icon: CogIcon, current: false },
   { name: 'Password', href: '#', icon: KeyIcon, current: false },
   { name: 'Notifications', href: '#', icon: BellIcon, current: false },
   { name: 'Plan & Billing', href: '#', icon: CreditCardIcon, current: true },
   { name: 'Integrations', href: '#', icon: ViewGridAddIcon, current: false },
-];
+
+]
 const plans = [
-  {
-    name: 'Startup',
-    priceMonthly: 29,
-    priceYearly: 290,
-    limit: 'Up to 5 active job postings',
-  },
-  {
-    name: 'Business',
-    priceMonthly: 99,
-    priceYearly: 990,
-    limit: 'Up to 25 active job postings',
-  },
-  {
-    name: 'Enterprise',
-    priceMonthly: 249,
-    priceYearly: 2490,
-    limit: 'Unlimited active job postings',
-  },
-];
+
+  { name: 'Startup', priceMonthly: 29, priceYearly: 290, limit: 'Up to 5 active job postings' },
+  { name: 'Business', priceMonthly: 99, priceYearly: 990, limit: 'Up to 25 active job postings' },
+  { name: 'Enterprise', priceMonthly: 249, priceYearly: 2490, limit: 'Unlimited active job postings' },
+
+]
 const payments = [
+
   {
     id: 1,
     date: '1/1/2020',
@@ -98,15 +88,16 @@ const payments = [
     href: '#',
   },
   // More payments...
-];
+
+]
 
 function classNames(...classes) {
-  return classes.filter(Boolean).join(' ');
+  return classes.filter(Boolean).join(' ')
 }
 
 export default function Example() {
-  const [selectedPlan, setSelectedPlan] = useState(plans[1]);
-  const [annualBillingEnabled, setAnnualBillingEnabled] = useState(true);
+  const [selectedPlan, setSelectedPlan] = useState(plans[1])
+  const [annualBillingEnabled, setAnnualBillingEnabled] = useState(true)
 
   return (
     <div className="relative min-h-screen">
@@ -131,10 +122,7 @@ export default function Example() {
                     </label>
                     <div className="relative">
                       <div className="pointer-events-none absolute inset-y-0 left-0 pl-3 flex items-center">
-                        <SearchIcon
-                          className="flex-shrink-0 h-5 w-5 text-gray-400"
-                          aria-hidden="true"
-                        />
+                        <SearchIcon className="flex-shrink-0 h-5 w-5 text-gray-400" aria-hidden="true" />
                       </div>
                       <input
                         name="search"
@@ -168,11 +156,7 @@ export default function Example() {
                     <div>
                       <Menu.Button className="bg-white rounded-full flex focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-900">
                         <span className="sr-only">Open user menu</span>
-                        <img
-                          className="h-8 w-8 rounded-full"
-                          src={user.imageUrl}
-                          alt=""
-                        />
+                        <img className="h-8 w-8 rounded-full" src={user.imageUrl} alt="" />
                       </Menu.Button>
                     </div>
                     <Transition
@@ -192,7 +176,7 @@ export default function Example() {
                                 href={item.href}
                                 className={classNames(
                                   active ? 'bg-gray-100' : '',
-                                  'block py-2 px-4 text-sm text-gray-700',
+                                  'block py-2 px-4 text-sm text-gray-700'
                                 )}
                               >
                                 {item.name}
@@ -205,10 +189,7 @@ export default function Example() {
                   </Menu>
                 </div>
               </div>
-              <nav
-                className="hidden lg:py-2 lg:flex lg:space-x-8"
-                aria-label="Global"
-              >
+              <nav className="hidden lg:py-2 lg:flex lg:space-x-8" aria-label="Global">
                 {navigation.map((item) => (
                   <a
                     key={item.name}
@@ -221,11 +202,7 @@ export default function Example() {
               </nav>
             </div>
 
-            <Disclosure.Panel
-              as="nav"
-              className="lg:hidden"
-              aria-label="Global"
-            >
+            <Disclosure.Panel as="nav" className="lg:hidden" aria-label="Global">
               <div className="pt-2 pb-3 px-2 space-y-1">
                 {navigation.map((item) => (
                   <a
@@ -240,19 +217,11 @@ export default function Example() {
               <div className="border-t border-gray-200 pt-4 pb-3">
                 <div className="px-4 flex items-center">
                   <div className="flex-shrink-0">
-                    <img
-                      className="h-10 w-10 rounded-full"
-                      src={user.imageUrl}
-                      alt=""
-                    />
+                    <img className="h-10 w-10 rounded-full" src={user.imageUrl} alt="" />
                   </div>
                   <div className="ml-3">
-                    <div className="text-base font-medium text-gray-800">
-                      {user.name}
-                    </div>
-                    <div className="text-sm font-medium text-gray-500">
-                      {user.email}
-                    </div>
+                    <div className="text-base font-medium text-gray-800">{user.name}</div>
+                    <div className="text-sm font-medium text-gray-500">{user.email}</div>
                   </div>
                   <button className="ml-auto flex-shrink-0 bg-white rounded-full p-1 text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-900">
                     <span className="sr-only">View notifications</span>
@@ -288,16 +257,14 @@ export default function Example() {
                     item.current
                       ? 'bg-gray-50 text-orange-600 hover:bg-white'
                       : 'text-gray-900 hover:text-gray-900 hover:bg-gray-50',
-                    'group rounded-md px-3 py-2 flex items-center text-sm font-medium',
+                    'group rounded-md px-3 py-2 flex items-center text-sm font-medium'
                   )}
                   aria-current={item.current ? 'page' : undefined}
                 >
                   <item.icon
                     className={classNames(
-                      item.current
-                        ? 'text-orange-500'
-                        : 'text-gray-400 group-hover:text-gray-500',
-                      'flex-shrink-0 -ml-1 mr-3 h-6 w-6',
+                      item.current ? 'text-orange-500' : 'text-gray-400 group-hover:text-gray-500',
+                      'flex-shrink-0 -ml-1 mr-3 h-6 w-6'
                     )}
                     aria-hidden="true"
                   />
@@ -314,24 +281,18 @@ export default function Example() {
                 <div className="shadow sm:rounded-md sm:overflow-hidden">
                   <div className="bg-white py-6 px-4 sm:p-6">
                     <div>
-                      <h2
-                        id="payment-details-heading"
-                        className="text-lg leading-6 font-medium text-gray-900"
-                      >
+                      <h2 id="payment-details-heading" className="text-lg leading-6 font-medium text-gray-900">
                         Payment details
                       </h2>
                       <p className="mt-1 text-sm text-gray-500">
-                        Update your billing information. Please note that
-                        updating your location could affect your tax rates.
+                        Update your billing information. Please note that updating your location could affect your tax
+                        rates.
                       </p>
                     </div>
 
                     <div className="mt-6 grid grid-cols-4 gap-6">
                       <div className="col-span-4 sm:col-span-2">
-                        <label
-                          htmlFor="first-name"
-                          className="block text-sm font-medium text-gray-700"
-                        >
+                        <label htmlFor="first-name" className="block text-sm font-medium text-gray-700">
                           First name
                         </label>
                         <input
@@ -344,10 +305,7 @@ export default function Example() {
                       </div>
 
                       <div className="col-span-4 sm:col-span-2">
-                        <label
-                          htmlFor="last-name"
-                          className="block text-sm font-medium text-gray-700"
-                        >
+                        <label htmlFor="last-name" className="block text-sm font-medium text-gray-700">
                           Last name
                         </label>
                         <input
@@ -360,10 +318,7 @@ export default function Example() {
                       </div>
 
                       <div className="col-span-4 sm:col-span-2">
-                        <label
-                          htmlFor="email-address"
-                          className="block text-sm font-medium text-gray-700"
-                        >
+                        <label htmlFor="email-address" className="block text-sm font-medium text-gray-700">
                           Email address
                         </label>
                         <input
@@ -376,10 +331,7 @@ export default function Example() {
                       </div>
 
                       <div className="col-span-4 sm:col-span-1">
-                        <label
-                          htmlFor="expiration-date"
-                          className="block text-sm font-medium text-gray-700"
-                        >
+                        <label htmlFor="expiration-date" className="block text-sm font-medium text-gray-700">
                           Expration date
                         </label>
                         <input
@@ -393,10 +345,7 @@ export default function Example() {
                       </div>
 
                       <div className="col-span-4 sm:col-span-1">
-                        <label
-                          htmlFor="security-code"
-                          className="flex items-center text-sm font-medium text-gray-700"
-                        >
+                        <label htmlFor="security-code" className="flex items-center text-sm font-medium text-gray-700">
                           <span>Security code</span>
                           <QuestionMarkCircleIcon
                             className="ml-1 flex-shrink-0 h-5 w-5 text-gray-300"
@@ -413,10 +362,7 @@ export default function Example() {
                       </div>
 
                       <div className="col-span-4 sm:col-span-2">
-                        <label
-                          htmlFor="country"
-                          className="block text-sm font-medium text-gray-700"
-                        >
+                        <label htmlFor="country" className="block text-sm font-medium text-gray-700">
                           Country / Region
                         </label>
                         <select
@@ -432,10 +378,7 @@ export default function Example() {
                       </div>
 
                       <div className="col-span-4 sm:col-span-2">
-                        <label
-                          htmlFor="postal-code"
-                          className="block text-sm font-medium text-gray-700"
-                        >
+                        <label htmlFor="postal-code" className="block text-sm font-medium text-gray-700">
                           ZIP / Postal
                         </label>
                         <input
@@ -466,18 +409,13 @@ export default function Example() {
                 <div className="shadow sm:rounded-md sm:overflow-hidden">
                   <div className="bg-white py-6 px-4 space-y-6 sm:p-6">
                     <div>
-                      <h2
-                        id="plan-heading"
-                        className="text-lg leading-6 font-medium text-gray-900"
-                      >
+                      <h2 id="plan-heading" className="text-lg leading-6 font-medium text-gray-900">
                         Plan
                       </h2>
                     </div>
 
                     <RadioGroup value={selectedPlan} onChange={setSelectedPlan}>
-                      <RadioGroup.Label className="sr-only">
-                        Pricing plans
-                      </RadioGroup.Label>
+                      <RadioGroup.Label className="sr-only">Pricing plans</RadioGroup.Label>
                       <div className="relative bg-white rounded-md -space-y-px">
                         {plans.map((plan, planIdx) => (
                           <RadioGroup.Option
@@ -485,16 +423,10 @@ export default function Example() {
                             value={plan}
                             className={({ checked }) =>
                               classNames(
-                                planIdx === 0
-                                  ? 'rounded-tl-md rounded-tr-md'
-                                  : '',
-                                planIdx === plans.length - 1
-                                  ? 'rounded-bl-md rounded-br-md'
-                                  : '',
-                                checked
-                                  ? 'bg-orange-50 border-orange-200 z-10'
-                                  : 'border-gray-200',
-                                'relative border p-4 flex flex-col cursor-pointer md:pl-4 md:pr-6 md:grid md:grid-cols-3 focus:outline-none',
+                                planIdx === 0 ? 'rounded-tl-md rounded-tr-md' : '',
+                                planIdx === plans.length - 1 ? 'rounded-bl-md rounded-br-md' : '',
+                                checked ? 'bg-orange-50 border-orange-200 z-10' : 'border-gray-200',
+                                'relative border p-4 flex flex-col cursor-pointer md:pl-4 md:pr-6 md:grid md:grid-cols-3 focus:outline-none'
                               )
                             }
                           >
@@ -503,52 +435,32 @@ export default function Example() {
                                 <div className="flex items-center text-sm">
                                   <span
                                     className={classNames(
-                                      checked
-                                        ? 'bg-orange-500 border-transparent'
-                                        : 'bg-white border-gray-300',
-                                      active
-                                        ? 'ring-2 ring-offset-2 ring-gray-900'
-                                        : '',
-                                      'h-4 w-4 rounded-full border flex items-center justify-center',
+                                      checked ? 'bg-orange-500 border-transparent' : 'bg-white border-gray-300',
+                                      active ? 'ring-2 ring-offset-2 ring-gray-900' : '',
+                                      'h-4 w-4 rounded-full border flex items-center justify-center'
                                     )}
                                     aria-hidden="true"
                                   >
                                     <span className="rounded-full bg-white w-1.5 h-1.5" />
                                   </span>
-                                  <RadioGroup.Label
-                                    as="span"
-                                    className="ml-3 font-medium text-gray-900"
-                                  >
+                                  <RadioGroup.Label as="span" className="ml-3 font-medium text-gray-900">
                                     {plan.name}
                                   </RadioGroup.Label>
                                 </div>
                                 <RadioGroup.Description className="ml-6 pl-1 text-sm md:ml-0 md:pl-0 md:text-center">
                                   <span
-                                    className={classNames(
-                                      checked
-                                        ? 'text-orange-900'
-                                        : 'text-gray-900',
-                                      'font-medium',
-                                    )}
+                                    className={classNames(checked ? 'text-orange-900' : 'text-gray-900', 'font-medium')}
                                   >
                                     ${plan.priceMonthly} / mo
                                   </span>{' '}
-                                  <span
-                                    className={
-                                      checked
-                                        ? 'text-orange-700'
-                                        : 'text-gray-500'
-                                    }
-                                  >
+                                  <span className={checked ? 'text-orange-700' : 'text-gray-500'}>
                                     (${plan.priceYearly} / yr)
                                   </span>
                                 </RadioGroup.Description>
                                 <RadioGroup.Description
                                   className={classNames(
-                                    checked
-                                      ? 'text-orange-700'
-                                      : 'text-gray-500',
-                                    'ml-6 pl-1 text-sm md:ml-0 md:pl-0 md:text-right',
+                                    checked ? 'text-orange-700' : 'text-gray-500',
+                                    'ml-6 pl-1 text-sm md:ml-0 md:pl-0 md:text-right'
                                   )}
                                 >
                                   {plan.limit}
@@ -565,29 +477,21 @@ export default function Example() {
                         checked={annualBillingEnabled}
                         onChange={setAnnualBillingEnabled}
                         className={classNames(
-                          annualBillingEnabled
-                            ? 'bg-orange-500'
-                            : 'bg-gray-200',
-                          'relative inline-flex flex-shrink-0 h-6 w-11 border-2 border-transparent rounded-full cursor-pointer focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-900 transition-colors ease-in-out duration-200',
+                          annualBillingEnabled ? 'bg-orange-500' : 'bg-gray-200',
+                          'relative inline-flex flex-shrink-0 h-6 w-11 border-2 border-transparent rounded-full cursor-pointer focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-900 transition-colors ease-in-out duration-200'
                         )}
                       >
                         <span
                           aria-hidden="true"
                           className={classNames(
-                            annualBillingEnabled
-                              ? 'translate-x-5'
-                              : 'translate-x-0',
-                            'inline-block h-5 w-5 rounded-full bg-white shadow transform ring-0 transition ease-in-out duration-200',
+                            annualBillingEnabled ? 'translate-x-5' : 'translate-x-0',
+                            'inline-block h-5 w-5 rounded-full bg-white shadow transform ring-0 transition ease-in-out duration-200'
                           )}
                         />
                       </Switch>
                       <Switch.Label as="span" className="ml-3">
-                        <span className="text-sm font-medium text-gray-900">
-                          Annual billing{' '}
-                        </span>
-                        <span className="text-sm text-gray-500">
-                          (Save 10%)
-                        </span>
+                        <span className="text-sm font-medium text-gray-900">Annual billing </span>
+                        <span className="text-sm text-gray-500">(Save 10%)</span>
                       </Switch.Label>
                     </Switch.Group>
                   </div>
@@ -607,10 +511,7 @@ export default function Example() {
             <section aria-labelledby="billing-history-heading">
               <div className="bg-white pt-6 shadow sm:rounded-md sm:overflow-hidden">
                 <div className="px-4 sm:px-6">
-                  <h2
-                    id="billing-history-heading"
-                    className="text-lg leading-6 font-medium text-gray-900"
-                  >
+                  <h2 id="billing-history-heading" className="text-lg leading-6 font-medium text-gray-900">
                     Billing history
                   </h2>
                 </div>
@@ -654,21 +555,14 @@ export default function Example() {
                             {payments.map((payment) => (
                               <tr key={payment.id}>
                                 <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                                  <time dateTime={payment.datetime}>
-                                    {payment.date}
-                                  </time>
+                                  <time dateTime={payment.datetime}>{payment.date}</time>
                                 </td>
                                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                                   {payment.description}
                                 </td>
-                                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                  {payment.amount}
-                                </td>
+                                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{payment.amount}</td>
                                 <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                                  <a
-                                    href={payment.href}
-                                    className="text-orange-600 hover:text-orange-900"
-                                  >
+                                  <a href={payment.href} className="text-orange-600 hover:text-orange-900">
                                     View receipt
                                   </a>
                                 </td>
@@ -686,5 +580,5 @@ export default function Example() {
         </div>
       </main>
     </div>
-  );
+  )
 }

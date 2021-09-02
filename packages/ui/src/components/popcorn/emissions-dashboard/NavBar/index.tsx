@@ -3,6 +3,7 @@ import { Disclosure, Menu, Transition } from '@headlessui/react';
 import { BellIcon, MenuIcon, XIcon } from '@heroicons/react/outline';
 import { PlusIcon } from '@heroicons/react/solid';
 import React, { Fragment } from 'react';
+
 import { NavBarProps } from '../../../../interfaces/index';
 import { AddContractModal } from '../AddContractModal';
 import { ContractErrorModal } from '../ContractErrorModal';

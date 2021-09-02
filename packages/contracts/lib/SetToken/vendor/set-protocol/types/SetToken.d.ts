@@ -2,23 +2,23 @@
 /* tslint:disable */
 /* eslint-disable */
 
-import { EventFragment, FunctionFragment, Result } from "@ethersproject/abi";
-import { BytesLike } from "@ethersproject/bytes";
 import {
-  CallOverrides,
+  ethers,
+  EventFilter,
+  Signer,
+  BigNumber,
+  BigNumberish,
+  PopulatedTransaction,
+} from "ethers";
+import {
   Contract,
   ContractTransaction,
   Overrides,
+  CallOverrides,
 } from "@ethersproject/contracts";
+import { BytesLike } from "@ethersproject/bytes";
 import { Listener, Provider } from "@ethersproject/providers";
-import {
-  BigNumber,
-  BigNumberish,
-  ethers,
-  EventFilter,
-  PopulatedTransaction,
-  Signer,
-} from "ethers";
+import { FunctionFragment, EventFragment, Result } from "@ethersproject/abi";
 
 interface SetTokenInterface extends ethers.utils.Interface {
   functions: {
@@ -1192,7 +1192,9 @@ export class SetToken extends Contract {
 
   "getModules()"(overrides?: CallOverrides): Promise<string[]>;
 
-  getPositions(overrides?: CallOverrides): Promise<
+  getPositions(
+    overrides?: CallOverrides
+  ): Promise<
     {
       component: string;
       module: string;
@@ -1207,7 +1209,9 @@ export class SetToken extends Contract {
     }[]
   >;
 
-  "getPositions()"(overrides?: CallOverrides): Promise<
+  "getPositions()"(
+    overrides?: CallOverrides
+  ): Promise<
     {
       component: string;
       module: string;
@@ -1637,7 +1641,9 @@ export class SetToken extends Contract {
 
     "getModules()"(overrides?: CallOverrides): Promise<string[]>;
 
-    getPositions(overrides?: CallOverrides): Promise<
+    getPositions(
+      overrides?: CallOverrides
+    ): Promise<
       {
         component: string;
         module: string;
@@ -1652,7 +1658,9 @@ export class SetToken extends Contract {
       }[]
     >;
 
-    "getPositions()"(overrides?: CallOverrides): Promise<
+    "getPositions()"(
+      overrides?: CallOverrides
+    ): Promise<
       {
         component: string;
         module: string;

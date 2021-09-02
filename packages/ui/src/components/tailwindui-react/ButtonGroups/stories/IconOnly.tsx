@@ -1,5 +1,5 @@
 /* This example requires Tailwind CSS v2.0+ */
-import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/solid';
+import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/solid'
 
 export default function Example() {
   return (
@@ -19,5 +19,5 @@ export default function Example() {
         <ChevronRightIcon className="h-5 w-5" aria-hidden="true" />
       </button>
     </span>
-  );
+  )
 }

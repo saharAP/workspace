@@ -10,7 +10,7 @@ let owner: SignerWithAddress,
 
 let contract: CouncilControlled;
 let region: Region;
-let mockBeneficiaryVaults: MockContract;
+let mockBeneficiaryVaults: MockContract
 const DEFAULT_REGION = "0x5757";
 const newRegion = "0x1111";
 

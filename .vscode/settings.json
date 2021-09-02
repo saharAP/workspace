@@ -17,22 +17,26 @@
   ],
   "editor.formatOnSave": true,
   "[javascript]": {
-    "editor.formatOnSave": true
+    "editor.formatOnSave": true,
   },
   "[javascriptreact]": {
-    "editor.formatOnSave": true
+    "editor.formatOnSave": true,
   },
   "[typescript]": {
-    "editor.formatOnSave": true
+    "editor.formatOnSave": true,
   },
   "[typescriptreact]": {
-    "editor.formatOnSave": true
+    "editor.formatOnSave": true,
   },
   "editor.tabCompletion": "on",
   "editor.tabSize": 2,
   "prettier.eslintIntegration": true,
   "javascript.validate.enable": true,
   // "diffEditor.ignoreTrimWhitespace": true,
-  "editor.rulers": [80, 120],
-  "cSpell.words": []
+  "editor.rulers": [
+    80,
+    120
+  ],
+  "cSpell.words": [
+  ]
 }

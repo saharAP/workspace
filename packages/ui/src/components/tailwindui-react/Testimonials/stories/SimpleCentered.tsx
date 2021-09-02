@@ -22,21 +22,10 @@ export default function Example() {
               height={20}
               patternUnits="userSpaceOnUse"
             >
-              <rect
-                x={0}
-                y={0}
-                width={4}
-                height={4}
-                className="text-gray-200"
-                fill="currentColor"
-              />
+              <rect x={0} y={0} width={4} height={4} className="text-gray-200" fill="currentColor" />
             </pattern>
           </defs>
-          <rect
-            width={404}
-            height={404}
-            fill="url(#ad119f34-7694-4c31-947f-5c9d249b21f3)"
-          />
+          <rect width={404} height={404} fill="url(#ad119f34-7694-4c31-947f-5c9d249b21f3)" />
         </svg>
 
         <div className="relative">
@@ -48,9 +37,8 @@ export default function Example() {
           <blockquote className="mt-10">
             <div className="max-w-3xl mx-auto text-center text-2xl leading-9 font-medium text-gray-900">
               <p>
-                &ldquo;Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                Nemo expedita voluptas culpa sapiente alias molestiae. Numquam
-                corrupti in laborum sed rerum et corporis.&rdquo;
+                &ldquo;Lorem ipsum dolor sit amet consectetur adipisicing elit. Nemo expedita voluptas culpa sapiente
+                alias molestiae. Numquam corrupti in laborum sed rerum et corporis.&rdquo;
               </p>
             </div>
             <footer className="mt-8">
@@ -63,21 +51,13 @@ export default function Example() {
                   />
                 </div>
                 <div className="mt-3 text-center md:mt-0 md:ml-4 md:flex md:items-center">
-                  <div className="text-base font-medium text-gray-900">
-                    Judith Black
-                  </div>
+                  <div className="text-base font-medium text-gray-900">Judith Black</div>
 
-                  <svg
-                    className="hidden md:block mx-1 h-5 w-5 text-indigo-600"
-                    fill="currentColor"
-                    viewBox="0 0 20 20"
-                  >
+                  <svg className="hidden md:block mx-1 h-5 w-5 text-indigo-600" fill="currentColor" viewBox="0 0 20 20">
                     <path d="M11 0h3L9 20H6l5-20z" />
                   </svg>
 
-                  <div className="text-base font-medium text-gray-500">
-                    CEO, Workcation
-                  </div>
+                  <div className="text-base font-medium text-gray-500">CEO, Workcation</div>
                 </div>
               </div>
             </footer>
@@ -85,5 +65,5 @@ export default function Example() {
         </div>
       </div>
     </section>
-  );
+  )
 }

@@ -6,6 +6,7 @@ import { Fragment, useContext, useEffect } from 'react';
 import { hideNotification, unsetNotification } from '../../context/actions';
 import { store } from '../../context/store';
 
+
 const NotificationsContainer: React.FC = () => {
   const {
     dispatch,

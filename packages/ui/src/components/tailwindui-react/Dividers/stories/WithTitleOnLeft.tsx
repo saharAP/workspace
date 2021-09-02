@@ -6,10 +6,8 @@ export default function Example() {
         <div className="w-full border-t border-gray-300" />
       </div>
       <div className="relative flex justify-start">
-        <span className="pr-3 bg-white text-lg font-medium text-gray-900">
-          Projects
-        </span>
+        <span className="pr-3 bg-white text-lg font-medium text-gray-900">Projects</span>
       </div>
     </div>
-  );
+  )
 }

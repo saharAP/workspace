@@ -1,14 +1,14 @@
+import {
+  SingleActionModalProps,
+  DefaultSingleActionModalProps,
+} from 'components/Modal/SingleActionModal';
 import { DualActionModalProps } from 'components/Modal/DualActionModal';
+import { DefaultDualActionModalProps } from '../components/Modal/DualActionModal';
+import { NotificationProps } from '../components/Notifications/NotificationProps';
 import {
   DefaultDualActionWideModalProps,
   DualActionWideModalProps,
 } from 'components/Modal/DualActionWideModal';
-import {
-  DefaultSingleActionModalProps,
-  SingleActionModalProps,
-} from 'components/Modal/SingleActionModal';
-import { DefaultDualActionModalProps } from '../components/Modal/DualActionModal';
-import { NotificationProps } from '../components/Notifications/NotificationProps';
 
 export const PUSH_NOTIFICATION = 'notifications/PUSH_NOTIFICATION';
 export const UNSET_NOTIFICATION = 'notifications/UNSET_NOTIFICATION';

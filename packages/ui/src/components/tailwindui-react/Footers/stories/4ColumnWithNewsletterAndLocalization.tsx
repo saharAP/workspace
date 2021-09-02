@@ -14,9 +14,10 @@
   }
   ```
 */
-import { ChevronDownIcon } from '@heroicons/react/solid';
+import { ChevronDownIcon } from '@heroicons/react/solid'
 
 const navigation = {
+
   solutions: [
     { name: 'Marketing', href: '#' },
     { name: 'Analytics', href: '#' },
@@ -104,7 +105,8 @@ const navigation = {
       ),
     },
   ],
-};
+
+}
 
 export default function Example() {
   return (
@@ -117,16 +119,11 @@ export default function Example() {
           <div className="grid grid-cols-2 gap-8 xl:col-span-4">
             <div className="md:grid md:grid-cols-2 md:gap-8">
               <div>
-                <h3 className="text-sm font-semibold text-gray-400 tracking-wider uppercase">
-                  Solutions
-                </h3>
+                <h3 className="text-sm font-semibold text-gray-400 tracking-wider uppercase">Solutions</h3>
                 <ul className="mt-4 space-y-4">
                   {navigation.solutions.map((item) => (
                     <li key={item.name}>
-                      <a
-                        href={item.href}
-                        className="text-base text-gray-500 hover:text-gray-900"
-                      >
+                      <a href={item.href} className="text-base text-gray-500 hover:text-gray-900">
                         {item.name}
                       </a>
                     </li>
@@ -134,16 +131,11 @@ export default function Example() {
                 </ul>
               </div>
               <div className="mt-12 md:mt-0">
-                <h3 className="text-sm font-semibold text-gray-400 tracking-wider uppercase">
-                  Support
-                </h3>
+                <h3 className="text-sm font-semibold text-gray-400 tracking-wider uppercase">Support</h3>
                 <ul className="mt-4 space-y-4">
                   {navigation.support.map((item) => (
                     <li key={item.name}>
-                      <a
-                        href={item.href}
-                        className="text-base text-gray-500 hover:text-gray-900"
-                      >
+                      <a href={item.href} className="text-base text-gray-500 hover:text-gray-900">
                         {item.name}
                       </a>
                     </li>
@@ -153,16 +145,11 @@ export default function Example() {
             </div>
             <div className="md:grid md:grid-cols-2 md:gap-8">
               <div>
-                <h3 className="text-sm font-semibold text-gray-400 tracking-wider uppercase">
-                  Company
-                </h3>
+                <h3 className="text-sm font-semibold text-gray-400 tracking-wider uppercase">Company</h3>
                 <ul className="mt-4 space-y-4">
                   {navigation.company.map((item) => (
                     <li key={item.name}>
-                      <a
-                        href={item.href}
-                        className="text-base text-gray-500 hover:text-gray-900"
-                      >
+                      <a href={item.href} className="text-base text-gray-500 hover:text-gray-900">
                         {item.name}
                       </a>
                     </li>
@@ -170,16 +157,11 @@ export default function Example() {
                 </ul>
               </div>
               <div className="mt-12 md:mt-0">
-                <h3 className="text-sm font-semibold text-gray-400 tracking-wider uppercase">
-                  Legal
-                </h3>
+                <h3 className="text-sm font-semibold text-gray-400 tracking-wider uppercase">Legal</h3>
                 <ul className="mt-4 space-y-4">
                   {navigation.legal.map((item) => (
                     <li key={item.name}>
-                      <a
-                        href={item.href}
-                        className="text-base text-gray-500 hover:text-gray-900"
-                      >
+                      <a href={item.href} className="text-base text-gray-500 hover:text-gray-900">
                         {item.name}
                       </a>
                     </li>
@@ -189,9 +171,7 @@ export default function Example() {
             </div>
           </div>
           <div className="mt-12 xl:mt-0">
-            <h3 className="text-sm font-semibold text-gray-400 tracking-wider uppercase">
-              Language &amp; Currency
-            </h3>
+            <h3 className="text-sm font-semibold text-gray-400 tracking-wider uppercase">Language &amp; Currency</h3>
             <form className="mt-4 sm:max-w-xs">
               <fieldset className="w-full">
                 <label htmlFor="language" className="sr-only">
@@ -211,10 +191,7 @@ export default function Example() {
                     <option>Spanish</option>
                   </select>
                   <div className="pointer-events-none absolute inset-y-0 right-0 px-2 flex items-center">
-                    <ChevronDownIcon
-                      className="h-4 w-4 text-gray-400"
-                      aria-hidden="true"
-                    />
+                    <ChevronDownIcon className="h-4 w-4 text-gray-400" aria-hidden="true" />
                   </div>
                 </div>
               </fieldset>
@@ -239,10 +216,7 @@ export default function Example() {
                     <option>USD</option>
                   </select>
                   <div className="pointer-events-none absolute inset-y-0 right-0 px-2 flex items-center">
-                    <ChevronDownIcon
-                      className="h-4 w-4 text-gray-400"
-                      aria-hidden="true"
-                    />
+                    <ChevronDownIcon className="h-4 w-4 text-gray-400" aria-hidden="true" />
                   </div>
                 </div>
               </fieldset>
@@ -255,8 +229,7 @@ export default function Example() {
               Subscribe to our newsletter
             </h3>
             <p className="mt-2 text-base text-gray-500">
-              The latest news, articles, and resources, sent to your inbox
-              weekly.
+              The latest news, articles, and resources, sent to your inbox weekly.
             </p>
           </div>
           <form className="mt-4 sm:flex sm:max-w-md lg:mt-0">
@@ -285,11 +258,7 @@ export default function Example() {
         <div className="mt-8 border-t border-gray-200 pt-8 md:flex md:items-center md:justify-between">
           <div className="flex space-x-6 md:order-2">
             {navigation.social.map((item) => (
-              <a
-                key={item.name}
-                href={item.href}
-                className="text-gray-400 hover:text-gray-500"
-              >
+              <a key={item.name} href={item.href} className="text-gray-400 hover:text-gray-500">
                 <span className="sr-only">{item.name}</span>
                 <item.icon className="h-6 w-6" aria-hidden="true" />
               </a>
@@ -301,5 +270,5 @@ export default function Example() {
         </div>
       </div>
     </footer>
-  );
+  )
 }

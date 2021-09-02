@@ -15,25 +15,13 @@ export default function Example() {
             />
           </div>
           <div className="col-span-1 flex justify-center py-8 px-8 bg-gray-50">
-            <img
-              className="max-h-12"
-              src="https://tailwindui.com/img/logos/mirage-logo-gray-400.svg"
-              alt="Mirage"
-            />
+            <img className="max-h-12" src="https://tailwindui.com/img/logos/mirage-logo-gray-400.svg" alt="Mirage" />
           </div>
           <div className="col-span-1 flex justify-center py-8 px-8 bg-gray-50">
-            <img
-              className="max-h-12"
-              src="https://tailwindui.com/img/logos/tuple-logo-gray-400.svg"
-              alt="Tuple"
-            />
+            <img className="max-h-12" src="https://tailwindui.com/img/logos/tuple-logo-gray-400.svg" alt="Tuple" />
           </div>
           <div className="col-span-1 flex justify-center py-8 px-8 bg-gray-50">
-            <img
-              className="max-h-12"
-              src="https://tailwindui.com/img/logos/laravel-logo-gray-400.svg"
-              alt="Laravel"
-            />
+            <img className="max-h-12" src="https://tailwindui.com/img/logos/laravel-logo-gray-400.svg" alt="Laravel" />
           </div>
           <div className="col-span-1 flex justify-center py-8 px-8 bg-gray-50">
             <img
@@ -52,5 +40,5 @@ export default function Example() {
         </div>
       </div>
     </div>
-  );
+  )
 }

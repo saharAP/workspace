@@ -1,11 +1,11 @@
-import { SignerWithAddress } from "@nomiclabs/hardhat-ethers/signers";
 import { expect } from "chai";
-import { BigNumber, Contract } from "ethers";
-import { parseEther } from "ethers/lib/utils";
 import hardhat, { ethers, waffle } from "hardhat";
-import { Configuration } from "../lib/SetToken/Configuration";
 import SetTokenCreator from "../lib/SetToken/SetTokenCreator";
-import { ADDRESS_ZERO } from "../lib/SetToken/utils/constants";
+import { parseEther } from "ethers/lib/utils";
+import { BigNumber, Contract } from "ethers";
+import { SignerWithAddress } from "@nomiclabs/hardhat-ethers/signers";
+import { Configuration } from "../lib/SetToken/Configuration";
+import { ADDRESS_ZERO } from '../lib/SetToken/utils/constants';
 
 describe("SetTokenCreator", function () {
   interface Contracts {
@@ -75,7 +75,7 @@ describe("SetTokenCreator", function () {
           },
           StreamingFeeModule: {
             address: ADDRESS_ZERO,
-          },
+          }
         },
       },
       components: {
@@ -96,10 +96,18 @@ describe("SetTokenCreator", function () {
   describe("test setup", () => {
     it("should have configuration defined", () => {
       expect(configuration.targetNAV).to.equal(parseEther("200"));
-      expect(configuration.components.ycrvDUSD.address).to.contain("0x");
-      expect(configuration.components.ycrvDUSD.oracle).to.contain("0x");
-      expect(configuration.components.ycrvFRAX.address).to.contain("0x");
-      expect(configuration.components.ycrvFRAX.oracle).to.contain("0x");
+      expect(configuration.components.ycrvDUSD.address).to.contain(
+        "0x"
+      );
+      expect(configuration.components.ycrvDUSD.oracle).to.contain(
+        "0x"
+      );
+      expect(configuration.components.ycrvFRAX.address).to.contain(
+        "0x"
+      );
+      expect(configuration.components.ycrvFRAX.oracle).to.contain(
+        "0x"
+      );
     });
 
     it("should retrieve a mock yearn contract by address", async () => {

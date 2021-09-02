@@ -13,5 +13,5 @@ const Template: Story = (args) => <AddContractModal {...args} />;
 export const Primary = Template.bind({});
 Primary.args = {
   open: true,
-  setOpen: () => {},
+  setOpen: () => {}
 };

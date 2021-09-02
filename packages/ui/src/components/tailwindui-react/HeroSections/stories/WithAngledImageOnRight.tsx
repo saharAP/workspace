@@ -1,14 +1,16 @@
 /* This example requires Tailwind CSS v2.0+ */
-import { Popover, Transition } from '@headlessui/react';
-import { MenuIcon, XIcon } from '@heroicons/react/outline';
-import { Fragment } from 'react';
+import { Fragment } from 'react'
+import { Popover, Transition } from '@headlessui/react'
+import { MenuIcon, XIcon } from '@heroicons/react/outline'
 
 const navigation = [
+
   { name: 'Product', href: '#' },
   { name: 'Features', href: '#' },
   { name: 'Marketplace', href: '#' },
   { name: 'Company', href: '#' },
-];
+
+]
 
 export default function Example() {
   return (
@@ -27,10 +29,7 @@ export default function Example() {
 
           <Popover>
             <div className="relative pt-6 px-4 sm:px-6 lg:px-8">
-              <nav
-                className="relative flex items-center justify-between sm:h-10 lg:justify-start"
-                aria-label="Global"
-              >
+              <nav className="relative flex items-center justify-between sm:h-10 lg:justify-start" aria-label="Global">
                 <div className="flex items-center flex-grow flex-shrink-0 lg:flex-grow-0">
                   <div className="flex items-center justify-between w-full md:w-auto">
                     <a href="#">
@@ -50,18 +49,11 @@ export default function Example() {
                 </div>
                 <div className="hidden md:block md:ml-10 md:pr-4 md:space-x-8">
                   {navigation.map((item) => (
-                    <a
-                      key={item.name}
-                      href={item.href}
-                      className="font-medium text-gray-500 hover:text-gray-900"
-                    >
+                    <a key={item.name} href={item.href} className="font-medium text-gray-500 hover:text-gray-900">
                       {item.name}
                     </a>
                   ))}
-                  <a
-                    href="#"
-                    className="font-medium text-indigo-600 hover:text-indigo-500"
-                  >
+                  <a href="#" className="font-medium text-indigo-600 hover:text-indigo-500">
                     Log in
                   </a>
                 </div>
@@ -123,14 +115,11 @@ export default function Example() {
             <div className="sm:text-center lg:text-left">
               <h1 className="text-4xl tracking-tight font-extrabold text-gray-900 sm:text-5xl md:text-6xl">
                 <span className="block xl:inline">Data to enrich your</span>{' '}
-                <span className="block text-indigo-600 xl:inline">
-                  online business
-                </span>
+                <span className="block text-indigo-600 xl:inline">online business</span>
               </h1>
               <p className="mt-3 text-base text-gray-500 sm:mt-5 sm:text-lg sm:max-w-xl sm:mx-auto md:mt-5 md:text-xl lg:mx-0">
-                Anim aute id magna aliqua ad ad non deserunt sunt. Qui irure qui
-                lorem cupidatat commodo. Elit sunt amet fugiat veniam occaecat
-                fugiat aliqua.
+                Anim aute id magna aliqua ad ad non deserunt sunt. Qui irure qui lorem cupidatat commodo. Elit sunt amet
+                fugiat veniam occaecat fugiat aliqua.
               </p>
               <div className="mt-5 sm:mt-8 sm:flex sm:justify-center lg:justify-start">
                 <div className="rounded-md shadow">
@@ -162,5 +151,5 @@ export default function Example() {
         />
       </div>
     </div>
-  );
+  )
 }

@@ -1,10 +1,12 @@
 /* This example requires Tailwind CSS v2.0+ */
 const navigation = [
+
   { name: 'Solutions', href: '#' },
   { name: 'Pricing', href: '#' },
   { name: 'Docs', href: '#' },
   { name: 'Company', href: '#' },
-];
+
+]
 
 export default function Example() {
   return (
@@ -22,11 +24,7 @@ export default function Example() {
             </a>
             <div className="hidden ml-10 space-x-8 lg:block">
               {navigation.map((link) => (
-                <a
-                  key={link.name}
-                  href={link.href}
-                  className="text-base font-medium text-white hover:text-indigo-50"
-                >
+                <a key={link.name} href={link.href} className="text-base font-medium text-white hover:text-indigo-50">
                   {link.name}
                 </a>
               ))}
@@ -49,16 +47,12 @@ export default function Example() {
         </div>
         <div className="py-4 flex flex-wrap justify-center space-x-6 lg:hidden">
           {navigation.map((link) => (
-            <a
-              key={link.name}
-              href={link.href}
-              className="text-base font-medium text-white hover:text-indigo-50"
-            >
+            <a key={link.name} href={link.href} className="text-base font-medium text-white hover:text-indigo-50">
               {link.name}
             </a>
           ))}
         </div>
       </nav>
     </header>
-  );
+  )
 }

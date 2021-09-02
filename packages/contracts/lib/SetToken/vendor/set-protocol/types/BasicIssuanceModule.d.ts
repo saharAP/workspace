@@ -2,23 +2,23 @@
 /* tslint:disable */
 /* eslint-disable */
 
-import { EventFragment, FunctionFragment, Result } from "@ethersproject/abi";
-import { BytesLike } from "@ethersproject/bytes";
 import {
-  CallOverrides,
+  ethers,
+  EventFilter,
+  Signer,
+  BigNumber,
+  BigNumberish,
+  PopulatedTransaction,
+} from "ethers";
+import {
   Contract,
   ContractTransaction,
   Overrides,
+  CallOverrides,
 } from "@ethersproject/contracts";
+import { BytesLike } from "@ethersproject/bytes";
 import { Listener, Provider } from "@ethersproject/providers";
-import {
-  BigNumber,
-  BigNumberish,
-  ethers,
-  EventFilter,
-  PopulatedTransaction,
-  Signer,
-} from "ethers";
+import { FunctionFragment, EventFragment, Result } from "@ethersproject/abi";
 
 interface BasicIssuanceModuleInterface extends ethers.utils.Interface {
   functions: {

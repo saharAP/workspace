@@ -1,13 +1,16 @@
 /* This example requires Tailwind CSS v2.0+ */
-import { CheckIcon, XIcon } from '@heroicons/react/solid';
+import { CheckIcon, XIcon } from '@heroicons/react/solid'
 
 const navigation = [
+
   { name: 'Solutions', href: '#' },
   { name: 'Pricing', href: '#' },
   { name: 'Docs', href: '#' },
   { name: 'Company', href: '#' },
-];
+
+]
 const plans = [
+
   {
     title: 'Starter',
     featured: false,
@@ -48,8 +51,10 @@ const plans = [
       { id: 4, value: 'Tax planning toolkit' },
     ],
   },
-];
+
+]
 const features = [
+
   {
     title: 'Tax Savings',
     tiers: [
@@ -106,8 +111,10 @@ const features = [
       { title: 'intermediate', value: false },
     ],
   },
-];
+
+]
 const perks = [
+
   {
     title: '24/7 customer support',
     tiers: [
@@ -164,8 +171,10 @@ const perks = [
       { title: 'intermediate', value: false },
     ],
   },
-];
+
+]
 const faqs = [
+
   {
     id: 1,
     question: "What's the best thing about Switzerland?",
@@ -173,8 +182,10 @@ const faqs = [
       "I don't know, but the flag is a big plus. Lorem ipsum dolor sit amet consectetur adipisicing elit. Quas cupiditate laboriosam fugiat.",
   },
   // More questions...
-];
+
+]
 const footerNavigation = {
+
   solutions: [
     { name: 'Marketing', href: '#' },
     { name: 'Analytics', href: '#' },
@@ -262,20 +273,18 @@ const footerNavigation = {
       ),
     },
   ],
-};
+
+}
 
 function classNames(...classes) {
-  return classes.filter(Boolean).join(' ');
+  return classes.filter(Boolean).join(' ')
 }
 
 export default function Example() {
   return (
     <div className="bg-gray-50">
       <header className="bg-indigo-600">
-        <nav
-          className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8"
-          aria-label="Top"
-        >
+        <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8" aria-label="Top">
           <div className="w-full py-6 flex items-center justify-between border-b border-indigo-500 lg:border-none">
             <div className="flex items-center">
               <a href="#">
@@ -288,11 +297,7 @@ export default function Example() {
               </a>
               <div className="hidden ml-10 space-x-8 lg:block">
                 {navigation.map((item) => (
-                  <a
-                    key={item.name}
-                    href={item.href}
-                    className="text-base font-medium text-white hover:text-indigo-50"
-                  >
+                  <a key={item.name} href={item.href} className="text-base font-medium text-white hover:text-indigo-50">
                     {item.name}
                   </a>
                 ))}
@@ -310,20 +315,14 @@ export default function Example() {
                 className="inline-block bg-white py-2 px-4 border border-transparent rounded-md text-base font-medium text-indigo-600 hover:bg-indigo-50"
               >
                 <span className="md:hidden">Sign up</span>
-                <span className="hidden md:inline lg:hidden">
-                  Create account
-                </span>
+                <span className="hidden md:inline lg:hidden">Create account</span>
                 <span className="hidden lg:inline">Create an account</span>
               </a>
             </div>
           </div>
           <div className="mt-4 flex justify-center space-x-6 lg:hidden">
             {navigation.map((item) => (
-              <a
-                key={item.name}
-                href={item.href}
-                className="text-base font-medium text-white hover:text-indigo-50"
-              >
+              <a key={item.name} href={item.href} className="text-base font-medium text-white hover:text-indigo-50">
                 {item.name}
               </a>
             ))}
@@ -336,10 +335,7 @@ export default function Example() {
         <div>
           <div className="relative bg-indigo-600">
             {/* Overlapping background */}
-            <div
-              aria-hidden="true"
-              className="hidden absolute bg-gray-50 w-full h-6 bottom-0 lg:block"
-            />
+            <div aria-hidden="true" className="hidden absolute bg-gray-50 w-full h-6 bottom-0 lg:block" />
 
             <div className="relative max-w-2xl mx-auto pt-16 px-4 text-center sm:pt-32 sm:px-6 lg:max-w-7xl lg:px-8">
               <h1 className="text-4xl font-extrabold tracking-tight text-white sm:text-6xl">
@@ -347,8 +343,7 @@ export default function Example() {
                 <span className="block lg:inline">no commitment.</span>
               </h1>
               <p className="mt-4 text-xl text-indigo-100">
-                Everything you need, nothing you don't. Pick a plan that best
-                suits your business.
+                Everything you need, nothing you don't. Pick a plan that best suits your business.
               </p>
             </div>
 
@@ -385,17 +380,15 @@ export default function Example() {
                   <div
                     key={plan.title}
                     className={classNames(
-                      plan.featured
-                        ? 'bg-white ring-2 ring-indigo-700 shadow-md'
-                        : 'bg-indigo-700 lg:bg-transparent',
-                      'pt-6 px-6 pb-3 rounded-lg lg:px-8 lg:pt-12',
+                      plan.featured ? 'bg-white ring-2 ring-indigo-700 shadow-md' : 'bg-indigo-700 lg:bg-transparent',
+                      'pt-6 px-6 pb-3 rounded-lg lg:px-8 lg:pt-12'
                     )}
                   >
                     <div>
                       <h3
                         className={classNames(
                           plan.featured ? 'text-indigo-600' : 'text-white',
-                          'text-sm font-semibold uppercase tracking-wide',
+                          'text-sm font-semibold uppercase tracking-wide'
                         )}
                       >
                         {plan.title}
@@ -405,28 +398,16 @@ export default function Example() {
                           <p
                             className={classNames(
                               plan.featured ? 'text-indigo-600' : 'text-white',
-                              'text-4xl font-extrabold tracking-tight',
+                              'text-4xl font-extrabold tracking-tight'
                             )}
                           >
                             ${plan.priceMonthly}
                           </p>
                           <div className="ml-4">
-                            <p
-                              className={classNames(
-                                plan.featured ? 'text-gray-700' : 'text-white',
-                                'text-sm',
-                              )}
-                            >
+                            <p className={classNames(plan.featured ? 'text-gray-700' : 'text-white', 'text-sm')}>
                               USD / mo
                             </p>
-                            <p
-                              className={classNames(
-                                plan.featured
-                                  ? 'text-gray-500'
-                                  : 'text-indigo-200',
-                                'text-sm',
-                              )}
-                            >
+                            <p className={classNames(plan.featured ? 'text-gray-500' : 'text-indigo-200', 'text-sm')}>
                               Billed yearly (${plan.priceYearly})
                             </p>
                           </div>
@@ -437,7 +418,7 @@ export default function Example() {
                             plan.featured
                               ? 'bg-indigo-600 text-white hover:bg-indigo-700'
                               : 'bg-white text-indigo-600 hover:bg-indigo-50',
-                            'mt-6 w-full inline-block py-2 px-8 border border-transparent rounded-md shadow-sm text-center text-sm font-medium sm:mt-0 sm:w-auto lg:mt-6 lg:w-full',
+                            'mt-6 w-full inline-block py-2 px-8 border border-transparent rounded-md shadow-sm text-center text-sm font-medium sm:mt-0 sm:w-auto lg:mt-6 lg:w-full'
                           )}
                         >
                           Buy {plan.title}
@@ -450,27 +431,22 @@ export default function Example() {
                         plan.featured
                           ? 'border-gray-200 divide-gray-200'
                           : 'border-indigo-500 divide-indigo-500 divide-opacity-75',
-                        'mt-7 border-t divide-y lg:border-t-0',
+                        'mt-7 border-t divide-y lg:border-t-0'
                       )}
                     >
                       {plan.mainFeatures.map((mainFeature) => (
-                        <li
-                          key={mainFeature.id}
-                          className="py-3 flex items-center"
-                        >
+                        <li key={mainFeature.id} className="py-3 flex items-center">
                           <CheckIcon
                             className={classNames(
-                              plan.featured
-                                ? 'text-indigo-500'
-                                : 'text-indigo-200',
-                              'w-5 h-5 flex-shrink-0',
+                              plan.featured ? 'text-indigo-500' : 'text-indigo-200',
+                              'w-5 h-5 flex-shrink-0'
                             )}
                             aria-hidden="true"
                           />
                           <span
                             className={classNames(
                               plan.featured ? 'text-gray-600' : 'text-white',
-                              'ml-4 text-sm font-medium',
+                              'ml-4 text-sm font-medium'
                             )}
                           >
                             {mainFeature.value}
@@ -485,10 +461,7 @@ export default function Example() {
           </div>
 
           {/* Feature comparison */}
-          <section
-            aria-labelledby="mobile-comparison-heading"
-            className="lg:hidden"
-          >
+          <section aria-labelledby="mobile-comparison-heading" className="lg:hidden">
             <h2 id="mobile-comparison-heading" className="sr-only">
               Feature comparison
             </h2>
@@ -498,48 +471,34 @@ export default function Example() {
                 <div key={plan.title} className="border-t border-gray-200">
                   <div
                     className={classNames(
-                      plan.featured
-                        ? 'border-indigo-600'
-                        : 'border-transparent',
-                      '-mt-px pt-6 border-t-2 sm:w-1/2',
+                      plan.featured ? 'border-indigo-600' : 'border-transparent',
+                      '-mt-px pt-6 border-t-2 sm:w-1/2'
                     )}
                   >
                     <h3
-                      className={classNames(
-                        plan.featured ? 'text-indigo-600' : 'text-gray-900',
-                        'text-sm font-bold',
-                      )}
+                      className={classNames(plan.featured ? 'text-indigo-600' : 'text-gray-900', 'text-sm font-bold')}
                     >
                       {plan.title}
                     </h3>
-                    <p className="mt-2 text-sm text-gray-500">
-                      {plan.description}
-                    </p>
+                    <p className="mt-2 text-sm text-gray-500">{plan.description}</p>
                   </div>
-                  <h4 className="mt-10 text-sm font-bold text-gray-900">
-                    Catered for business
-                  </h4>
+                  <h4 className="mt-10 text-sm font-bold text-gray-900">Catered for business</h4>
 
                   <div className="mt-6 relative">
                     {/* Fake card background */}
-                    <div
-                      aria-hidden="true"
-                      className="hidden absolute inset-0 pointer-events-none sm:block"
-                    >
+                    <div aria-hidden="true" className="hidden absolute inset-0 pointer-events-none sm:block">
                       <div
                         className={classNames(
                           plan.featured ? 'shadow-md' : 'shadow',
-                          'absolute right-0 w-1/2 h-full bg-white rounded-lg',
+                          'absolute right-0 w-1/2 h-full bg-white rounded-lg'
                         )}
                       />
                     </div>
 
                     <div
                       className={classNames(
-                        plan.featured
-                          ? 'ring-2 ring-indigo-600 shadow-md'
-                          : 'ring-1 ring-black ring-opacity-5 shadow',
-                        'relative py-3 px-4 bg-white rounded-lg sm:p-0 sm:bg-transparent sm:rounded-none sm:ring-0 sm:shadow-none',
+                        plan.featured ? 'ring-2 ring-indigo-600 shadow-md' : 'ring-1 ring-black ring-opacity-5 shadow',
+                        'relative py-3 px-4 bg-white rounded-lg sm:p-0 sm:bg-transparent sm:rounded-none sm:ring-0 sm:shadow-none'
                       )}
                     >
                       <dl className="divide-y divide-gray-200">
@@ -548,18 +507,13 @@ export default function Example() {
                             key={feature.title}
                             className="py-3 flex items-center justify-between sm:grid sm:grid-cols-2"
                           >
-                            <dt className="pr-4 text-sm font-medium text-gray-600">
-                              {feature.title}
-                            </dt>
+                            <dt className="pr-4 text-sm font-medium text-gray-600">{feature.title}</dt>
                             <dd className="flex items-center justify-end sm:px-4 sm:justify-center">
-                              {typeof feature.tiers[planIndex].value ===
-                              'string' ? (
+                              {typeof feature.tiers[planIndex].value === 'string' ? (
                                 <span
                                   className={classNames(
-                                    feature.tiers[planIndex].featured
-                                      ? 'text-indigo-600'
-                                      : 'text-gray-900',
-                                    'text-sm font-medium',
+                                    feature.tiers[planIndex].featured ? 'text-indigo-600' : 'text-gray-900',
+                                    'text-sm font-medium'
                                   )}
                                 >
                                   {feature.tiers[planIndex].value}
@@ -567,21 +521,13 @@ export default function Example() {
                               ) : (
                                 <>
                                   {feature.tiers[planIndex].value === true ? (
-                                    <CheckIcon
-                                      className="mx-auto h-5 w-5 text-indigo-600"
-                                      aria-hidden="true"
-                                    />
+                                    <CheckIcon className="mx-auto h-5 w-5 text-indigo-600" aria-hidden="true" />
                                   ) : (
-                                    <XIcon
-                                      className="mx-auto h-5 w-5 text-gray-400"
-                                      aria-hidden="true"
-                                    />
+                                    <XIcon className="mx-auto h-5 w-5 text-gray-400" aria-hidden="true" />
                                   )}
 
                                   <span className="sr-only">
-                                    {feature.tiers[planIndex].value === true
-                                      ? 'Yes'
-                                      : 'No'}
+                                    {feature.tiers[planIndex].value === true ? 'Yes' : 'No'}
                                   </span>
                                 </>
                               )}
@@ -592,74 +538,47 @@ export default function Example() {
                     </div>
 
                     {/* Fake card border */}
-                    <div
-                      aria-hidden="true"
-                      className="hidden absolute inset-0 pointer-events-none sm:block"
-                    >
+                    <div aria-hidden="true" className="hidden absolute inset-0 pointer-events-none sm:block">
                       <div
                         className={classNames(
-                          plan.featured
-                            ? 'ring-2 ring-indigo-600'
-                            : 'ring-1 ring-black ring-opacity-5',
-                          'absolute right-0 w-1/2 h-full rounded-lg',
+                          plan.featured ? 'ring-2 ring-indigo-600' : 'ring-1 ring-black ring-opacity-5',
+                          'absolute right-0 w-1/2 h-full rounded-lg'
                         )}
                       />
                     </div>
                   </div>
 
-                  <h4 className="mt-10 text-sm font-bold text-gray-900">
-                    Other perks
-                  </h4>
+                  <h4 className="mt-10 text-sm font-bold text-gray-900">Other perks</h4>
 
                   <div className="mt-6 relative">
                     {/* Fake card background */}
-                    <div
-                      aria-hidden="true"
-                      className="hidden absolute inset-0 pointer-events-none sm:block"
-                    >
+                    <div aria-hidden="true" className="hidden absolute inset-0 pointer-events-none sm:block">
                       <div
                         className={classNames(
                           plan.featured ? 'shadow-md' : 'shadow',
-                          'absolute right-0 w-1/2 h-full bg-white rounded-lg',
+                          'absolute right-0 w-1/2 h-full bg-white rounded-lg'
                         )}
                       />
                     </div>
 
                     <div
                       className={classNames(
-                        plan.featured
-                          ? 'ring-2 ring-indigo-600 shadow-md'
-                          : 'ring-1 ring-black ring-opacity-5 shadow',
-                        'relative py-3 px-4 bg-white rounded-lg sm:p-0 sm:bg-transparent sm:rounded-none sm:ring-0 sm:shadow-none',
+                        plan.featured ? 'ring-2 ring-indigo-600 shadow-md' : 'ring-1 ring-black ring-opacity-5 shadow',
+                        'relative py-3 px-4 bg-white rounded-lg sm:p-0 sm:bg-transparent sm:rounded-none sm:ring-0 sm:shadow-none'
                       )}
                     >
                       <dl className="divide-y divide-gray-200">
                         {perks.map((perk) => (
-                          <div
-                            key={perk.title}
-                            className="py-3 flex justify-between sm:grid sm:grid-cols-2"
-                          >
-                            <dt className="text-sm font-medium text-gray-600 sm:pr-4">
-                              {perk.title}
-                            </dt>
+                          <div key={perk.title} className="py-3 flex justify-between sm:grid sm:grid-cols-2">
+                            <dt className="text-sm font-medium text-gray-600 sm:pr-4">{perk.title}</dt>
                             <dd className="text-center sm:px-4">
                               {perk.tiers[planIndex].value === true ? (
-                                <CheckIcon
-                                  className="mx-auto h-5 w-5 text-indigo-600"
-                                  aria-hidden="true"
-                                />
+                                <CheckIcon className="mx-auto h-5 w-5 text-indigo-600" aria-hidden="true" />
                               ) : (
-                                <XIcon
-                                  className="mx-auto h-5 w-5 text-gray-400"
-                                  aria-hidden="true"
-                                />
+                                <XIcon className="mx-auto h-5 w-5 text-gray-400" aria-hidden="true" />
                               )}
 
-                              <span className="sr-only">
-                                {perk.tiers[planIndex].value === true
-                                  ? 'Yes'
-                                  : 'No'}
-                              </span>
+                              <span className="sr-only">{perk.tiers[planIndex].value === true ? 'Yes' : 'No'}</span>
                             </dd>
                           </div>
                         ))}
@@ -667,16 +586,11 @@ export default function Example() {
                     </div>
 
                     {/* Fake card border */}
-                    <div
-                      aria-hidden="true"
-                      className="hidden absolute inset-0 pointer-events-none sm:block"
-                    >
+                    <div aria-hidden="true" className="hidden absolute inset-0 pointer-events-none sm:block">
                       <div
                         className={classNames(
-                          plan.featured
-                            ? 'ring-2 ring-indigo-600'
-                            : 'ring-1 ring-black ring-opacity-5',
-                          'absolute right-0 w-1/2 h-full rounded-lg',
+                          plan.featured ? 'ring-2 ring-indigo-600' : 'ring-1 ring-black ring-opacity-5',
+                          'absolute right-0 w-1/2 h-full rounded-lg'
                         )}
                       />
                     </div>
@@ -686,10 +600,7 @@ export default function Example() {
             </div>
           </section>
 
-          <section
-            aria-labelledby="comparison-heading"
-            className="hidden lg:block"
-          >
+          <section aria-labelledby="comparison-heading" className="hidden lg:block">
             <h2 id="comparison-heading" className="sr-only">
               Feature comparison
             </h2>
@@ -697,38 +608,26 @@ export default function Example() {
             <div className="mt-24 max-w-7xl mx-auto px-8">
               <div className="w-full border-t border-gray-200 flex items-stretch">
                 <div className="-mt-px w-1/4 py-6 pr-4 flex items-end">
-                  <h3 className="mt-auto text-sm font-bold text-gray-900">
-                    Catered for business
-                  </h3>
+                  <h3 className="mt-auto text-sm font-bold text-gray-900">Catered for business</h3>
                 </div>
                 {plans.map((plan, index) => (
                   <div
                     key={plan.title}
                     aria-hidden="true"
-                    className={classNames(
-                      index === plans.length - 1 ? '' : 'pr-4',
-                      '-mt-px pl-4 w-1/4',
-                    )}
+                    className={classNames(index === plans.length - 1 ? '' : 'pr-4', '-mt-px pl-4 w-1/4')}
                   >
                     <div
                       className={classNames(
-                        plan.featured
-                          ? 'border-indigo-600'
-                          : 'border-transparent',
-                        'py-6 border-t-2',
+                        plan.featured ? 'border-indigo-600' : 'border-transparent',
+                        'py-6 border-t-2'
                       )}
                     >
                       <p
-                        className={classNames(
-                          plan.featured ? 'text-indigo-600' : 'text-gray-900',
-                          'text-sm font-bold',
-                        )}
+                        className={classNames(plan.featured ? 'text-indigo-600' : 'text-gray-900', 'text-sm font-bold')}
                       >
                         {plan.title}
                       </p>
-                      <p className="mt-2 text-sm text-gray-500">
-                        {plan.description}
-                      </p>
+                      <p className="mt-2 text-sm text-gray-500">{plan.description}</p>
                     </div>
                   </div>
                 ))}
@@ -736,10 +635,7 @@ export default function Example() {
 
               <div className="relative">
                 {/* Fake card backgrounds */}
-                <div
-                  className="absolute inset-0 flex items-stretch pointer-events-none"
-                  aria-hidden="true"
-                >
+                <div className="absolute inset-0 flex items-stretch pointer-events-none" aria-hidden="true">
                   <div className="w-1/4 pr-4" />
                   <div className="w-1/4 px-4">
                     <div className="w-full h-full bg-white rounded-lg shadow" />
@@ -753,9 +649,7 @@ export default function Example() {
                 </div>
 
                 <table className="relative w-full">
-                  <caption className="sr-only">
-                    Business feature comparison
-                  </caption>
+                  <caption className="sr-only">Business feature comparison</caption>
                   <thead>
                     <tr className="text-left">
                       <th scope="col">
@@ -771,30 +665,23 @@ export default function Example() {
                   <tbody className="divide-y divide-gray-100">
                     {features.map((feature) => (
                       <tr key={feature.title}>
-                        <th
-                          scope="row"
-                          className="w-1/4 py-3 pr-4 text-left text-sm font-medium text-gray-600"
-                        >
+                        <th scope="row" className="w-1/4 py-3 pr-4 text-left text-sm font-medium text-gray-600">
                           {feature.title}
                         </th>
                         {feature.tiers.map((tier, index) => (
                           <td
                             key={tier.title}
                             className={classNames(
-                              index === feature.tiers.length - 1
-                                ? 'pl-4'
-                                : 'px-4',
-                              'relative w-1/4 py-0 text-center',
+                              index === feature.tiers.length - 1 ? 'pl-4' : 'px-4',
+                              'relative w-1/4 py-0 text-center'
                             )}
                           >
                             <span className="relative w-full h-full py-3">
                               {typeof tier.value === 'string' ? (
                                 <span
                                   className={classNames(
-                                    tier.featured
-                                      ? 'text-indigo-600'
-                                      : 'text-gray-900',
-                                    'text-sm font-medium',
+                                    tier.featured ? 'text-indigo-600' : 'text-gray-900',
+                                    'text-sm font-medium'
                                   )}
                                 >
                                   {tier.value}
@@ -802,20 +689,12 @@ export default function Example() {
                               ) : (
                                 <>
                                   {tier.value === true ? (
-                                    <CheckIcon
-                                      className="mx-auto h-5 w-5 text-indigo-600"
-                                      aria-hidden="true"
-                                    />
+                                    <CheckIcon className="mx-auto h-5 w-5 text-indigo-600" aria-hidden="true" />
                                   ) : (
-                                    <XIcon
-                                      className="mx-auto h-5 w-5 text-gray-400"
-                                      aria-hidden="true"
-                                    />
+                                    <XIcon className="mx-auto h-5 w-5 text-gray-400" aria-hidden="true" />
                                   )}
 
-                                  <span className="sr-only">
-                                    {tier.value === true ? 'Yes' : 'No'}
-                                  </span>
+                                  <span className="sr-only">{tier.value === true ? 'Yes' : 'No'}</span>
                                 </>
                               )}
                             </span>
@@ -827,10 +706,7 @@ export default function Example() {
                 </table>
 
                 {/* Fake card borders */}
-                <div
-                  className="absolute inset-0 flex items-stretch pointer-events-none"
-                  aria-hidden="true"
-                >
+                <div className="absolute inset-0 flex items-stretch pointer-events-none" aria-hidden="true">
                   <div className="w-1/4 pr-4" />
                   <div className="w-1/4 px-4">
                     <div className="w-full h-full rounded-lg ring-1 ring-black ring-opacity-5" />
@@ -844,16 +720,11 @@ export default function Example() {
                 </div>
               </div>
 
-              <h3 className="mt-10 text-sm font-bold text-gray-900">
-                Other perks
-              </h3>
+              <h3 className="mt-10 text-sm font-bold text-gray-900">Other perks</h3>
 
               <div className="mt-6 relative">
                 {/* Fake card backgrounds */}
-                <div
-                  className="absolute inset-0 flex items-stretch pointer-events-none"
-                  aria-hidden="true"
-                >
+                <div className="absolute inset-0 flex items-stretch pointer-events-none" aria-hidden="true">
                   <div className="w-1/4 pr-4" />
                   <div className="w-1/4 px-4">
                     <div className="w-full h-full bg-white rounded-lg shadow" />
@@ -883,10 +754,7 @@ export default function Example() {
                   <tbody className="divide-y divide-gray-100">
                     {perks.map((perk) => (
                       <tr key={perk.title}>
-                        <th
-                          scope="row"
-                          className="w-1/4 py-3 pr-4 text-left text-sm font-medium text-gray-600"
-                        >
+                        <th scope="row" className="w-1/4 py-3 pr-4 text-left text-sm font-medium text-gray-600">
                           {perk.title}
                         </th>
                         {perk.tiers.map((tier, index) => (
@@ -894,25 +762,17 @@ export default function Example() {
                             key={tier.title}
                             className={classNames(
                               index === perk.tiers.length - 1 ? 'pl-4' : 'px-4',
-                              'relative w-1/4 py-0 text-center',
+                              'relative w-1/4 py-0 text-center'
                             )}
                           >
                             <span className="relative w-full h-full py-3">
                               {tier.value === true ? (
-                                <CheckIcon
-                                  className="mx-auto h-5 w-5 text-indigo-600"
-                                  aria-hidden="true"
-                                />
+                                <CheckIcon className="mx-auto h-5 w-5 text-indigo-600" aria-hidden="true" />
                               ) : (
-                                <XIcon
-                                  className="mx-auto h-5 w-5 text-gray-400"
-                                  aria-hidden="true"
-                                />
+                                <XIcon className="mx-auto h-5 w-5 text-gray-400" aria-hidden="true" />
                               )}
 
-                              <span className="sr-only">
-                                {tier.value === true ? 'Yes' : 'No'}
-                              </span>
+                              <span className="sr-only">{tier.value === true ? 'Yes' : 'No'}</span>
                             </span>
                           </td>
                         ))}
@@ -922,10 +782,7 @@ export default function Example() {
                 </table>
 
                 {/* Fake card borders */}
-                <div
-                  className="absolute inset-0 flex items-stretch pointer-events-none"
-                  aria-hidden="true"
-                >
+                <div className="absolute inset-0 flex items-stretch pointer-events-none" aria-hidden="true">
                   <div className="w-1/4 pr-4" />
                   <div className="w-1/4 px-4">
                     <div className="w-full h-full rounded-lg ring-1 ring-black ring-opacity-5" />
@@ -946,18 +803,10 @@ export default function Example() {
         <div className="max-w-2xl mx-auto py-12 px-4 sm:px-6 lg:max-w-7xl lg:py-32 lg:px-8">
           <div className="grid grid-cols-2 gap-8 md:grid-cols-6 lg:grid-cols-5">
             <div className="col-span-1 flex justify-center md:col-span-2 lg:col-span-1">
-              <img
-                className="h-12"
-                src="https://tailwindui.com/img/logos/tuple-logo-gray-400.svg"
-                alt="Tuple"
-              />
+              <img className="h-12" src="https://tailwindui.com/img/logos/tuple-logo-gray-400.svg" alt="Tuple" />
             </div>
             <div className="col-span-1 flex justify-center md:col-span-2 lg:col-span-1">
-              <img
-                className="h-12"
-                src="https://tailwindui.com/img/logos/mirage-logo-gray-400.svg"
-                alt="Mirage"
-              />
+              <img className="h-12" src="https://tailwindui.com/img/logos/mirage-logo-gray-400.svg" alt="Mirage" />
             </div>
             <div className="col-span-1 flex justify-center md:col-span-2 lg:col-span-1">
               <img
@@ -987,16 +836,12 @@ export default function Example() {
         <section aria-labelledby="faq-heading" className="bg-gray-900">
           <div className="max-w-2xl mx-auto py-16 px-4 sm:py-24 sm:px-6 lg:max-w-7xl lg:px-8">
             <div className="max-w-2xl lg:mx-auto lg:text-center">
-              <h2
-                id="faq-heading"
-                className="text-3xl font-extrabold tracking-tight text-white sm:text-4xl"
-              >
+              <h2 id="faq-heading" className="text-3xl font-extrabold tracking-tight text-white sm:text-4xl">
                 Frequently asked questions
               </h2>
               <p className="mt-4 text-gray-400">
-                Ac euismod vel sit maecenas id pellentesque eu sed consectetur.
-                Malesuada adipiscing sagittis vel nulla nec. Urna, sed a lectus
-                elementum blandit et.
+                Ac euismod vel sit maecenas id pellentesque eu sed consectetur. Malesuada adipiscing sagittis vel nulla
+                nec. Urna, sed a lectus elementum blandit et.
               </p>
             </div>
             <div className="mt-20">
@@ -1026,16 +871,11 @@ export default function Example() {
                   alt="Company name"
                 />
                 <p className="text-gray-500 text-base">
-                  Making the world a better place through constructing elegant
-                  hierarchies.
+                  Making the world a better place through constructing elegant hierarchies.
                 </p>
                 <div className="flex space-x-6">
                   {footerNavigation.social.map((item) => (
-                    <a
-                      key={item.name}
-                      href={item.href}
-                      className="text-gray-400 hover:text-gray-500"
-                    >
+                    <a key={item.name} href={item.href} className="text-gray-400 hover:text-gray-500">
                       <span className="sr-only">{item.name}</span>
                       <item.icon className="h-6 w-6" aria-hidden="true" />
                     </a>
@@ -1045,16 +885,11 @@ export default function Example() {
               <div className="mt-12 grid grid-cols-2 gap-8 xl:mt-0 xl:col-span-2">
                 <div className="md:grid md:grid-cols-2 md:gap-8">
                   <div>
-                    <h3 className="text-sm font-semibold tracking-wider uppercase text-gray-900">
-                      Solutions
-                    </h3>
+                    <h3 className="text-sm font-semibold tracking-wider uppercase text-gray-900">Solutions</h3>
                     <ul className="mt-4 space-y-4">
                       {footerNavigation.solutions.map((item) => (
                         <li key={item.name}>
-                          <a
-                            href={item.href}
-                            className="text-base text-gray-500 hover:text-gray-900"
-                          >
+                          <a href={item.href} className="text-base text-gray-500 hover:text-gray-900">
                             {item.name}
                           </a>
                         </li>
@@ -1062,16 +897,11 @@ export default function Example() {
                     </ul>
                   </div>
                   <div className="mt-12 md:mt-0">
-                    <h3 className="text-sm font-semibold tracking-wider uppercase text-gray-900">
-                      Support
-                    </h3>
+                    <h3 className="text-sm font-semibold tracking-wider uppercase text-gray-900">Support</h3>
                     <ul className="mt-4 space-y-4">
                       {footerNavigation.support.map((item) => (
                         <li key={item.name}>
-                          <a
-                            href={item.href}
-                            className="text-base text-gray-500 hover:text-gray-900"
-                          >
+                          <a href={item.href} className="text-base text-gray-500 hover:text-gray-900">
                             {item.name}
                           </a>
                         </li>
@@ -1081,16 +911,11 @@ export default function Example() {
                 </div>
                 <div className="md:grid md:grid-cols-2 md:gap-8">
                   <div>
-                    <h3 className="text-sm font-semibold tracking-wider uppercase text-gray-900">
-                      Company
-                    </h3>
+                    <h3 className="text-sm font-semibold tracking-wider uppercase text-gray-900">Company</h3>
                     <ul className="mt-4 space-y-4">
                       {footerNavigation.company.map((item) => (
                         <li key={item.name}>
-                          <a
-                            href={item.href}
-                            className="text-base text-gray-500 hover:text-gray-900"
-                          >
+                          <a href={item.href} className="text-base text-gray-500 hover:text-gray-900">
                             {item.name}
                           </a>
                         </li>
@@ -1098,16 +923,11 @@ export default function Example() {
                     </ul>
                   </div>
                   <div className="mt-12 md:mt-0">
-                    <h3 className="text-sm font-semibold tracking-wider uppercase text-gray-900">
-                      Legal
-                    </h3>
+                    <h3 className="text-sm font-semibold tracking-wider uppercase text-gray-900">Legal</h3>
                     <ul className="mt-4 space-y-4">
                       {footerNavigation.legal.map((item) => (
                         <li key={item.name}>
-                          <a
-                            href={item.href}
-                            className="text-base text-gray-500 hover:text-gray-900"
-                          >
+                          <a href={item.href} className="text-base text-gray-500 hover:text-gray-900">
                             {item.name}
                           </a>
                         </li>
@@ -1118,13 +938,11 @@ export default function Example() {
               </div>
             </div>
             <div className="mt-12 border-t border-gray-200 pt-8">
-              <p className="text-base text-gray-400 xl:text-center">
-                &copy; 2021 Workflow, Inc. All rights reserved.
-              </p>
+              <p className="text-base text-gray-400 xl:text-center">&copy; 2021 Workflow, Inc. All rights reserved.</p>
             </div>
           </div>
         </footer>
       </main>
     </div>
-  );
+  )
 }

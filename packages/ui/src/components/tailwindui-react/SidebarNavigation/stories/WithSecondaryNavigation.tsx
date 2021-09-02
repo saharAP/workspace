@@ -1,30 +1,27 @@
 /* This example requires Tailwind CSS v2.0+ */
-import {
-  CalendarIcon,
-  ChartBarIcon,
-  FolderIcon,
-  HomeIcon,
-  InboxIcon,
-  UsersIcon,
-} from '@heroicons/react/outline';
+import { CalendarIcon, ChartBarIcon, FolderIcon, HomeIcon, InboxIcon, UsersIcon } from '@heroicons/react/outline'
 
 const navigation = [
+
   { name: 'Dashboard', icon: HomeIcon, href: '#', current: true },
   { name: 'Team', icon: UsersIcon, href: '#', current: false },
   { name: 'Projects', icon: FolderIcon, href: '#', current: false },
   { name: 'Calendar', icon: CalendarIcon, href: '#', current: false },
   { name: 'Documents', icon: InboxIcon, href: '#', current: false },
   { name: 'Reports', icon: ChartBarIcon, href: '#', current: false },
-];
+
+]
 const secondaryNavigation = [
+
   { name: 'Website redesign', href: '#' },
   { name: 'GraphQL API', href: '#' },
   { name: 'Customer migration guides', href: '#' },
   { name: 'Profit sharing program', href: '#' },
-];
+
+]
 
 function classNames(...classes) {
-  return classes.filter(Boolean).join(' ');
+  return classes.filter(Boolean).join(' ')
 }
 
 export default function Example() {
@@ -45,18 +42,14 @@ export default function Example() {
                 key={item.name}
                 href={item.href}
                 className={classNames(
-                  item.current
-                    ? 'bg-gray-100 text-gray-900'
-                    : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900',
-                  'group flex items-center px-2 py-2 text-sm font-medium rounded-md',
+                  item.current ? 'bg-gray-100 text-gray-900' : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900',
+                  'group flex items-center px-2 py-2 text-sm font-medium rounded-md'
                 )}
               >
                 <item.icon
                   className={classNames(
-                    item.current
-                      ? 'text-gray-500'
-                      : 'text-gray-400 group-hover:text-gray-500',
-                    'mr-3 flex-shrink-0 h-6 w-6',
+                    item.current ? 'text-gray-500' : 'text-gray-400 group-hover:text-gray-500',
+                    'mr-3 flex-shrink-0 h-6 w-6'
                   )}
                   aria-hidden="true"
                 />
@@ -65,17 +58,10 @@ export default function Example() {
             ))}
           </div>
           <div className="space-y-1">
-            <h3
-              className="px-3 text-xs font-semibold text-gray-500 uppercase tracking-wider"
-              id="projects-headline"
-            >
+            <h3 className="px-3 text-xs font-semibold text-gray-500 uppercase tracking-wider" id="projects-headline">
               Projects
             </h3>
-            <div
-              className="space-y-1"
-              role="group"
-              aria-labelledby="projects-headline"
-            >
+            <div className="space-y-1" role="group" aria-labelledby="projects-headline">
               {secondaryNavigation.map((item) => (
                 <a
                   key={item.name}
@@ -90,5 +76,5 @@ export default function Example() {
         </nav>
       </div>
     </div>
-  );
+  )
 }

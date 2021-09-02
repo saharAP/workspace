@@ -1,5 +1,5 @@
-import { ElectionMetadata } from '@popcorn/contracts/adapters';
 import { PendingVotes, Vote } from 'pages/grant-elections/[type]';
+import { ElectionMetadata } from '@popcorn/contracts/adapters';
 
 export interface ElectionProps {
   election: ElectionMetadata;

@@ -1,16 +1,18 @@
 /* This example requires Tailwind CSS v2.0+ */
-import { Menu, Transition } from '@headlessui/react';
-import { ChevronDownIcon } from '@heroicons/react/solid';
-import { Fragment } from 'react';
+import { Fragment } from 'react'
+import { Menu, Transition } from '@headlessui/react'
+import { ChevronDownIcon } from '@heroicons/react/solid'
 
 const items = [
+
   { name: 'Save and schedule', href: '#' },
   { name: 'Save and publish', href: '#' },
   { name: 'Export PDF', href: '#' },
-];
+
+]
 
 function classNames(...classes) {
-  return classes.filter(Boolean).join(' ');
+  return classes.filter(Boolean).join(' ')
 }
 
 export default function Example() {
@@ -45,7 +47,7 @@ export default function Example() {
                       href={item.href}
                       className={classNames(
                         active ? 'bg-gray-100 text-gray-900' : 'text-gray-700',
-                        'block px-4 py-2 text-sm',
+                        'block px-4 py-2 text-sm'
                       )}
                     >
                       {item.name}
@@ -58,5 +60,5 @@ export default function Example() {
         </Transition>
       </Menu>
     </span>
-  );
+  )
 }

@@ -19,10 +19,11 @@
   }
   ```
 */
-import { ChatAltIcon, TagIcon, UserCircleIcon } from '@heroicons/react/solid';
-import { Fragment } from 'react';
+import { Fragment } from 'react'
+import { ChatAltIcon, TagIcon, UserCircleIcon } from '@heroicons/react/solid'
 
 const activity = [
+
   {
     id: 1,
     type: 'comment',
@@ -60,10 +61,11 @@ const activity = [
       'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Tincidunt nunc ipsum tempor purus vitae id. Morbi in vestibulum nec varius. Et diam cursus quis sed purus nam. Scelerisque amet elit non sit ut tincidunt condimentum. Nisl ultrices eu venenatis diam.',
     date: '2h ago',
   },
-];
+
+]
 
 function classNames(...classes) {
-  return classes.filter(Boolean).join(' ');
+  return classes.filter(Boolean).join(' ')
 }
 
 export default function Example() {
@@ -74,10 +76,7 @@ export default function Example() {
           <li key={activityItem.id}>
             <div className="relative pb-8">
               {activityItemIdx !== activity.length - 1 ? (
-                <span
-                  className="absolute top-5 left-5 -ml-px h-full w-0.5 bg-gray-200"
-                  aria-hidden="true"
-                />
+                <span className="absolute top-5 left-5 -ml-px h-full w-0.5 bg-gray-200" aria-hidden="true" />
               ) : null}
               <div className="relative flex items-start space-x-3">
                 {activityItem.type === 'comment' ? (
@@ -90,25 +89,17 @@ export default function Example() {
                       />
 
                       <span className="absolute -bottom-0.5 -right-1 bg-white rounded-tl px-0.5 py-px">
-                        <ChatAltIcon
-                          className="h-5 w-5 text-gray-400"
-                          aria-hidden="true"
-                        />
+                        <ChatAltIcon className="h-5 w-5 text-gray-400" aria-hidden="true" />
                       </span>
                     </div>
                     <div className="min-w-0 flex-1">
                       <div>
                         <div className="text-sm">
-                          <a
-                            href={activityItem.person.href}
-                            className="font-medium text-gray-900"
-                          >
+                          <a href={activityItem.person.href} className="font-medium text-gray-900">
                             {activityItem.person.name}
                           </a>
                         </div>
-                        <p className="mt-0.5 text-sm text-gray-500">
-                          Commented {activityItem.date}
-                        </p>
+                        <p className="mt-0.5 text-sm text-gray-500">Commented {activityItem.date}</p>
                       </div>
                       <div className="mt-2 text-sm text-gray-700">
                         <p>{activityItem.comment}</p>
@@ -120,31 +111,20 @@ export default function Example() {
                     <div>
                       <div className="relative px-1">
                         <div className="h-8 w-8 bg-gray-100 rounded-full ring-8 ring-white flex items-center justify-center">
-                          <UserCircleIcon
-                            className="h-5 w-5 text-gray-500"
-                            aria-hidden="true"
-                          />
+                          <UserCircleIcon className="h-5 w-5 text-gray-500" aria-hidden="true" />
                         </div>
                       </div>
                     </div>
                     <div className="min-w-0 flex-1 py-1.5">
                       <div className="text-sm text-gray-500">
-                        <a
-                          href={activityItem.person.href}
-                          className="font-medium text-gray-900"
-                        >
+                        <a href={activityItem.person.href} className="font-medium text-gray-900">
                           {activityItem.person.name}
                         </a>{' '}
                         assigned{' '}
-                        <a
-                          href={activityItem.assigned.href}
-                          className="font-medium text-gray-900"
-                        >
+                        <a href={activityItem.assigned.href} className="font-medium text-gray-900">
                           {activityItem.assigned.name}
                         </a>{' '}
-                        <span className="whitespace-nowrap">
-                          {activityItem.date}
-                        </span>
+                        <span className="whitespace-nowrap">{activityItem.date}</span>
                       </div>
                     </div>
                   </>
@@ -153,20 +133,14 @@ export default function Example() {
                     <div>
                       <div className="relative px-1">
                         <div className="h-8 w-8 bg-gray-100 rounded-full ring-8 ring-white flex items-center justify-center">
-                          <TagIcon
-                            className="h-5 w-5 text-gray-500"
-                            aria-hidden="true"
-                          />
+                          <TagIcon className="h-5 w-5 text-gray-500" aria-hidden="true" />
                         </div>
                       </div>
                     </div>
                     <div className="min-w-0 flex-1 py-0">
                       <div className="text-sm leading-8 text-gray-500">
                         <span className="mr-0.5">
-                          <a
-                            href={activityItem.person.href}
-                            className="font-medium text-gray-900"
-                          >
+                          <a href={activityItem.person.href} className="font-medium text-gray-900">
                             {activityItem.person.name}
                           </a>{' '}
                           added tags
@@ -180,23 +154,16 @@ export default function Example() {
                               >
                                 <span className="absolute flex-shrink-0 flex items-center justify-center">
                                   <span
-                                    className={classNames(
-                                      tag.color,
-                                      'h-1.5 w-1.5 rounded-full',
-                                    )}
+                                    className={classNames(tag.color, 'h-1.5 w-1.5 rounded-full')}
                                     aria-hidden="true"
                                   />
                                 </span>
-                                <span className="ml-3.5 font-medium text-gray-900">
-                                  {tag.name}
-                                </span>
+                                <span className="ml-3.5 font-medium text-gray-900">{tag.name}</span>
                               </a>{' '}
                             </Fragment>
                           ))}
                         </span>
-                        <span className="whitespace-nowrap">
-                          {activityItem.date}
-                        </span>
+                        <span className="whitespace-nowrap">{activityItem.date}</span>
                       </div>
                     </div>
                   </>
@@ -207,5 +174,5 @@ export default function Example() {
         ))}
       </ul>
     </div>
-  );
+  )
 }

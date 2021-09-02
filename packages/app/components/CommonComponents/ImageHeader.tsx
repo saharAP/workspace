@@ -5,7 +5,10 @@ export interface ImageHeaderProps {
   title?: string;
 }
 
-const ImageHeader: React.FC<ImageHeaderProps> = ({ beneficiary, title }) => {
+const ImageHeader: React.FC<ImageHeaderProps> = ({
+  beneficiary,
+  title,
+}) => {
   return (
     <div>
       <div>

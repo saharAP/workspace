@@ -2,9 +2,7 @@
 export default function Example() {
   return (
     <div className="pb-5 border-b border-gray-200 sm:flex sm:items-center sm:justify-between">
-      <h3 className="text-lg leading-6 font-medium text-gray-900">
-        Job Postings
-      </h3>
+      <h3 className="text-lg leading-6 font-medium text-gray-900">Job Postings</h3>
       <div className="mt-3 flex sm:mt-0 sm:ml-4">
         <button
           type="button"
@@ -20,5 +18,5 @@ export default function Example() {
         </button>
       </div>
     </div>
-  );
+  )
 }
