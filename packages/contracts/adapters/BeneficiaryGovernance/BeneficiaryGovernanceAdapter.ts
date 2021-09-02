@@ -88,14 +88,14 @@ export class BeneficiaryGovernanceAdapter {
       proposalType === ProposalType.Nomination ? "nominations" : "takedowns";
 
     const proposalIds = await Promise.all(
-      new Array(proposalCount).fill(undefined).map(async (x, i) => {
+      new Array(Number(proposalCount)).fill(undefined).map(async (x, i) => {
         return this.contract[proposalTypeName](i);
       })
     );
 
     return Promise.all(
       proposalIds.map(async (id) => {
-        return this.getProposal(id.toNumber());
+        return this.getProposal(Number(id));
       })
     );
   }
