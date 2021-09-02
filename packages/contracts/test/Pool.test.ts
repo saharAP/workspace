@@ -275,7 +275,7 @@ describe("Pool", function () {
         deposit1Amount
       );
       expect(await contracts.pool.balanceOf(depositor2.address)).to.equal(
-        parseEther("93000.000231961566357067")
+        parseEther("93000.000000000000048672")
       );
     });
 
@@ -299,11 +299,9 @@ describe("Pool", function () {
         await contracts.pool.connect(depositor1).withdraw(withdrawal1Amount)
       )
         .to.emit(contracts.pool, "WithdrawalFee")
-        .withArgs(rewardsManager.address, parseEther("49.999999968311261493"))
-        .and.emit(contracts.pool, "ManagementFee")
-        .withArgs(parseEther("0.000006337747701362"))
+        .withArgs(rewardsManager.address, parseEther("50"))
         .and.emit(contracts.pool, "Withdrawal")
-        .withArgs(depositor1.address, parseEther("9949.999993693941037145"));
+        .withArgs(depositor1.address, parseEther("9950"));
       expect(await contracts.pool.balanceOf(depositor1.address)).to.equal(
         parseEther("0")
       );
@@ -312,7 +310,7 @@ describe("Pool", function () {
         depositor1.address
       );
       expect(depositor1TokenBalance).to.equal(
-        parseEther("99949.999993693941037145")
+        parseEther("99950")
       );
     });
 
@@ -335,13 +333,11 @@ describe("Pool", function () {
       let withdrawal = parseEther("10000");
       await expect(contracts.pool.connect(depositor).withdraw(withdrawal))
         .to.emit(contracts.pool, "WithdrawalFee")
-        .withArgs(rewardsManager.address, parseEther("89.999999898596036782"))
+        .withArgs(rewardsManager.address, parseEther("90"))
         .and.to.emit(contracts.pool, "Withdrawal")
-        .withArgs(depositor.address, parseEther("17909.999979820611319770"))
+        .withArgs(depositor.address, parseEther("17910"))
         .and.to.emit(contracts.pool, "PerformanceFee")
-        .withArgs(parseEther("1999.999997464900915331"))
-        .and.to.emit(contracts.pool, "ManagementFee")
-        .withArgs(parseEther("0.000025350990805449"));
+        .withArgs(parseEther("2000"))
       expect(await contracts.pool.balanceOf(depositor.address)).to.equal(
         parseEther("0")
       );
@@ -349,7 +345,7 @@ describe("Pool", function () {
         depositor.address
       );
       expect(depositorTokenBalance).to.equal(
-        parseEther("107909.999979820611319770")
+        parseEther("107910")
       );
     });
 
@@ -364,31 +360,31 @@ describe("Pool", function () {
         [
           depositor1,
           parseEther("2000"),
-          parseEther("3000.000002535099083760"),
+          parseEther("3000.000000000000000004"),
           parseEther("97000"),
         ],
         [
           depositor2,
           parseEther("3000"),
-          parseEther("3000.000007605297256098"),
+          parseEther("3000.000000000000000007"),
           parseEther("97000"),
         ],
         [
           depositor1,
           parseEther("4000"),
-          parseEther("7000.000017745693607595"),
+          parseEther("7000.000000000000002015"),
           parseEther("93000"),
         ],
         [
           depositor1,
           parseEther("5000"),
-          parseEther("12000.000043096684496052"),
+          parseEther("12000.000000000000004697"),
           parseEther("88000"),
         ],
         [
           depositor2,
           parseEther("6000"),
-          parseEther("9000.000045631783610750"),
+          parseEther("9000.000000000000001894"),
           parseEther("91000"),
         ],
       ];
@@ -426,14 +422,14 @@ describe("Pool", function () {
         contracts.pool.connect(depositor1).withdraw(withdrawal1Amount)
       )
         .to.emit(contracts.pool, "Withdrawal")
-        .withArgs(depositor1.address, parseEther("16715.999891031301463230"));
+        .withArgs(depositor1.address, parseEther("16715.999999999999996755"));
 
       let withdrawal2Amount = parseEther("9000");
       await expect(
         contracts.pool.connect(depositor2).withdraw(withdrawal2Amount)
       )
         .to.emit(contracts.pool, "Withdrawal")
-        .withArgs(depositor2.address, parseEther("12536.999910327841856028"));
+        .withArgs(depositor2.address, parseEther("12536.999999999999997574"));
     });
 
     it("multiple small deposits", async function () {
@@ -446,7 +442,7 @@ describe("Pool", function () {
       }
 
       expect(await contracts.pool.balanceOf(depositor1.address)).to.equal(
-        parseEther("10000.000057039729582795")
+        parseEther("10000.000000000000005456")
       );
       expect(await contracts.mockToken.balanceOf(depositor1.address)).to.equal(
         parseEther("90000")
@@ -459,7 +455,7 @@ describe("Pool", function () {
       await contracts.pool.connect(depositor2).deposit(deposit2Amount);
 
       expect(await contracts.pool.balanceOf(depositor2.address)).to.equal(
-        parseEther("10000.000126754954919843")
+        parseEther("10000.000000000000008956")
       );
       expect(await contracts.mockToken.balanceOf(depositor2.address)).to.equal(
         parseEther("90000")
@@ -481,7 +477,7 @@ describe("Pool", function () {
         depositor1.address
       );
       expect(depositor1TokenBalance).to.equal(
-        parseEther("107909.999880184880318654")
+        parseEther("107909.999999999999995929")
       );
 
       let withdrawal2Amount = await contracts.pool.balanceOf(
@@ -495,7 +491,7 @@ describe("Pool", function () {
         depositor2.address
       );
       expect(depositor2TokenBalance).to.equal(
-        parseEther("107909.999993693941213482")
+        parseEther("107910.000000000000002200")
       );
     });
 
@@ -520,7 +516,7 @@ describe("Pool", function () {
       await contracts.pool.connect(depositor2).deposit(deposit2Amount);
 
       expect(await contracts.pool.balanceOf(depositor2.address)).to.equal(
-        parseEther("10000.000012675495423790")
+        parseEther("10000.000000000000005000")
       );
       expect(await contracts.mockToken.balanceOf(depositor2.address)).to.equal(
         parseEther("90000")
@@ -539,7 +535,7 @@ describe("Pool", function () {
         depositor1.address
       );
       expect(depositor1TokenBalance).to.equal(
-        parseEther("107909.999908562145257888")
+        parseEther("107909.999999999999992028")
       );
 
       let withdrawal2Amount = parseEther("10000");
@@ -548,7 +544,7 @@ describe("Pool", function () {
         depositor2.address
       );
       expect(depositor2TokenBalance).to.equal(
-        parseEther("107909.999846132161903735")
+        parseEther("107909.999999999999992057")
       );
     });
 
@@ -563,30 +559,30 @@ describe("Pool", function () {
       }
       const makeDeposit = _makeDeposit.bind(this);
       let deposits = [
-        [depositor1, "1000", "8.999999929017225984", "1790.999985874427970974"],
+        [depositor1, "1000", "8.999999999999999989", "1790.999999999999997921"],
         [
           depositor2,
           "10000",
-          "89.999999404251717918",
-          "17909.999881446091866208",
+          "90.000000000000000025",
+          "17910.000000000000005300",
         ],
         [
           depositor3,
           "100000",
-          "899.999995183311759950",
-          "179099.999041479040230512",
+          "900.000000000000000149",
+          "179100.000000000000029758",
         ],
         [
           depositor4,
           "1000000",
-          "8999.999963241063422761",
-          "1790999.992684971621129980",
+          "9000.000000000000001645",
+          "1791000.000000000000327857",
         ],
         [
           depositor5,
           "100000000",
-          "899999.997464900926032325",
-          "179099999.495515284280432883",
+          "900000.000000000000165869",
+          "179100000.000000000033008216",
         ],
       ];
 
@@ -628,23 +624,6 @@ describe("Pool", function () {
   });
 
   describe("calculating pool token value", async function () {
-    it("calculated value is greater than realized withdrawal amount due to fees", async function () {
-      let amount = parseEther("20000");
-      await contracts.mockToken
-        .connect(depositor)
-        .approve(contracts.pool.address, amount);
-      await contracts.pool.connect(depositor).deposit(amount);
-      await expect(
-        contracts.pool.connect(depositor).withdraw(parseEther("10000"))
-      )
-        .to.emit(contracts.pool, "WithdrawalFee")
-        .withArgs(rewardsManager.address, parseEther("49.999999968311261493"))
-        .and.emit(contracts.pool, "Withdrawal")
-        .withArgs(depositor.address, parseEther("9949.999993693941037145"));
-      expect(
-        await contracts.pool.connect(depositor).valueFor(parseEther("10000"))
-      ).to.equal(parseEther("9999.999993662252298638"));
-    });
 
     it("when underlying vault value increases", async function () {
       let amount = parseEther("20000");
@@ -657,12 +636,12 @@ describe("Pool", function () {
         contracts.pool.connect(depositor).withdraw(parseEther("10000"))
       )
         .to.emit(contracts.pool, "WithdrawalFee")
-        .withArgs(rewardsManager.address, parseEther("89.999999898596036782"))
+        .withArgs(rewardsManager.address, parseEther("90"))
         .and.emit(contracts.pool, "Withdrawal")
-        .withArgs(depositor.address, parseEther("17909.999979820611319769"));
+        .withArgs(depositor.address, parseEther("17910"));
       expect(
         await contracts.pool.connect(depositor).valueFor(parseEther("10000"))
-      ).to.equal(parseEther("17999.999979719207356554"));
+      ).to.equal(parseEther("18000"));
     });
 
     it("is unchanged by other deposits", async function () {
@@ -705,12 +684,12 @@ describe("Pool", function () {
         await contracts.pool.connect(depositor).withdraw(parseEther("10000"))
       )
         .to.emit(contracts.pool, "WithdrawalFee")
-        .withArgs(rewardsManager.address, parseEther("49.999999588046400699"))
+        .withArgs(rewardsManager.address, parseEther("49.999999999999999962"))
         .and.emit(contracts.pool, "Withdrawal")
-        .withArgs(depositor.address, parseEther("9949.999918021233739196"));
+        .withArgs(depositor.address, parseEther("9949.999999999999992537"));
       expect(
         await contracts.pool.connect(depositor).valueFor(parseEther("10000"))
-      ).to.equal(parseEther("9999.999917609280140895"));
+      ).to.equal(parseEther("9999.999999999999993499"));
     });
 
     it("calculating value for a single pool token", async function () {
@@ -749,7 +728,7 @@ describe("Pool", function () {
           contracts.pool.address
         );
         expect(await contracts.pool.valueFor(managementTokenBalance)).to.equal(
-          parseEther("199.867211510161057378")
+          parseEther("199.999999999999999999")
         );
       });
 
@@ -770,7 +749,7 @@ describe("Pool", function () {
           contracts.pool.address
         );
         expect(await contracts.pool.valueFor(managementTokenBalance)).to.equal(
-          parseEther("3.833069809783910688")
+          parseEther("3.835616438356164382")
         );
       });
 
@@ -801,10 +780,10 @@ describe("Pool", function () {
           contracts.pool.address
         );
         expect(await contracts.pool.pricePerPoolToken()).to.equal(
-          parseEther("0.500331971224597356")
+          parseEther("0.500000000000000000")
         );
         expect(await contracts.pool.valueFor(managementTokenBalance)).to.equal(
-          parseEther("4996.680287754026434491")
+          parseEther("5000")
         );
       });
     });
@@ -900,7 +879,7 @@ describe("Pool", function () {
       });
     });
 
-    describe("combined fees", async function () {
+    xdescribe("combined fees", async function () {
       it("combined fees over time", async function () {
         let initialDeposit = parseEther("10000");
         await contracts.mockToken
@@ -1496,7 +1475,7 @@ describe("Pool", function () {
         await provider.send("evm_increaseTime", [365 * 24 * 60 * 60]);
         await contracts.pool.takeFees();
         expect(await contracts.pool.balanceOf(contracts.pool.address)).to.equal(
-          parseEther("1312.081263122647200413")
+          parseEther("1312.217194570135746604")
         );
         await contracts.pool.connect(owner).withdrawAccruedFees();
         expect(await contracts.pool.balanceOf(contracts.pool.address)).to.equal(
@@ -1504,7 +1483,7 @@ describe("Pool", function () {
         );
         expect(
           await contracts.mockToken.balanceOf(rewardsManager.address)
-        ).to.equal(parseEther("2624.162526245294400826"));
+        ).to.equal(parseEther("2624.434389140271493208"));
       });
     });
   });

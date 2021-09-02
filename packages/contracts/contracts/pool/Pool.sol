@@ -20,7 +20,7 @@ contract Pool is AffiliateToken, Ownable, ReentrancyGuard, Pausable, Defended {
   address public rewardsManager;
 
   uint256 constant BPS_DENOMINATOR = 10_000;
-  uint256 constant SECONDS_PER_YEAR = 31_556_952;
+  uint256 constant MINUTES_PER_YEAR = 525_600;
 
   uint256 public withdrawalFee = 50;
   uint256 public managementFee = 200;
@@ -199,9 +199,9 @@ contract Pool is AffiliateToken, Ownable, ReentrancyGuard, Pausable, Defended {
   }
 
   function _takeManagementFee() internal {
-    uint256 period = block.timestamp.sub(feesUpdatedAt);
+    uint256 period = block.timestamp.sub(feesUpdatedAt).div(1 minutes);
     uint256 fee = (managementFee.mul(totalValue()).mul(period)).div(
-      SECONDS_PER_YEAR.mul(BPS_DENOMINATOR)
+      MINUTES_PER_YEAR.mul(BPS_DENOMINATOR)
     );
     if (fee > 0) {
       _issuePoolTokensForAmount(address(this), fee);
@@ -213,10 +213,10 @@ contract Pool is AffiliateToken, Ownable, ReentrancyGuard, Pausable, Defended {
     if (pricePerPoolToken() > poolTokenHWM) {
       uint256 changeInPricePerToken = pricePerPoolToken().sub(poolTokenHWM);
       uint256 fee = performanceFee
-        .mul(changeInPricePerToken)
-        .mul(totalSupply())
-        .div(BPS_DENOMINATOR)
-        .div(1e18);
+      .mul(changeInPricePerToken)
+      .mul(totalSupply())
+      .div(BPS_DENOMINATOR)
+      .div(1e18);
       _issuePoolTokensForAmount(address(this), fee);
       emit PerformanceFee(fee);
     }
