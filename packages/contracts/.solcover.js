@@ -1,3 +1,9 @@
 module.exports = {
-  skipFiles: ["mocks/", "UniswapV2Router02.sol", "RandomNumberConsumer.sol"],
+  skipFiles: [
+    "mocks/",
+    "lib/",
+    "interfaces/",
+    "UniswapV2Router02.sol",
+    "RandomNumberConsumer.sol",
+  ],
 };

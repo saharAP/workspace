@@ -13,6 +13,10 @@ import "./Interfaces/Integrations/CurveContracts.sol";
 import "./Interfaces/Integrations/BasicIssuanceModule.sol";
 import "./Interfaces/Integrations/ISetToken.sol";
 
+/**
+ * @title BatchSetInteraction
+ * @notice Use this contract for minting and redeeming HYSI with reduced gas fees.
+ */
 contract BatchSetInteraction is Owned {
   using SafeMath for uint256;
   using SafeERC20 for ThreeCrv;

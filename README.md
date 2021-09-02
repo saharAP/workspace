@@ -91,7 +91,7 @@ Deploy from `packages/contracts`:
 
 1. compile: `yarn hardhat compile`
 2. in one terminal: `yarn hardhat node`
-3. in another terminal: `yarn hardhat run --network localhost scripts/deploy.js`
+3. in another terminal: `yarn hardhat dev:deploy`
 
 ## Default Service Locations
 
@@ -114,11 +114,12 @@ Deploy from `packages/contracts`:
 
 ## Useful Hardhat Commands
 
-| Command                                                                    | Description                      |
-| -------------------------------------------------------------------------- | -------------------------------- |
-| `yarn hardhat dev:deploy --network localhost`                              | deploy contracts for development |
-| `yarn hardhat elections:refreshElectionState --term 1 --network localhost` | refresh election state           |
-| `yarn hardhat elections:getElectionMetadata --term 1 --network localhost`  | get metadata for election term   |
+| Command                                                                    | Description                                                                    |
+| -------------------------------------------------------------------------- | ------------------------------------------------------------------------------ |
+| `yarn hardhat dev:deploy`                                                  | deploy contracts for development                                               |
+| `yarn hardhat elections:refreshElectionState --term 1 --network localhost` | refresh election state                                                         |
+| `yarn hardhat elections:getElectionMetadata --term 1 --network localhost`  | get metadata for election term                                                 |
+| `yarn lerna run --scope @popcorn/contracts docify`                         | generate documentation for contracts (found in packages/contracts/docgen/docs) |
 
 ## Contributing
 

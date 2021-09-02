@@ -84,6 +84,9 @@ contract GrantElections is ParticipationReward {
   ElectionConfiguration[3] public electionDefaults;
   uint256 public incentiveBudget;
 
+  mapping(address => bool) public proposer;
+  mapping(address => bool) public approver;
+
   /* ========== EVENTS ========== */
 
   event BeneficiaryRegistered(address _beneficiary, uint256 _electionId);
@@ -95,6 +98,10 @@ contract GrantElections is ParticipationReward {
   );
   event FinalizationProposed(uint256 _electionId, bytes32 _merkleRoot);
   event ElectionFinalized(uint256 _electionId, bytes32 _merkleRoot);
+  event ProposerAdded(address proposer);
+  event ProposerRemoved(address proposer);
+  event ApproverAdded(address approver);
+  event ApproverRemoved(address approver);
 
   /* ========== CONSTRUCTOR ========== */
 
@@ -383,10 +390,11 @@ contract GrantElections is ParticipationReward {
 
   /* ========== RESTRICTED FUNCTIONS ========== */
 
-  //TODO needs some kind of whitelisting
   function proposeFinalization(uint256 _electionId, bytes32 _merkleRoot)
     external
   {
+    require(proposer[msg.sender] == true, "not a proposer");
+
     Election storage _election = elections[_electionId];
     require(
       _election.electionState == ElectionState.Closed ||
@@ -419,10 +427,11 @@ contract GrantElections is ParticipationReward {
     emit FinalizationProposed(_electionId, _merkleRoot);
   }
 
-  //TODO needs some kind of whitelisting
   function approveFinalization(uint256 _electionId, bytes32 _merkleRoot)
     external
   {
+    require(approver[msg.sender] == true, "not an approver");
+
     Election storage election = elections[_electionId];
     require(
       election.electionState != ElectionState.Finalized,
@@ -452,6 +461,34 @@ contract GrantElections is ParticipationReward {
     electionDefaults[uint8(_term)]
     .bondRequirements
     .required = !electionDefaults[uint8(_term)].bondRequirements.required;
+  }
+
+  function addProposer(address _proposer) external onlyGovernance {
+    require(proposer[_proposer] != true, "already registered");
+    require(approver[_proposer] != true, "is already an approver");
+
+    proposer[_proposer] = true;
+    emit ProposerAdded(_proposer);
+  }
+
+  function removeProposer(address _proposer) external onlyGovernance {
+    require(proposer[_proposer] == true, "not registered");
+    delete proposer[_proposer];
+    emit ProposerRemoved(_proposer);
+  }
+
+  function addApprover(address _approver) external onlyGovernance {
+    require(approver[_approver] != true, "already registered");
+    require(proposer[_approver] != true, "is already a proposer");
+
+    approver[_approver] = true;
+    emit ApproverAdded(_approver);
+  }
+
+  function removeApprover(address _approver) external onlyGovernance {
+    require(approver[_approver] == true, "not registered");
+    delete approver[_approver];
+    emit ApproverRemoved(_approver);
   }
 
   function _collectRegistrationBond(Election storage _election) internal {
