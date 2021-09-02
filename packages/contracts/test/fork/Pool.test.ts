@@ -107,7 +107,7 @@ describe("Pool", function () {
         {
           forking: {
             jsonRpcUrl: process.env.FORKING_RPC_URL,
-            blockNumber: parseInt(process.env.FORKING_BLOCK_NUMBER),
+            blockNumber: 12724811,
           },
         },
       ],
