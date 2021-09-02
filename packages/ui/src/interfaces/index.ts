@@ -20,6 +20,12 @@ interface UserNavigation {
   href: string;
 }
 
+export interface ChartData {
+  data: string;
+  numTransactions: number;
+  co2Emissions: number;
+}
+
 export interface NavBarProps {
   title: string;
   headerNavigation: HeaderNavigation[];
@@ -34,5 +40,10 @@ export interface NavBarProps {
     open: boolean;
     setOpen: (state:boolean) => void;
     addContract: (contract:string) => void;
+  };
+  contractErrorProps: {
+    errorMessage: string;
+    setErrorMessage: (error: string) => void;
+    openAddContractModal: () => void;
   };
 }

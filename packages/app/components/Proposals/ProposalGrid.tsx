@@ -31,15 +31,21 @@ const ProposalGrid: React.FC<ProposalGridProps> = ({ proposalType }) => {
   const { contracts } = useContext(ContractsContext);
   const [proposals, setProposals] = useState<Proposal[]>([]);
   const filteredProposals = proposals
-    ?.filter((proposal) => {
+    ?.filter((proposal: Proposal) => {
       return proposal.application.organizationName
         .toLowerCase()
         .includes(searchFilter.toLowerCase());
     })
-    .filter((proposal) => {
+    .filter((proposal: Proposal) => {
+      const proposalStatus = proposal?.status;
+      if (statusFilter === ProposalStatus.Completed) {
+        return (
+          proposalStatus === ProposalStatus.Passed ||
+          proposalStatus === ProposalStatus.Failed
+        );
+      }
       return (
-        (proposal as Proposal)?.status === statusFilter ||
-        statusFilter === ProposalStatus.All
+        proposalStatus === statusFilter || statusFilter === ProposalStatus.All
       );
     });
   useEffect(() => {

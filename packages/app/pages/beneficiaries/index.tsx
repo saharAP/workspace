@@ -21,7 +21,6 @@ export default function BeneficiaryPage(): JSX.Element {
         .then((beneficiaries) => setBeneficiaries(beneficiaries));
     }
   }, [contracts]);
-
   return (
     <BeneficiaryGrid
       title={'Eligible Beneficiaries'}
