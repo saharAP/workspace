@@ -33,7 +33,8 @@ export default function Example() {
             New comments
           </label>
           <span id="comments-description" className="text-gray-500">
-            <span className="sr-only">New comments </span>so you always know what's happening.
+            <span className="sr-only">New comments </span>so you always know
+            what's happening.
           </span>
         </div>
       </div>
@@ -53,7 +54,8 @@ export default function Example() {
               New candidates
             </label>
             <span id="candidates-description" className="text-gray-500">
-              <span className="sr-only">New candidates </span>who apply for any open postings.
+              <span className="sr-only">New candidates </span>who apply for any
+              open postings.
             </span>
           </div>
         </div>
@@ -74,11 +76,12 @@ export default function Example() {
               Offers
             </label>
             <span id="offers-description" className="text-gray-500">
-              <span className="sr-only">Offers </span>when they are accepted or rejected by candidates.
+              <span className="sr-only">Offers </span>when they are accepted or
+              rejected by candidates.
             </span>
           </div>
         </div>
       </div>
     </fieldset>
-  )
+  );
 }

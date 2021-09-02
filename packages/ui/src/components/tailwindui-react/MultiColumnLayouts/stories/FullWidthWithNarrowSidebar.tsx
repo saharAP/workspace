@@ -14,9 +14,7 @@
   }
   ```
 */
-import { Fragment, useState } from 'react'
-import { Dialog, Menu, Transition } from '@headlessui/react'
-import { ChevronDownIcon, SearchIcon } from '@heroicons/react/solid'
+import { Dialog, Menu, Transition } from '@headlessui/react';
 import {
   ArchiveIcon,
   BanIcon,
@@ -27,18 +25,17 @@ import {
   PencilAltIcon,
   UserCircleIcon,
   XIcon,
-} from '@heroicons/react/outline'
+} from '@heroicons/react/outline';
+import { ChevronDownIcon, SearchIcon } from '@heroicons/react/solid';
+import { Fragment, useState } from 'react';
 
 const user = {
-
   name: 'Whitney Francis',
   email: 'whitneyfrancis@example.com',
   imageUrl:
     'https://images.unsplash.com/photo-1517365830460-955ce3ccd263?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
-
-}
+};
 const navigation = [
-
   {
     name: 'Inboxes',
     href: '#',
@@ -50,31 +47,26 @@ const navigation = [
   },
   { name: 'Reporting', href: '#', children: [] },
   { name: 'Settings', href: '#', children: [] },
-
-]
+];
 const sidebarNavigation = [
-
   { name: 'Open', href: '#', icon: InboxIcon, current: true },
   { name: 'Archive', href: '#', icon: ArchiveIcon, current: false },
   { name: 'Customers', href: '#', icon: UserCircleIcon, current: false },
   { name: 'Flagged', href: '#', icon: FlagIcon, current: false },
   { name: 'Spam', href: '#', icon: BanIcon, current: false },
   { name: 'Drafts', href: '#', icon: PencilAltIcon, current: false },
-
-]
+];
 const userNavigation = [
-
   { name: 'Your Profile', href: '#' },
   { name: 'Sign out', href: '#' },
-
-]
+];
 
 function classNames(...classes) {
-  return classes.filter(Boolean).join(' ')
+  return classes.filter(Boolean).join(' ');
 }
 
 export default function Example() {
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   return (
     <div className="h-screen overflow-hidden bg-gray-100 flex flex-col">
@@ -110,7 +102,10 @@ export default function Example() {
               ))}
             </select>
             <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center justify-center pr-2">
-              <ChevronDownIcon className="h-5 w-5 text-gray-500" aria-hidden="true" />
+              <ChevronDownIcon
+                className="h-5 w-5 text-gray-500"
+                aria-hidden="true"
+              />
             </div>
           </div>
         </div>
@@ -160,7 +155,10 @@ export default function Example() {
             </nav>
             <div className="flex items-center space-x-8">
               <span className="inline-flex">
-                <a href="#" className="-mx-1 bg-white p-1 rounded-full text-gray-400 hover:text-gray-500">
+                <a
+                  href="#"
+                  className="-mx-1 bg-white p-1 rounded-full text-gray-400 hover:text-gray-500"
+                >
                   <span className="sr-only">View notifications</span>
                   <BellIcon className="h-6 w-6" aria-hidden="true" />
                 </a>
@@ -169,7 +167,11 @@ export default function Example() {
               <Menu as="div" className="relative inline-block text-left">
                 <Menu.Button className="bg-white rounded-full flex text-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-600">
                   <span className="sr-only">Open user menu</span>
-                  <img className="h-8 w-8 rounded-full" src={user.imageUrl} alt="" />
+                  <img
+                    className="h-8 w-8 rounded-full"
+                    src={user.imageUrl}
+                    alt=""
+                  />
                 </Menu.Button>
 
                 <Transition
@@ -188,7 +190,10 @@ export default function Example() {
                         {({ active }) => (
                           <a
                             href="#"
-                            className={classNames(active ? 'bg-gray-100' : '', 'block px-4 py-2 text-sm text-gray-700')}
+                            className={classNames(
+                              active ? 'bg-gray-100' : '',
+                              'block px-4 py-2 text-sm text-gray-700',
+                            )}
                           >
                             Your Profile
                           </a>
@@ -198,7 +203,10 @@ export default function Example() {
                         {({ active }) => (
                           <a
                             href="#"
-                            className={classNames(active ? 'bg-gray-100' : '', 'block px-4 py-2 text-sm text-gray-700')}
+                            className={classNames(
+                              active ? 'bg-gray-100' : '',
+                              'block px-4 py-2 text-sm text-gray-700',
+                            )}
                           >
                             Sign Out
                           </a>
@@ -214,7 +222,11 @@ export default function Example() {
 
         {/* Mobile menu, show/hide this `div` based on menu open/closed state */}
         <Transition.Root show={mobileMenuOpen} as={Fragment}>
-          <Dialog as="div" className="fixed inset-0 z-40 md:hidden" onClose={setMobileMenuOpen}>
+          <Dialog
+            as="div"
+            className="fixed inset-0 z-40 md:hidden"
+            onClose={setMobileMenuOpen}
+          >
             <Transition.Child
               as={Fragment}
               enter="transition-opacity ease-linear duration-300"
@@ -297,13 +309,24 @@ export default function Example() {
                 <div className="border-t border-gray-200 pt-4 pb-3">
                   <div className="max-w-8xl mx-auto px-4 flex items-center sm:px-6">
                     <div className="flex-shrink-0">
-                      <img className="h-10 w-10 rounded-full" src={user.imageUrl} alt="" />
+                      <img
+                        className="h-10 w-10 rounded-full"
+                        src={user.imageUrl}
+                        alt=""
+                      />
                     </div>
                     <div className="ml-3 min-w-0 flex-1">
-                      <div className="text-base font-medium text-gray-800 truncate">{user.name}</div>
-                      <div className="text-sm font-medium text-gray-500 truncate">{user.email}</div>
+                      <div className="text-base font-medium text-gray-800 truncate">
+                        {user.name}
+                      </div>
+                      <div className="text-sm font-medium text-gray-500 truncate">
+                        {user.email}
+                      </div>
                     </div>
-                    <a href="#" className="ml-auto flex-shrink-0 bg-white p-2 text-gray-400 hover:text-gray-500">
+                    <a
+                      href="#"
+                      className="ml-auto flex-shrink-0 bg-white p-2 text-gray-400 hover:text-gray-500"
+                    >
                       <span className="sr-only">View notifications</span>
                       <BellIcon className="h-6 w-6" aria-hidden="true" />
                     </a>
@@ -329,15 +352,20 @@ export default function Example() {
       {/* Bottom section */}
       <div className="min-h-0 flex-1 flex overflow-hidden">
         {/* Narrow sidebar*/}
-        <nav aria-label="Sidebar" className="hidden md:block md:flex-shrink-0 md:bg-gray-800 md:overflow-y-auto">
+        <nav
+          aria-label="Sidebar"
+          className="hidden md:block md:flex-shrink-0 md:bg-gray-800 md:overflow-y-auto"
+        >
           <div className="relative w-20 flex flex-col p-3 space-y-3">
             {sidebarNavigation.map((item) => (
               <a
                 key={item.name}
                 href={item.href}
                 className={classNames(
-                  item.current ? 'bg-gray-900 text-white' : 'text-gray-400 hover:bg-gray-700',
-                  'flex-shrink-0 inline-flex items-center justify-center h-14 w-14 rounded-lg'
+                  item.current
+                    ? 'bg-gray-900 text-white'
+                    : 'text-gray-400 hover:bg-gray-700',
+                  'flex-shrink-0 inline-flex items-center justify-center h-14 w-14 rounded-lg',
                 )}
               >
                 <span className="sr-only">{item.name}</span>
@@ -369,5 +397,5 @@ export default function Example() {
         </main>
       </div>
     </div>
-  )
+  );
 }

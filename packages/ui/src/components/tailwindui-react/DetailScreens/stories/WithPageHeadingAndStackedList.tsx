@@ -14,8 +14,8 @@
   }
   ```
 */
-import { Fragment, useState } from 'react'
-import { Disclosure, Listbox, Menu, Transition } from '@headlessui/react'
+import { Disclosure, Listbox, Menu, Transition } from '@headlessui/react';
+import { BellIcon, MenuIcon, XIcon } from '@heroicons/react/outline';
 import {
   ArrowNarrowLeftIcon,
   ArrowNarrowRightIcon,
@@ -31,43 +31,34 @@ import {
   MailIcon,
   PencilIcon,
   SearchIcon,
-} from '@heroicons/react/solid'
-import { BellIcon, MenuIcon, XIcon } from '@heroicons/react/outline'
+} from '@heroicons/react/solid';
+import { Fragment, useState } from 'react';
 
 const user = {
-
   name: 'Whitney Francis',
   email: 'whitneyfrancis@example.com',
   imageUrl:
     'https://images.unsplash.com/photo-1517365830460-955ce3ccd263?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
-
-}
+};
 const navigation = [
-
   { name: 'Dashboard', href: '#', current: true },
   { name: 'Jobs', href: '#', current: false },
   { name: 'Applicants', href: '#', current: false },
   { name: 'Company', href: '#', current: false },
-
-]
+];
 const userNavigation = [
-
   { name: 'Your Profile', href: '#' },
   { name: 'Settings', href: '#' },
   { name: 'Sign out', href: '#' },
-
-]
+];
 const tabs = [
-
   { name: 'Applied', href: '#', count: '2', current: false },
   { name: 'Phone Screening', href: '#', count: '4', current: false },
   { name: 'Interview', href: '#', count: '6', current: true },
   { name: 'Offer', href: '#', current: false },
   { name: 'Disqualified', href: '#', current: false },
-
-]
+];
 const candidates = [
-
   {
     name: 'Emily Selman',
     email: 'emilyselman@example.com',
@@ -78,21 +69,26 @@ const candidates = [
     status: 'Completed phone screening',
   },
   // More candidates...
-
-]
+];
 const publishingOptions = [
-
-  { name: 'Published', description: 'This job posting can be viewed by anyone who has the link.', current: true },
-  { name: 'Draft', description: 'This job posting will no longer be publicly accessible.', current: false },
-
-]
+  {
+    name: 'Published',
+    description: 'This job posting can be viewed by anyone who has the link.',
+    current: true,
+  },
+  {
+    name: 'Draft',
+    description: 'This job posting will no longer be publicly accessible.',
+    current: false,
+  },
+];
 
 function classNames(...classes) {
-  return classes.filter(Boolean).join(' ')
+  return classes.filter(Boolean).join(' ');
 }
 
 export default function Example() {
-  const [selected, setSelected] = useState(publishingOptions[0])
+  const [selected, setSelected] = useState(publishingOptions[0]);
 
   return (
     <div className="relative min-h-screen bg-white">
@@ -119,8 +115,10 @@ export default function Example() {
                           key={item.name}
                           href={item.href}
                           className={classNames(
-                            item.current ? 'bg-gray-100' : 'hover:text-gray-700',
-                            'px-3 py-2 rounded-md text-sm font-medium text-gray-900'
+                            item.current
+                              ? 'bg-gray-100'
+                              : 'hover:text-gray-700',
+                            'px-3 py-2 rounded-md text-sm font-medium text-gray-900',
                           )}
                           aria-current={item.current ? 'page' : undefined}
                         >
@@ -176,7 +174,11 @@ export default function Example() {
                       <div>
                         <Menu.Button className="bg-gray-50 rounded-full flex text-sm text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-50 focus:ring-purple-500">
                           <span className="sr-only">Open user menu</span>
-                          <img className="rounded-full h-8 w-8" src={user.imageUrl} alt="" />
+                          <img
+                            className="rounded-full h-8 w-8"
+                            src={user.imageUrl}
+                            alt=""
+                          />
                         </Menu.Button>
                       </div>
                       <Transition
@@ -196,7 +198,7 @@ export default function Example() {
                                   href={item.href}
                                   className={classNames(
                                     active ? 'bg-gray-100' : '',
-                                    'block py-2 px-4 text-sm text-gray-700'
+                                    'block py-2 px-4 text-sm text-gray-700',
                                   )}
                                 >
                                   {item.name}
@@ -220,7 +222,7 @@ export default function Example() {
                     href={item.href}
                     className={classNames(
                       item.current ? 'bg-gray-100' : 'hover:bg-gray-100',
-                      'block px-3 py-2 rounded-md font-medium text-gray-900'
+                      'block px-3 py-2 rounded-md font-medium text-gray-900',
                     )}
                     aria-current={item.current ? 'page' : undefined}
                   >
@@ -231,11 +233,19 @@ export default function Example() {
               <div className="pt-4 pb-3 border-t border-gray-200">
                 <div className="px-5 flex items-center">
                   <div className="flex-shrink-0">
-                    <img className="rounded-full h-10 w-10" src={user.imageUrl} alt="" />
+                    <img
+                      className="rounded-full h-10 w-10"
+                      src={user.imageUrl}
+                      alt=""
+                    />
                   </div>
                   <div className="ml-3">
-                    <div className="text-base font-medium text-gray-800">{user.name}</div>
-                    <div className="text-sm font-medium text-gray-500">{user.email}</div>
+                    <div className="text-base font-medium text-gray-800">
+                      {user.name}
+                    </div>
+                    <div className="text-sm font-medium text-gray-500">
+                      {user.email}
+                    </div>
                   </div>
                   <button className="ml-auto bg-gray-50 flex-shrink-0 rounded-full p-1 text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-50 focus:ring-purple-500">
                     <span className="sr-only">View notifications</span>
@@ -267,15 +277,24 @@ export default function Example() {
               <ol className="flex items-center space-x-4" role="list">
                 <li>
                   <div>
-                    <a href="#" className="text-sm font-medium text-gray-500 hover:text-gray-700">
+                    <a
+                      href="#"
+                      className="text-sm font-medium text-gray-500 hover:text-gray-700"
+                    >
                       Jobs
                     </a>
                   </div>
                 </li>
                 <li>
                   <div className="flex items-center">
-                    <ChevronRightIcon className="flex-shrink-0 h-5 w-5 text-gray-400" aria-hidden="true" />
-                    <a href="#" className="ml-4 text-sm font-medium text-gray-500 hover:text-gray-700">
+                    <ChevronRightIcon
+                      className="flex-shrink-0 h-5 w-5 text-gray-400"
+                      aria-hidden="true"
+                    />
+                    <a
+                      href="#"
+                      className="ml-4 text-sm font-medium text-gray-500 hover:text-gray-700"
+                    >
                       Engineering
                     </a>
                   </div>
@@ -287,19 +306,31 @@ export default function Example() {
             </h1>
             <div className="mt-1 flex flex-col sm:flex-row sm:flex-wrap sm:mt-0 sm:space-x-8">
               <div className="mt-2 flex items-center text-sm text-gray-500">
-                <BriefcaseIcon className="flex-shrink-0 mr-1.5 h-5 w-5 text-gray-400" aria-hidden="true" />
+                <BriefcaseIcon
+                  className="flex-shrink-0 mr-1.5 h-5 w-5 text-gray-400"
+                  aria-hidden="true"
+                />
                 Full-time
               </div>
               <div className="mt-2 flex items-center text-sm text-gray-500">
-                <LocationMarkerIcon className="flex-shrink-0 mr-1.5 h-5 w-5 text-gray-400" aria-hidden="true" />
+                <LocationMarkerIcon
+                  className="flex-shrink-0 mr-1.5 h-5 w-5 text-gray-400"
+                  aria-hidden="true"
+                />
                 Remote
               </div>
               <div className="mt-2 flex items-center text-sm text-gray-500">
-                <CurrencyDollarIcon className="flex-shrink-0 mr-1.5 h-5 w-5 text-gray-400" aria-hidden="true" />
+                <CurrencyDollarIcon
+                  className="flex-shrink-0 mr-1.5 h-5 w-5 text-gray-400"
+                  aria-hidden="true"
+                />
                 $120k &ndash; $140k
               </div>
               <div className="mt-2 flex items-center text-sm text-gray-500">
-                <CalendarIcon className="flex-shrink-0 mr-1.5 h-5 w-5 text-gray-400" aria-hidden="true" />
+                <CalendarIcon
+                  className="flex-shrink-0 mr-1.5 h-5 w-5 text-gray-400"
+                  aria-hidden="true"
+                />
                 Closing on January 9, 2020
               </div>
             </div>
@@ -310,7 +341,10 @@ export default function Example() {
                 type="button"
                 className="inline-flex items-center px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-50 focus:ring-purple-500"
               >
-                <PencilIcon className="-ml-1 mr-2 h-5 w-5 text-gray-400" aria-hidden="true" />
+                <PencilIcon
+                  className="-ml-1 mr-2 h-5 w-5 text-gray-400"
+                  aria-hidden="true"
+                />
                 Edit
               </button>
             </span>
@@ -320,7 +354,10 @@ export default function Example() {
                 type="button"
                 className="inline-flex items-center px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-50 focus:ring-purple-500"
               >
-                <LinkIcon className="-ml-1 mr-2 h-5 w-5 text-gray-400" aria-hidden="true" />
+                <LinkIcon
+                  className="-ml-1 mr-2 h-5 w-5 text-gray-400"
+                  aria-hidden="true"
+                />
                 View
               </button>
             </span>
@@ -329,17 +366,26 @@ export default function Example() {
               <Listbox value={selected} onChange={setSelected}>
                 {({ open }) => (
                   <>
-                    <Listbox.Label className="sr-only">Change published status</Listbox.Label>
+                    <Listbox.Label className="sr-only">
+                      Change published status
+                    </Listbox.Label>
                     <div className="relative">
                       <div className="inline-flex shadow-sm rounded-md divide-x divide-purple-600">
                         <div className="relative z-0 inline-flex shadow-sm rounded-md divide-x divide-purple-600">
                           <div className="relative inline-flex items-center bg-purple-500 py-2 pl-3 pr-4 border border-transparent rounded-l-md shadow-sm text-white">
                             <CheckIcon className="h-5 w-5" aria-hidden="true" />
-                            <p className="ml-2.5 text-sm font-medium">{selected.name}</p>
+                            <p className="ml-2.5 text-sm font-medium">
+                              {selected.name}
+                            </p>
                           </div>
                           <Listbox.Button className="relative inline-flex items-center bg-purple-500 p-2 rounded-l-none rounded-r-md text-sm font-medium text-white hover:bg-purple-600 focus:outline-none focus:z-10 focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-50 focus:ring-purple-500">
-                            <span className="sr-only">Change published status</span>
-                            <ChevronDownIcon className="h-5 w-5 text-white" aria-hidden="true" />
+                            <span className="sr-only">
+                              Change published status
+                            </span>
+                            <ChevronDownIcon
+                              className="h-5 w-5 text-white"
+                              aria-hidden="true"
+                            />
                           </Listbox.Button>
                         </div>
                       </div>
@@ -357,8 +403,10 @@ export default function Example() {
                               key={option.name}
                               className={({ active }) =>
                                 classNames(
-                                  active ? 'text-white bg-purple-500' : 'text-gray-900',
-                                  'cursor-default select-none relative p-4 text-sm'
+                                  active
+                                    ? 'text-white bg-purple-500'
+                                    : 'text-gray-900',
+                                  'cursor-default select-none relative p-4 text-sm',
                                 )
                               }
                               value={option}
@@ -366,14 +414,38 @@ export default function Example() {
                               {({ selected, active }) => (
                                 <div className="flex flex-col">
                                   <div className="flex justify-between">
-                                    <p className={selected ? 'font-semibold' : 'font-normal'}>{option.name}</p>
+                                    <p
+                                      className={
+                                        selected
+                                          ? 'font-semibold'
+                                          : 'font-normal'
+                                      }
+                                    >
+                                      {option.name}
+                                    </p>
                                     {selected ? (
-                                      <span className={active ? 'text-white' : 'text-purple-500'}>
-                                        <CheckIcon className="h-5 w-5" aria-hidden="true" />
+                                      <span
+                                        className={
+                                          active
+                                            ? 'text-white'
+                                            : 'text-purple-500'
+                                        }
+                                      >
+                                        <CheckIcon
+                                          className="h-5 w-5"
+                                          aria-hidden="true"
+                                        />
                                       </span>
                                     ) : null}
                                   </div>
-                                  <p className={classNames(active ? 'text-purple-200' : 'text-gray-500', 'mt-2')}>
+                                  <p
+                                    className={classNames(
+                                      active
+                                        ? 'text-purple-200'
+                                        : 'text-gray-500',
+                                      'mt-2',
+                                    )}
+                                  >
                                     {option.description}
                                   </p>
                                 </div>
@@ -392,7 +464,10 @@ export default function Example() {
             <Menu as="span" className="ml-3 relative sm:hidden">
               <Menu.Button className="inline-flex items-center px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500">
                 More
-                <ChevronDownIcon className="-mr-1 ml-2 h-5 w-5 text-gray-500" aria-hidden="true" />
+                <ChevronDownIcon
+                  className="-mr-1 ml-2 h-5 w-5 text-gray-500"
+                  aria-hidden="true"
+                />
               </Menu.Button>
 
               <Transition
@@ -409,7 +484,10 @@ export default function Example() {
                     {({ active }) => (
                       <a
                         href="#"
-                        className={classNames(active ? 'bg-gray-100' : '', 'block px-4 py-2 text-sm text-gray-700')}
+                        className={classNames(
+                          active ? 'bg-gray-100' : '',
+                          'block px-4 py-2 text-sm text-gray-700',
+                        )}
                       >
                         Edit
                       </a>
@@ -419,7 +497,10 @@ export default function Example() {
                     {({ active }) => (
                       <a
                         href="#"
-                        className={classNames(active ? 'bg-gray-100' : '', 'block px-4 py-2 text-sm text-gray-700')}
+                        className={classNames(
+                          active ? 'bg-gray-100' : '',
+                          'block px-4 py-2 text-sm text-gray-700',
+                        )}
                       >
                         View
                       </a>
@@ -464,15 +545,17 @@ export default function Example() {
                         tab.current
                           ? 'border-purple-500 text-purple-600'
                           : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-200',
-                        'whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm'
+                        'whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm',
                       )}
                     >
                       {tab.name}
                       {tab.count ? (
                         <span
                           className={classNames(
-                            tab.current ? 'bg-purple-100 text-purple-600' : 'bg-gray-100 text-gray-900',
-                            'hidden ml-2 py-0.5 px-2.5 rounded-full text-xs font-medium md:inline-block'
+                            tab.current
+                              ? 'bg-purple-100 text-purple-600'
+                              : 'bg-gray-100 text-gray-900',
+                            'hidden ml-2 py-0.5 px-2.5 rounded-full text-xs font-medium md:inline-block',
                           )}
                         >
                           {tab.count}
@@ -486,7 +569,10 @@ export default function Example() {
           </div>
 
           {/* Stacked list */}
-          <ul className="mt-5 border-t border-gray-200 divide-y divide-gray-200 sm:mt-0 sm:border-t-0" role="list">
+          <ul
+            className="mt-5 border-t border-gray-200 divide-y divide-gray-200 sm:mt-0 sm:border-t-0"
+            role="list"
+          >
             {candidates.map((candidate) => (
               <li key={candidate.email}>
                 <a href="#" className="group block">
@@ -501,16 +587,24 @@ export default function Example() {
                       </div>
                       <div className="min-w-0 flex-1 px-4 md:grid md:grid-cols-2 md:gap-4">
                         <div>
-                          <p className="text-sm font-medium text-purple-600 truncate">{candidate.name}</p>
+                          <p className="text-sm font-medium text-purple-600 truncate">
+                            {candidate.name}
+                          </p>
                           <p className="mt-2 flex items-center text-sm text-gray-500">
-                            <MailIcon className="flex-shrink-0 mr-1.5 h-5 w-5 text-gray-400" aria-hidden="true" />
+                            <MailIcon
+                              className="flex-shrink-0 mr-1.5 h-5 w-5 text-gray-400"
+                              aria-hidden="true"
+                            />
                             <span className="truncate">{candidate.email}</span>
                           </p>
                         </div>
                         <div className="hidden md:block">
                           <div>
                             <p className="text-sm text-gray-900">
-                              Applied on <time dateTime={candidate.appliedDatetime}>{candidate.applied}</time>
+                              Applied on{' '}
+                              <time dateTime={candidate.appliedDatetime}>
+                                {candidate.applied}
+                              </time>
                             </p>
                             <p className="mt-2 flex items-center text-sm text-gray-500">
                               <CheckCircleIcon
@@ -545,7 +639,10 @@ export default function Example() {
                 href="#"
                 className="border-t-2 border-transparent pt-4 pr-1 inline-flex items-center text-sm font-medium text-gray-500 hover:text-gray-700 hover:border-gray-200"
               >
-                <ArrowNarrowLeftIcon className="mr-3 h-5 w-5 text-gray-400" aria-hidden="true" />
+                <ArrowNarrowLeftIcon
+                  className="mr-3 h-5 w-5 text-gray-400"
+                  aria-hidden="true"
+                />
                 Previous
               </a>
             </div>
@@ -595,12 +692,15 @@ export default function Example() {
                 className="border-t-2 border-transparent pt-4 pl-1 inline-flex items-center text-sm font-medium text-gray-500 hover:text-gray-700 hover:border-gray-200"
               >
                 Next
-                <ArrowNarrowRightIcon className="ml-3 h-5 w-5 text-gray-400" aria-hidden="true" />
+                <ArrowNarrowRightIcon
+                  className="ml-3 h-5 w-5 text-gray-400"
+                  aria-hidden="true"
+                />
               </a>
             </div>
           </nav>
         </div>
       </main>
     </div>
-  )
+  );
 }

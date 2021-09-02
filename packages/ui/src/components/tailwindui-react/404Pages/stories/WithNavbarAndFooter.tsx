@@ -1,18 +1,15 @@
 /* This example requires Tailwind CSS v2.0+ */
-import { Fragment } from 'react'
-import { Popover, Transition } from '@headlessui/react'
-import { MenuIcon, XIcon } from '@heroicons/react/outline'
+import { Popover, Transition } from '@headlessui/react';
+import { MenuIcon, XIcon } from '@heroicons/react/outline';
+import { Fragment } from 'react';
 
 const navigation = [
-
   { name: 'Product', href: '#' },
   { name: 'Features', href: '#' },
   { name: 'Marketplace', href: '#' },
   { name: 'Company', href: '#' },
-
-]
+];
 const footer = {
-
   solutions: [
     { name: 'Marketing', href: '#' },
     { name: 'Analytics', href: '#' },
@@ -100,8 +97,7 @@ const footer = {
       ),
     },
   ],
-
-}
+};
 
 export default function Example() {
   return (
@@ -127,13 +123,20 @@ export default function Example() {
             </div>
             <nav className="hidden md:flex space-x-10">
               {navigation.map((item, itemIdx) => (
-                <a key={itemIdx} href={item.href} className="text-base font-medium text-gray-500 hover:text-gray-900">
+                <a
+                  key={itemIdx}
+                  href={item.href}
+                  className="text-base font-medium text-gray-500 hover:text-gray-900"
+                >
                   {item.name}
                 </a>
               ))}
             </nav>
             <div className="hidden md:flex items-center justify-end md:flex-1 lg:w-0">
-              <a href="#" className="whitespace-nowrap text-base font-medium text-gray-500 hover:text-gray-900">
+              <a
+                href="#"
+                className="whitespace-nowrap text-base font-medium text-gray-500 hover:text-gray-900"
+              >
                 Sign in
               </a>
               <a
@@ -155,7 +158,10 @@ export default function Example() {
           leaveFrom="opacity-100 scale-100"
           leaveTo="opacity-0 scale-95"
         >
-          <Popover.Panel focus className="absolute top-0 inset-x-0 p-2 transition transform origin-top md:hidden">
+          <Popover.Panel
+            focus
+            className="absolute top-0 inset-x-0 p-2 transition transform origin-top md:hidden"
+          >
             <div className="rounded-lg shadow-md bg-white ring-1 ring-black ring-opacity-5 overflow-hidden">
               <div className="px-5 pt-4 flex items-center justify-between">
                 <div>
@@ -208,11 +214,20 @@ export default function Example() {
 
       <main className="flex-grow mx-auto max-w-7xl w-full flex flex-col px-4 sm:px-6 lg:px-8">
         <div className="flex-shrink-0 my-auto py-16 sm:py-32">
-          <p className="text-sm font-semibold text-indigo-600 uppercase tracking-wide">404 error</p>
-          <h1 className="mt-2 text-4xl font-extrabold text-gray-900 tracking-tight sm:text-5xl">Page not found</h1>
-          <p className="mt-2 text-base text-gray-500">Sorry, we couldn’t find the page you’re looking for.</p>
+          <p className="text-sm font-semibold text-indigo-600 uppercase tracking-wide">
+            404 error
+          </p>
+          <h1 className="mt-2 text-4xl font-extrabold text-gray-900 tracking-tight sm:text-5xl">
+            Page not found
+          </h1>
+          <p className="mt-2 text-base text-gray-500">
+            Sorry, we couldn’t find the page you’re looking for.
+          </p>
           <div className="mt-6">
-            <a href="#" className="text-base font-medium text-indigo-600 hover:text-indigo-500">
+            <a
+              href="#"
+              className="text-base font-medium text-indigo-600 hover:text-indigo-500"
+            >
               Go back home<span aria-hidden="true"> &rarr;</span>
             </a>
           </div>
@@ -232,11 +247,16 @@ export default function Example() {
                 alt="Company name"
               />
               <p className="text-gray-500 text-base">
-                Making the world a better place through constructing elegant hierarchies.
+                Making the world a better place through constructing elegant
+                hierarchies.
               </p>
               <div className="flex space-x-6">
                 {footer.social.map((item) => (
-                  <a key={item.name} href={item.href} className="text-gray-400 hover:text-gray-500">
+                  <a
+                    key={item.name}
+                    href={item.href}
+                    className="text-gray-400 hover:text-gray-500"
+                  >
                     <span className="sr-only">{item.name}</span>
                     <item.icon className="h-6 w-6" aria-hidden="true" />
                   </a>
@@ -246,11 +266,16 @@ export default function Example() {
             <div className="mt-12 grid grid-cols-2 gap-8 xl:mt-0 xl:col-span-2">
               <div className="md:grid md:grid-cols-2 md:gap-8">
                 <div>
-                  <h3 className="text-sm font-semibold text-gray-400 tracking-wider uppercase">Solutions</h3>
+                  <h3 className="text-sm font-semibold text-gray-400 tracking-wider uppercase">
+                    Solutions
+                  </h3>
                   <ul role="list" className="mt-4 space-y-4">
                     {footer.solutions.map((item) => (
                       <li key={item.name}>
-                        <a href={item.href} className="text-base text-gray-500 hover:text-gray-900">
+                        <a
+                          href={item.href}
+                          className="text-base text-gray-500 hover:text-gray-900"
+                        >
                           {item.name}
                         </a>
                       </li>
@@ -258,11 +283,16 @@ export default function Example() {
                   </ul>
                 </div>
                 <div className="mt-12 md:mt-0">
-                  <h3 className="text-sm font-semibold text-gray-400 tracking-wider uppercase">Support</h3>
+                  <h3 className="text-sm font-semibold text-gray-400 tracking-wider uppercase">
+                    Support
+                  </h3>
                   <ul role="list" className="mt-4 space-y-4">
                     {footer.support.map((item) => (
                       <li key={item.name}>
-                        <a href={item.href} className="text-base text-gray-500 hover:text-gray-900">
+                        <a
+                          href={item.href}
+                          className="text-base text-gray-500 hover:text-gray-900"
+                        >
                           {item.name}
                         </a>
                       </li>
@@ -272,11 +302,16 @@ export default function Example() {
               </div>
               <div className="md:grid md:grid-cols-2 md:gap-8">
                 <div>
-                  <h3 className="text-sm font-semibold text-gray-400 tracking-wider uppercase">Company</h3>
+                  <h3 className="text-sm font-semibold text-gray-400 tracking-wider uppercase">
+                    Company
+                  </h3>
                   <ul role="list" className="mt-4 space-y-4">
                     {footer.company.map((item) => (
                       <li key={item.name}>
-                        <a href={item.href} className="text-base text-gray-500 hover:text-gray-900">
+                        <a
+                          href={item.href}
+                          className="text-base text-gray-500 hover:text-gray-900"
+                        >
                           {item.name}
                         </a>
                       </li>
@@ -284,11 +319,16 @@ export default function Example() {
                   </ul>
                 </div>
                 <div className="mt-12 md:mt-0">
-                  <h3 className="text-sm font-semibold text-gray-400 tracking-wider uppercase">Legal</h3>
+                  <h3 className="text-sm font-semibold text-gray-400 tracking-wider uppercase">
+                    Legal
+                  </h3>
                   <ul role="list" className="mt-4 space-y-4">
                     {footer.legal.map((item) => (
                       <li key={item.name}>
-                        <a href={item.href} className="text-base text-gray-500 hover:text-gray-900">
+                        <a
+                          href={item.href}
+                          className="text-base text-gray-500 hover:text-gray-900"
+                        >
                           {item.name}
                         </a>
                       </li>
@@ -299,10 +339,12 @@ export default function Example() {
             </div>
           </div>
           <div className="mt-12 border-t border-gray-200 pt-8">
-            <p className="text-base text-gray-400 xl:text-center">&copy; 2020 Workflow, Inc. All rights reserved.</p>
+            <p className="text-base text-gray-400 xl:text-center">
+              &copy; 2020 Workflow, Inc. All rights reserved.
+            </p>
           </div>
         </div>
       </footer>
     </div>
-  )
+  );
 }

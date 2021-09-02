@@ -1,16 +1,17 @@
 /* This example requires Tailwind CSS v2.0+ */
-import { HomeIcon } from '@heroicons/react/solid'
+import { HomeIcon } from '@heroicons/react/solid';
 
 const pages = [
-
   { name: 'Projects', href: '#', current: false },
   { name: 'Project Nero', href: '#', current: true },
-
-]
+];
 
 export default function Example() {
   return (
-    <nav className="bg-white border-b border-gray-200 flex" aria-label="Breadcrumb">
+    <nav
+      className="bg-white border-b border-gray-200 flex"
+      aria-label="Breadcrumb"
+    >
       <ol className="max-w-screen-xl w-full mx-auto px-4 flex space-x-4 sm:px-6 lg:px-8">
         <li className="flex">
           <div className="flex items-center">
@@ -45,5 +46,5 @@ export default function Example() {
         ))}
       </ol>
     </nav>
-  )
+  );
 }

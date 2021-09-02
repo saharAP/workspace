@@ -1,6 +1,6 @@
-import { HardhatRuntimeEnvironment } from "hardhat/types";
-import { formatEther, parseEther } from "ethers/lib/utils";
 import { BigNumber, ContractReceipt } from "ethers";
+import { formatEther, parseEther } from "ethers/lib/utils";
+import { HardhatRuntimeEnvironment } from "hardhat/types";
 import { Configuration, DefaultConfiguration } from "./Configuration";
 import { getComponents } from "./utils/getComponents";
 import { getModules } from "./utils/getModules";
@@ -24,9 +24,7 @@ export default function SetTokenCreator({
   debug,
   hre,
 }: Args): SetTokenCreator {
-  const { targetNAV } = configuration
-    ? configuration
-    : DefaultConfiguration;
+  const { targetNAV } = configuration ? configuration : DefaultConfiguration;
 
   return {
     _calculateUnits: async function (
@@ -72,7 +70,6 @@ export default function SetTokenCreator({
     },
 
     create: async function (): Promise<ContractReceipt> {
-
       const creator = SetTokenCreatorFactory.connect(
         configuration.core.SetTokenCreator.address,
         configuration.manager
@@ -90,11 +87,10 @@ export default function SetTokenCreator({
         "High-Yield Small Cap Stablecoin Index",
         "HYSI"
       );
-      
+
       console.log("waiting for block confirmation");
       const receipt = tx.wait(1);
       return receipt;
-
     },
   };
 }

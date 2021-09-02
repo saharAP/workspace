@@ -1,10 +1,10 @@
 // Displays a beneficiary or a preview of a proposal
 
+import { BeneficiaryApplication } from '@popcorn/contracts/adapters';
 import BeneficiaryInformation from 'components/CommonComponents/BeneficiaryInformation';
 import ImageHeader from 'components/CommonComponents/ImageHeader';
 import VideoSideBar from 'components/CommonComponents/VideoSideBar';
 import NavBar from 'components/NavBar/NavBar';
-import { BeneficiaryApplication } from '@popcorn/contracts/adapters';
 import PhotoSideBar from '../CommonComponents/PhotoSideBar';
 import TriggerTakedownProposal from '../CommonComponents/TriggerTakedownProposal';
 

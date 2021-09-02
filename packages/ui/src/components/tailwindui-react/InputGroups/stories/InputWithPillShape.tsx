@@ -17,7 +17,10 @@
 export default function Example() {
   return (
     <div>
-      <label htmlFor="name" className="ml-px pl-4 block text-sm font-medium text-gray-700">
+      <label
+        htmlFor="name"
+        className="ml-px pl-4 block text-sm font-medium text-gray-700"
+      >
         Name
       </label>
       <div className="mt-1">
@@ -30,5 +33,5 @@ export default function Example() {
         />
       </div>
     </div>
-  )
+  );
 }

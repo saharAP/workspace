@@ -1,25 +1,25 @@
-import { DefaultSingleActionModalProps } from 'components/Modal/SingleActionModal';
-import React, { createContext, useReducer } from 'react';
-import { SingleActionModalProps } from '../components/Modal/SingleActionModal';
-import {
-  DefaultDualActionModalProps,
-  DualActionModalProps,
-} from '../components/Modal/DualActionModal';
-import {
-  AppActions,
-  PUSH_NOTIFICATION,
-  UNSET_NOTIFICATION,
-  HIDE_NOTIFICATION,
-  CLEAR_NOTIFICATIONS,
-  SINGLE_ACTION_MODAL,
-  DUAL_ACTION_MODAL,
-  DUAL_ACTION_WIDE_MODAL,
-} from './actions';
 import {
   DefaultDualActionWideModalProps,
   DualActionWideModalProps,
 } from 'components/Modal/DualActionWideModal';
+import { DefaultSingleActionModalProps } from 'components/Modal/SingleActionModal';
 import { NotificationProps } from 'components/Notifications/NotificationProps';
+import React, { createContext, useReducer } from 'react';
+import {
+  DefaultDualActionModalProps,
+  DualActionModalProps,
+} from '../components/Modal/DualActionModal';
+import { SingleActionModalProps } from '../components/Modal/SingleActionModal';
+import {
+  AppActions,
+  CLEAR_NOTIFICATIONS,
+  DUAL_ACTION_MODAL,
+  DUAL_ACTION_WIDE_MODAL,
+  HIDE_NOTIFICATION,
+  PUSH_NOTIFICATION,
+  SINGLE_ACTION_MODAL,
+  UNSET_NOTIFICATION,
+} from './actions';
 
 interface DefaultState {
   notifications: NotificationProps[];
@@ -42,7 +42,7 @@ const initialState: DefaultState = {
 };
 
 const store = createContext(
-  (initialState as unknown) as {
+  initialState as unknown as {
     state: DefaultState;
     dispatch: React.Dispatch<any>;
   },

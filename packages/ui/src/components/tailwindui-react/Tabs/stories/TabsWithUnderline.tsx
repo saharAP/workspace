@@ -15,16 +15,14 @@
   ```
 */
 const tabs = [
-
   { name: 'My Account', href: '#', current: false },
   { name: 'Company', href: '#', current: false },
   { name: 'Team Members', href: '#', current: true },
   { name: 'Billing', href: '#', current: false },
-
-]
+];
 
 function classNames(...classes) {
-  return classes.filter(Boolean).join(' ')
+  return classes.filter(Boolean).join(' ');
 }
 
 export default function Example() {
@@ -56,7 +54,7 @@ export default function Example() {
                   tab.current
                     ? 'border-indigo-500 text-indigo-600'
                     : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300',
-                  'whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm'
+                  'whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm',
                 )}
                 aria-current={tab.current ? 'page' : undefined}
               >
@@ -67,5 +65,5 @@ export default function Example() {
         </div>
       </div>
     </div>
-  )
+  );
 }

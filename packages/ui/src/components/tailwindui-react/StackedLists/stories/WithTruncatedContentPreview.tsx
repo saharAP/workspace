@@ -15,7 +15,6 @@
   ```
 */
 const messages = [
-
   {
     id: 1,
     subject: 'Velit placeat sit ducimus non sed',
@@ -26,8 +25,7 @@ const messages = [
       'Doloremque dolorem maiores assumenda dolorem facilis. Velit vel in a rerum natus facere. Enim rerum eaque qui facilis. Numquam laudantium sed id dolores omnis in. Eos reiciendis deserunt maiores et accusamus quod dolor.',
   },
   // More messages...
-
-]
+];
 
 export default function Example() {
   return (
@@ -41,19 +39,28 @@ export default function Example() {
             <div className="min-w-0 flex-1">
               <a href="#" className="block focus:outline-none">
                 <span className="absolute inset-0" aria-hidden="true" />
-                <p className="text-sm font-medium text-gray-900 truncate">{message.sender}</p>
-                <p className="text-sm text-gray-500 truncate">{message.subject}</p>
+                <p className="text-sm font-medium text-gray-900 truncate">
+                  {message.sender}
+                </p>
+                <p className="text-sm text-gray-500 truncate">
+                  {message.subject}
+                </p>
               </a>
             </div>
-            <time dateTime={message.datetime} className="flex-shrink-0 whitespace-nowrap text-sm text-gray-500">
+            <time
+              dateTime={message.datetime}
+              className="flex-shrink-0 whitespace-nowrap text-sm text-gray-500"
+            >
               {message.time}
             </time>
           </div>
           <div className="mt-1">
-            <p className="line-clamp-2 text-sm text-gray-600">{message.preview}</p>
+            <p className="line-clamp-2 text-sm text-gray-600">
+              {message.preview}
+            </p>
           </div>
         </li>
       ))}
     </ul>
-  )
+  );
 }

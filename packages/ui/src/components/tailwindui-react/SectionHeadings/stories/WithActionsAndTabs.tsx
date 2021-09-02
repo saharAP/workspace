@@ -15,24 +15,24 @@
   ```
 */
 const tabs = [
-
   { name: 'Applied', href: '#', current: false },
   { name: 'Phone Screening', href: '#', current: false },
   { name: 'Interview', href: '#', current: true },
   { name: 'Offer', href: '#', current: false },
   { name: 'Hired', href: '#', current: false },
-
-]
+];
 
 function classNames(...classes) {
-  return classes.filter(Boolean).join(' ')
+  return classes.filter(Boolean).join(' ');
 }
 
 export default function Example() {
   return (
     <div className="relative pb-5 border-b border-gray-200 sm:pb-0">
       <div className="md:flex md:items-center md:justify-between">
-        <h3 className="text-lg leading-6 font-medium text-gray-900">Candidates</h3>
+        <h3 className="text-lg leading-6 font-medium text-gray-900">
+          Candidates
+        </h3>
         <div className="mt-3 flex md:mt-0 md:absolute md:top-3 md:right-0">
           <button
             type="button"
@@ -74,7 +74,7 @@ export default function Example() {
                   tab.current
                     ? 'border-indigo-500 text-indigo-600'
                     : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300',
-                  'whitespace-nowrap pb-4 px-1 border-b-2 font-medium text-sm'
+                  'whitespace-nowrap pb-4 px-1 border-b-2 font-medium text-sm',
                 )}
                 aria-current={tab.current ? 'page' : undefined}
               >
@@ -85,5 +85,5 @@ export default function Example() {
         </div>
       </div>
     </div>
-  )
+  );
 }

@@ -14,17 +14,22 @@
   }
   ```
 */
-import { Fragment, useState } from 'react'
-import { Dialog, Transition } from '@headlessui/react'
-import { HeartIcon, XIcon } from '@heroicons/react/outline'
-import { PencilIcon, PlusIcon } from '@heroicons/react/solid'
+import { Dialog, Transition } from '@headlessui/react';
+import { HeartIcon, XIcon } from '@heroicons/react/outline';
+import { PencilIcon, PlusIcon } from '@heroicons/react/solid';
+import { Fragment, useState } from 'react';
 
 export default function Example() {
-  const [open, setOpen] = useState(true)
+  const [open, setOpen] = useState(true);
 
   return (
     <Transition.Root show={open} as={Fragment}>
-      <Dialog as="div" auto-reopen="true" className="fixed inset-0 overflow-hidden" onClose={setOpen}>
+      <Dialog
+        as="div"
+        auto-reopen="true"
+        className="fixed inset-0 overflow-hidden"
+        onClose={setOpen}
+      >
         <div className="absolute inset-0 overflow-hidden">
           <Transition.Child
             as={Fragment}
@@ -80,9 +85,12 @@ export default function Example() {
                       <div className="mt-4 flex items-start justify-between">
                         <div>
                           <h2 className="text-lg font-medium text-gray-900">
-                            <span className="sr-only">Details for </span>IMG_4985.HEIC
+                            <span className="sr-only">Details for </span>
+                            IMG_4985.HEIC
                           </h2>
-                          <p className="text-sm font-medium text-gray-500">3.9 MB</p>
+                          <p className="text-sm font-medium text-gray-500">
+                            3.9 MB
+                          </p>
                         </div>
                         <button
                           type="button"
@@ -121,7 +129,9 @@ export default function Example() {
                     <div>
                       <h3 className="font-medium text-gray-900">Description</h3>
                       <div className="mt-2 flex items-center justify-between">
-                        <p className="text-sm text-gray-500 italic">Add a description to this image.</p>
+                        <p className="text-sm text-gray-500 italic">
+                          Add a description to this image.
+                        </p>
                         <button
                           type="button"
                           className="-mr-2 h-8 w-8 bg-white rounded-full flex items-center justify-center text-gray-400 hover:bg-gray-100 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500"
@@ -141,13 +151,16 @@ export default function Example() {
                               alt=""
                               className="w-8 h-8 rounded-full"
                             />
-                            <p className="ml-4 text-sm font-medium text-gray-900">Aimee Douglas</p>
+                            <p className="ml-4 text-sm font-medium text-gray-900">
+                              Aimee Douglas
+                            </p>
                           </div>
                           <button
                             type="button"
                             className="ml-6 bg-white rounded-md text-sm font-medium text-indigo-600 hover:text-indigo-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
                           >
-                            Remove<span className="sr-only"> Aimee Douglas</span>
+                            Remove
+                            <span className="sr-only"> Aimee Douglas</span>
                           </button>
                         </li>
                         <li className="py-3 flex justify-between items-center">
@@ -157,13 +170,16 @@ export default function Example() {
                               alt=""
                               className="w-8 h-8 rounded-full"
                             />
-                            <p className="ml-4 text-sm font-medium text-gray-900">Andrea McMillan</p>
+                            <p className="ml-4 text-sm font-medium text-gray-900">
+                              Andrea McMillan
+                            </p>
                           </div>
                           <button
                             type="button"
                             className="ml-6 bg-white rounded-md text-sm font-medium text-indigo-600 hover:text-indigo-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
                           >
-                            Remove<span className="sr-only"> Andrea McMillan</span>
+                            Remove
+                            <span className="sr-only"> Andrea McMillan</span>
                           </button>
                         </li>
                         <li className="py-2 flex justify-between items-center">
@@ -172,7 +188,10 @@ export default function Example() {
                             className="group -ml-1 bg-white p-1 rounded-md flex items-center focus:outline-none focus:ring-2 focus:ring-indigo-500"
                           >
                             <span className="w-8 h-8 rounded-full border-2 border-dashed border-gray-300 flex items-center justify-center text-gray-400">
-                              <PlusIcon className="h-5 w-5" aria-hidden="true" />
+                              <PlusIcon
+                                className="h-5 w-5"
+                                aria-hidden="true"
+                              />
                             </span>
                             <span className="ml-4 text-sm font-medium text-indigo-600 group-hover:text-indigo-500">
                               Share
@@ -203,5 +222,5 @@ export default function Example() {
         </div>
       </Dialog>
     </Transition.Root>
-  )
+  );
 }

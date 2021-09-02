@@ -14,13 +14,16 @@
   }
   ```
 */
-import { Fragment, useState } from 'react'
-import { Dialog, Transition } from '@headlessui/react'
-import { XIcon } from '@heroicons/react/outline'
-import { LinkIcon, PlusIcon, QuestionMarkCircleIcon } from '@heroicons/react/solid'
+import { Dialog, Transition } from '@headlessui/react';
+import { XIcon } from '@heroicons/react/outline';
+import {
+  LinkIcon,
+  PlusIcon,
+  QuestionMarkCircleIcon,
+} from '@heroicons/react/solid';
+import { Fragment, useState } from 'react';
 
 const team = [
-
   {
     name: 'Tom Cook',
     email: 'tomcook@example.com',
@@ -56,15 +59,19 @@ const team = [
     imageUrl:
       'https://images.unsplash.com/photo-1502685104226-ee32379fefbe?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
   },
-
-]
+];
 
 export default function Example() {
-  const [open, setOpen] = useState(true)
+  const [open, setOpen] = useState(true);
 
   return (
     <Transition.Root show={open} as={Fragment}>
-      <Dialog as="div" auto-reopen="true" className="fixed inset-0 overflow-hidden" onClose={setOpen}>
+      <Dialog
+        as="div"
+        auto-reopen="true"
+        className="fixed inset-0 overflow-hidden"
+        onClose={setOpen}
+      >
         <div className="absolute inset-0 overflow-hidden">
           <Dialog.Overlay className="absolute inset-0" />
 
@@ -85,9 +92,12 @@ export default function Example() {
                     <div className="px-4 py-6 bg-gray-50 sm:px-6">
                       <div className="flex items-start justify-between space-x-3">
                         <div className="space-y-1">
-                          <Dialog.Title className="text-lg font-medium text-gray-900">New project</Dialog.Title>
+                          <Dialog.Title className="text-lg font-medium text-gray-900">
+                            New project
+                          </Dialog.Title>
                           <p className="text-sm text-gray-500">
-                            Get started by filling in the information below to create your new project.
+                            Get started by filling in the information below to
+                            create your new project.
                           </p>
                         </div>
                         <div className="h-7 flex items-center">
@@ -149,7 +159,9 @@ export default function Example() {
                       {/* Team members */}
                       <div className="space-y-2 px-4 sm:space-y-0 sm:grid sm:grid-cols-3 sm:gap-4 sm:items-center sm:px-6 sm:py-5">
                         <div>
-                          <h3 className="text-sm font-medium text-gray-900">Team Members</h3>
+                          <h3 className="text-sm font-medium text-gray-900">
+                            Team Members
+                          </h3>
                         </div>
                         <div className="sm:col-span-2">
                           <div className="flex space-x-2">
@@ -172,7 +184,10 @@ export default function Example() {
                               className="flex-shrink-0 bg-white inline-flex h-8 w-8 items-center justify-center rounded-full border-2 border-dashed border-gray-200 text-gray-400 hover:text-gray-500 hover:border-gray-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
                             >
                               <span className="sr-only">Add team member</span>
-                              <PlusIcon className="h-5 w-5" aria-hidden="true" />
+                              <PlusIcon
+                                className="h-5 w-5"
+                                aria-hidden="true"
+                              />
                             </button>
                           </div>
                         </div>
@@ -182,7 +197,9 @@ export default function Example() {
                       <fieldset>
                         <div className="space-y-2 px-4 sm:space-y-0 sm:grid sm:grid-cols-3 sm:gap-4 sm:items-start sm:px-6 sm:py-5">
                           <div>
-                            <legend className="text-sm font-medium text-gray-900">Privacy</legend>
+                            <legend className="text-sm font-medium text-gray-900">
+                              Privacy
+                            </legend>
                           </div>
                           <div className="space-y-5 sm:col-span-2">
                             <div className="space-y-5 sm:mt-0">
@@ -198,10 +215,16 @@ export default function Example() {
                                   />
                                 </div>
                                 <div className="pl-7 text-sm">
-                                  <label htmlFor="public-access" className="font-medium text-gray-900">
+                                  <label
+                                    htmlFor="public-access"
+                                    className="font-medium text-gray-900"
+                                  >
                                     Public access
                                   </label>
-                                  <p id="public-access-description" className="text-gray-500">
+                                  <p
+                                    id="public-access-description"
+                                    className="text-gray-500"
+                                  >
                                     Everyone with the link will see this project
                                   </p>
                                 </div>
@@ -217,11 +240,18 @@ export default function Example() {
                                   />
                                 </div>
                                 <div className="pl-7 text-sm">
-                                  <label htmlFor="restricted-access" className="font-medium text-gray-900">
+                                  <label
+                                    htmlFor="restricted-access"
+                                    className="font-medium text-gray-900"
+                                  >
                                     Private to Project Members
                                   </label>
-                                  <p id="restricted-access-description" className="text-gray-500">
-                                    Only members of this project would be able to access
+                                  <p
+                                    id="restricted-access-description"
+                                    className="text-gray-500"
+                                  >
+                                    Only members of this project would be able
+                                    to access
                                   </p>
                                 </div>
                               </div>
@@ -236,11 +266,18 @@ export default function Example() {
                                   />
                                 </div>
                                 <div className="pl-7 text-sm">
-                                  <label htmlFor="private-access" className="font-medium text-gray-900">
+                                  <label
+                                    htmlFor="private-access"
+                                    className="font-medium text-gray-900"
+                                  >
                                     Private to you
                                   </label>
-                                  <p id="private-access-description" className="text-gray-500">
-                                    You are the only one able to access this project
+                                  <p
+                                    id="private-access-description"
+                                    className="text-gray-500"
+                                  >
+                                    You are the only one able to access this
+                                    project
                                   </p>
                                 </div>
                               </div>
@@ -303,5 +340,5 @@ export default function Example() {
         </div>
       </Dialog>
     </Transition.Root>
-  )
+  );
 }

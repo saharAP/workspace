@@ -5,8 +5,8 @@ export default function Example() {
       <div className="max-w-7xl mx-auto py-24 px-4 sm:py-32 sm:px-6 lg:px-8">
         <h2 className="text-3xl font-extrabold text-gray-900">Our offices</h2>
         <p className="mt-6 text-lg text-gray-500 max-w-3xl">
-          Varius facilisi mauris sed sit. Non sed et duis dui leo, vulputate id malesuada non. Cras aliquet purus dui
-          laoreet diam sed lacus, fames.
+          Varius facilisi mauris sed sit. Non sed et duis dui leo, vulputate id
+          malesuada non. Cras aliquet purus dui laoreet diam sed lacus, fames.
         </p>
         <div className="mt-10 grid grid-cols-1 gap-10 sm:grid-cols-2 lg:grid-cols-4">
           <div>
@@ -40,5 +40,5 @@ export default function Example() {
         </div>
       </div>
     </div>
-  )
+  );
 }

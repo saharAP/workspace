@@ -114,12 +114,12 @@ Deploy from `packages/contracts`:
 
 ## Useful Hardhat Commands
 
-| Command                                                                    | Description                      |
-| -------------------------------------------------------------------------- | -------------------------------- |
-| `yarn hardhat dev:deploy`                              | deploy contracts for development |
-| `yarn hardhat elections:refreshElectionState --term 1 --network localhost` | refresh election state           |
-| `yarn hardhat elections:getElectionMetadata --term 1 --network localhost`  | get metadata for election term   |
-| `yarn lerna run --scope @popcorn/contracts docify` | generate documentation for contracts (found in packages/contracts/docgen/docs)|
+| Command                                                                    | Description                                                                    |
+| -------------------------------------------------------------------------- | ------------------------------------------------------------------------------ |
+| `yarn hardhat dev:deploy`                                                  | deploy contracts for development                                               |
+| `yarn hardhat elections:refreshElectionState --term 1 --network localhost` | refresh election state                                                         |
+| `yarn hardhat elections:getElectionMetadata --term 1 --network localhost`  | get metadata for election term                                                 |
+| `yarn lerna run --scope @popcorn/contracts docify`                         | generate documentation for contracts (found in packages/contracts/docgen/docs) |
 
 ## Contributing
 

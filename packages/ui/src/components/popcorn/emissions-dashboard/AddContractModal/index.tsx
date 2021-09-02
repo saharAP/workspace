@@ -1,5 +1,5 @@
 import { Dialog, Transition } from '@headlessui/react';
-import React, { Fragment, useState, useRef } from 'react';
+import React, { Fragment, useRef, useState } from 'react';
 
 export interface ContractModalProps {
   open: boolean;
@@ -13,7 +13,7 @@ export const AddContractModal: React.FC<ContractModalProps> = ({
   addContract,
 }) => {
   const [contractAddress, setContractAddress] = useState<string>('');
-  const inputRef= useRef(null)
+  const inputRef = useRef(null);
 
   return (
     <Transition.Root show={open} as={Fragment}>

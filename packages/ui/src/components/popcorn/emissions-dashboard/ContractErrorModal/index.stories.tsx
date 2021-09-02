@@ -12,7 +12,8 @@ const Template: Story = (args) => <ContractErrorModal {...args} />;
 export const Primary = Template.bind({});
 Primary.args = {
   open: true,
-  errorMessage: 'The address you entered does not point to a valid Ethereum contract. Please enter a valid address',
+  errorMessage:
+    'The address you entered does not point to a valid Ethereum contract. Please enter a valid address',
   setOpen: () => {},
   addContract: () => {},
 };

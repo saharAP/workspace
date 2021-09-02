@@ -1,10 +1,10 @@
 /* This example requires Tailwind CSS v2.0+ */
-import { Fragment, useState } from 'react'
-import { Transition } from '@headlessui/react'
-import { XIcon } from '@heroicons/react/solid'
+import { Transition } from '@headlessui/react';
+import { XIcon } from '@heroicons/react/solid';
+import { Fragment, useState } from 'react';
 
 export default function Example() {
-  const [show, setShow] = useState(true)
+  const [show, setShow] = useState(true);
 
   return (
     <>
@@ -36,8 +36,12 @@ export default function Example() {
                     />
                   </div>
                   <div className="ml-3 w-0 flex-1">
-                    <p className="text-sm font-medium text-gray-900">Emilia Gates</p>
-                    <p className="mt-1 text-sm text-gray-500">Sent you an invite to connect.</p>
+                    <p className="text-sm font-medium text-gray-900">
+                      Emilia Gates
+                    </p>
+                    <p className="mt-1 text-sm text-gray-500">
+                      Sent you an invite to connect.
+                    </p>
                     <div className="mt-4 flex">
                       <button
                         type="button"
@@ -57,7 +61,7 @@ export default function Example() {
                     <button
                       className="bg-white rounded-md inline-flex text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
                       onClick={() => {
-                        setShow(false)
+                        setShow(false);
                       }}
                     >
                       <span className="sr-only">Close</span>
@@ -71,5 +75,5 @@ export default function Example() {
         </div>
       </div>
     </>
-  )
+  );
 }

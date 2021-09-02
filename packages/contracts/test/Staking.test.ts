@@ -3,7 +3,7 @@ import { SignerWithAddress } from "@nomiclabs/hardhat-ethers/signers";
 import { expect } from "chai";
 import { parseEther } from "ethers/lib/utils";
 import { ethers, waffle } from "hardhat";
-import { StakingDefendedHelper, MockERC20, Staking } from "../typechain";
+import { MockERC20, Staking, StakingDefendedHelper } from "../typechain";
 import { RewardsEscrow } from "../typechain/RewardsEscrow";
 
 let stakingFund: BigNumber;
@@ -54,12 +54,11 @@ describe("Staking", function () {
       Pool.interface.format() as any
     );
 
-    const StakingDefendedHelper = await ethers.getContractFactory("StakingDefendedHelper");
+    const StakingDefendedHelper = await ethers.getContractFactory(
+      "StakingDefendedHelper"
+    );
     defendedHelper = await (
-      await StakingDefendedHelper.deploy(
-        mockPop.address,
-        staking.address
-      )
+      await StakingDefendedHelper.deploy(mockPop.address, staking.address)
     ).deployed();
     await mockPop.mint(defendedHelper.address, parseEther("1000"));
   });

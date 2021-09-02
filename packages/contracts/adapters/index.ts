@@ -1,19 +1,18 @@
-export { default as GrantElectionAdapter } from "./GrantElection/GrantElectionAdapter";
-export {
-  ElectionState,
-  ElectionTerm,
-  ElectionTermIntToName,
-} from "./GrantElection/GrantElectionAdapter";
-export { BeneficiaryRegistryAdapter } from "./BeneficiaryRegistry/BeneficiaryRegistryAdapter";
 export {
   BeneficiaryGovernanceAdapter,
   ProposalStatus,
   ProposalType,
 } from "./BeneficiaryGovernance/BeneficiaryGovernanceAdapter";
 export type {
-  BeneficiaryImage,
   BeneficiaryApplication,
+  BeneficiaryImage,
   Proposal,
 } from "./BeneficiaryGovernance/BeneficiaryGovernanceAdapter";
-
+export { BeneficiaryRegistryAdapter } from "./BeneficiaryRegistry/BeneficiaryRegistryAdapter";
+export {
+  default as GrantElectionAdapter,
+  ElectionState,
+  ElectionTerm,
+  ElectionTermIntToName,
+} from "./GrantElection/GrantElectionAdapter";
 export type { ElectionMetadata } from "./GrantElection/GrantElectionAdapter";

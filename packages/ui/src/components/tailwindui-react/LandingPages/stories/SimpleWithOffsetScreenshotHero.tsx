@@ -23,28 +23,41 @@
   }
   ```
 */
-import { ChevronRightIcon, StarIcon } from '@heroicons/react/solid'
+import { ChevronRightIcon, StarIcon } from '@heroicons/react/solid';
 
 const stats = [
-
   { label: 'Founded', value: '2021' },
   { label: 'Employees', value: '5' },
   { label: 'Beta Users', value: '521' },
   { label: 'Raised', value: '$25M' },
-
-]
+];
 const logos = [
-
-  { name: 'Transistor', url: 'https://tailwindui.com/img/logos/transistor-logo-gray-400.svg' },
-  { name: 'Mirage', url: 'https://tailwindui.com/img/logos/mirage-logo-gray-400.svg' },
-  { name: 'Tuple', url: 'https://tailwindui.com/img/logos/tuple-logo-gray-400.svg' },
-  { name: 'Laravel', url: 'https://tailwindui.com/img/logos/laravel-logo-gray-400.svg' },
-  { name: 'StaticKit', url: 'https://tailwindui.com/img/logos/statickit-logo-gray-400.svg' },
-  { name: 'Workcation', url: 'https://tailwindui.com/img/logos/workcation-logo-gray-400.svg' },
-
-]
+  {
+    name: 'Transistor',
+    url: 'https://tailwindui.com/img/logos/transistor-logo-gray-400.svg',
+  },
+  {
+    name: 'Mirage',
+    url: 'https://tailwindui.com/img/logos/mirage-logo-gray-400.svg',
+  },
+  {
+    name: 'Tuple',
+    url: 'https://tailwindui.com/img/logos/tuple-logo-gray-400.svg',
+  },
+  {
+    name: 'Laravel',
+    url: 'https://tailwindui.com/img/logos/laravel-logo-gray-400.svg',
+  },
+  {
+    name: 'StaticKit',
+    url: 'https://tailwindui.com/img/logos/statickit-logo-gray-400.svg',
+  },
+  {
+    name: 'Workcation',
+    url: 'https://tailwindui.com/img/logos/workcation-logo-gray-400.svg',
+  },
+];
 const footerNavigation = {
-
   main: [
     { name: 'About', href: '#' },
     { name: 'Blog', href: '#' },
@@ -116,8 +129,7 @@ const footerNavigation = {
       ),
     },
   ],
-
-}
+};
 
 export default function Example() {
   return (
@@ -142,7 +154,10 @@ export default function Example() {
                     </span>
                     <span className="inline-flex items-center text-sm font-medium text-rose-500 space-x-1">
                       <span>Just shipped version 0.1.0</span>
-                      <ChevronRightIcon className="h-5 w-5" aria-hidden="true" />
+                      <ChevronRightIcon
+                        className="h-5 w-5"
+                        aria-hidden="true"
+                      />
                     </span>
                   </a>
                 </div>
@@ -151,10 +166,14 @@ export default function Example() {
                     Issue management for growing teams
                   </h1>
                   <p className="mt-6 text-xl text-gray-500">
-                    Anim aute id magna aliqua ad ad non deserunt sunt. Qui irure qui lorem cupidatat commodo.
+                    Anim aute id magna aliqua ad ad non deserunt sunt. Qui irure
+                    qui lorem cupidatat commodo.
                   </p>
                 </div>
-                <form action="#" className="mt-12 sm:max-w-lg sm:w-full sm:flex">
+                <form
+                  action="#"
+                  className="mt-12 sm:max-w-lg sm:w-full sm:flex"
+                >
                   <div className="min-w-0 flex-1">
                     <label htmlFor="hero-email" className="sr-only">
                       Email address
@@ -178,15 +197,35 @@ export default function Example() {
                 <div className="mt-6">
                   <div className="inline-flex items-center divide-x divide-gray-300">
                     <div className="flex-shrink-0 flex pr-5">
-                      <StarIcon className="h-5 w-5 text-yellow-400" aria-hidden="true" />
-                      <StarIcon className="h-5 w-5 text-yellow-400" aria-hidden="true" />
-                      <StarIcon className="h-5 w-5 text-yellow-400" aria-hidden="true" />
-                      <StarIcon className="h-5 w-5 text-yellow-400" aria-hidden="true" />
-                      <StarIcon className="h-5 w-5 text-yellow-400" aria-hidden="true" />
+                      <StarIcon
+                        className="h-5 w-5 text-yellow-400"
+                        aria-hidden="true"
+                      />
+                      <StarIcon
+                        className="h-5 w-5 text-yellow-400"
+                        aria-hidden="true"
+                      />
+                      <StarIcon
+                        className="h-5 w-5 text-yellow-400"
+                        aria-hidden="true"
+                      />
+                      <StarIcon
+                        className="h-5 w-5 text-yellow-400"
+                        aria-hidden="true"
+                      />
+                      <StarIcon
+                        className="h-5 w-5 text-yellow-400"
+                        aria-hidden="true"
+                      />
                     </div>
                     <div className="min-w-0 flex-1 pl-5 py-1 text-sm text-gray-500 sm:py-3">
-                      <span className="font-medium text-gray-900">Rated 5 stars</span> by over{' '}
-                      <span className="font-medium text-rose-500">500 beta users</span>
+                      <span className="font-medium text-gray-900">
+                        Rated 5 stars
+                      </span>{' '}
+                      by over{' '}
+                      <span className="font-medium text-rose-500">
+                        500 beta users
+                      </span>
                     </div>
                   </div>
                 </div>
@@ -214,10 +253,21 @@ export default function Example() {
                       height={20}
                       patternUnits="userSpaceOnUse"
                     >
-                      <rect x={0} y={0} width={4} height={4} className="text-gray-200" fill="currentColor" />
+                      <rect
+                        x={0}
+                        y={0}
+                        width={4}
+                        height={4}
+                        className="text-gray-200"
+                        fill="currentColor"
+                      />
                     </pattern>
                   </defs>
-                  <rect width={404} height={392} fill="url(#837c3e70-6c3a-44e6-8854-cc48c737b659)" />
+                  <rect
+                    width={404}
+                    height={392}
+                    fill="url(#837c3e70-6c3a-44e6-8854-cc48c737b659)"
+                  />
                 </svg>
               </div>
               <div className="relative pl-4 -mr-40 sm:mx-auto sm:max-w-3xl sm:px-0 lg:max-w-none lg:h-full lg:pl-12">
@@ -235,7 +285,10 @@ export default function Example() {
         <div className="relative mt-20">
           <div className="lg:mx-auto lg:max-w-7xl lg:px-8 lg:grid lg:grid-cols-2 lg:gap-24 lg:items-start">
             <div className="relative sm:py-16 lg:py-0">
-              <div aria-hidden="true" className="hidden sm:block lg:absolute lg:inset-y-0 lg:right-0 lg:w-screen">
+              <div
+                aria-hidden="true"
+                className="hidden sm:block lg:absolute lg:inset-y-0 lg:right-0 lg:w-screen"
+              >
                 <div className="absolute inset-y-0 right-1/2 w-full bg-gray-50 rounded-r-3xl lg:right-72" />
                 <svg
                   className="absolute top-8 left-1/2 -ml-3 lg:-right-8 lg:left-auto lg:top-12"
@@ -253,10 +306,21 @@ export default function Example() {
                       height={20}
                       patternUnits="userSpaceOnUse"
                     >
-                      <rect x={0} y={0} width={4} height={4} className="text-gray-200" fill="currentColor" />
+                      <rect
+                        x={0}
+                        y={0}
+                        width={4}
+                        height={4}
+                        className="text-gray-200"
+                        fill="currentColor"
+                      />
                     </pattern>
                   </defs>
-                  <rect width={404} height={392} fill="url(#02f20b47-fd69-4224-a62a-4c9de5c763f7)" />
+                  <rect
+                    width={404}
+                    height={392}
+                    fill="url(#02f20b47-fd69-4224-a62a-4c9de5c763f7)"
+                  />
                 </svg>
               </div>
               <div className="relative mx-auto max-w-md px-4 sm:max-w-3xl sm:px-6 lg:px-0 lg:max-w-none lg:py-20">
@@ -288,13 +352,16 @@ export default function Example() {
                           <path d="M9.352 4C4.456 7.456 1 13.12 1 19.36c0 5.088 3.072 8.064 6.624 8.064 3.36 0 5.856-2.688 5.856-5.856 0-3.168-2.208-5.472-5.088-5.472-.576 0-1.344.096-1.536.192.48-3.264 3.552-7.104 6.624-9.024L9.352 4zm16.512 0c-4.8 3.456-8.256 9.12-8.256 15.36 0 5.088 3.072 8.064 6.624 8.064 3.264 0 5.856-2.688 5.856-5.856 0-3.168-2.304-5.472-5.184-5.472-.576 0-1.248.096-1.44.192.48-3.264 3.456-7.104 6.528-9.024L25.864 4z" />
                         </svg>
                         <p className="relative">
-                          Tincidunt integer commodo, cursus etiam aliquam neque, et. Consectetur pretium in volutpat,
-                          diam. Montes, magna cursus nulla feugiat dignissim id lobortis amet.
+                          Tincidunt integer commodo, cursus etiam aliquam neque,
+                          et. Consectetur pretium in volutpat, diam. Montes,
+                          magna cursus nulla feugiat dignissim id lobortis amet.
                         </p>
                       </div>
 
                       <footer className="mt-4">
-                        <p className="text-base font-semibold text-rose-200">Sarah Williams, CEO at Workcation</p>
+                        <p className="text-base font-semibold text-rose-200">
+                          Sarah Williams, CEO at Workcation
+                        </p>
                       </footer>
                     </blockquote>
                   </div>
@@ -310,20 +377,26 @@ export default function Example() {
                 </h2>
                 <div className="mt-6 text-gray-500 space-y-6">
                   <p className="text-lg">
-                    Sagittis scelerisque nulla cursus in enim consectetur quam. Dictum urna sed consectetur neque
-                    tristique pellentesque. Blandit amet, sed aenean erat arcu morbi. Cursus faucibus nunc nisl netus
-                    morbi vel porttitor vitae ut. Amet vitae fames senectus vitae.
+                    Sagittis scelerisque nulla cursus in enim consectetur quam.
+                    Dictum urna sed consectetur neque tristique pellentesque.
+                    Blandit amet, sed aenean erat arcu morbi. Cursus faucibus
+                    nunc nisl netus morbi vel porttitor vitae ut. Amet vitae
+                    fames senectus vitae.
                   </p>
                   <p className="text-base leading-7">
-                    Sollicitudin tristique eros erat odio sed vitae, consequat turpis elementum. Lorem nibh vel, eget
-                    pretium arcu vitae. Eros eu viverra donec ut volutpat donec laoreet quam urna. Sollicitudin
-                    tristique eros erat odio sed vitae, consequat turpis elementum. Lorem nibh vel, eget pretium arcu
-                    vitae. Eros eu viverra donec ut volutpat donec laoreet quam urna.
+                    Sollicitudin tristique eros erat odio sed vitae, consequat
+                    turpis elementum. Lorem nibh vel, eget pretium arcu vitae.
+                    Eros eu viverra donec ut volutpat donec laoreet quam urna.
+                    Sollicitudin tristique eros erat odio sed vitae, consequat
+                    turpis elementum. Lorem nibh vel, eget pretium arcu vitae.
+                    Eros eu viverra donec ut volutpat donec laoreet quam urna.
                   </p>
                   <p className="text-base leading-7">
-                    Rhoncus nisl, libero egestas diam fermentum dui. At quis tincidunt vel ultricies. Vulputate aliquet
-                    velit faucibus semper. Pellentesque in venenatis vestibulum consectetur nibh id. In id ut tempus
-                    egestas. Enim sit aliquam nec, a. Morbi enim fermentum lacus in. Viverra.
+                    Rhoncus nisl, libero egestas diam fermentum dui. At quis
+                    tincidunt vel ultricies. Vulputate aliquet velit faucibus
+                    semper. Pellentesque in venenatis vestibulum consectetur
+                    nibh id. In id ut tempus egestas. Enim sit aliquam nec, a.
+                    Morbi enim fermentum lacus in. Viverra.
                   </p>
                 </div>
               </div>
@@ -332,9 +405,16 @@ export default function Example() {
               <div className="mt-10">
                 <dl className="grid grid-cols-2 gap-x-4 gap-y-8">
                   {stats.map((stat) => (
-                    <div key={stat.label} className="border-t-2 border-gray-100 pt-6">
-                      <dt className="text-base font-medium text-gray-500">{stat.label}</dt>
-                      <dd className="text-3xl font-extrabold tracking-tight text-gray-900">{stat.value}</dd>
+                    <div
+                      key={stat.label}
+                      className="border-t-2 border-gray-100 pt-6"
+                    >
+                      <dt className="text-base font-medium text-gray-500">
+                        {stat.label}
+                      </dt>
+                      <dd className="text-3xl font-extrabold tracking-tight text-gray-900">
+                        {stat.value}
+                      </dd>
                     </div>
                   ))}
                 </dl>
@@ -357,9 +437,11 @@ export default function Example() {
                   Backed by world-renowned investors
                 </h2>
                 <p className="mt-6 max-w-3xl text-lg leading-7 text-gray-500">
-                  Sagittis scelerisque nulla cursus in enim consectetur quam. Dictum urna sed consectetur neque
-                  tristique pellentesque. Blandit amet, sed aenean erat arcu morbi. Cursus faucibus nunc nisl netus
-                  morbi vel porttitor vitae ut. Amet vitae fames senectus vitae.
+                  Sagittis scelerisque nulla cursus in enim consectetur quam.
+                  Dictum urna sed consectetur neque tristique pellentesque.
+                  Blandit amet, sed aenean erat arcu morbi. Cursus faucibus nunc
+                  nisl netus morbi vel porttitor vitae ut. Amet vitae fames
+                  senectus vitae.
                 </p>
                 <div className="mt-6">
                   <a href="#" className="text-base font-medium text-rose-500">
@@ -369,7 +451,10 @@ export default function Example() {
               </div>
               <div className="mt-12 grid grid-cols-2 gap-0.5 md:grid-cols-3 lg:mt-0 lg:grid-cols-2">
                 {logos.map((logo) => (
-                  <div key={logo.name} className="col-span-1 flex justify-center py-8 px-8 bg-gray-50">
+                  <div
+                    key={logo.name}
+                    className="col-span-1 flex justify-center py-8 px-8 bg-gray-50"
+                  >
                     <img className="max-h-12" src={logo.url} alt={logo.name} />
                   </div>
                 ))}
@@ -382,7 +467,13 @@ export default function Example() {
         <div className="relative mt-24 sm:mt-32 sm:py-16">
           <div aria-hidden="true" className="hidden sm:block">
             <div className="absolute inset-y-0 left-0 w-1/2 bg-gray-50 rounded-r-3xl" />
-            <svg className="absolute top-8 left-1/2 -ml-3" width={404} height={392} fill="none" viewBox="0 0 404 392">
+            <svg
+              className="absolute top-8 left-1/2 -ml-3"
+              width={404}
+              height={392}
+              fill="none"
+              viewBox="0 0 404 392"
+            >
               <defs>
                 <pattern
                   id="8228f071-bcee-4ec8-905a-2a059a2cc4fb"
@@ -392,15 +483,29 @@ export default function Example() {
                   height={20}
                   patternUnits="userSpaceOnUse"
                 >
-                  <rect x={0} y={0} width={4} height={4} className="text-gray-200" fill="currentColor" />
+                  <rect
+                    x={0}
+                    y={0}
+                    width={4}
+                    height={4}
+                    className="text-gray-200"
+                    fill="currentColor"
+                  />
                 </pattern>
               </defs>
-              <rect width={404} height={392} fill="url(#8228f071-bcee-4ec8-905a-2a059a2cc4fb)" />
+              <rect
+                width={404}
+                height={392}
+                fill="url(#8228f071-bcee-4ec8-905a-2a059a2cc4fb)"
+              />
             </svg>
           </div>
           <div className="mx-auto max-w-md px-4 sm:max-w-3xl sm:px-6 lg:max-w-7xl lg:px-8">
             <div className="relative rounded-2xl px-6 py-10 bg-rose-500 overflow-hidden shadow-xl sm:px-12 sm:py-20">
-              <div aria-hidden="true" className="absolute inset-0 -mt-72 sm:-mt-32 md:mt-0">
+              <div
+                aria-hidden="true"
+                className="absolute inset-0 -mt-72 sm:-mt-32 md:mt-0"
+              >
                 <svg
                   className="absolute inset-0 h-full w-full"
                   preserveAspectRatio="xMidYMid slice"
@@ -426,11 +531,14 @@ export default function Example() {
                     Get notified when we&rsquo;re launching.
                   </h2>
                   <p className="mt-6 mx-auto max-w-2xl text-lg text-rose-100">
-                    Sagittis scelerisque nulla cursus in enim consectetur quam. Dictum urna sed consectetur neque
-                    tristique pellentesque.
+                    Sagittis scelerisque nulla cursus in enim consectetur quam.
+                    Dictum urna sed consectetur neque tristique pellentesque.
                   </p>
                 </div>
-                <form action="#" className="mt-12 sm:mx-auto sm:max-w-lg sm:flex">
+                <form
+                  action="#"
+                  className="mt-12 sm:mx-auto sm:max-w-lg sm:flex"
+                >
                   <div className="min-w-0 flex-1">
                     <label htmlFor="cta-email" className="sr-only">
                       Email address
@@ -460,10 +568,16 @@ export default function Example() {
       {/* Footer section */}
       <footer className="mt-24 bg-gray-900 sm:mt-12">
         <div className="mx-auto max-w-md py-12 px-4 overflow-hidden sm:max-w-3xl sm:px-6 lg:max-w-7xl lg:px-8">
-          <nav className="-mx-5 -my-2 flex flex-wrap justify-center" aria-label="Footer">
+          <nav
+            className="-mx-5 -my-2 flex flex-wrap justify-center"
+            aria-label="Footer"
+          >
             {footerNavigation.main.map((item) => (
               <div key={item.name} className="px-5 py-2">
-                <a href={item.href} className="text-base text-gray-400 hover:text-gray-300">
+                <a
+                  href={item.href}
+                  className="text-base text-gray-400 hover:text-gray-300"
+                >
                   {item.name}
                 </a>
               </div>
@@ -471,15 +585,21 @@ export default function Example() {
           </nav>
           <div className="mt-8 flex justify-center space-x-6">
             {footerNavigation.social.map((item) => (
-              <a key={item.name} href={item.href} className="text-gray-400 hover:text-gray-300">
+              <a
+                key={item.name}
+                href={item.href}
+                className="text-gray-400 hover:text-gray-300"
+              >
                 <span className="sr-only">{item.name}</span>
                 <item.icon className="h-6 w-6" aria-hidden="true" />
               </a>
             ))}
           </div>
-          <p className="mt-8 text-center text-base text-gray-400">&copy; 2020 Workflow, Inc. All rights reserved.</p>
+          <p className="mt-8 text-center text-base text-gray-400">
+            &copy; 2020 Workflow, Inc. All rights reserved.
+          </p>
         </div>
       </footer>
     </div>
-  )
+  );
 }

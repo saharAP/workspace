@@ -1,6 +1,6 @@
+import { Proposal } from '@popcorn/contracts/adapters';
 import Divider from 'components/CommonComponents/Divider';
 import ProgressBar from 'components/ProgressBar';
-import { Proposal } from '@popcorn/contracts/adapters';
 
 const CurrentStandings: React.FC<Proposal> = (proposal) => {
   return (
@@ -27,8 +27,8 @@ const CurrentStandings: React.FC<Proposal> = (proposal) => {
             progress={
               +proposal?.votes?.for === 0
                 ? 0
-                : (100 * +proposal?.votes?.for) /
-                +proposal?.votes?.for + +proposal?.votes?.against
+                : (100 * +proposal?.votes?.for) / +proposal?.votes?.for +
+                  +proposal?.votes?.against
             }
             progressColor={'bg-green-300'}
           />
@@ -49,10 +49,8 @@ const CurrentStandings: React.FC<Proposal> = (proposal) => {
             progress={
               +proposal?.votes?.against === 0
                 ? 0
-                : (100 * +proposal?.votes?.against) /
-
-                +proposal?.votes?.for + +proposal?.votes?.against
-
+                : (100 * +proposal?.votes?.against) / +proposal?.votes?.for +
+                  +proposal?.votes?.against
             }
             progressColor={'bg-red-400'}
           />
@@ -63,11 +61,7 @@ const CurrentStandings: React.FC<Proposal> = (proposal) => {
         <span className="mx-4  w-1/2 justify-self-center flex flex-row justify-between">
           <p className="text-lg font-medium text-gray-700">Total Votes</p>
           <span className="text-base text-gray-700 flex flex-row">
-            <p>
-              {
-                +proposal?.votes?.for + +proposal?.votes?.against
-              }
-            </p>
+            <p>{+proposal?.votes?.for + +proposal?.votes?.against}</p>
           </span>
         </span>
       </div>

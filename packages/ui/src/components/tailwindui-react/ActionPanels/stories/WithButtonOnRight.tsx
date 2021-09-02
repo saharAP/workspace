@@ -3,12 +3,14 @@ export default function Example() {
   return (
     <div className="bg-white shadow sm:rounded-lg">
       <div className="px-4 py-5 sm:p-6">
-        <h3 className="text-lg leading-6 font-medium text-gray-900">Manage subscription</h3>
+        <h3 className="text-lg leading-6 font-medium text-gray-900">
+          Manage subscription
+        </h3>
         <div className="mt-2 sm:flex sm:items-start sm:justify-between">
           <div className="max-w-xl text-sm text-gray-500">
             <p>
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Recusandae voluptatibus corrupti atque
-              repudiandae nam.
+              Lorem ipsum dolor sit amet consectetur adipisicing elit.
+              Recusandae voluptatibus corrupti atque repudiandae nam.
             </p>
           </div>
           <div className="mt-5 sm:mt-0 sm:ml-6 sm:flex-shrink-0 sm:flex sm:items-center">
@@ -22,5 +24,5 @@ export default function Example() {
         </div>
       </div>
     </div>
-  )
+  );
 }

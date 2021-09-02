@@ -24,20 +24,23 @@
   }
   ```
 */
-import { Fragment } from 'react'
-import { Popover, Transition } from '@headlessui/react'
-import { MenuIcon, NewspaperIcon, PhoneIcon, SupportIcon, XIcon } from '@heroicons/react/outline'
+import { Popover, Transition } from '@headlessui/react';
+import {
+  MenuIcon,
+  NewspaperIcon,
+  PhoneIcon,
+  SupportIcon,
+  XIcon,
+} from '@heroicons/react/outline';
+import { Fragment } from 'react';
 
 const navigation = [
-
   { name: 'Changelog', href: '#' },
   { name: 'About', href: '#' },
   { name: 'Partners', href: '#' },
   { name: 'News', href: '#' },
-
-]
+];
 const supportLinks = [
-
   {
     name: 'Sales',
     href: '#',
@@ -59,10 +62,8 @@ const supportLinks = [
       'Varius facilisi mauris sed sit. Non sed et duis dui leo, vulputate id malesuada non. Cras aliquet purus dui laoreet diam sed lacus, fames.',
     icon: NewspaperIcon,
   },
-
-]
+];
 const faqs = [
-
   {
     id: 1,
     question: "What's the best thing about Switzerland?",
@@ -90,7 +91,8 @@ const faqs = [
   {
     id: 5,
     question: 'What do you call someone with no body and no nose?',
-    answer: 'Nobody knows. Lorem ipsum dolor sit amet consectetur adipisicing elit. Quas cupiditate laboriosam fugiat.',
+    answer:
+      'Nobody knows. Lorem ipsum dolor sit amet consectetur adipisicing elit. Quas cupiditate laboriosam fugiat.',
   },
   {
     id: 6,
@@ -98,10 +100,8 @@ const faqs = [
     answer:
       "He couldn't see himself doing it. Lorem ipsum dolor sit amet consectetur adipisicing elit. Quas cupiditate laboriosam fugiat.",
   },
-
-]
+];
 const footerNavigation = {
-
   solutions: [
     { name: 'Marketing', href: '#' },
     { name: 'Analytics', href: '#' },
@@ -189,8 +189,7 @@ const footerNavigation = {
       ),
     },
   ],
-
-}
+};
 
 export default function Example() {
   return (
@@ -202,7 +201,10 @@ export default function Example() {
             src="https://images.unsplash.com/photo-1525130413817-d45c1d127c42?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1920&q=60&&sat=-100"
             alt=""
           />
-          <div className="absolute inset-0 bg-blue-gray-800 mix-blend-multiply" aria-hidden="true" />
+          <div
+            className="absolute inset-0 bg-blue-gray-800 mix-blend-multiply"
+            aria-hidden="true"
+          />
         </div>
         <Popover as="div" className="relative z-10">
           <nav
@@ -228,7 +230,11 @@ export default function Example() {
               </div>
               <div className="hidden space-x-10 lg:flex lg:ml-10">
                 {navigation.map((item) => (
-                  <a key={item.name} href={item.href} className="text-base font-medium text-white hover:text-blue-100">
+                  <a
+                    key={item.name}
+                    href={item.href}
+                    className="text-base font-medium text-white hover:text-blue-100"
+                  >
                     {item.name}
                   </a>
                 ))}
@@ -253,7 +259,10 @@ export default function Example() {
             leaveFrom="opacity-100 scale-100"
             leaveTo="opacity-0 scale-95"
           >
-            <Popover.Panel focus className="absolute top-0 inset-x-0 p-2 transition transform origin-top lg:hidden">
+            <Popover.Panel
+              focus
+              className="absolute top-0 inset-x-0 p-2 transition transform origin-top lg:hidden"
+            >
               <div className="rounded-lg shadow-lg bg-white ring-1 ring-black ring-opacity-5 overflow-hidden">
                 <div className="px-5 pt-4 flex items-center justify-between">
                   <div>
@@ -297,10 +306,13 @@ export default function Example() {
         </Popover>
 
         <div className="relative mt-24 max-w-md mx-auto px-4 pb-32 sm:max-w-3xl sm:px-6 md:mt-32 lg:max-w-7xl lg:px-8">
-          <h1 className="text-4xl font-extrabold tracking-tight text-white md:text-5xl lg:text-6xl">Support</h1>
+          <h1 className="text-4xl font-extrabold tracking-tight text-white md:text-5xl lg:text-6xl">
+            Support
+          </h1>
           <p className="mt-6 max-w-3xl text-xl text-blue-gray-300">
-            Varius facilisi mauris sed sit. Non sed et duis dui leo, vulputate id malesuada non. Cras aliquet purus dui
-            laoreet diam sed lacus, fames. Dui, amet, nec sit pulvinar.
+            Varius facilisi mauris sed sit. Non sed et duis dui leo, vulputate
+            id malesuada non. Cras aliquet purus dui laoreet diam sed lacus,
+            fames. Dui, amet, nec sit pulvinar.
           </p>
         </div>
       </header>
@@ -317,16 +329,29 @@ export default function Example() {
             </h2>
             <div className="grid grid-cols-1 gap-y-20 lg:grid-cols-3 lg:gap-y-0 lg:gap-x-8">
               {supportLinks.map((link) => (
-                <div key={link.name} className="flex flex-col bg-white rounded-2xl shadow-xl">
+                <div
+                  key={link.name}
+                  className="flex flex-col bg-white rounded-2xl shadow-xl"
+                >
                   <div className="flex-1 relative pt-16 px-6 pb-8 md:px-8">
                     <div className="absolute top-0 p-5 inline-block bg-blue-600 rounded-xl shadow-lg transform -translate-y-1/2">
-                      <link.icon className="h-6 w-6 text-white" aria-hidden="true" />
+                      <link.icon
+                        className="h-6 w-6 text-white"
+                        aria-hidden="true"
+                      />
                     </div>
-                    <h3 className="text-xl font-medium text-blue-gray-900">{link.name}</h3>
-                    <p className="mt-4 text-base text-blue-gray-500">{link.description}</p>
+                    <h3 className="text-xl font-medium text-blue-gray-900">
+                      {link.name}
+                    </h3>
+                    <p className="mt-4 text-base text-blue-gray-500">
+                      {link.description}
+                    </p>
                   </div>
                   <div className="p-6 bg-blue-gray-50 rounded-bl-2xl rounded-br-2xl md:px-8">
-                    <a href={link.href} className="text-base font-medium text-blue-700 hover:text-blue-600">
+                    <a
+                      href={link.href}
+                      className="text-base font-medium text-blue-700 hover:text-blue-600"
+                    >
                       Contact us<span aria-hidden="true"> &rarr;</span>
                     </a>
                   </div>
@@ -340,15 +365,22 @@ export default function Example() {
             className="max-w-md mx-auto py-24 px-4 divide-y-2 divide-blue-gray-200 sm:max-w-3xl sm:px-6 lg:max-w-7xl lg:py-32 lg:px-8"
             aria-labelledby="faq-heading"
           >
-            <h2 className="text-3xl font-extrabold text-blue-gray-900" id="faq-heading">
+            <h2
+              className="text-3xl font-extrabold text-blue-gray-900"
+              id="faq-heading"
+            >
               Frequently asked questions
             </h2>
             <div className="mt-6 pt-10">
               <dl className="space-y-10 md:space-y-0 md:grid md:grid-cols-2 md:grid-rows-2 md:gap-x-8 md:gap-y-12">
                 {faqs.map((faq) => (
                   <div key={faq.id}>
-                    <dt className="text-lg font-medium text-blue-gray-900">{faq.question}</dt>
-                    <dd className="mt-2 text-base text-blue-gray-500">{faq.answer}</dd>
+                    <dt className="text-lg font-medium text-blue-gray-900">
+                      {faq.question}
+                    </dt>
+                    <dd className="mt-2 text-base text-blue-gray-500">
+                      {faq.answer}
+                    </dd>
                   </div>
                 ))}
               </dl>
@@ -358,11 +390,17 @@ export default function Example() {
 
         {/* CTA Section */}
         <section className="relative bg-white" aria-labelledby="join-heading">
-          <div className="hidden absolute inset-x-0 h-1/2 bg-blue-gray-50 lg:block" aria-hidden="true" />
+          <div
+            className="hidden absolute inset-x-0 h-1/2 bg-blue-gray-50 lg:block"
+            aria-hidden="true"
+          />
           <div className="max-w-7xl mx-auto bg-blue-600 lg:bg-transparent lg:px-8">
             <div className="lg:grid lg:grid-cols-12">
               <div className="relative z-10 lg:col-start-1 lg:row-start-1 lg:col-span-4 lg:py-16 lg:bg-transparent">
-                <div className="absolute inset-x-0 h-1/2 bg-blue-gray-50 lg:hidden" aria-hidden="true" />
+                <div
+                  className="absolute inset-x-0 h-1/2 bg-blue-gray-50 lg:hidden"
+                  aria-hidden="true"
+                />
                 <div className="max-w-md mx-auto px-4 sm:max-w-3xl sm:px-6 lg:max-w-none lg:p-0">
                   <div className="aspect-w-10 aspect-h-6 sm:aspect-w-2 sm:aspect-h-1 lg:aspect-w-1">
                     <img
@@ -375,7 +413,10 @@ export default function Example() {
               </div>
 
               <div className="relative bg-blue-600 lg:col-start-3 lg:row-start-1 lg:col-span-10 lg:rounded-3xl lg:grid lg:grid-cols-10 lg:items-center">
-                <div className="hidden absolute inset-0 overflow-hidden rounded-3xl lg:block" aria-hidden="true">
+                <div
+                  className="hidden absolute inset-0 overflow-hidden rounded-3xl lg:block"
+                  aria-hidden="true"
+                >
                   <svg
                     className="absolute bottom-full left-full transform translate-y-1/3 -translate-x-2/3 xl:bottom-auto xl:top-0 xl:translate-y-0"
                     width={404}
@@ -393,10 +434,21 @@ export default function Example() {
                         height={20}
                         patternUnits="userSpaceOnUse"
                       >
-                        <rect x={0} y={0} width={4} height={4} className="text-blue-500" fill="currentColor" />
+                        <rect
+                          x={0}
+                          y={0}
+                          width={4}
+                          height={4}
+                          className="text-blue-500"
+                          fill="currentColor"
+                        />
                       </pattern>
                     </defs>
-                    <rect width={404} height={384} fill="url(#64e643ad-2176-4f86-b3d7-f2c5da3b6a6d)" />
+                    <rect
+                      width={404}
+                      height={384}
+                      fill="url(#64e643ad-2176-4f86-b3d7-f2c5da3b6a6d)"
+                    />
                   </svg>
                   <svg
                     className="absolute top-full transform -translate-y-1/3 -translate-x-1/3 xl:-translate-y-1/2"
@@ -415,19 +467,34 @@ export default function Example() {
                         height={20}
                         patternUnits="userSpaceOnUse"
                       >
-                        <rect x={0} y={0} width={4} height={4} className="text-blue-500" fill="currentColor" />
+                        <rect
+                          x={0}
+                          y={0}
+                          width={4}
+                          height={4}
+                          className="text-blue-500"
+                          fill="currentColor"
+                        />
                       </pattern>
                     </defs>
-                    <rect width={404} height={384} fill="url(#64e643ad-2176-4f86-b3d7-f2c5da3b6a6d)" />
+                    <rect
+                      width={404}
+                      height={384}
+                      fill="url(#64e643ad-2176-4f86-b3d7-f2c5da3b6a6d)"
+                    />
                   </svg>
                 </div>
                 <div className="relative max-w-md mx-auto py-12 px-4 space-y-6 sm:max-w-3xl sm:py-16 sm:px-6 lg:max-w-none lg:p-0 lg:col-start-4 lg:col-span-6">
-                  <h2 className="text-3xl font-extrabold text-white" id="join-heading">
+                  <h2
+                    className="text-3xl font-extrabold text-white"
+                    id="join-heading"
+                  >
                     Join our team
                   </h2>
                   <p className="text-lg text-white">
-                    Varius facilisi mauris sed sit. Non sed et duis dui leo, vulputate id malesuada non. Cras aliquet
-                    purus dui laoreet diam sed lacus, fames.
+                    Varius facilisi mauris sed sit. Non sed et duis dui leo,
+                    vulputate id malesuada non. Cras aliquet purus dui laoreet
+                    diam sed lacus, fames.
                   </p>
                   <a
                     className="block w-full py-3 px-5 text-center bg-white border border-transparent rounded-md shadow-md text-base font-medium text-blue-700 hover:bg-blue-gray-50 sm:inline-block sm:w-auto"
@@ -447,12 +514,16 @@ export default function Example() {
           aria-labelledby="newsletter-heading"
         >
           <div className="lg:w-0 lg:flex-1">
-            <h2 className="text-3xl font-extrabold text-blue-gray-900 sm:text-4xl" id="newsletter-heading">
+            <h2
+              className="text-3xl font-extrabold text-blue-gray-900 sm:text-4xl"
+              id="newsletter-heading"
+            >
               Sign up for our newsletter
             </h2>
             <p className="mt-3 max-w-3xl text-lg text-blue-gray-500">
-              Anim aute id magna aliqua ad ad non deserunt sunt. Qui irure qui Lorem cupidatat commodo. Elit sunt amet
-              fugiat veniam occaecat fugiat.
+              Anim aute id magna aliqua ad ad non deserunt sunt. Qui irure qui
+              Lorem cupidatat commodo. Elit sunt amet fugiat veniam occaecat
+              fugiat.
             </p>
           </div>
           <div className="mt-8 lg:mt-0 lg:ml-8">
@@ -501,11 +572,16 @@ export default function Example() {
                 alt="Company name"
               />
               <p className="text-blue-gray-500 text-base">
-                Making the world a better place through constructing elegant hierarchies.
+                Making the world a better place through constructing elegant
+                hierarchies.
               </p>
               <div className="flex space-x-6">
                 {footerNavigation.social.map((item) => (
-                  <a key={item.name} href={item.href} className="text-blue-gray-400 hover:text-blue-gray-500">
+                  <a
+                    key={item.name}
+                    href={item.href}
+                    className="text-blue-gray-400 hover:text-blue-gray-500"
+                  >
                     <span className="sr-only">{item.name}</span>
                     <item.icon className="h-6 w-6" aria-hidden="true" />
                   </a>
@@ -515,11 +591,16 @@ export default function Example() {
             <div className="mt-12 grid grid-cols-2 gap-8 xl:mt-0 xl:col-span-2">
               <div className="md:grid md:grid-cols-2 md:gap-8">
                 <div>
-                  <h3 className="text-sm font-semibold text-blue-gray-400 tracking-wider uppercase">Solutions</h3>
+                  <h3 className="text-sm font-semibold text-blue-gray-400 tracking-wider uppercase">
+                    Solutions
+                  </h3>
                   <ul className="mt-4 space-y-4">
                     {footerNavigation.solutions.map((item) => (
                       <li key={item.name}>
-                        <a href={item.href} className="text-base text-blue-gray-500 hover:text-blue-gray-900">
+                        <a
+                          href={item.href}
+                          className="text-base text-blue-gray-500 hover:text-blue-gray-900"
+                        >
                           {item.name}
                         </a>
                       </li>
@@ -527,11 +608,16 @@ export default function Example() {
                   </ul>
                 </div>
                 <div className="mt-12 md:mt-0">
-                  <h3 className="text-sm font-semibold text-blue-gray-400 tracking-wider uppercase">Support</h3>
+                  <h3 className="text-sm font-semibold text-blue-gray-400 tracking-wider uppercase">
+                    Support
+                  </h3>
                   <ul className="mt-4 space-y-4">
                     {footerNavigation.support.map((item) => (
                       <li key={item.name}>
-                        <a href={item.href} className="text-base text-blue-gray-500 hover:text-blue-gray-900">
+                        <a
+                          href={item.href}
+                          className="text-base text-blue-gray-500 hover:text-blue-gray-900"
+                        >
                           {item.name}
                         </a>
                       </li>
@@ -541,11 +627,16 @@ export default function Example() {
               </div>
               <div className="md:grid md:grid-cols-2 md:gap-8">
                 <div>
-                  <h3 className="text-sm font-semibold text-blue-gray-400 tracking-wider uppercase">Company</h3>
+                  <h3 className="text-sm font-semibold text-blue-gray-400 tracking-wider uppercase">
+                    Company
+                  </h3>
                   <ul className="mt-4 space-y-4">
                     {footerNavigation.company.map((item) => (
                       <li key={item.name}>
-                        <a href={item.href} className="text-base text-blue-gray-500 hover:text-blue-gray-900">
+                        <a
+                          href={item.href}
+                          className="text-base text-blue-gray-500 hover:text-blue-gray-900"
+                        >
                           {item.name}
                         </a>
                       </li>
@@ -553,11 +644,16 @@ export default function Example() {
                   </ul>
                 </div>
                 <div className="mt-12 md:mt-0">
-                  <h3 className="text-sm font-semibold text-blue-gray-400 tracking-wider uppercase">Legal</h3>
+                  <h3 className="text-sm font-semibold text-blue-gray-400 tracking-wider uppercase">
+                    Legal
+                  </h3>
                   <ul className="mt-4 space-y-4">
                     {footerNavigation.legal.map((item) => (
                       <li key={item.name}>
-                        <a href={item.href} className="text-base text-blue-gray-500 hover:text-blue-gray-900">
+                        <a
+                          href={item.href}
+                          className="text-base text-blue-gray-500 hover:text-blue-gray-900"
+                        >
                           {item.name}
                         </a>
                       </li>
@@ -575,5 +671,5 @@ export default function Example() {
         </div>
       </footer>
     </div>
-  )
+  );
 }

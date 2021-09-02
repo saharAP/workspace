@@ -8,7 +8,6 @@ on:
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
 
     strategy:
@@ -19,20 +18,20 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - uses: canastro/copy-file-action@master
-        name: "copy env file"
+        name: 'copy env file'
         with:
           source: .env.example
           target: .env
       - uses: borales/actions-yarn@v2.3.0
-        name: "yarn install"
+        name: 'yarn install'
         with:
           cmd: install # will run `yarn install` command
       - uses: borales/actions-yarn@v2.3.0
-        name: "build"
+        name: 'build'
         with:
           cmd: app:build # will run `yarn app:build` command
       - uses: borales/actions-yarn@v2.3.0
-        name: "run tests"
+        name: 'run tests'
         with:
           cmd: test:fork
         env:

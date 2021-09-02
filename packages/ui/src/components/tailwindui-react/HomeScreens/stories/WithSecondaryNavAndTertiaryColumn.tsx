@@ -23,8 +23,16 @@
   }
   ```
 */
-import { Fragment } from 'react'
-import { Menu, Popover, Transition } from '@headlessui/react'
+import { Menu, Popover, Transition } from '@headlessui/react';
+import {
+  BellIcon,
+  FireIcon,
+  HomeIcon,
+  MenuIcon,
+  TrendingUpIcon,
+  UserGroupIcon,
+  XIcon,
+} from '@heroicons/react/outline';
 import {
   ChatAltIcon,
   CodeIcon,
@@ -36,34 +44,27 @@ import {
   ShareIcon,
   StarIcon,
   ThumbUpIcon,
-} from '@heroicons/react/solid'
-import { BellIcon, FireIcon, HomeIcon, MenuIcon, TrendingUpIcon, UserGroupIcon, XIcon } from '@heroicons/react/outline'
+} from '@heroicons/react/solid';
+import { Fragment } from 'react';
 
 const user = {
-
   name: 'Chelsea Hagon',
   email: 'chelseahagon@example.com',
   imageUrl:
     'https://images.unsplash.com/photo-1550525811-e5869dd03032?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
-
-}
+};
 const navigation = [
-
   { name: 'Home', href: '#', icon: HomeIcon, current: true },
   { name: 'Popular', href: '#', icon: FireIcon, current: false },
   { name: 'Communities', href: '#', icon: UserGroupIcon, current: false },
   { name: 'Trending', href: '#', icon: TrendingUpIcon, current: false },
-
-]
+];
 const userNavigation = [
-
   { name: 'Your Profile', href: '#' },
   { name: 'Settings', href: '#' },
   { name: 'Sign out', href: '#' },
-
-]
+];
 const communities = [
-
   { name: 'Movies', href: '#' },
   { name: 'Food', href: '#' },
   { name: 'Sports', href: '#' },
@@ -72,17 +73,13 @@ const communities = [
   { name: 'Dinosaurs', href: '#' },
   { name: 'Talents', href: '#' },
   { name: 'Gaming', href: '#' },
-
-]
+];
 const tabs = [
-
   { name: 'Recent', href: '#', current: true },
   { name: 'Most Liked', href: '#', current: false },
   { name: 'Most Answers', href: '#', current: false },
-
-]
+];
 const questions = [
-
   {
     id: '81614',
     likes: '29',
@@ -104,10 +101,8 @@ const questions = [
     `,
   },
   // More questions...
-
-]
+];
 const whoToFollow = [
-
   {
     name: 'Leonard Krasner',
     handle: 'leonardkrasner',
@@ -116,10 +111,8 @@ const whoToFollow = [
       'https://images.unsplash.com/photo-1519345182560-3f2917c472ef?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
   },
   // More people...
-
-]
+];
 const trendingPosts = [
-
   {
     id: 1,
     user: {
@@ -131,11 +124,10 @@ const trendingPosts = [
     comments: 291,
   },
   // More posts...
-
-]
+];
 
 function classNames(...classes) {
-  return classes.filter(Boolean).join(' ')
+  return classes.filter(Boolean).join(' ');
 }
 
 export default function Example() {
@@ -147,7 +139,7 @@ export default function Example() {
         className={({ open }) =>
           classNames(
             open ? 'fixed inset-0 z-40 overflow-y-auto' : '',
-            'bg-white shadow-sm lg:static lg:overflow-y-visible'
+            'bg-white shadow-sm lg:static lg:overflow-y-visible',
           )
         }
       >
@@ -174,7 +166,10 @@ export default function Example() {
                       </label>
                       <div className="relative">
                         <div className="pointer-events-none absolute inset-y-0 left-0 pl-3 flex items-center">
-                          <SearchIcon className="h-5 w-5 text-gray-400" aria-hidden="true" />
+                          <SearchIcon
+                            className="h-5 w-5 text-gray-400"
+                            aria-hidden="true"
+                          />
                         </div>
                         <input
                           id="search"
@@ -199,7 +194,10 @@ export default function Example() {
                   </Popover.Button>
                 </div>
                 <div className="hidden lg:flex lg:items-center lg:justify-end xl:col-span-4">
-                  <a href="#" className="text-sm font-medium text-gray-900 hover:underline">
+                  <a
+                    href="#"
+                    className="text-sm font-medium text-gray-900 hover:underline"
+                  >
                     Go Premium
                   </a>
                   <a
@@ -215,7 +213,11 @@ export default function Example() {
                     <div>
                       <Menu.Button className="bg-white rounded-full flex focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-rose-500">
                         <span className="sr-only">Open user menu</span>
-                        <img className="h-8 w-8 rounded-full" src={user.imageUrl} alt="" />
+                        <img
+                          className="h-8 w-8 rounded-full"
+                          src={user.imageUrl}
+                          alt=""
+                        />
                       </Menu.Button>
                     </div>
                     <Transition
@@ -235,7 +237,7 @@ export default function Example() {
                                 href={item.href}
                                 className={classNames(
                                   active ? 'bg-gray-100' : '',
-                                  'block py-2 px-4 text-sm text-gray-700'
+                                  'block py-2 px-4 text-sm text-gray-700',
                                 )}
                               >
                                 {item.name}
@@ -265,8 +267,10 @@ export default function Example() {
                     href={item.href}
                     aria-current={item.current ? 'page' : undefined}
                     className={classNames(
-                      item.current ? 'bg-gray-100 text-gray-900' : 'hover:bg-gray-50',
-                      'block rounded-md py-2 px-3 text-base font-medium'
+                      item.current
+                        ? 'bg-gray-100 text-gray-900'
+                        : 'hover:bg-gray-50',
+                      'block rounded-md py-2 px-3 text-base font-medium',
                     )}
                   >
                     {item.name}
@@ -276,11 +280,19 @@ export default function Example() {
               <div className="border-t border-gray-200 pt-4 pb-3">
                 <div className="max-w-3xl mx-auto px-4 flex items-center sm:px-6">
                   <div className="flex-shrink-0">
-                    <img className="h-10 w-10 rounded-full" src={user.imageUrl} alt="" />
+                    <img
+                      className="h-10 w-10 rounded-full"
+                      src={user.imageUrl}
+                      alt=""
+                    />
                   </div>
                   <div className="ml-3">
-                    <div className="text-base font-medium text-gray-800">{user.name}</div>
-                    <div className="text-sm font-medium text-gray-500">{user.email}</div>
+                    <div className="text-base font-medium text-gray-800">
+                      {user.name}
+                    </div>
+                    <div className="text-sm font-medium text-gray-500">
+                      {user.email}
+                    </div>
                   </div>
                   <button
                     type="button"
@@ -310,22 +322,29 @@ export default function Example() {
       <div className="py-10">
         <div className="max-w-3xl mx-auto sm:px-6 lg:max-w-7xl lg:px-8 lg:grid lg:grid-cols-12 lg:gap-8">
           <div className="hidden lg:block lg:col-span-3 xl:col-span-2">
-            <nav aria-label="Sidebar" className="sticky top-4 divide-y divide-gray-300">
+            <nav
+              aria-label="Sidebar"
+              className="sticky top-4 divide-y divide-gray-300"
+            >
               <div className="pb-8 space-y-1">
                 {navigation.map((item) => (
                   <a
                     key={item.name}
                     href={item.href}
                     className={classNames(
-                      item.current ? 'bg-gray-200 text-gray-900' : 'text-gray-600 hover:bg-gray-50',
-                      'group flex items-center px-3 py-2 text-sm font-medium rounded-md'
+                      item.current
+                        ? 'bg-gray-200 text-gray-900'
+                        : 'text-gray-600 hover:bg-gray-50',
+                      'group flex items-center px-3 py-2 text-sm font-medium rounded-md',
                     )}
                     aria-current={item.current ? 'page' : undefined}
                   >
                     <item.icon
                       className={classNames(
-                        item.current ? 'text-gray-500' : 'text-gray-400 group-hover:text-gray-500',
-                        'flex-shrink-0 -ml-1 mr-3 h-6 w-6'
+                        item.current
+                          ? 'text-gray-500'
+                          : 'text-gray-400 group-hover:text-gray-500',
+                        'flex-shrink-0 -ml-1 mr-3 h-6 w-6',
                       )}
                       aria-hidden="true"
                     />
@@ -340,7 +359,10 @@ export default function Example() {
                 >
                   My communities
                 </p>
-                <div className="mt-3 space-y-2" aria-labelledby="communities-headline">
+                <div
+                  className="mt-3 space-y-2"
+                  aria-labelledby="communities-headline"
+                >
                   {communities.map((community) => (
                     <a
                       key={community.name}
@@ -371,17 +393,22 @@ export default function Example() {
                 </select>
               </div>
               <div className="hidden sm:block">
-                <nav className="relative z-0 rounded-lg shadow flex divide-x divide-gray-200" aria-label="Tabs">
+                <nav
+                  className="relative z-0 rounded-lg shadow flex divide-x divide-gray-200"
+                  aria-label="Tabs"
+                >
                   {tabs.map((tab, tabIdx) => (
                     <a
                       key={tab.name}
                       href={tab.href}
                       aria-current={tab.current ? 'page' : undefined}
                       className={classNames(
-                        tab.current ? 'text-gray-900' : 'text-gray-500 hover:text-gray-700',
+                        tab.current
+                          ? 'text-gray-900'
+                          : 'text-gray-500 hover:text-gray-700',
                         tabIdx === 0 ? 'rounded-l-lg' : '',
                         tabIdx === tabs.length - 1 ? 'rounded-r-lg' : '',
-                        'group relative min-w-0 flex-1 overflow-hidden bg-white py-4 px-6 text-sm font-medium text-center hover:bg-gray-50 focus:z-10'
+                        'group relative min-w-0 flex-1 overflow-hidden bg-white py-4 px-6 text-sm font-medium text-center hover:bg-gray-50 focus:z-10',
                       )}
                     >
                       <span>{tab.name}</span>
@@ -389,7 +416,7 @@ export default function Example() {
                         aria-hidden="true"
                         className={classNames(
                           tab.current ? 'bg-rose-500' : 'bg-transparent',
-                          'absolute inset-x-0 bottom-0 h-0.5'
+                          'absolute inset-x-0 bottom-0 h-0.5',
                         )}
                       />
                     </a>
@@ -401,31 +428,52 @@ export default function Example() {
               <h1 className="sr-only">Recent questions</h1>
               <ul className="space-y-4">
                 {questions.map((question) => (
-                  <li key={question.id} className="bg-white px-4 py-6 shadow sm:p-6 sm:rounded-lg">
+                  <li
+                    key={question.id}
+                    className="bg-white px-4 py-6 shadow sm:p-6 sm:rounded-lg"
+                  >
                     <article aria-labelledby={'question-title-' + question.id}>
                       <div>
                         <div className="flex space-x-3">
                           <div className="flex-shrink-0">
-                            <img className="h-10 w-10 rounded-full" src={question.author.imageUrl} alt="" />
+                            <img
+                              className="h-10 w-10 rounded-full"
+                              src={question.author.imageUrl}
+                              alt=""
+                            />
                           </div>
                           <div className="min-w-0 flex-1">
                             <p className="text-sm font-medium text-gray-900">
-                              <a href={question.author.href} className="hover:underline">
+                              <a
+                                href={question.author.href}
+                                className="hover:underline"
+                              >
                                 {question.author.name}
                               </a>
                             </p>
                             <p className="text-sm text-gray-500">
-                              <a href={question.href} className="hover:underline">
-                                <time dateTime={question.datetime}>{question.date}</time>
+                              <a
+                                href={question.href}
+                                className="hover:underline"
+                              >
+                                <time dateTime={question.datetime}>
+                                  {question.date}
+                                </time>
                               </a>
                             </p>
                           </div>
                           <div className="flex-shrink-0 self-center flex">
-                            <Menu as="div" className="relative inline-block text-left">
+                            <Menu
+                              as="div"
+                              className="relative inline-block text-left"
+                            >
                               <div>
                                 <Menu.Button className="-m-2 p-2 rounded-full flex items-center text-gray-400 hover:text-gray-600">
                                   <span className="sr-only">Open options</span>
-                                  <DotsVerticalIcon className="h-5 w-5" aria-hidden="true" />
+                                  <DotsVerticalIcon
+                                    className="h-5 w-5"
+                                    aria-hidden="true"
+                                  />
                                 </Menu.Button>
                               </div>
 
@@ -446,11 +494,16 @@ export default function Example() {
                                         <a
                                           href="#"
                                           className={classNames(
-                                            active ? 'bg-gray-100 text-gray-900' : 'text-gray-700',
-                                            'flex px-4 py-2 text-sm'
+                                            active
+                                              ? 'bg-gray-100 text-gray-900'
+                                              : 'text-gray-700',
+                                            'flex px-4 py-2 text-sm',
                                           )}
                                         >
-                                          <StarIcon className="mr-3 h-5 w-5 text-gray-400" aria-hidden="true" />
+                                          <StarIcon
+                                            className="mr-3 h-5 w-5 text-gray-400"
+                                            aria-hidden="true"
+                                          />
                                           <span>Add to favorites</span>
                                         </a>
                                       )}
@@ -460,11 +513,16 @@ export default function Example() {
                                         <a
                                           href="#"
                                           className={classNames(
-                                            active ? 'bg-gray-100 text-gray-900' : 'text-gray-700',
-                                            'flex px-4 py-2 text-sm'
+                                            active
+                                              ? 'bg-gray-100 text-gray-900'
+                                              : 'text-gray-700',
+                                            'flex px-4 py-2 text-sm',
                                           )}
                                         >
-                                          <CodeIcon className="mr-3 h-5 w-5 text-gray-400" aria-hidden="true" />
+                                          <CodeIcon
+                                            className="mr-3 h-5 w-5 text-gray-400"
+                                            aria-hidden="true"
+                                          />
                                           <span>Embed</span>
                                         </a>
                                       )}
@@ -474,11 +532,16 @@ export default function Example() {
                                         <a
                                           href="#"
                                           className={classNames(
-                                            active ? 'bg-gray-100 text-gray-900' : 'text-gray-700',
-                                            'flex px-4 py-2 text-sm'
+                                            active
+                                              ? 'bg-gray-100 text-gray-900'
+                                              : 'text-gray-700',
+                                            'flex px-4 py-2 text-sm',
                                           )}
                                         >
-                                          <FlagIcon className="mr-3 h-5 w-5 text-gray-400" aria-hidden="true" />
+                                          <FlagIcon
+                                            className="mr-3 h-5 w-5 text-gray-400"
+                                            aria-hidden="true"
+                                          />
                                           <span>Report content</span>
                                         </a>
                                       )}
@@ -489,7 +552,10 @@ export default function Example() {
                             </Menu>
                           </div>
                         </div>
-                        <h2 id={'question-title-' + question.id} className="mt-4 text-base font-medium text-gray-900">
+                        <h2
+                          id={'question-title-' + question.id}
+                          className="mt-4 text-base font-medium text-gray-900"
+                        >
                           {question.title}
                         </h2>
                       </div>
@@ -501,22 +567,34 @@ export default function Example() {
                         <div className="flex space-x-6">
                           <span className="inline-flex items-center text-sm">
                             <button className="inline-flex space-x-2 text-gray-400 hover:text-gray-500">
-                              <ThumbUpIcon className="h-5 w-5" aria-hidden="true" />
-                              <span className="font-medium text-gray-900">{question.likes}</span>
+                              <ThumbUpIcon
+                                className="h-5 w-5"
+                                aria-hidden="true"
+                              />
+                              <span className="font-medium text-gray-900">
+                                {question.likes}
+                              </span>
                               <span className="sr-only">likes</span>
                             </button>
                           </span>
                           <span className="inline-flex items-center text-sm">
                             <button className="inline-flex space-x-2 text-gray-400 hover:text-gray-500">
-                              <ChatAltIcon className="h-5 w-5" aria-hidden="true" />
-                              <span className="font-medium text-gray-900">{question.replies}</span>
+                              <ChatAltIcon
+                                className="h-5 w-5"
+                                aria-hidden="true"
+                              />
+                              <span className="font-medium text-gray-900">
+                                {question.replies}
+                              </span>
                               <span className="sr-only">replies</span>
                             </button>
                           </span>
                           <span className="inline-flex items-center text-sm">
                             <button className="inline-flex space-x-2 text-gray-400 hover:text-gray-500">
                               <EyeIcon className="h-5 w-5" aria-hidden="true" />
-                              <span className="font-medium text-gray-900">{question.views}</span>
+                              <span className="font-medium text-gray-900">
+                                {question.views}
+                              </span>
                               <span className="sr-only">views</span>
                             </button>
                           </span>
@@ -524,8 +602,13 @@ export default function Example() {
                         <div className="flex text-sm">
                           <span className="inline-flex items-center text-sm">
                             <button className="inline-flex space-x-2 text-gray-400 hover:text-gray-500">
-                              <ShareIcon className="h-5 w-5" aria-hidden="true" />
-                              <span className="font-medium text-gray-900">Share</span>
+                              <ShareIcon
+                                className="h-5 w-5"
+                                aria-hidden="true"
+                              />
+                              <span className="font-medium text-gray-900">
+                                Share
+                              </span>
                             </button>
                           </span>
                         </div>
@@ -541,15 +624,25 @@ export default function Example() {
               <section aria-labelledby="who-to-follow-heading">
                 <div className="bg-white rounded-lg shadow">
                   <div className="p-6">
-                    <h2 id="who-to-follow-heading" className="text-base font-medium text-gray-900">
+                    <h2
+                      id="who-to-follow-heading"
+                      className="text-base font-medium text-gray-900"
+                    >
                       Who to follow
                     </h2>
                     <div className="mt-6 flow-root">
                       <ul className="-my-4 divide-y divide-gray-200">
                         {whoToFollow.map((user) => (
-                          <li key={user.handle} className="flex items-center py-4 space-x-3">
+                          <li
+                            key={user.handle}
+                            className="flex items-center py-4 space-x-3"
+                          >
                             <div className="flex-shrink-0">
-                              <img className="h-8 w-8 rounded-full" src={user.imageUrl} alt="" />
+                              <img
+                                className="h-8 w-8 rounded-full"
+                                src={user.imageUrl}
+                                alt=""
+                              />
                             </div>
                             <div className="min-w-0 flex-1">
                               <p className="text-sm font-medium text-gray-900">
@@ -564,7 +657,10 @@ export default function Example() {
                                 type="button"
                                 className="inline-flex items-center px-3 py-0.5 rounded-full bg-rose-50 text-sm font-medium text-rose-700 hover:bg-rose-100"
                               >
-                                <PlusIcon className="-ml-1 mr-0.5 h-5 w-5 text-rose-400" aria-hidden="true" />
+                                <PlusIcon
+                                  className="-ml-1 mr-0.5 h-5 w-5 text-rose-400"
+                                  aria-hidden="true"
+                                />
                                 <span>Follow</span>
                               </button>
                             </div>
@@ -586,7 +682,10 @@ export default function Example() {
               <section aria-labelledby="trending-heading">
                 <div className="bg-white rounded-lg shadow">
                   <div className="p-6">
-                    <h2 id="trending-heading" className="text-base font-medium text-gray-900">
+                    <h2
+                      id="trending-heading"
+                      className="text-base font-medium text-gray-900"
+                    >
                       Trending
                     </h2>
                     <div className="mt-6 flow-root">
@@ -594,15 +693,26 @@ export default function Example() {
                         {trendingPosts.map((post) => (
                           <li key={post.id} className="flex py-4 space-x-3">
                             <div className="flex-shrink-0">
-                              <img className="h-8 w-8 rounded-full" src={post.user.imageUrl} alt={post.user.name} />
+                              <img
+                                className="h-8 w-8 rounded-full"
+                                src={post.user.imageUrl}
+                                alt={post.user.name}
+                              />
                             </div>
                             <div className="min-w-0 flex-1">
-                              <p className="text-sm text-gray-800">{post.body}</p>
+                              <p className="text-sm text-gray-800">
+                                {post.body}
+                              </p>
                               <div className="mt-2 flex">
                                 <span className="inline-flex items-center text-sm">
                                   <button className="inline-flex space-x-2 text-gray-400 hover:text-gray-500">
-                                    <ChatAltIcon className="h-5 w-5" aria-hidden="true" />
-                                    <span className="font-medium text-gray-900">{post.comments}</span>
+                                    <ChatAltIcon
+                                      className="h-5 w-5"
+                                      aria-hidden="true"
+                                    />
+                                    <span className="font-medium text-gray-900">
+                                      {post.comments}
+                                    </span>
                                   </button>
                                 </span>
                               </div>
@@ -627,5 +737,5 @@ export default function Example() {
         </div>
       </div>
     </div>
-  )
+  );
 }

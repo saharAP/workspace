@@ -2,23 +2,23 @@
 /* tslint:disable */
 /* eslint-disable */
 
+import { EventFragment, FunctionFragment, Result } from "@ethersproject/abi";
+import { BytesLike } from "@ethersproject/bytes";
 import {
-  ethers,
-  EventFilter,
-  Signer,
-  BigNumber,
-  BigNumberish,
-  PopulatedTransaction,
-} from "ethers";
-import {
+  CallOverrides,
   Contract,
   ContractTransaction,
   Overrides,
-  CallOverrides,
 } from "@ethersproject/contracts";
-import { BytesLike } from "@ethersproject/bytes";
 import { Listener, Provider } from "@ethersproject/providers";
-import { FunctionFragment, EventFragment, Result } from "@ethersproject/abi";
+import {
+  BigNumber,
+  BigNumberish,
+  ethers,
+  EventFilter,
+  PopulatedTransaction,
+  Signer,
+} from "ethers";
 
 interface StreamingFeeModuleInterface extends ethers.utils.Interface {
   functions: {

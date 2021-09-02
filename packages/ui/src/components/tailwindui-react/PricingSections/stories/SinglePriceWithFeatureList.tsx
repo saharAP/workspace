@@ -1,8 +1,7 @@
 /* This example requires Tailwind CSS v2.0+ */
-import { CheckIcon } from '@heroicons/react/outline'
+import { CheckIcon } from '@heroicons/react/outline';
 
 const features = [
-
   'Vitae in pulvinar odio id utobortis in inter.',
   'Sed sed id viverra viverra augue eget massa.',
   'Urna, gravida amet, a, integer venenatis.',
@@ -13,8 +12,7 @@ const features = [
   'Eos enim officiis ratione.',
   'Tempore molestiae aliquid excepturi.',
   'Perspiciatis eveniet inventore eum et aliquam.',
-
-]
+];
 
 export default function Example() {
   return (
@@ -27,7 +25,8 @@ export default function Example() {
               <span className="text-indigo-600">$99 a month</span>
             </h1>
             <p className="mt-5 text-xl text-gray-500">
-              Includes every feature we offer plus unlimited projects and unlimited users.
+              Includes every feature we offer plus unlimited projects and
+              unlimited users.
             </p>
           </div>
           <a
@@ -39,11 +38,16 @@ export default function Example() {
         </div>
         <div className="border-t border-gray-200 pt-16 xl:grid xl:grid-cols-3 xl:gap-x-8">
           <div>
-            <h2 className="text-base font-semibold text-indigo-600 tracking-wide uppercase">Everything you need</h2>
-            <p className="mt-2 text-3xl font-extrabold text-gray-900">All-in-one platform</p>
+            <h2 className="text-base font-semibold text-indigo-600 tracking-wide uppercase">
+              Everything you need
+            </h2>
+            <p className="mt-2 text-3xl font-extrabold text-gray-900">
+              All-in-one platform
+            </p>
             <p className="mt-4 text-lg text-gray-500">
-              Ac euismod vel sit maecenas id pellentesque eu sed consectetur. Malesuada adipiscing sagittis vel nulla
-              nec. Urna, sed a lectus elementum blandit et.
+              Ac euismod vel sit maecenas id pellentesque eu sed consectetur.
+              Malesuada adipiscing sagittis vel nulla nec. Urna, sed a lectus
+              elementum blandit et.
             </p>
           </div>
           <div className="mt-4 sm:mt-8 md:mt-10 md:grid md:grid-cols-2 md:gap-x-8 xl:mt-0 xl:col-span-2">
@@ -51,35 +55,58 @@ export default function Example() {
               {features.slice(0, 5).map((feature, featureIdx) =>
                 featureIdx === 0 ? (
                   <li key={feature} className="py-4 flex md:py-0 md:pb-4">
-                    <CheckIcon className="flex-shrink-0 h-6 w-6 text-green-500" aria-hidden="true" />
-                    <span className="ml-3 text-base text-gray-500">{feature}</span>
+                    <CheckIcon
+                      className="flex-shrink-0 h-6 w-6 text-green-500"
+                      aria-hidden="true"
+                    />
+                    <span className="ml-3 text-base text-gray-500">
+                      {feature}
+                    </span>
                   </li>
                 ) : (
                   <li key={feature} className="py-4 flex">
-                    <CheckIcon className="flex-shrink-0 h-6 w-6 text-green-500" aria-hidden="true" />
-                    <span className="ml-3 text-base text-gray-500">{feature}</span>
+                    <CheckIcon
+                      className="flex-shrink-0 h-6 w-6 text-green-500"
+                      aria-hidden="true"
+                    />
+                    <span className="ml-3 text-base text-gray-500">
+                      {feature}
+                    </span>
                   </li>
-                )
+                ),
               )}
             </ul>
             <ul className="border-t border-gray-200 divide-y divide-gray-200 md:border-t-0">
               {features.slice(5).map((feature, featureIdx) =>
                 featureIdx === 0 ? (
-                  <li key={feature} className="py-4 flex md:border-t-0 md:py-0 md:pb-4">
-                    <CheckIcon className="flex-shrink-0 h-6 w-6 text-green-500" aria-hidden="true" />
-                    <span className="ml-3 text-base text-gray-500">{feature}</span>
+                  <li
+                    key={feature}
+                    className="py-4 flex md:border-t-0 md:py-0 md:pb-4"
+                  >
+                    <CheckIcon
+                      className="flex-shrink-0 h-6 w-6 text-green-500"
+                      aria-hidden="true"
+                    />
+                    <span className="ml-3 text-base text-gray-500">
+                      {feature}
+                    </span>
                   </li>
                 ) : (
                   <li key={feature} className="py-4 flex">
-                    <CheckIcon className="flex-shrink-0 h-6 w-6 text-green-500" aria-hidden="true" />
-                    <span className="ml-3 text-base text-gray-500">{feature}</span>
+                    <CheckIcon
+                      className="flex-shrink-0 h-6 w-6 text-green-500"
+                      aria-hidden="true"
+                    />
+                    <span className="ml-3 text-base text-gray-500">
+                      {feature}
+                    </span>
                   </li>
-                )
+                ),
               )}
             </ul>
           </div>
         </div>
       </div>
     </div>
-  )
+  );
 }

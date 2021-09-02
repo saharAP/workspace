@@ -14,19 +14,17 @@
   }
   ```
 */
-import { Fragment } from 'react'
-import { Popover, Transition } from '@headlessui/react'
-import { MenuIcon, XIcon } from '@heroicons/react/outline'
-import { ChevronRightIcon } from '@heroicons/react/solid'
+import { Popover, Transition } from '@headlessui/react';
+import { MenuIcon, XIcon } from '@heroicons/react/outline';
+import { ChevronRightIcon } from '@heroicons/react/solid';
+import { Fragment } from 'react';
 
 const navigation = [
-
   { name: 'Product', href: '#' },
   { name: 'Features', href: '#' },
   { name: 'Marketplace', href: '#' },
   { name: 'Company', href: '#' },
-
-]
+];
 
 export default function Example() {
   return (
@@ -68,7 +66,10 @@ export default function Example() {
                 </div>
               </div>
               <div className="hidden md:flex md:items-center md:space-x-6">
-                <a href="#" className="text-base font-medium text-white hover:text-gray-300">
+                <a
+                  href="#"
+                  className="text-base font-medium text-white hover:text-gray-300"
+                >
                   Log in
                 </a>
                 <a
@@ -90,7 +91,10 @@ export default function Example() {
             leaveFrom="opacity-100 scale-100"
             leaveTo="opacity-0 scale-95"
           >
-            <Popover.Panel focus className="absolute top-0 inset-x-0 p-2 transition transform origin-top md:hidden">
+            <Popover.Panel
+              focus
+              className="absolute top-0 inset-x-0 p-2 transition transform origin-top md:hidden"
+            >
               <div className="rounded-lg shadow-md bg-white ring-1 ring-black ring-opacity-5 overflow-hidden">
                 <div className="px-5 pt-4 flex items-center justify-between">
                   <div>
@@ -154,19 +158,30 @@ export default function Example() {
                       <span className="px-3 py-0.5 text-white text-xs font-semibold leading-5 uppercase tracking-wide bg-indigo-500 rounded-full">
                         We're hiring
                       </span>
-                      <span className="ml-4 text-sm">Visit our careers page</span>
-                      <ChevronRightIcon className="ml-2 w-5 h-5 text-gray-500" aria-hidden="true" />
+                      <span className="ml-4 text-sm">
+                        Visit our careers page
+                      </span>
+                      <ChevronRightIcon
+                        className="ml-2 w-5 h-5 text-gray-500"
+                        aria-hidden="true"
+                      />
                     </a>
                     <h1 className="mt-4 text-4xl tracking-tight font-extrabold text-white sm:mt-5 sm:text-6xl lg:mt-6 xl:text-6xl">
                       <span className="block">A better way to</span>
-                      <span className="block text-indigo-400">ship web apps</span>
+                      <span className="block text-indigo-400">
+                        ship web apps
+                      </span>
                     </h1>
                     <p className="mt-3 text-base text-gray-300 sm:mt-5 sm:text-xl lg:text-lg xl:text-xl">
-                      Anim aute id magna aliqua ad ad non deserunt sunt. Qui irure qui Lorem cupidatat commodo. Elit
-                      sunt amet fugiat veniam occaecat fugiat.
+                      Anim aute id magna aliqua ad ad non deserunt sunt. Qui
+                      irure qui Lorem cupidatat commodo. Elit sunt amet fugiat
+                      veniam occaecat fugiat.
                     </p>
                     <div className="mt-10 sm:mt-12">
-                      <form action="#" className="sm:max-w-xl sm:mx-auto lg:mx-0">
+                      <form
+                        action="#"
+                        className="sm:max-w-xl sm:mx-auto lg:mx-0"
+                      >
                         <div className="sm:flex">
                           <div className="min-w-0 flex-1">
                             <label htmlFor="email" className="sr-only">
@@ -189,8 +204,8 @@ export default function Example() {
                           </div>
                         </div>
                         <p className="mt-3 text-sm text-gray-300 sm:mt-4">
-                          Start your free 14-day trial, no credit card necessary. By providing your email, you agree to
-                          our{' '}
+                          Start your free 14-day trial, no credit card
+                          necessary. By providing your email, you agree to our{' '}
                           <a href="#" className="font-medium text-white">
                             terms or service
                           </a>
@@ -218,5 +233,5 @@ export default function Example() {
         </main>
       </div>
     </div>
-  )
+  );
 }

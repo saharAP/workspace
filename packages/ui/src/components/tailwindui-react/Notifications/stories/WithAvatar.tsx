@@ -1,9 +1,9 @@
 /* This example requires Tailwind CSS v2.0+ */
-import { Fragment, useState } from 'react'
-import { Transition } from '@headlessui/react'
+import { Transition } from '@headlessui/react';
+import { Fragment, useState } from 'react';
 
 export default function Example() {
-  const [show, setShow] = useState(true)
+  const [show, setShow] = useState(true);
 
   return (
     <>
@@ -35,8 +35,12 @@ export default function Example() {
                     />
                   </div>
                   <div className="ml-3 w-0 flex-1">
-                    <p className="text-sm font-medium text-gray-900">Emilia Gates</p>
-                    <p className="mt-1 text-sm text-gray-500">Sure! 8:30pm works great!</p>
+                    <p className="text-sm font-medium text-gray-900">
+                      Emilia Gates
+                    </p>
+                    <p className="mt-1 text-sm text-gray-500">
+                      Sure! 8:30pm works great!
+                    </p>
                   </div>
                 </div>
               </div>
@@ -44,7 +48,7 @@ export default function Example() {
                 <button
                   className="w-full border border-transparent rounded-none rounded-r-lg p-4 flex items-center justify-center text-sm font-medium text-indigo-600 hover:text-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500"
                   onClick={() => {
-                    setShow(false)
+                    setShow(false);
                   }}
                 >
                   Reply
@@ -55,5 +59,5 @@ export default function Example() {
         </div>
       </div>
     </>
-  )
+  );
 }

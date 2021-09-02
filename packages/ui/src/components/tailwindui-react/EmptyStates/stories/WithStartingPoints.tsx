@@ -6,10 +6,9 @@ import {
   TableIcon,
   ViewBoardsIcon,
   ViewListIcon,
-} from '@heroicons/react/outline'
+} from '@heroicons/react/outline';
 
 const items = [
-
   {
     title: 'Create a List',
     description: 'Another to-do system you’ll try but eventually give up on.',
@@ -46,11 +45,10 @@ const items = [
     icon: ClockIcon,
     background: 'bg-purple-500',
   },
-
-]
+];
 
 function classNames(...classes) {
-  return classes.filter(Boolean).join(' ')
+  return classes.filter(Boolean).join(' ');
 }
 
 export default function Example() {
@@ -58,16 +56,20 @@ export default function Example() {
     <div>
       <h2 className="text-lg font-medium text-gray-900">Projects</h2>
       <p className="mt-1 text-sm text-gray-500">
-        You haven’t created a project yet. Get started by selecting a template or start from an empty project.
+        You haven’t created a project yet. Get started by selecting a template
+        or start from an empty project.
       </p>
-      <ul role="list" className="mt-6 border-t border-b border-gray-200 py-6 grid grid-cols-1 gap-6 sm:grid-cols-2">
+      <ul
+        role="list"
+        className="mt-6 border-t border-b border-gray-200 py-6 grid grid-cols-1 gap-6 sm:grid-cols-2"
+      >
         {items.map((item, itemIdx) => (
           <li key={itemIdx} className="flow-root">
             <div className="relative -m-2 p-2 flex items-center space-x-4 rounded-xl hover:bg-gray-50 focus-within:ring-2 focus-within:ring-indigo-500">
               <div
                 className={classNames(
                   item.background,
-                  'flex-shrink-0 flex items-center justify-center h-16 w-16 rounded-lg'
+                  'flex-shrink-0 flex items-center justify-center h-16 w-16 rounded-lg',
                 )}
               >
                 <item.icon className="h-6 w-6 text-white" aria-hidden="true" />
@@ -87,10 +89,13 @@ export default function Example() {
         ))}
       </ul>
       <div className="mt-4 flex">
-        <a href="#" className="text-sm font-medium text-indigo-600 hover:text-indigo-500">
+        <a
+          href="#"
+          className="text-sm font-medium text-indigo-600 hover:text-indigo-500"
+        >
           Or start from an empty project<span aria-hidden="true"> &rarr;</span>
         </a>
       </div>
     </div>
-  )
+  );
 }

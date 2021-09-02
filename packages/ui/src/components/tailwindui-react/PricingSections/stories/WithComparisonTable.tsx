@@ -1,10 +1,14 @@
 /* This example requires Tailwind CSS v2.0+ */
-import { Fragment } from 'react'
-import { CheckIcon, MinusIcon } from '@heroicons/react/solid'
+import { CheckIcon, MinusIcon } from '@heroicons/react/solid';
+import { Fragment } from 'react';
 
 const tiers = [
-
-  { name: 'Basic', href: '#', priceMonthly: 9, description: 'Quis suspendisse ut fermentum neque vivamus non tellus.' },
+  {
+    name: 'Basic',
+    href: '#',
+    priceMonthly: 9,
+    description: 'Quis suspendisse ut fermentum neque vivamus non tellus.',
+  },
   {
     name: 'Essential',
     href: '#',
@@ -15,44 +19,72 @@ const tiers = [
     name: 'Premium',
     href: '#',
     priceMonthly: 59,
-    description: 'Orci volutpat ut sed sed neque, dui eget. Quis tristique non.',
+    description:
+      'Orci volutpat ut sed sed neque, dui eget. Quis tristique non.',
   },
-
-]
+];
 const sections = [
-
   {
     name: 'Features',
     features: [
-      { name: 'Molestie lobortis massa.', tiers: { Basic: true, Essential: true, Premium: true } },
-      { name: 'Urna purus felis.', tiers: { Basic: true, Essential: true, Premium: true } },
-      { name: 'Tellus pulvinar sit dictum.', tiers: { Essential: true, Premium: true } },
-      { name: 'Convallis.', tiers: { Essential: 'Up to 20 users', Premium: 'Up to 50 users' } },
+      {
+        name: 'Molestie lobortis massa.',
+        tiers: { Basic: true, Essential: true, Premium: true },
+      },
+      {
+        name: 'Urna purus felis.',
+        tiers: { Basic: true, Essential: true, Premium: true },
+      },
+      {
+        name: 'Tellus pulvinar sit dictum.',
+        tiers: { Essential: true, Premium: true },
+      },
+      {
+        name: 'Convallis.',
+        tiers: { Essential: 'Up to 20 users', Premium: 'Up to 50 users' },
+      },
     ],
   },
   {
     name: 'Reporting',
     features: [
-      { name: 'Adipiscing.', tiers: { Basic: true, Essential: true, Premium: true } },
-      { name: 'Eget risus integer.', tiers: { Essential: true, Premium: true } },
+      {
+        name: 'Adipiscing.',
+        tiers: { Basic: true, Essential: true, Premium: true },
+      },
+      {
+        name: 'Eget risus integer.',
+        tiers: { Essential: true, Premium: true },
+      },
       { name: 'Gravida leo urna velit.', tiers: { Premium: true } },
-      { name: 'Elementum ut dapibus mi feugiat cras nisl.', tiers: { Premium: true } },
+      {
+        name: 'Elementum ut dapibus mi feugiat cras nisl.',
+        tiers: { Premium: true },
+      },
     ],
   },
   {
     name: 'Support',
     features: [
-      { name: 'Sit dignissim.', tiers: { Basic: true, Essential: true, Premium: true } },
+      {
+        name: 'Sit dignissim.',
+        tiers: { Basic: true, Essential: true, Premium: true },
+      },
       { name: 'Congue at nibh et.', tiers: { Essential: true, Premium: true } },
-      { name: 'Volutpat feugiat mattis.', tiers: { Essential: true, Premium: true } },
-      { name: 'Tristique pellentesque ornare diam sapien.', tiers: { Premium: true } },
+      {
+        name: 'Volutpat feugiat mattis.',
+        tiers: { Essential: true, Premium: true },
+      },
+      {
+        name: 'Tristique pellentesque ornare diam sapien.',
+        tiers: { Premium: true },
+      },
     ],
   },
-
-]
+];
 
 function classNames(...classes) {
-  return classes.filter(Boolean).join(' ')
+  return classes.filter(Boolean).join(' ');
 }
 
 export default function Example() {
@@ -64,10 +96,16 @@ export default function Example() {
           {tiers.map((tier, tierIdx) => (
             <section key={tier.name}>
               <div className="px-4 mb-8">
-                <h2 className="text-lg leading-6 font-medium text-gray-900">{tier.name}</h2>
+                <h2 className="text-lg leading-6 font-medium text-gray-900">
+                  {tier.name}
+                </h2>
                 <p className="mt-4">
-                  <span className="text-4xl font-extrabold text-gray-900">${tier.priceMonthly}</span>{' '}
-                  <span className="text-base font-medium text-gray-500">/mo</span>
+                  <span className="text-4xl font-extrabold text-gray-900">
+                    ${tier.priceMonthly}
+                  </span>{' '}
+                  <span className="text-base font-medium text-gray-500">
+                    /mo
+                  </span>
                 </p>
                 <p className="mt-4 text-sm text-gray-500">{tier.description}</p>
                 <a
@@ -95,22 +133,40 @@ export default function Example() {
                   </thead>
                   <tbody className="divide-y divide-gray-200">
                     {section.features.map((feature) => (
-                      <tr key={feature.name} className="border-t border-gray-200">
-                        <th className="py-5 px-4 text-sm font-normal text-gray-500 text-left" scope="row">
+                      <tr
+                        key={feature.name}
+                        className="border-t border-gray-200"
+                      >
+                        <th
+                          className="py-5 px-4 text-sm font-normal text-gray-500 text-left"
+                          scope="row"
+                        >
                           {feature.name}
                         </th>
                         <td className="py-5 pr-4">
                           {typeof feature.tiers[tier.name] === 'string' ? (
-                            <span className="block text-sm text-gray-700 text-right">{feature.tiers[tier.name]}</span>
+                            <span className="block text-sm text-gray-700 text-right">
+                              {feature.tiers[tier.name]}
+                            </span>
                           ) : (
                             <>
                               {feature.tiers[tier.name] === true ? (
-                                <CheckIcon className="ml-auto h-5 w-5 text-green-500" aria-hidden="true" />
+                                <CheckIcon
+                                  className="ml-auto h-5 w-5 text-green-500"
+                                  aria-hidden="true"
+                                />
                               ) : (
-                                <MinusIcon className="ml-auto h-5 w-5 text-gray-400" aria-hidden="true" />
+                                <MinusIcon
+                                  className="ml-auto h-5 w-5 text-gray-400"
+                                  aria-hidden="true"
+                                />
                               )}
 
-                              <span className="sr-only">{feature.tiers[tier.name] === true ? 'Yes' : 'No'}</span>
+                              <span className="sr-only">
+                                {feature.tiers[tier.name] === true
+                                  ? 'Yes'
+                                  : 'No'}
+                              </span>
                             </>
                           )}
                         </td>
@@ -123,7 +179,7 @@ export default function Example() {
               <div
                 className={classNames(
                   tierIdx < tiers.length - 1 ? 'py-5 border-b' : 'pt-5',
-                  'border-t border-gray-200 px-4'
+                  'border-t border-gray-200 px-4',
                 )}
               >
                 <a
@@ -143,7 +199,10 @@ export default function Example() {
             <caption className="sr-only">Pricing plan comparison</caption>
             <thead>
               <tr>
-                <th className="pb-4 px-6 text-sm font-medium text-gray-900 text-left" scope="col">
+                <th
+                  className="pb-4 px-6 text-sm font-medium text-gray-900 text-left"
+                  scope="col"
+                >
                   <span className="sr-only">Feature by</span>
                   <span>Plans</span>
                 </th>
@@ -160,17 +219,26 @@ export default function Example() {
             </thead>
             <tbody className="border-t border-gray-200 divide-y divide-gray-200">
               <tr>
-                <th className="py-8 px-6 text-sm font-medium text-gray-900 text-left align-top" scope="row">
+                <th
+                  className="py-8 px-6 text-sm font-medium text-gray-900 text-left align-top"
+                  scope="row"
+                >
                   Pricing
                 </th>
                 {tiers.map((tier) => (
                   <td key={tier.name} className="h-full py-8 px-6 align-top">
                     <div className="relative h-full table">
                       <p>
-                        <span className="text-4xl font-extrabold text-gray-900">${tier.priceMonthly}</span>{' '}
-                        <span className="text-base font-medium text-gray-500">/mo</span>
+                        <span className="text-4xl font-extrabold text-gray-900">
+                          ${tier.priceMonthly}
+                        </span>{' '}
+                        <span className="text-base font-medium text-gray-500">
+                          /mo
+                        </span>
                       </p>
-                      <p className="mt-4 mb-16 text-sm text-gray-500">{tier.description}</p>
+                      <p className="mt-4 mb-16 text-sm text-gray-500">
+                        {tier.description}
+                      </p>
                       <a
                         href={tier.href}
                         className="absolute bottom-0 flex-grow block w-full bg-gray-800 border border-gray-800 rounded-md 5 py-2 text-sm font-semibold text-white text-center hover:bg-gray-900"
@@ -194,23 +262,37 @@ export default function Example() {
                   </tr>
                   {section.features.map((feature) => (
                     <tr key={feature.name}>
-                      <th className="py-5 px-6 text-sm font-normal text-gray-500 text-left" scope="row">
+                      <th
+                        className="py-5 px-6 text-sm font-normal text-gray-500 text-left"
+                        scope="row"
+                      >
                         {feature.name}
                       </th>
                       {tiers.map((tier) => (
                         <td key={tier.name} className="py-5 px-6">
                           {typeof feature.tiers[tier.name] === 'string' ? (
-                            <span className="block text-sm text-gray-700">{feature.tiers[tier.name]}</span>
+                            <span className="block text-sm text-gray-700">
+                              {feature.tiers[tier.name]}
+                            </span>
                           ) : (
                             <>
                               {feature.tiers[tier.name] === true ? (
-                                <CheckIcon className="h-5 w-5 text-green-500" aria-hidden="true" />
+                                <CheckIcon
+                                  className="h-5 w-5 text-green-500"
+                                  aria-hidden="true"
+                                />
                               ) : (
-                                <MinusIcon className="h-5 w-5 text-gray-400" aria-hidden="true" />
+                                <MinusIcon
+                                  className="h-5 w-5 text-gray-400"
+                                  aria-hidden="true"
+                                />
                               )}
 
                               <span className="sr-only">
-                                {feature.tiers[tier.name] === true ? 'Included' : 'Not included'} in {tier.name}
+                                {feature.tiers[tier.name] === true
+                                  ? 'Included'
+                                  : 'Not included'}{' '}
+                                in {tier.name}
                               </span>
                             </>
                           )}
@@ -242,5 +324,5 @@ export default function Example() {
         </div>
       </div>
     </div>
-  )
+  );
 }
