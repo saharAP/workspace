@@ -13,7 +13,11 @@
     "tsc": "tsc -b",
     "story": "start-storybook",
     "storybook": "start-storybook -p 6006 --no-dll",
-    "build:storybook": "build-storybook --no-dll"
+    "build:storybook": "build-storybook --no-dll",
+    "prettify": "yarn lint-staged --allow-empty"
+  },
+  "lint-staged": {
+    "*.{tsx,ts}": "prettier --write"
   },
   "peerDependencies": {
     "react": "^16.13.1",

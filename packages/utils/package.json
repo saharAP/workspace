@@ -3,7 +3,11 @@
   "version": "1.0.0",
   "main": "src/index",
   "scripts": {
-    "build": "tsc"
+    "build": "tsc",
+    "prettify": "yarn lint-staged --allow-empty"
+  },
+  "lint-staged": {
+    "*.{tsx,ts}": "prettier --write"
   },
   "dependencies": {
     "axios": "^0.21.1",
