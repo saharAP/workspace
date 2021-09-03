@@ -267,7 +267,7 @@ describe("Zapper", function () {
           (await contracts.dai.balanceOf(depositor.address)).sub(
             initialDaiBalance
           )
-        ).to.equal(parseEther("9941.407117032982477720"));
+        ).to.equal(parseEther("9941.407180039095760315"));
       });
 
       it("Depositor can zap out to USDC", async function () {
@@ -300,7 +300,7 @@ describe("Zapper", function () {
           (await contracts.usdc.balanceOf(depositor.address)).sub(
             initialUsdcBalance
           )
-        ).to.equal(parseUnits("9950.382989", 6));
+        ).to.equal(parseUnits("9950.383052", 6));
       });
 
       it("Depositor can zap out to USDT", async function () {
@@ -333,7 +333,7 @@ describe("Zapper", function () {
           (await contracts.usdt.balanceOf(depositor.address)).sub(
             initialUsdtBalance
           )
-        ).to.equal(parseUnits("9951.193272", 6));
+        ).to.equal(parseUnits("9951.193335", 6));
       });
 
       it("Depositor can zap out to FRAX", async function () {
@@ -366,7 +366,7 @@ describe("Zapper", function () {
           (await contracts.frax.balanceOf(depositor.address)).sub(
             initialFraxBalance
           )
-        ).to.equal(parseEther("9929.450552172604087093"));
+        ).to.equal(parseEther("9929.450615103144171455"));
       });
     });
   });
@@ -385,7 +385,7 @@ describe("Zapper", function () {
             parseEther("10000")
           );
         expect(await contracts.usdnPool.balanceOf(depositor.address)).to.equal(
-          parseEther("9701.086137495972674932")
+          parseEther("9701.086137495979113995")
         );
       });
 
@@ -401,7 +401,7 @@ describe("Zapper", function () {
             parseUnits("10000", 6)
           );
         expect(await contracts.usdnPool.balanceOf(depositor.address)).to.equal(
-          parseEther("9693.704963887313902504")
+          parseEther("9693.704963887318151957")
         );
       });
 
@@ -417,7 +417,7 @@ describe("Zapper", function () {
             parseUnits("10000", 6)
           );
         expect(await contracts.usdnPool.balanceOf(depositor.address)).to.equal(
-          parseEther("9693.217161059186468506")
+          parseEther("9693.217161059190638029")
         );
       });
 
@@ -433,7 +433,7 @@ describe("Zapper", function () {
             parseEther("10000")
           );
         expect(await contracts.usdnPool.balanceOf(depositor.address)).to.equal(
-          parseEther("9697.747403378125533195")
+          parseEther("9697.747403378125533200")
         );
       });
     });
@@ -469,7 +469,7 @@ describe("Zapper", function () {
           (await contracts.dai.balanceOf(depositor.address)).sub(
             initialDaiBalance
           )
-        ).to.equal(parseEther("9941.008381865182630570"));
+        ).to.equal(parseEther("9941.008444868773821254"));
       });
 
       it("Depositor can zap out to USDC", async function () {
@@ -502,7 +502,7 @@ describe("Zapper", function () {
           (await contracts.usdc.balanceOf(depositor.address)).sub(
             initialUsdcBalance
           )
-        ).to.equal(parseUnits("9949.981434", 6));
+        ).to.equal(parseUnits("9949.981497", 6));
       });
 
       it("Depositor can zap out to USDT", async function () {
@@ -535,7 +535,7 @@ describe("Zapper", function () {
           (await contracts.usdt.balanceOf(depositor.address)).sub(
             initialUsdtBalance
           )
-        ).to.equal(parseUnits("9950.791646", 6));
+        ).to.equal(parseUnits("9950.791709", 6));
       });
 
       it("Depositor can zap out to USDN", async function () {
@@ -568,7 +568,7 @@ describe("Zapper", function () {
           (await contracts.usdn.balanceOf(depositor.address)).sub(
             initialUsdnBalance
           )
-        ).to.equal(parseEther("9949.424887598824623408"));
+        ).to.equal(parseEther("9949.424950655893925018"));
       });
     });
   });
