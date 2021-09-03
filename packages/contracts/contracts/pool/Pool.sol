@@ -213,10 +213,10 @@ contract Pool is AffiliateToken, Ownable, ReentrancyGuard, Pausable, Defended {
     if (pricePerPoolToken() > poolTokenHWM) {
       uint256 changeInPricePerToken = pricePerPoolToken().sub(poolTokenHWM);
       uint256 fee = performanceFee
-      .mul(changeInPricePerToken)
-      .mul(totalSupply())
-      .div(BPS_DENOMINATOR)
-      .div(1e18);
+        .mul(changeInPricePerToken)
+        .mul(totalSupply())
+        .div(BPS_DENOMINATOR)
+        .div(1e18);
       _issuePoolTokensForAmount(address(this), fee);
       emit PerformanceFee(fee);
     }
