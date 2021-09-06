@@ -121,7 +121,7 @@ async function deployContracts(): Promise<Contracts> {
   };
 }
 
-describe("Zapper", function () {
+describe("Zapper [ @skip-on-coverage ]", function () {
   before(async function () {
     await network.provider.request({
       method: "hardhat_reset",
@@ -137,8 +137,14 @@ describe("Zapper", function () {
   });
 
   beforeEach(async function () {
-    [owner, depositor, depositor1, depositor2, depositor3, rewardsManager] =
-      await ethers.getSigners();
+    [
+      owner,
+      depositor,
+      depositor1,
+      depositor2,
+      depositor3,
+      rewardsManager,
+    ] = await ethers.getSigners();
     contracts = await deployContracts();
     [depositor, depositor1, depositor2, depositor3].forEach(async (account) => {
       await contracts.faucet.sendTokens(
