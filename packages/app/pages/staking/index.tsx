@@ -90,7 +90,7 @@ export default function LockPop() {
 
     // Ensure that popToLock is in the format 10000000... instead of 10e+5
     // because parseEther breaks with exponential String
-    const formattedPop = popToLock.toLocaleString().replaceAll(',','');
+    const formattedPop = popToLock.toLocaleString().replace(/,/gi, '');
     const lockedPopInEth = utils.parseEther(formattedPop);
     const connected = await contracts.pop.connect(library.getSigner());
     await connected
@@ -104,7 +104,7 @@ export default function LockPop() {
     setWait(true);
     // Ensure that popToLock is in the format 10000000... instead of 10e+5
     // because parseEther breaks with exponential String
-    const formattedPop = popToLock.toLocaleString().replaceAll(',','');
+    const formattedPop = popToLock.toLocaleString().replace(/,/gi, '');
     const lockedPopInEth = utils.parseEther(formattedPop);
     const connected = await contracts.staking.connect(library.getSigner());
     toast.promise(connected
