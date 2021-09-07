@@ -28,7 +28,6 @@ interface Contracts {
   randomNumberConsumer: Contract;
   grantElections: Contract;
   beneficiaryVaults: Contract;
-  rewardsEscrow: Contract;
   rewardsManager: Contract;
   mock3CRV: Contract;
   uniswapFactory: Contract;
@@ -217,7 +216,6 @@ export default async function deploy(ethers): Promise<void> {
       uniswapPair,
       beneficiaryGovernance,
       region,
-      rewardsEscrow,
     };
   };
 
