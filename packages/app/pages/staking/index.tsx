@@ -31,6 +31,7 @@ export default function LockPop() {
   const [lockedPop, setLockedPop] = useState(0);
   const [voiceCredits, setVoiceCredits] = useState<number>(0);
   const [approved, setApproval] = useState<number>(0);
+  const [expired, setExpired] = useState<boolean>(false);
   const [wait, setWait] = useState<boolean>(false);
 
   useEffect(() => {
@@ -50,6 +51,11 @@ export default function LockPop() {
   }, [account]);
 
   const getLockedPop = async () => {
+    const lockedBalance = await contracts.staking.lockedBalances(account);
+    const currentTime = parseInt(`${(new Date().getTime() / 1000)}`);
+    setExpired(lockedBalance._end.lt(currentTime));
+    console.log('Lokk down ', lockedBalance._duration.toNumber());
+    console.log('possible valuess ', lockPeriods);
     setLockedPop(
       Number(utils.formatEther(await contracts.staking.balanceOf(account))),
     );
@@ -82,12 +88,43 @@ export default function LockPop() {
     setWait(true);
     toast.loading('Approving POP for staking...');
 
-    const lockedPopInEth = utils.parseEther('100000000');
+    // Ensure that popToLock is in the format 10000000... instead of 10e+5
+    // because parseEther breaks with exponential String
+    const formattedPop = popToLock.toLocaleString().replaceAll(',','');
+    const lockedPopInEth = utils.parseEther(formattedPop);
     const connected = await contracts.pop.connect(library.getSigner());
     await connected
       .approve(process.env.ADDR_STAKING, lockedPopInEth)
       .then((res) => toast.success('POP approved!'))
       .catch((err) => toast.error(err.data.message.split("'")[1]));
+    setWait(false);
+  }
+
+  async function increaseStake(): Promise<void> {
+    setWait(true);
+    // Ensure that popToLock is in the format 10000000... instead of 10e+5
+    // because parseEther breaks with exponential String
+    const formattedPop = popToLock.toLocaleString().replaceAll(',','');
+    const lockedPopInEth = utils.parseEther(formattedPop);
+    const connected = await contracts.staking.connect(library.getSigner());
+    toast.promise(connected
+      .increaseStake(lockedPopInEth), {
+      loading: 'Increasing POP for staking...',
+      success: 'POP Increased!',
+      error: 'Error occurred while increasing POP',
+    });
+    setWait(false);
+  }
+
+  async function increaseLock(): Promise<void> {
+    setWait(true);
+    const connected = await contracts.staking.connect(library.getSigner());
+    toast.promise(connected
+      .increaseStake(lockDuration), {
+      loading: 'Increasing POP Lock Period',
+      success: 'POP Lock Period Increased!',
+      error: 'Error occurred while increasing POP Lock Period',
+    });
     setWait(false);
   }
 
@@ -172,6 +209,7 @@ export default function LockPop() {
                               min={0}
                               max={popBalance}
                               step={1}
+                              disabled={(account && approved >= popToLock && expired)}
                             />
                           </div>
                         </div>
@@ -190,6 +228,7 @@ export default function LockPop() {
                                 Number(period.value) === Number(lockDuration),
                             ).label
                           }
+                          disabled={(account && approved >= popToLock && lockedPop > 0 && !expired)}
                           selectOptions={lockPeriods}
                           selectOption={setLockDuration}
                         />
@@ -205,11 +244,25 @@ export default function LockPop() {
                             handleClick={() => activate(connectors.Injected)}
                           />
                         )}
-                        {account && approved >= popToLock && (
+                        {account && approved >= popToLock && !lockedPop &&(
                           <MainActionButton
                             label={'Stake POP'}
                             handleClick={lockPop}
                             disabled={wait || popToLock === 0}
+                          />
+                        )}
+                        {account && approved >= popToLock && lockedPop > 0 && !expired && (
+                          <MainActionButton
+                            label={'Increase Stake POP'}
+                            handleClick={increaseStake}
+                            disabled={wait || popToLock === 0}
+                          />
+                        )}
+                        {account && approved >= popToLock && expired && (
+                          <MainActionButton
+                            label={'Increase POP Lock Period'}
+                            handleClick={increaseLock}
+                            disabled={wait}
                           />
                         )}
                         {account && approved < popToLock && (
