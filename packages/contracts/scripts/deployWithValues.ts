@@ -5,8 +5,12 @@ import bluebird from "bluebird";
 import { deployContract } from "ethereum-waffle";
 import { Contract, utils } from "ethers";
 import { parseEther } from "ethers/lib/utils";
-import { ShareType } from "../adapters/GrantElection/GrantElectionAdapter";
+import getCreatedProposalId from "../adapters/GrantElection/getCreatedProposalId";
+import GrantElectionAdapter, {
+  ShareType,
+} from "../adapters/GrantElection/GrantElectionAdapter";
 import * as addressCidMap from "./addressCidMap.json";
+
 const UniswapV2FactoryJSON = require("../artifactsUniswap/UniswapV2Factory.json");
 const UniswapV2Router02JSON = require("../artifactsUniswap/UniswapV2Router.json");
 const UniswapV2PairJSON = require("../artifactsUniswap/UniswapV2Pair.json");
@@ -14,6 +18,9 @@ const UniswapV2PairJSON = require("../artifactsUniswap/UniswapV2Pair.json");
 // This script creates two beneficiaries and one quarterly grant that they are both eligible for. Run this
 // Run this instead of the normal deploy.js script
 const DEFAULT_REGION = "0x5757";
+
+const VOTE_PERIOD_IN_SECONDS = 30;
+
 interface Contracts {
   beneficiaryRegistry: Contract;
   mockPop: Contract;
@@ -21,6 +28,7 @@ interface Contracts {
   randomNumberConsumer: Contract;
   grantElections: Contract;
   beneficiaryVaults: Contract;
+  rewardsEscrow: Contract;
   rewardsManager: Contract;
   mock3CRV: Contract;
   uniswapFactory: Contract;
@@ -202,6 +210,7 @@ export default async function deploy(ethers): Promise<void> {
       grantElections,
       beneficiaryVaults,
       rewardsManager,
+      rewardsEscrow,
       mock3CRV,
       uniswapFactory,
       uniswapRouter,
@@ -356,111 +365,173 @@ export default async function deploy(ethers): Promise<void> {
     );
   };
 
-  const addClosedProposals = async (): Promise<void> => {
-    await addNominationProposals();
-    await addTakedownProposals();
-    await voteOnNominationProposals();
-    await voteOnTakedownProposals();
-    await finalizeProposals();
+  const updateProposalSettings = async (): Promise<void> => {
+    console.log(
+      `Reducing proposal voting period and veto period to ${VOTE_PERIOD_IN_SECONDS}s`
+    );
+    await contracts.beneficiaryGovernance
+      .connect(accounts[0])
+      .setConfiguration(
+        VOTE_PERIOD_IN_SECONDS,
+        VOTE_PERIOD_IN_SECONDS,
+        parseEther("2000")
+      );
   };
 
-  const addNominationProposals = async (): Promise<void> => {
-    console.log("adding nomination proposals...");
-    await bluebird.map(
-      beneficiaries.slice(0, 6),
+  const addFinalizedProposalsAndBeneficiariesToRegistry =
+    async (): Promise<void> => {
+      const nominationProposalIds = await addProposals(
+        beneficiaries.slice(0, 6),
+        0
+      );
+      const takedownProposalIds = await addProposals(
+        beneficiaries.slice(6, 12),
+        1
+      );
+      const allProposalIds = nominationProposalIds.concat(takedownProposalIds);
+      await voteOnNominationProposals(nominationProposalIds);
+      await voteOnTakedownProposals(takedownProposalIds);
+      await finalizeProposals(allProposalIds);
+    };
+
+  const addProposals = async (
+    beneficiaries: SignerWithAddress[],
+    proposalType: ProposalType
+  ): Promise<number[]> => {
+    console.log(
+      `Adding ${beneficiaries.length} ${
+        proposalType === 0 ? "nomination" : "takedown"
+      } proposals...`
+    );
+    const proposalIds = await bluebird.map(
+      beneficiaries,
       async (beneficiary) => {
-        await contracts.beneficiaryGovernance
+        const tx = await contracts.beneficiaryGovernance
           .connect(beneficiary)
           .createProposal(
             beneficiary.address,
             DEFAULT_REGION,
             getBytes32FromIpfsHash(addressCidMap[beneficiary.address]),
-            ProposalType.Nomination,
+            proposalType,
             { gasLimit: 3000000 }
           );
+        const receipt = await tx.wait(1);
+        const id = await getCreatedProposalId(
+          receipt.transactionHash,
+          ethers.provider
+        );
+        return id;
       },
       { concurrency: 1 }
     );
+    return proposalIds;
   };
 
-  const addTakedownProposals = async (): Promise<void> => {
-    console.log("adding takedown proposals...");
-    await bluebird.map(
-      beneficiaries.slice(6, 12),
-      async (beneficiary) => {
-        await contracts.beneficiaryGovernance
-          .connect(beneficiary)
-          .createProposal(
-            beneficiary.address,
-            DEFAULT_REGION,
-            getBytes32FromIpfsHash(addressCidMap[beneficiary.address]),
-            ProposalType.Takedown,
-            { gasLimit: 3000000 }
-          );
-      },
-      { concurrency: 1 }
-    );
-  };
-
-  const voteOnNominationProposals = async (): Promise<void> => {
-    console.log("voting on nomination proposals");
+  const voteOnNominationProposals = async (
+    proposalIds: number[]
+  ): Promise<void> => {
+    console.log("Voting on nomination proposals...");
     // These nomination proposals will pass
-    await bluebird.map(beneficiaries.slice(0, 4), async (x, i) => {
-      await contracts.beneficiaryGovernance
-        .connect(voters[0])
-        .vote(i, Vote.Yes);
-      await contracts.beneficiaryGovernance
-        .connect(voters[1])
-        .vote(i, Vote.Yes);
-      await contracts.beneficiaryGovernance.connect(voters[2]).vote(i, Vote.No);
-    });
-    // These nomination proposals will fail
-    await bluebird.map(beneficiaries.slice(4, 6), async (x, i) => {
-      await contracts.beneficiaryGovernance
-        .connect(voters[0])
-        .vote(i + 4, Vote.No);
-      await contracts.beneficiaryGovernance
-        .connect(voters[1])
-        .vote(i + 4, Vote.No);
-      await contracts.beneficiaryGovernance
-        .connect(voters[2])
-        .vote(i + 4, Vote.No);
-    });
-  };
-
-  const voteOnTakedownProposals = async (): Promise<void> => {
-    console.log("voting on takedown proposals");
-    // These takedown proposals will pass
-    await bluebird.map(beneficiaries.slice(6, 10), async (x, i) => {
-      await contracts.beneficiaryGovernance
-        .connect(voters[0])
-        .vote(i + 6, Vote.Yes);
-      await contracts.beneficiaryGovernance
-        .connect(voters[1])
-        .vote(i + 6, Vote.Yes);
-      await contracts.beneficiaryGovernance
-        .connect(voters[2])
-        .vote(i + 6, Vote.No);
-    });
-    // These takedown proposals will fail
-    await bluebird.map(beneficiaries.slice(10, 12), async (x, i) => {
-      await contracts.beneficiaryGovernance
-        .connect(voters[0])
-        .vote(i + 10, Vote.No);
-      await contracts.beneficiaryGovernance
-        .connect(voters[1])
-        .vote(i + 10, Vote.No);
-      await contracts.beneficiaryGovernance
-        .connect(voters[2])
-        .vote(i + 10, Vote.No);
-    });
-  };
-
-  const finalizeProposals = async (): Promise<void> => {
-    console.log("finalizing nomination/takedown proposals");
-    await increaseEvmTimeAndMine(4);
     await bluebird.map(
-      beneficiaries.slice(0, 12),
+      proposalIds.slice(0, 4),
+      async (proposalId) => {
+        await contracts.beneficiaryGovernance
+          .connect(voters[0])
+          .vote(proposalId, Vote.Yes);
+        await contracts.beneficiaryGovernance
+          .connect(voters[1])
+          .vote(proposalId, Vote.Yes);
+        await contracts.beneficiaryGovernance
+          .connect(voters[2])
+          .vote(proposalId, Vote.No);
+      },
+      { concurrency: 1 }
+    );
+    // These nomination proposals will fail
+    await bluebird.map(
+      proposalIds.slice(4, 6),
+      async (proposalId) => {
+        await contracts.beneficiaryGovernance
+          .connect(voters[0])
+          .vote(proposalId, Vote.No);
+        await contracts.beneficiaryGovernance
+          .connect(voters[1])
+          .vote(proposalId, Vote.No);
+        await contracts.beneficiaryGovernance
+          .connect(voters[2])
+          .vote(proposalId, Vote.No);
+      },
+      { concurrency: 1 }
+    );
+  };
+
+  const voteOnTakedownProposals = async (
+    proposalIds: number[]
+  ): Promise<void> => {
+    console.log("Voting on takedown proposals");
+    // These takedown proposals will pass
+    await bluebird.map(
+      proposalIds.slice(0, 4),
+      async (proposalId) => {
+        await contracts.beneficiaryGovernance
+          .connect(voters[0])
+          .vote(proposalId, Vote.Yes);
+        await contracts.beneficiaryGovernance
+          .connect(voters[1])
+          .vote(proposalId, Vote.Yes);
+        await contracts.beneficiaryGovernance
+          .connect(voters[2])
+          .vote(proposalId, Vote.No);
+      },
+      { concurrency: 1 }
+    );
+    // These takedown proposals will fail
+    await bluebird.map(
+      proposalIds.slice(4, 6),
+      async (proposalId) => {
+        await contracts.beneficiaryGovernance
+          .connect(voters[0])
+          .vote(proposalId, Vote.No);
+        await contracts.beneficiaryGovernance
+          .connect(voters[1])
+          .vote(proposalId, Vote.No);
+        await contracts.beneficiaryGovernance
+          .connect(voters[2])
+          .vote(proposalId, Vote.No);
+      },
+      { concurrency: 1 }
+    );
+  };
+
+  const isInChallengePeriod = (status: number) => status === 1;
+  const isPendingFinalization = (status: number) => status === 2;
+
+  const finalizeProposals = async (proposalIds: number[]): Promise<void> => {
+    console.log("finalizing nomination/takedown proposals");
+    let allProposalsPendingFinalization = false;
+    console.log("Waiting for proposals to be in finalisation period");
+    while (!allProposalsPendingFinalization) {
+      await new Promise((r) => setTimeout(r, 1000));
+      const proposalStatuses: number[] = await bluebird.map(
+        proposalIds,
+        async (proposalId) => {
+          await contracts.beneficiaryGovernance.refreshState(proposalId);
+          const proposalStatus =
+            await contracts.beneficiaryGovernance.getStatus(proposalId);
+          return proposalStatus;
+        },
+        { concurrency: 1 }
+      );
+      allProposalsPendingFinalization = proposalStatuses.every(
+        isPendingFinalization
+      );
+      console.log(
+        "Waiting for all proposals to be in pending finalization period..."
+      );
+    }
+    console.log("Finalising nomination and takedown proposals");
+    await bluebird.map(
+      proposalIds,
       async (x, i) => {
         await contracts.beneficiaryGovernance.connect(accounts[0]).finalize(i);
       },
@@ -468,109 +539,111 @@ export default async function deploy(ethers): Promise<void> {
     );
   };
 
-  const addVetoProposals = async (): Promise<void> => {
-    console.log("adding veto nomination proposals...");
-    await bluebird.map(
+  const addProposalsInVetoPeriod = async (): Promise<void> => {
+    // Short open voting period
+    await contracts.beneficiaryGovernance
+      .connect(accounts[0])
+      .setConfiguration(30, 2 * SECONDS_IN_DAY, parseEther("2000"));
+    const nominationProposalIds = await addProposals(
       beneficiaries.slice(12, 14),
-      async (beneficiary) => {
-        await contracts.beneficiaryGovernance
-          .connect(beneficiary)
-          .createProposal(
-            beneficiary.address,
-            DEFAULT_REGION,
-            getBytes32FromIpfsHash(addressCidMap[beneficiary.address]),
-            ProposalType.Nomination,
-            { gasLimit: 3000000 }
-          );
-      },
-      { concurrency: 1 }
+      0
     );
-    console.log("adding veto takedown proposals...");
-    await bluebird.map(
+    const takedownProposalIds = await addProposals(
       beneficiaries.slice(14, 16),
-      async (beneficiary) => {
+      1
+    );
+    const allProposalIds = nominationProposalIds.concat(takedownProposalIds);
+    console.log(
+      "Voting in open period on nomination and takedown proposals..."
+    );
+    await bluebird.map(
+      allProposalIds,
+      async (proposalId) => {
         await contracts.beneficiaryGovernance
-          .connect(beneficiary)
-          .createProposal(
-            beneficiary.address,
-            DEFAULT_REGION,
-            getBytes32FromIpfsHash(addressCidMap[beneficiary.address]),
-            ProposalType.Takedown,
-            { gasLimit: 3000000 }
-          );
+          .connect(beneficiaries[0])
+          .vote(proposalId, Vote.Yes);
+        await contracts.beneficiaryGovernance
+          .connect(beneficiaries[1])
+          .vote(proposalId, Vote.Yes);
+        await contracts.beneficiaryGovernance
+          .connect(beneficiaries[2])
+          .vote(proposalId, Vote.No);
       },
       { concurrency: 1 }
     );
-    console.log("voting on nomination and takedown proposals");
-    await bluebird.map(beneficiaries.slice(12, 16), async (x, i) => {
-      await contracts.beneficiaryGovernance
-        .connect(beneficiaries[0])
-        .vote(i + 12, Vote.Yes);
-      await contracts.beneficiaryGovernance
-        .connect(beneficiaries[1])
-        .vote(i + 12, Vote.Yes);
-      await contracts.beneficiaryGovernance
-        .connect(beneficiaries[2])
-        .vote(i + 12, Vote.No);
-    });
-
-    await increaseEvmTimeAndMine(2);
-
-    await bluebird.map(beneficiaries.slice(12, 16), async (x, i) => {
-      await contracts.beneficiaryGovernance
-        .connect(beneficiaries[3])
-        .vote(i + 12, Vote.No);
-      await contracts.beneficiaryGovernance
-        .connect(beneficiaries[4])
-        .vote(i + 12, Vote.No);
-    });
+    let allProposalsInChallengePeriod = false;
+    while (!allProposalsInChallengePeriod) {
+      await new Promise((r) => setTimeout(r, 1000));
+      const proposalStatuses: number[] = await bluebird.map(
+        allProposalIds,
+        async (proposalId) => {
+          await contracts.beneficiaryGovernance.refreshState(proposalId);
+          const proposalStatus =
+            await contracts.beneficiaryGovernance.getStatus(proposalId);
+          return proposalStatus;
+        },
+        { concurrency: 1 }
+      );
+      allProposalsInChallengePeriod =
+        proposalStatuses.every(isInChallengePeriod);
+      console.log("Waiting for all proposals to be in challenge period...");
+    }
+    console.log(
+      "Voting in challenge period on nomination and takedown proposals..."
+    );
+    await bluebird.map(
+      allProposalIds,
+      async (proposalId) => {
+        await contracts.beneficiaryGovernance
+          .connect(beneficiaries[3])
+          .vote(proposalId, Vote.No);
+        await contracts.beneficiaryGovernance
+          .connect(beneficiaries[4])
+          .vote(proposalId, Vote.No);
+      },
+      { concurrency: 1 }
+    );
+    await bluebird.map(
+      allProposalIds,
+      async (proposalId) => {
+        await contracts.beneficiaryGovernance.refreshState(proposalId);
+      },
+      { concurrency: 1 }
+    );
   };
 
-  const addOpenProposals = async (): Promise<void> => {
-    console.log("adding veto nomination proposals...");
-    await bluebird.map(
+  const addProposalsInOpenPeriod = async (): Promise<void> => {
+    await contracts.beneficiaryGovernance
+      .connect(accounts[0])
+      .setConfiguration(
+        2 * SECONDS_IN_DAY,
+        2 * SECONDS_IN_DAY,
+        parseEther("2000")
+      );
+    const nominationProposalIds = await addProposals(
       beneficiaries.slice(16, 18),
-      async (beneficiary) => {
-        await contracts.beneficiaryGovernance
-          .connect(beneficiary)
-          .createProposal(
-            beneficiary.address,
-            DEFAULT_REGION,
-            getBytes32FromIpfsHash(addressCidMap[beneficiary.address]),
-            ProposalType.Nomination,
-            { gasLimit: 3000000 }
-          );
-      },
-      { concurrency: 1 }
+      0
     );
-    console.log("adding veto takedown proposals...");
+    const takedownProposalIds = await addProposals(beneficiaries.slice(18), 1);
+    const allProposalIds = nominationProposalIds.concat(takedownProposalIds);
+    console.log(
+      "Voting in open period on nomination and takedown proposals..."
+    );
     await bluebird.map(
-      beneficiaries.slice(18),
-      async (beneficiary) => {
+      allProposalIds,
+      async (proposalId) => {
         await contracts.beneficiaryGovernance
-          .connect(beneficiary)
-          .createProposal(
-            beneficiary.address,
-            DEFAULT_REGION,
-            getBytes32FromIpfsHash(addressCidMap[beneficiary.address]),
-            ProposalType.Takedown,
-            { gasLimit: 3000000 }
-          );
+          .connect(beneficiaries[0])
+          .vote(proposalId, Vote.Yes);
+        await contracts.beneficiaryGovernance
+          .connect(beneficiaries[1])
+          .vote(proposalId, Vote.Yes);
+        await contracts.beneficiaryGovernance
+          .connect(beneficiaries[2])
+          .vote(proposalId, Vote.No);
       },
       { concurrency: 1 }
     );
-    console.log("voting on nomination and takedown proposals");
-    await bluebird.map(beneficiaries.slice(16), async (x, i) => {
-      await contracts.beneficiaryGovernance
-        .connect(beneficiaries[0])
-        .vote(i + 16, Vote.Yes);
-      await contracts.beneficiaryGovernance
-        .connect(beneficiaries[1])
-        .vote(i + 16, Vote.Yes);
-      await contracts.beneficiaryGovernance
-        .connect(beneficiaries[2])
-        .vote(i + 16, Vote.No);
-    });
   };
 
   const registerBeneficiariesForElection = async (
@@ -614,9 +687,9 @@ export default async function deploy(ethers): Promise<void> {
       2,
       5,
       false, // VRF
-      14 * SECONDS_IN_DAY,
-      14 * SECONDS_IN_DAY,
-      83 * SECONDS_IN_DAY,
+      7 * SECONDS_IN_DAY, // Registration period - default
+      7 * SECONDS_IN_DAY, // Voting period - default
+      21 * SECONDS_IN_DAY, // cooldown period - default
       parseEther("100"),
       true,
       parseEther("2000"),
@@ -636,21 +709,23 @@ export default async function deploy(ethers): Promise<void> {
   const initializeQuarterlyElection = async (): Promise<void> => {
     const electionTerm = ElectionTerm.Quarterly;
     console.log(`setting election config for: ${electionTerm} ...`);
+    console.log(
+      `Reducing reg period to 1s, voting to 120s and cooldown to 100s`
+    );
     await contracts.grantElections.connect(accounts[0]).setConfiguration(
       electionTerm,
       2,
       5,
       false, // VRF
-      2 * SECONDS_IN_DAY,
-      2 * SECONDS_IN_DAY,
-      83 * SECONDS_IN_DAY,
+      10, // Registration period - reduced
+      20, // Voting period - reduced
+      83 * SECONDS_IN_DAY, // cooldown period - default
       parseEther("100"),
       true,
       parseEther("2000"),
       true,
       ShareType.EqualWeight
     );
-
     console.log(`initializing election : ${electionTerm} ...`);
     const activeBeneficiaryAddresses = await getActiveBeneficiaries();
     await contracts.grantElections.initialize(electionTerm, DEFAULT_REGION);
@@ -668,9 +743,9 @@ export default async function deploy(ethers): Promise<void> {
       2,
       5,
       false, // VRF
-      7 * SECONDS_IN_DAY,
-      7 * SECONDS_IN_DAY,
-      358 * SECONDS_IN_DAY,
+      10, // Registration period - reduced
+      30 * SECONDS_IN_DAY, // Voting period - default
+      358 * SECONDS_IN_DAY, // cooldown period - default
       parseEther("100"),
       true,
       parseEther("2000"),
@@ -688,14 +763,26 @@ export default async function deploy(ethers): Promise<void> {
   };
 
   const voteInQuarterlyElection = async (): Promise<void> => {
-    const electionTerm = ElectionTerm.Quarterly;
-    console.log(`opening quarterly election...`);
-    await increaseEvmTimeAndMine(3);
-    await refreshElectionState(electionTerm);
-    console.log(`voting in quarterly election...`);
+    console.log("Getting quarterly election meta data");
+    let electionMetadata = await GrantElectionAdapter(
+      contracts.grantElections
+    ).getElectionMetadata(ElectionTerm.Quarterly);
+
+    console.log("Refreshing election state");
+    while (electionMetadata.electionState != 1) {
+      await new Promise((r) => setTimeout(r, 1000));
+      await contracts.grantElections.refreshElectionState(
+        ElectionTerm.Quarterly
+      );
+      electionMetadata = await GrantElectionAdapter(
+        contracts.grantElections
+      ).getElectionMetadata(ElectionTerm.Quarterly);
+      console.log("Waiting for quarterly election to enter voting period...");
+    }
+    console.log("Quarterly election in voting period. Voting...");
     const electionId = await contracts.grantElections.activeElections(
       DEFAULT_REGION,
-      electionTerm
+      ElectionTerm.Quarterly
     );
     const activeBeneficiaryAddresses = await getActiveBeneficiaries();
     await bluebird.map(
@@ -715,19 +802,57 @@ export default async function deploy(ethers): Promise<void> {
         );
       },
       { concurrency: 1 }
+    );
+
+    while (electionMetadata.votes.length < 4) {
+      await new Promise((r) => setTimeout(r, 1000));
+      electionMetadata = await GrantElectionAdapter(
+        contracts.grantElections
+      ).getElectionMetadata(ElectionTerm.Quarterly);
+      console.log(
+        "Waiting for confirmation of all votes in quarterly election..."
+      );
+    }
+
+    console.log("Refreshing election state");
+    while (electionMetadata.electionState != 2) {
+      await contracts.grantElections.refreshElectionState(
+        ElectionTerm.Quarterly
+      );
+      electionMetadata = await GrantElectionAdapter(
+        contracts.grantElections
+      ).getElectionMetadata(ElectionTerm.Quarterly);
+      await new Promise((r) => setTimeout(r, 1000));
+      console.log("Waiting for quarterly election to close...");
+    }
+
+    console.log(
+      `Quarterly Election metadata: `,
+      await GrantElectionAdapter(contracts.grantElections).getElectionMetadata(
+        ElectionTerm.Quarterly
+      )
     );
   };
 
   const voteInYearlyElection = async (): Promise<void> => {
-    const electionTerm = ElectionTerm.Yearly;
-    console.log(`opening yearly election and closing quarterly election...`);
-    await increaseEvmTimeAndMine(8);
-    await refreshElectionState(electionTerm);
-    await refreshElectionState(ElectionTerm.Quarterly);
-    console.log(`voting in quarterly election...`);
+    console.log("Getting yearly election meta data");
+    let electionMetadata = await GrantElectionAdapter(
+      contracts.grantElections
+    ).getElectionMetadata(ElectionTerm.Yearly);
+
+    console.log("Refreshing election state");
+    while (electionMetadata.electionState != 1) {
+      await new Promise((r) => setTimeout(r, 1000));
+      await contracts.grantElections.refreshElectionState(ElectionTerm.Yearly);
+      electionMetadata = await GrantElectionAdapter(
+        contracts.grantElections
+      ).getElectionMetadata(ElectionTerm.Yearly);
+      console.log("Waiting for Yearly election to enter voting period...");
+    }
+    console.log("Yearly election in voting period. Voting...");
     const electionId = await contracts.grantElections.activeElections(
       DEFAULT_REGION,
-      electionTerm
+      ElectionTerm.Yearly
     );
     const activeBeneficiaryAddresses = await getActiveBeneficiaries();
     await bluebird.map(
@@ -748,6 +873,21 @@ export default async function deploy(ethers): Promise<void> {
       },
       { concurrency: 1 }
     );
+
+    while (electionMetadata.votes.length < 4) {
+      await new Promise((r) => setTimeout(r, 1000));
+      electionMetadata = await GrantElectionAdapter(
+        contracts.grantElections
+      ).getElectionMetadata(ElectionTerm.Yearly);
+      console.log(
+        "Waiting for confirmation of all votes in yearly election..."
+      );
+    }
+  };
+
+  const closeQuarterlyElectionState = async (): Promise<void> => {
+    console.log(`closing quarterly election...`);
+    await refreshElectionState(ElectionTerm.Quarterly);
   };
 
   const logResults = async (): Promise<void> => {
@@ -770,11 +910,6 @@ ADDR_REWARDS_ESCROW=${contracts.rewardsEscrow.address}
     `);
   };
 
-  const increaseEvmTimeAndMine = async (days: number): Promise<void> => {
-    ethers.provider.send("evm_increaseTime", [days * SECONDS_IN_DAY]);
-    ethers.provider.send("evm_mine", []);
-  };
-
   const getActiveBeneficiaries = async (): Promise<string[]> => {
     const beneficiaryAddresses =
       await contracts.beneficiaryRegistry.getBeneficiaryList();
@@ -794,13 +929,15 @@ ADDR_REWARDS_ESCROW=${contracts.rewardsEscrow.address}
   await fundRewardsManager();
   await stakePOP();
   await transferBeneficiaryRegistryOwnership();
-  await addClosedProposals();
+  await updateProposalSettings();
+  await addFinalizedProposalsAndBeneficiariesToRegistry();
   await initializeMonthlyElection();
   await initializeQuarterlyElection();
   await initializeYearlyElection();
   await voteInQuarterlyElection();
   await voteInYearlyElection();
-  await addVetoProposals();
-  await addOpenProposals();
+  await closeQuarterlyElectionState();
+  await addProposalsInVetoPeriod();
+  await addProposalsInOpenPeriod();
   await logResults();
 }

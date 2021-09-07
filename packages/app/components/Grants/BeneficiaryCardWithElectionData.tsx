@@ -15,7 +15,10 @@ const BeneficiaryCardWithElectionData: React.FC<BeneficiaryCardWithElectionDataP
   ({ electionProps, beneficiary }) => {
     return (
       <div className="shadow-sm w-80 h-auto rounded-lg mr-8 mb-16 bg-white border-b border-gray-200 ">
-        <Link href={`/beneficiary/${beneficiary?.beneficiaryAddress}`} passHref>
+        <Link
+          href={`/beneficiaries/${beneficiary?.beneficiaryAddress}`}
+          passHref
+        >
           <a>
             <div className="w-full h-32 rounded-t-lg">
               <img
@@ -30,7 +33,7 @@ const BeneficiaryCardWithElectionData: React.FC<BeneficiaryCardWithElectionDataP
         <div className="w-full px-4 pb-6 pt-6">
           <div className="h-10 mt-3">
             <Link
-              href={`/beneficiary/${beneficiary?.beneficiaryAddress}`}
+              href={`/beneficiaries/${beneficiary?.beneficiaryAddress}`}
               passHref
             >
               <a>
@@ -42,7 +45,7 @@ const BeneficiaryCardWithElectionData: React.FC<BeneficiaryCardWithElectionDataP
           </div>
           <div className="h-32 overflow-hidden overflow-clip">
             <Link
-              href={`/beneficiary/${beneficiary?.beneficiaryAddress}`}
+              href={`/beneficiaries/${beneficiary?.beneficiaryAddress}`}
               passHref
             >
               <a>

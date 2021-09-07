@@ -15,6 +15,7 @@ export interface UploadResult {
   status: number;
   hash?: string;
   errorDetails?: string;
+  fileName?: string;
 }
 
 export const IpfsClient: IIpfsClient = {
@@ -74,15 +75,20 @@ export const IpfsClient: IIpfsClient = {
           headers,
         };
     return await axios
-      .post(process.env.IPFS_GATEWAY_PIN, data, config)
+      .post(`${process.env.IPFS_GATEWAY_PIN}`, data, config)
       .then((result) => {
-        return { hash: result.data.IpfsHash, status: result.status };
+        return {
+          hash: result.data.IpfsHash,
+          status: result.status,
+          fileName: file.name,
+        };
       })
       .catch((error) => {
         if (error.response) {
           return {
             status: error.response.status,
             errorDetails: error.response.data.error.details,
+            fileName: file.name,
           };
         }
         return error;

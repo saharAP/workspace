@@ -217,6 +217,15 @@ module.exports = {
           },
         },
       },
+      {
+        version: "0.6.12",
+        settings: {
+          optimizer: {
+            enabled: true,
+            runs: 1000,
+          },
+        },
+      },
     ],
   },
   networks: {
@@ -226,11 +235,12 @@ module.exports = {
       accounts: [process.env.PRIVATE_KEY],
     },
     hardhat: {
+      initialBaseFeePerGas: 0,
       forking:
         process.env.FORKING_ENABLED == "true"
           ? {
               url: process.env.FORKING_RPC_URL,
-              blockNumber: 12724811,
+              blockNumber: parseInt(process.env.FORKING_BLOCK_NUMBER),
             }
           : undefined,
     },

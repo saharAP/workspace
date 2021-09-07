@@ -1,5 +1,5 @@
-import { formatAndRoundBigNumber, IIpfsClient } from "@popcorn/utils";
-import { Contract } from "ethers";
+import { IIpfsClient } from "@popcorn/utils";
+import { BigNumber, Contract } from "ethers";
 
 export enum ProposalStatus {
   Open,
@@ -19,6 +19,11 @@ export interface BeneficiaryImage {
   image: string;
   description: string;
 }
+
+export interface ImpactReport {
+  fileName: string;
+  reportCid: string;
+}
 export interface BeneficiaryApplication {
   organizationName: string;
   projectName?: string;
@@ -27,7 +32,7 @@ export interface BeneficiaryApplication {
   files: {
     profileImage: BeneficiaryImage;
     headerImage?: BeneficiaryImage;
-    impactReports?: string[];
+    impactReports?: ImpactReport[];
     additionalImages?: BeneficiaryImage[];
     video: string;
   };
@@ -50,8 +55,8 @@ export interface Proposal {
   stageDeadline: Date;
   proposalType: ProposalType;
   votes: {
-    for: string;
-    against: string;
+    for: BigNumber;
+    against: BigNumber;
   };
 }
 export class BeneficiaryGovernanceAdapter {
@@ -71,8 +76,8 @@ export class BeneficiaryGovernanceAdapter {
           1000
       ),
       votes: {
-        for: formatAndRoundBigNumber(proposal.yesCount),
-        against: formatAndRoundBigNumber(proposal.noCount),
+        for: proposal.yesCount,
+        against: proposal.noCount,
       },
     };
   }

@@ -16,7 +16,7 @@ const IndexPage = () => {
       className="w-full h-screen flex flex-col justify-center font-landing"
       style={{ backgroundColor: '#F8F8FB' }}
     >
-      <FacebookPixel/>
+      <FacebookPixel />
       <div className="hidden xl:flex flex-row w-full h-5/6">
         <div className="w-1/2 h-full">
           <div className="flex flex-col justify-between ml-24 md:w-8/12 2xl:mx-auto xl:w-1/2 h-full">
@@ -89,6 +89,19 @@ const IndexPage = () => {
                 Read the whitepaper
               </a>
             </Link>
+            <footer className="pr-3">
+              <Link
+                href="https://etherscan.io/token/0xd0cd466b34a24fcb2f87676278af2005ca8a78c4"
+                passHref
+              >
+                <a
+                  className="text-base text-gray-900 font-light md:border-b border-black w-max"
+                  target="_window"
+                >
+                  Popcorn (POP) Token
+                </a>
+              </Link>
+            </footer>
           </div>
         </div>
         <div className="w-1/2 h-full flex flex-col justify-center">
@@ -188,6 +201,19 @@ const IndexPage = () => {
                 Read the whitepaper
               </a>
             </Link>
+            <footer className="justify-end pr-3 pt-3">
+              <Link
+                href="https://etherscan.io/token/0xd0cd466b34a24fcb2f87676278af2005ca8a78c4"
+                passHref
+              >
+                <a
+                  className="text-base text-gray-900 font-light md:border-b border-black w-max"
+                  target="_window"
+                >
+                  Popcorn (POP) Token
+                </a>
+              </Link>
+            </footer>
           </div>
         </div>
       </div>
