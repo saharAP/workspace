@@ -309,9 +309,7 @@ describe("Pool", function () {
       let depositor1TokenBalance = await contracts.mockToken.balanceOf(
         depositor1.address
       );
-      expect(depositor1TokenBalance).to.equal(
-        parseEther("99950")
-      );
+      expect(depositor1TokenBalance).to.equal(parseEther("99950"));
     });
 
     it("tokens convert at higher rate on withdrawal when underlying Yearn vault value increases", async function () {
@@ -337,16 +335,14 @@ describe("Pool", function () {
         .and.to.emit(contracts.pool, "Withdrawal")
         .withArgs(depositor.address, parseEther("17910"))
         .and.to.emit(contracts.pool, "PerformanceFee")
-        .withArgs(parseEther("2000"))
+        .withArgs(parseEther("2000"));
       expect(await contracts.pool.balanceOf(depositor.address)).to.equal(
         parseEther("0")
       );
       let depositorTokenBalance = await contracts.mockToken.balanceOf(
         depositor.address
       );
-      expect(depositorTokenBalance).to.equal(
-        parseEther("107910")
-      );
+      expect(depositorTokenBalance).to.equal(parseEther("107910"));
     });
 
     it("handles multiple deposits", async function () {
@@ -624,7 +620,6 @@ describe("Pool", function () {
   });
 
   describe("calculating pool token value", async function () {
-
     it("when underlying vault value increases", async function () {
       let amount = parseEther("20000");
       await contracts.mockToken
@@ -779,25 +774,7 @@ describe("Pool", function () {
         let managementTokenBalance = await contracts.pool.balanceOf(
           contracts.pool.address
         );
-        const yearnSharePrice = await contracts.mockYearnVault.pricePerShare();
-        const crvVirtualPrice =
-          await contracts.mockCurveMetapool.get_virtual_price();
 
-        const mintedValue = calculatePoolShareValue(
-          minted,
-          amount,
-          totalSupply.add(minted),
-          yearnSharePrice,
-          crvVirtualPrice
-        );
-
-        const expectedPricePerPoolToken = calculatePoolShareValue(
-          parseEther("1"),
-          amount,
-          totalSupply.add(minted),
-          yearnSharePrice,
-          crvVirtualPrice
-        );
         expect(await contracts.pool.pricePerPoolToken()).to.equal(
           parseEther("0.500000000000000000")
         );
