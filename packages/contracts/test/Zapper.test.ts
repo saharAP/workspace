@@ -350,7 +350,7 @@ describe("Zapper", function () {
           parseEther("1000")
         );
       expect(await contracts.mockUSDC.balanceOf(depositor.address)).to.equal(
-        parseEther("993.010993741309369804")
+        parseEther("993.010995000000000000")
       );
     });
   });

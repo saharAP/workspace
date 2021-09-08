@@ -67,7 +67,7 @@ const BeneficiaryInformation: React.FC<BeneficiaryInformationProps> = ({
               <dd className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
                 <ul className="border border-gray-200 rounded-md divide-y divide-gray-200">
                   {beneficiary?.files?.impactReports?.map(
-                    (reportUrl, index) => {
+                    (impactReport, index) => {
                       return (
                         <li className="pl-3 pr-4 py-3 flex items-center justify-between text-sm">
                           <div className="w-0 flex-1 flex items-center">
@@ -76,12 +76,12 @@ const BeneficiaryInformation: React.FC<BeneficiaryInformationProps> = ({
                               aria-hidden="true"
                             />
                             <span className="ml-2 flex-1 w-0 truncate">
-                              Impact report / audit {index + 1}
+                              {impactReport.fileName}:
                             </span>
                           </div>
                           <div className="ml-4 flex-shrink-0">
                             <a
-                              href={`${process.env.IPFS_URL}${reportUrl}`}
+                              href={`${process.env.IPFS_URL}${impactReport.reportCid}`}
                               className="font-medium text-indigo-600 hover:text-indigo-500"
                             >
                               Download

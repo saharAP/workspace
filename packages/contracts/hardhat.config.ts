@@ -235,6 +235,7 @@ module.exports = {
       accounts: [process.env.PRIVATE_KEY],
     },
     hardhat: {
+      initialBaseFeePerGas: 0,
       forking:
         process.env.FORKING_ENABLED == "true"
           ? {
