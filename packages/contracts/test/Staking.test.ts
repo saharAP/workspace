@@ -379,30 +379,6 @@ describe("Staking", function () {
       await timeTravelOneDay();
       const voiceCredits1 = await staking.getVoiceCredits(owner.address);
       expect(voiceCredits0.sub(voiceCredits1)).to.equal(decayPerDay);
-      //1 days passes
-      await timeTravelOneDay();
-      const voiceCredits2 = await staking.getVoiceCredits(owner.address);
-      expect(voiceCredits1.sub(voiceCredits2)).to.equal(decayPerDay);
-      //1 days passes
-      await timeTravelOneDay();
-      const voiceCredits3 = await staking.getVoiceCredits(owner.address);
-      await expect(voiceCredits2.sub(voiceCredits3)).to.equal(decayPerDay);
-      //1 days passes
-      await timeTravelOneDay();
-      const voiceCredits4 = await staking.getVoiceCredits(owner.address);
-      expect(voiceCredits3.sub(voiceCredits4)).to.equal(decayPerDay);
-      //1 days passes
-      await timeTravelOneDay();
-      const voiceCredits5 = await staking.getVoiceCredits(owner.address);
-      expect(voiceCredits4.sub(voiceCredits5)).to.equal(decayPerDay);
-      //1 days passes
-      await timeTravelOneDay();
-      const voiceCredits6 = await staking.getVoiceCredits(owner.address);
-      expect(voiceCredits5.sub(voiceCredits6)).to.equal(decayPerDay);
-      //1 week passed
-      await timeTravelOneDay();
-      const voiceCredits7 = await staking.getVoiceCredits(owner.address);
-      expect(voiceCredits7).to.equal(0);
     });
     it("decays voice credits linearly on large time scales as well", async function () {
       await staking.connect(owner).stake(parseEther("10"), 7 * DAY * 78);
