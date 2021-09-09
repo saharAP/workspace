@@ -1,7 +1,7 @@
 pragma solidity >=0.7.0 <0.8.0;
 
 import "./Governed.sol";
-import "./IRegion.sol";
+import "./Interfaces/IRegion.sol";
 
 contract Region is IRegion, Governed {
   bytes2 public immutable override defaultRegion = 0x5757; //"WW" in bytes2
