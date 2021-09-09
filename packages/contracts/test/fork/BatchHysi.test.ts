@@ -65,7 +65,7 @@ const THREEPOOL_ADDRESS = "0xbEbc44782C7dB0a1A60Cb6fe97d0b483032FF1C7";
 const CRV_DUSD_TOKEN_ADDRESS = "0x3a664ab939fd8482048609f652f9a0b0677337b9";
 const CRV_FRAX_TOKEN_ADDRESS = "0xd632f22692fac7611d2aa1c0d552930d43caed3b";
 const CRV_USDN_TOKEN_ADDRESS = "0x4f3e8f405cf5afc05d68142f3783bdfe13811522";
-const CRV_UST_TOKEN_ADDRESS = "0x94e131324b6054c0d789b190b2dac504e4361b53";
+const CRV_UST_TOKEN_ADDRESS = "0x94e131324b6054c0D789b190b2dAC504e4361b53";
 
 const DUSD_METAPOOL_ADDRESS = "0x8038C01A0390a8c547446a0b2c18fc9aEFEcc10c";
 const FRAX_METAPOOL_ADDRESS = "0xd632f22692FaC7611d2AA1C0D552930D43CAEd3B";
@@ -456,6 +456,27 @@ describe("HysiBatchInteraction Network Test", function () {
     });
   });
 
+  context("setters and getters", () => {
+    describe("setCurvePoolTokenPairs", () => {
+      it("sets curve pool token pairs", async () => {
+        await contracts.hysiBatchInteraction.setCurvePoolTokenPairs(
+          [YUST_TOKEN_ADDRESS],
+          [
+            {
+              curveMetaPool: UST_METAPOOL_ADDRESS,
+              crvLPToken: CRV_UST_TOKEN_ADDRESS,
+            },
+          ]
+        );
+        expect(
+          await contracts.hysiBatchInteraction.curvePoolTokenPairs(
+            YUST_TOKEN_ADDRESS
+          )
+        ).to.deep.eq([UST_METAPOOL_ADDRESS, CRV_UST_TOKEN_ADDRESS]);
+      });
+    });
+  });
+
   describe("mint", function () {
     context("depositing", function () {
       it("deposits 3crv in the current mintBatch", async function () {
@@ -567,7 +588,7 @@ describe("HysiBatchInteraction Network Test", function () {
           await expect(
             contracts.hysiBatchInteraction
               .connect(depositor)
-              .withdrawFromQueue(batchId, parseEther("10"))
+              .withdrawFromBatch(batchId, parseEther("10"))
           ).to.be.revertedWith("already processed");
         });
         it("reverts when trying to withdraw more than deposited", async function () {
@@ -580,7 +601,7 @@ describe("HysiBatchInteraction Network Test", function () {
           await expect(
             contracts.hysiBatchInteraction
               .connect(depositor)
-              .withdrawFromQueue(batchId, parseEther("101"))
+              .withdrawFromBatch(batchId, parseEther("101"))
           ).to.be.revertedWith("account has insufficient funds");
         });
       });
@@ -595,9 +616,9 @@ describe("HysiBatchInteraction Network Test", function () {
           expect(
             await contracts.hysiBatchInteraction
               .connect(depositor)
-              .withdrawFromQueue(batchId, parseEther("100"))
+              .withdrawFromBatch(batchId, parseEther("100"))
           )
-            .to.emit(contracts.hysiBatchInteraction, "WithdrawnFromQueue")
+            .to.emit(contracts.hysiBatchInteraction, "WithdrawnFromBatch")
             .withArgs(batchId, parseEther("100"), depositor.address);
           expect(
             await contracts.threeCrv.balanceOf(depositor.address)
@@ -612,8 +633,8 @@ describe("HysiBatchInteraction Network Test", function () {
           expect(
             await contracts.hysiBatchInteraction
               .connect(depositor)
-              .withdrawFromQueue(batchId, parseEther("50"))
-          ).to.emit(contracts.hysiBatchInteraction, "WithdrawnFromQueue");
+              .withdrawFromBatch(batchId, parseEther("50"))
+          ).to.emit(contracts.hysiBatchInteraction, "WithdrawnFromBatch");
           await provider.send("evm_increaseTime", [2500]);
           await provider.send("evm_mine", []);
           await contracts.hysiBatchInteraction.batchMint(0);
@@ -882,7 +903,7 @@ describe("HysiBatchInteraction Network Test", function () {
           await expect(
             contracts.hysiBatchInteraction
               .connect(depositor)
-              .withdrawFromQueue(batchId, hysiBalance)
+              .withdrawFromBatch(batchId, hysiBalance)
           ).to.be.revertedWith("already processed");
         });
       });
@@ -897,9 +918,9 @@ describe("HysiBatchInteraction Network Test", function () {
           expect(
             await contracts.hysiBatchInteraction
               .connect(depositor)
-              .withdrawFromQueue(batchId, hysiBalance)
+              .withdrawFromBatch(batchId, hysiBalance)
           )
-            .to.emit(contracts.hysiBatchInteraction, "WithdrawnFromQueue")
+            .to.emit(contracts.hysiBatchInteraction, "WithdrawnFromBatch")
             .withArgs(batchId, hysiBalance, depositor.address);
           expect(await contracts.hysi.balanceOf(depositor.address)).to.equal(
             hysiBalance
@@ -915,8 +936,8 @@ describe("HysiBatchInteraction Network Test", function () {
           expect(
             await contracts.hysiBatchInteraction
               .connect(depositor)
-              .withdrawFromQueue(batchId, hysiBalance.div(2))
-          ).to.emit(contracts.hysiBatchInteraction, "WithdrawnFromQueue");
+              .withdrawFromBatch(batchId, hysiBalance.div(2))
+          ).to.emit(contracts.hysiBatchInteraction, "WithdrawnFromBatch");
           await provider.send("evm_increaseTime", [2500]);
           await provider.send("evm_mine", []);
           await contracts.hysiBatchInteraction.batchRedeem(0);

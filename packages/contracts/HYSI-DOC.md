@@ -27,7 +27,7 @@ Currently users can deposit either 3CRV to mint HYSI or HYSI to redeem for 3CRV.
 The important functions of this contract are:
 -  batchMint() to mint HYSI with a batch of 3CRV
 -  batchRedeem() to redeem a batch of HYSI and receive 3CRV
--  withdrawFromQueue() to withdraw funds from a batch before it has been processed
+-  withdrawFromBatch() to withdraw funds from a batch before it has been processed
 -  moveUnclaimedDepositsIntoCurrentBatch() which takes the unclaimed funds in processed batches of a user and moves them into the current batch to reverse this process
 
 ### BatchMint
@@ -53,7 +53,7 @@ A permissioned keeper redeems deposited HYSI for 3CRV.
 5. Check if this 3CRV amount is acceptable or if the slippage is too high.
 6. Set the Batch to claimable, update the last redeem timestamp and create a new redeem batch
 
-### WithdrawFromQueue
+### WithdrawFromBatch
 A user withdraws their funds from a batch before it gets processed.
 
 1. The user defines the batch they want to withdraw from and how many shares they want to withdraw.

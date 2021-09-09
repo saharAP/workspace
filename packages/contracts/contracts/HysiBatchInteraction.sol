@@ -80,6 +80,7 @@ contract HysiBatchInteraction is Owned {
   mapping(bytes32 => mapping(address => uint256)) public accountBalances;
   mapping(address => bytes32[]) public accountBatches;
   mapping(bytes32 => Batch) public batches;
+  bytes32[] public batchIds;
 
   uint256 public lastMintedAt;
   uint256 public lastRedeemedAt;
@@ -110,7 +111,7 @@ contract HysiBatchInteraction is Owned {
     uint256 claimedToken
   );
   event TokenSetAdded(ISetToken setToken);
-  event WithdrawnFromQueue(bytes32 batchId, uint256 amount, address to);
+  event WithdrawnFromBatch(bytes32 batchId, uint256 amount, address to);
   event MovedUnclaimedDepositsIntoCurrentBatch(
     uint256 amount,
     BatchType batchType,
@@ -188,34 +189,34 @@ contract HysiBatchInteraction is Owned {
   /**
    * @notice This function allows a user to withdraw their funds from a batch before that batch has been processed
    * @param batchId_ From which batch should funds be withdrawn from
-   * @param sharesToWithdraw_ Amount of shares in HYSI or 3CRV to be withdrawn from the queue (depending on mintBatch / redeemBatch)
+   * @param amountToWithdraw_ Amount of HYSI or 3CRV to be withdrawn from the queue (depending on mintBatch / redeemBatch)
    */
-  function withdrawFromQueue(bytes32 batchId_, uint256 sharesToWithdraw_)
+  function withdrawFromBatch(bytes32 batchId_, uint256 amountToWithdraw_)
     external
   {
     Batch storage batch = batches[batchId_];
     uint256 accountBalance = accountBalances[batchId_][msg.sender];
     require(batch.claimable == false, "already processed");
     require(
-      accountBalance >= sharesToWithdraw_,
+      accountBalance >= amountToWithdraw_,
       "account has insufficient funds"
     );
 
     //At this point the share balance is equal to the supplied token and can be used interchangeably
     accountBalances[batchId_][msg.sender] = accountBalance.sub(
-      sharesToWithdraw_
+      amountToWithdraw_
     );
     batch.suppliedTokenBalance = batch.suppliedTokenBalance.sub(
-      sharesToWithdraw_
+      amountToWithdraw_
     );
-    batch.unclaimedShares = batch.unclaimedShares.sub(sharesToWithdraw_);
+    batch.unclaimedShares = batch.unclaimedShares.sub(amountToWithdraw_);
 
     if (batch.batchType == BatchType.Mint) {
-      threeCrv.safeTransfer(msg.sender, sharesToWithdraw_);
+      threeCrv.safeTransfer(msg.sender, amountToWithdraw_);
     } else {
-      setToken.safeTransfer(msg.sender, sharesToWithdraw_);
+      setToken.safeTransfer(msg.sender, amountToWithdraw_);
     }
-    emit WithdrawnFromQueue(batchId_, sharesToWithdraw_, msg.sender);
+    emit WithdrawnFromBatch(batchId_, amountToWithdraw_, msg.sender);
   }
 
   /**
@@ -226,27 +227,38 @@ contract HysiBatchInteraction is Owned {
     Batch storage batch = batches[batchId_];
     require(batch.claimable, "not yet claimable");
 
-    uint256 shares = accountBalances[batchId_][msg.sender];
-    require(shares <= batch.unclaimedShares, "claiming too many shares");
-
-    //Calculate how many token will be claimed
-    uint256 claimedToken = batch.claimableTokenBalance.mul(shares).div(
-      batch.unclaimedShares
+    uint256 accountBalance = accountBalances[batchId_][msg.sender];
+    require(
+      accountBalance <= batch.unclaimedShares,
+      "claiming too many shares"
     );
 
+    //Calculate how many token will be claimed
+    uint256 tokenAmountToClaim = batch
+      .claimableTokenBalance
+      .mul(accountBalance)
+      .div(batch.unclaimedShares);
+
     //Subtract the claimed token from the batch
-    batch.claimableTokenBalance = batch.claimableTokenBalance.sub(claimedToken);
-    batch.unclaimedShares = batch.unclaimedShares.sub(shares);
+    batch.claimableTokenBalance = batch.claimableTokenBalance.sub(
+      tokenAmountToClaim
+    );
+    batch.unclaimedShares = batch.unclaimedShares.sub(accountBalance);
     accountBalances[batchId_][msg.sender] = 0;
 
     //Transfer token
     if (batch.batchType == BatchType.Mint) {
-      setToken.safeTransfer(msg.sender, claimedToken);
+      setToken.safeTransfer(msg.sender, tokenAmountToClaim);
     } else {
-      threeCrv.safeTransfer(msg.sender, claimedToken);
+      threeCrv.safeTransfer(msg.sender, tokenAmountToClaim);
     }
 
-    emit Claimed(msg.sender, batch.batchType, shares, claimedToken);
+    emit Claimed(
+      msg.sender,
+      batch.batchType,
+      accountBalance,
+      tokenAmountToClaim
+    );
   }
 
   /**
@@ -551,18 +563,19 @@ contract HysiBatchInteraction is Owned {
     returns (bytes32)
   {
     bytes32 id = _generateNextBatchId(_currentBatchId);
+    batchIds.push(id);
     Batch storage batch = batches[id];
     batch.batchType = _batchType;
     batch.batchId = id;
 
     if (BatchType.Mint == _batchType) {
       currentMintBatchId = id;
-      batch.suppliedTokenAddress == address(threeCrv);
+      batch.suppliedTokenAddress = address(threeCrv);
       batch.claimableTokenAddress = address(setToken);
     }
     if (BatchType.Redeem == _batchType) {
       currentRedeemBatchId = id;
-      batch.suppliedTokenAddress == address(setToken);
+      batch.suppliedTokenAddress = address(setToken);
       batch.claimableTokenAddress = address(threeCrv);
     }
     return id;
