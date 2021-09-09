@@ -48,19 +48,23 @@ contract HysiBatchInteraction is Owned {
   /**
    * @notice The Batch structure is used both for Batches of Minting and Redeeming
    * @param batchType Determines if this Batch is for Minting or Redeeming HYSI
+   * @param batchId bytes32 id of the batch
    * @param claimable Shows if a batch has been processed and is ready to be claimed, the suppliedToken cant be withdrawn if a batch is claimable
    * @param unclaimedShares The total amount of unclaimed shares in this batch
-   * @param suppliedToken The total amount of deposited token (either 3CRV or HYSI)
-   * @param claimableToken The total amount of claimable token (either 3CRV or HYSI)
+   * @param suppliedTokenBalance The total amount of deposited token (either 3CRV or HYSI)
+   * @param claimableTokenBalance The total amount of claimable token (either 3CRV or HYSI)
+   * @param tokenAddress The address of the the token to be claimed
    * @param shareBalance The individual share balance per user that has deposited token
    */
   struct Batch {
     BatchType batchType;
+    bytes32 batchId;
     bool claimable;
     uint256 unclaimedShares;
-    uint256 suppliedToken;
-    uint256 claimableToken;
-    mapping(address => uint256) shareBalance;
+    uint256 suppliedTokenBalance;
+    uint256 claimableTokenBalance;
+    address suppliedTokenAddress;
+    address claimableTokenAddress;
   }
 
   /* ========== STATE VARIABLES ========== */
@@ -70,7 +74,11 @@ contract HysiBatchInteraction is Owned {
   ISetToken public setToken;
   mapping(address => CurvePoolTokenPair) public curvePoolTokenPairs;
 
-  mapping(address => bytes32[]) public batchesOfAccount;
+  /**
+   * @notice This maps batch ids to addresses with share balances
+   */
+  mapping(bytes32 => mapping(address => uint256)) public accountBalances;
+  mapping(address => bytes32[]) public accountBatches;
   mapping(bytes32 => Batch) public batches;
 
   uint256 public lastMintedAt;
@@ -131,30 +139,26 @@ contract HysiBatchInteraction is Owned {
     _setCurvePoolTokenPairs(yTokenAddresses_, curvePoolTokenPairs_);
 
     batchCooldown = batchCooldown_;
-    currentMintBatchId = _generateNextBatchId(bytes32("mint"));
-    currentRedeemBatchId = _generateNextBatchId(bytes32("redeem"));
-    _setRedeemBatchType();
     mintThreshold = mintThreshold_;
     redeemThreshold = redeemThreshold_;
-
     lastMintedAt = block.timestamp;
     lastRedeemedAt = block.timestamp;
 
-    batches[currentRedeemBatchId].batchType = BatchType.Redeem;
+    _generateNextBatch(bytes32("mint"), BatchType.Mint);
+    _generateNextBatch(bytes32("redeem"), BatchType.Redeem);
   }
 
   /* ========== VIEWS ========== */
-
   /**
    * @notice Get ids for all batches that a user has interacted with
    * @param account The address for whom we want to retrieve batches
    */
-  function getBatchesOfAccount(address account)
+  function getAccountBatches(address account)
     external
     view
     returns (bytes32[] memory)
   {
-    return batchesOfAccount[account];
+    return accountBatches[account];
   }
 
   /* ========== MUTATIVE FUNCTIONS ========== */
@@ -184,25 +188,34 @@ contract HysiBatchInteraction is Owned {
   /**
    * @notice This function allows a user to withdraw their funds from a batch before that batch has been processed
    * @param batchId_ From which batch should funds be withdrawn from
-   * @param shares_ Amount of shares in HYSI or 3CRV to be withdrawn from the queue (depending on mintBatch / redeemBatch)
+   * @param sharesToWithdraw_ Amount of shares in HYSI or 3CRV to be withdrawn from the queue (depending on mintBatch / redeemBatch)
    */
-  function withdrawFromQueue(bytes32 batchId_, uint256 shares_) external {
+  function withdrawFromQueue(bytes32 batchId_, uint256 sharesToWithdraw_)
+    external
+  {
     Batch storage batch = batches[batchId_];
+    uint256 accountBalance = accountBalances[batchId_][msg.sender];
     require(batch.claimable == false, "already processed");
-    require(batch.shareBalance[msg.sender] >= shares_, "not enough shares");
+    require(
+      accountBalance >= sharesToWithdraw_,
+      "account has insufficient funds"
+    );
 
     //At this point the share balance is equal to the supplied token and can be used interchangeably
-    batch.shareBalance[msg.sender] = batch.shareBalance[msg.sender].sub(
-      shares_
+    accountBalances[batchId_][msg.sender] = accountBalance.sub(
+      sharesToWithdraw_
     );
-    batch.suppliedToken = batch.suppliedToken.sub(shares_);
-    batch.unclaimedShares = batch.unclaimedShares.sub(shares_);
+    batch.suppliedTokenBalance = batch.suppliedTokenBalance.sub(
+      sharesToWithdraw_
+    );
+    batch.unclaimedShares = batch.unclaimedShares.sub(sharesToWithdraw_);
+
     if (batch.batchType == BatchType.Mint) {
-      threeCrv.safeTransfer(msg.sender, shares_);
+      threeCrv.safeTransfer(msg.sender, sharesToWithdraw_);
     } else {
-      setToken.safeTransfer(msg.sender, shares_);
+      setToken.safeTransfer(msg.sender, sharesToWithdraw_);
     }
-    emit WithdrawnFromQueue(batchId_, shares_, msg.sender);
+    emit WithdrawnFromQueue(batchId_, sharesToWithdraw_, msg.sender);
   }
 
   /**
@@ -213,18 +226,18 @@ contract HysiBatchInteraction is Owned {
     Batch storage batch = batches[batchId_];
     require(batch.claimable, "not yet claimable");
 
-    uint256 shares = batch.shareBalance[msg.sender];
+    uint256 shares = accountBalances[batchId_][msg.sender];
     require(shares <= batch.unclaimedShares, "claiming too many shares");
 
     //Calculate how many token will be claimed
-    uint256 claimedToken = batch.claimableToken.mul(shares).div(
+    uint256 claimedToken = batch.claimableTokenBalance.mul(shares).div(
       batch.unclaimedShares
     );
 
     //Subtract the claimed token from the batch
-    batch.claimableToken = batch.claimableToken.sub(claimedToken);
+    batch.claimableTokenBalance = batch.claimableTokenBalance.sub(claimedToken);
     batch.unclaimedShares = batch.unclaimedShares.sub(shares);
-    batch.shareBalance[msg.sender] = 0;
+    accountBalances[batchId_][msg.sender] = 0;
 
     //Transfer token
     if (batch.batchType == BatchType.Mint) {
@@ -237,14 +250,11 @@ contract HysiBatchInteraction is Owned {
   }
 
   /**
-   * @notice Moves unclaimed token (3crv or Hysi) from their respective Batches into a new redeemBatch / mintBatch without needing to claim them first
+   * @notice Moves unclaimed token (3crv or Hysi) from their respective Batches into a new redeemBatch / mintBatch without needing to claim them first. This will typically be used when hysi has already been minted and a user has never claimed / transfered the token to their address and they would like to convert it to stablecoin.
    * @param batchIds the ids of each batch where hysi should be moved from
    * @param shares how many shares should redeemed in each of the batches
    * @param batchType the batchType where funds should be taken from (Mint -> Take Hysi and redeem then, Redeem -> Take 3Crv and Mint HYSI)
-   * @dev input arrays must not be longer than 20 elements to prevent gas-overflow
    * @dev the indices of batchIds must match the amountsInHysi to work properly (This will be done by the frontend)
-   * @dev we check the requirements for each batch only with an if and skip it instead of using require...
-   * @dev ...to not revert a whole transaction for one faulty input while still preserving security
    */
   function moveUnclaimedDepositsIntoCurrentBatch(
     bytes32[] calldata batchIds,
@@ -252,43 +262,42 @@ contract HysiBatchInteraction is Owned {
     BatchType batchType
   ) external {
     require(batchIds.length == shares.length, "array lengths must match");
-    //Protect from gas overflow (20 is chosen arbitrarily)
-    //TODO find the highest length possible without causing gas-overflow
-    require(batchIds.length <= 20, "submit less batches");
 
     uint256 totalAmount;
 
     for (uint256 i; i < batchIds.length; i++) {
       Batch storage batch = batches[batchIds[i]];
-
+      uint256 accountBalance = accountBalances[batch.batchId][msg.sender];
       //Check that the user has enough funds and that the batch was already minted
-      //Only the current redeemBatch is claimable == false so this check allows us to not adjust batch.suppliedToken
+      //Only the current redeemBatch is claimable == false so this check allows us to not adjust batch.suppliedTokenBalance
       //Additionally it makes no sense to move funds from the current redeemBatch to the current redeemBatch
-      require(shares[i] <= batch.shareBalance[msg.sender], "not enough shares");
-      require(batch.batchType == batchType, "inccorect batchType");
       require(batch.claimable == true, "has not yet been processed");
+      require(batch.batchType == batchType, "incorrect batchType");
+      require(accountBalance >= shares[i], "account has insufficient funds");
 
-      uint256 claimedToken = batch.claimableToken.mul(shares[i]).div(
-        batch.unclaimedShares
+      uint256 tokenAmountToClaim = batch
+        .claimableTokenBalance
+        .mul(shares[i])
+        .div(batch.unclaimedShares);
+      batch.claimableTokenBalance = batch.claimableTokenBalance.sub(
+        tokenAmountToClaim
       );
-      batch.claimableToken = batch.claimableToken.sub(claimedToken);
       batch.unclaimedShares = batch.unclaimedShares.sub(shares[i]);
-      batch.shareBalance[msg.sender] = batch.shareBalance[msg.sender].sub(
+      accountBalances[batch.batchId][msg.sender] = accountBalance.sub(
         shares[i]
       );
 
-      totalAmount = totalAmount.add(claimedToken);
+      totalAmount = totalAmount.add(tokenAmountToClaim);
     }
     require(totalAmount > 0, "totalAmount must be larger 0");
 
-    bytes32 currentBatchId;
-    if (batchType == BatchType.Mint) {
-      currentBatchId = currentRedeemBatchId;
-    } else {
-      currentBatchId = currentMintBatchId;
+    if (BatchType.Mint == batchType) {
+      _deposit(totalAmount, currentRedeemBatchId);
     }
 
-    _deposit(totalAmount, currentBatchId);
+    if (BatchType.Redeem == batchType) {
+      _deposit(totalAmount, currentMintBatchId);
+    }
 
     emit MovedUnclaimedDepositsIntoCurrentBatch(
       totalAmount,
@@ -312,7 +321,7 @@ contract HysiBatchInteraction is Owned {
     //This is to prevent excessive gas consumption and costs as we will pay keeper to call this function
     require(
       (block.timestamp.sub(lastMintedAt) >= batchCooldown) ||
-        (batch.suppliedToken >= mintThreshold),
+        (batch.suppliedTokenBalance >= mintThreshold),
       "can not execute batch action yet"
     );
 
@@ -321,8 +330,8 @@ contract HysiBatchInteraction is Owned {
 
     //Check if this contract has enough 3CRV -- should technically not be necessary
     require(
-      threeCrv.balanceOf(address(this)) >= batch.suppliedToken,
-      "insufficient balance"
+      threeCrv.balanceOf(address(this)) >= batch.suppliedTokenBalance,
+      "account has insufficient balance of token to mint"
     );
 
     //Get the quantity of yToken for one HYSI
@@ -368,13 +377,13 @@ contract HysiBatchInteraction is Owned {
     }
 
     //Calculate the total value of supplied token + leftovers in 3CRV
-    uint256 suppliedTokenPlusLeftovers = batch.suppliedToken.add(
+    uint256 suppliedTokenBalancePlusLeftovers = batch.suppliedTokenBalance.add(
       totalLeftoverIn3Crv
     );
 
     for (uint256 i; i < tokenAddresses.length; i++) {
-      //Calculate the pool allocation by dividing the suppliedToken by 4 and take leftovers into account
-      uint256 poolAllocation = suppliedTokenPlusLeftovers.div(4).sub(
+      //Calculate the pool allocation by dividing the suppliedTokenBalance by 4 and take leftovers into account
+      uint256 poolAllocation = suppliedTokenBalancePlusLeftovers.div(4).sub(
         leftoversIn3Crv[i]
       );
 
@@ -421,7 +430,7 @@ contract HysiBatchInteraction is Owned {
     setBasicIssuanceModule.issue(setToken, hysiAmount, address(this));
 
     //Save the minted amount HYSI as claimable token for the batch
-    batch.claimableToken = hysiAmount;
+    batch.claimableTokenBalance = hysiAmount;
 
     //Set claimable to true so users can claim their HYSI
     batch.claimable = true;
@@ -429,10 +438,14 @@ contract HysiBatchInteraction is Owned {
     //Update lastMintedAt for cooldown calculations
     lastMintedAt = block.timestamp;
 
-    emit BatchMinted(currentMintBatchId, batch.suppliedToken, hysiAmount);
+    emit BatchMinted(
+      currentMintBatchId,
+      batch.suppliedTokenBalance,
+      hysiAmount
+    );
 
-    //Create the next mint batch id
-    currentMintBatchId = _generateNextBatchId(currentMintBatchId);
+    //Create the next mint batch
+    _generateNextBatch(currentMintBatchId, BatchType.Mint);
   }
 
   /**
@@ -449,7 +462,7 @@ contract HysiBatchInteraction is Owned {
     //This is to prevent excessive gas consumption and costs as we will pay keeper to call this function
     require(
       (block.timestamp.sub(lastRedeemedAt) >= batchCooldown) ||
-        (batch.suppliedToken >= redeemThreshold),
+        (batch.suppliedTokenBalance >= redeemThreshold),
       "can not execute batch action yet"
     );
     //Check if the Batch got already processed -- should technically not be possible
@@ -457,8 +470,8 @@ contract HysiBatchInteraction is Owned {
 
     //Check if this contract has enough HYSI -- should technically not be necessary
     require(
-      setToken.balanceOf(address(this)) >= batch.suppliedToken,
-      "insufficient balance"
+      setToken.balanceOf(address(this)) >= batch.suppliedTokenBalance,
+      "contract has insufficient balance of token to redeem"
     );
 
     //Get tokenAddresses for mapping of underlying
@@ -473,11 +486,15 @@ contract HysiBatchInteraction is Owned {
     //Allow setBasicIssuanceModule to use HYSI
     setToken.safeIncreaseAllowance(
       address(setBasicIssuanceModule),
-      batch.suppliedToken
+      batch.suppliedTokenBalance
     );
 
     //Redeem HYSI for yToken
-    setBasicIssuanceModule.redeem(setToken, batch.suppliedToken, address(this));
+    setBasicIssuanceModule.redeem(
+      setToken,
+      batch.suppliedTokenBalance,
+      address(this)
+    );
 
     //Check our balance of 3CRV since we could have some still around from previous batches
     uint256 oldBalance = threeCrv.balanceOf(address(this));
@@ -502,14 +519,19 @@ contract HysiBatchInteraction is Owned {
     }
 
     //Save the redeemed amount of 3CRV as claimable token for the batch
-    batch.claimableToken = threeCrv.balanceOf(address(this)).sub(oldBalance);
+    batch.claimableTokenBalance = threeCrv.balanceOf(address(this)).sub(
+      oldBalance
+    );
 
-    require(batch.claimableToken >= min3crvToReceive_, "slippage too high");
+    require(
+      batch.claimableTokenBalance >= min3crvToReceive_,
+      "slippage too high"
+    );
 
     emit BatchRedeemed(
       currentRedeemBatchId,
-      batch.suppliedToken,
-      batch.claimableToken
+      batch.suppliedTokenBalance,
+      batch.claimableTokenBalance
     );
 
     //Set claimable to true so users can claim their HYSI
@@ -519,12 +541,32 @@ contract HysiBatchInteraction is Owned {
     lastRedeemedAt = block.timestamp;
 
     //Create the next redeem batch id
-    currentRedeemBatchId = _generateNextBatchId(currentRedeemBatchId);
-
-    batches[currentRedeemBatchId].batchType = BatchType.Redeem;
+    _generateNextBatch(currentRedeemBatchId, BatchType.Redeem);
   }
 
   /* ========== RESTRICTED FUNCTIONS ========== */
+
+  function _generateNextBatch(bytes32 _currentBatchId, BatchType _batchType)
+    internal
+    returns (bytes32)
+  {
+    bytes32 id = _generateNextBatchId(_currentBatchId);
+    Batch storage batch = batches[id];
+    batch.batchType = _batchType;
+    batch.batchId = id;
+
+    if (BatchType.Mint == _batchType) {
+      currentMintBatchId = id;
+      batch.suppliedTokenAddress == address(threeCrv);
+      batch.claimableTokenAddress = address(setToken);
+    }
+    if (BatchType.Redeem == _batchType) {
+      currentRedeemBatchId = id;
+      batch.suppliedTokenAddress == address(setToken);
+      batch.claimableTokenAddress = address(threeCrv);
+    }
+    return id;
+  }
 
   /**
    * @notice Deposit either HYSI or 3CRV in their respective batches
@@ -536,14 +578,14 @@ contract HysiBatchInteraction is Owned {
     Batch storage batch = batches[currentBatchId];
 
     //Add the new funds to the batch
-    batch.suppliedToken = batch.suppliedToken.add(amount_);
+    batch.suppliedTokenBalance = batch.suppliedTokenBalance.add(amount_);
     batch.unclaimedShares = batch.unclaimedShares.add(amount_);
-    batch.shareBalance[msg.sender] = batch.shareBalance[msg.sender].add(
-      amount_
-    );
+    accountBalances[currentBatchId][msg.sender] = accountBalances[
+      currentBatchId
+    ][msg.sender].add(amount_);
 
     //Save the batchId for the user so they can be retrieved to claim the batch
-    batchesOfAccount[msg.sender].push(currentBatchId);
+    accountBatches[msg.sender].push(currentBatchId);
 
     emit Deposit(msg.sender, amount_);
   }
@@ -626,11 +668,6 @@ contract HysiBatchInteraction is Owned {
     return keccak256(abi.encodePacked(block.timestamp, currentBatchId_));
   }
 
-  function _setRedeemBatchType() internal {
-    Batch storage batch = batches[currentRedeemBatchId];
-    batch.batchType = BatchType.Redeem;
-  }
-
   /* ========== SETTER ========== */
 
   /**
@@ -649,7 +686,6 @@ contract HysiBatchInteraction is Owned {
    * @notice This function defines which underlying token and pools are needed to mint a hysi token
    * @param yTokenAddresses_ An array of addresses for the yToken needed to mint HYSI
    * @param curvePoolTokenPairs_ An array structs describing underlying yToken, crvToken and curve metapool
-   * @dev !!! Its absolutely necessary that the order of underylingToken matches the order of getRequireedComponentUnitsforIssue
    * @dev since our calculations for minting just iterate through the index and match it with the quantities given by Set
    * @dev we must make sure to align them correctly by index, otherwise our whole calculation breaks down
    */
