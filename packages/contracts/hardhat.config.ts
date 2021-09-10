@@ -260,6 +260,9 @@ module.exports = {
     gasPrice: 100,
     enabled: false,
   },
+  mocha: {
+    timeout: 120000,
+  },
   /*contractSizer: {
     alphaSort: true,
     runOnCompile: true,
