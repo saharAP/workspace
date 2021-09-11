@@ -630,7 +630,8 @@ describe("HysiBatchInteraction", function () {
         it("increments suppliedTokenBalance and unclaimedShares when a redeem deposit is made", async () => {
           const batchId = await contracts.hysiBatchInteraction.currentRedeemBatchId();
           await deposit(10);
-          expect(await subject(batchId)).to.deep.contain({
+          const batch = await subject(batchId);
+          expect(batch).to.deep.contain({
             suppliedTokenBalance: parseEther("10"),
             claimable: false,
             unclaimedShares: parseEther("10"),

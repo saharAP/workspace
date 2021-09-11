@@ -21,14 +21,14 @@ export class HysiBatchInteractionAdapter {
   async getBatch(batchId: string): Promise<Batch> {
     const batch = await this.contract.batches(batchId);
     return {
-      batchType: batch[0],
-      batchId: batch[1],
-      claimable: batch[2],
-      unclaimedShares: batch[3],
-      suppliedTokenBalance: batch[4],
-      claimableTokenBalance: batch[5],
-      suppliedTokenAddress: batch[6],
-      claimableTokenAddress: batch[7],
+      batchType: batch.batchType,
+      batchId: batch.batchId,
+      claimable: batch.claimable,
+      unclaimedShares: batch.unclaimedShares,
+      suppliedTokenBalance: batch.suppliedTokenBalance,
+      claimableTokenBalance: batch.claimableTokenBalance,
+      suppliedTokenAddress: batch.suppliedTokenAddress,
+      claimableTokenAddress: batch.claimableTokenAddress,
     };
   }
 }
