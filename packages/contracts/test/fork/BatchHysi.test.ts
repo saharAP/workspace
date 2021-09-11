@@ -9,6 +9,10 @@ import BasicIssuanceModuleAbi from "../../lib/SetToken/vendor/set-protocol/artif
 import SetTokenAbi from "../../lib/SetToken/vendor/set-protocol/artifacts/SetToken.json";
 import { BasicIssuanceModule } from "../../lib/SetToken/vendor/set-protocol/types/BasicIssuanceModule";
 import { SetToken } from "../../lib/SetToken/vendor/set-protocol/types/SetToken";
+import HysiBatchInteractionAdapter, {
+  ComponentMap,
+} from "../../adapters/HYSIBatchInteraction/HYSIBatchInteractionAdapter";
+import { YearnVault } from "../../typechain/YearnVault";
 import {
   CurveMetapool,
   ERC20,
@@ -35,6 +39,7 @@ interface Contracts {
   yUSDN: MockYearnV2Vault;
   yUST: MockYearnV2Vault;
   hysi: SetToken;
+  setToken: SetToken; // alias for hysi
   basicIssuanceModule: BasicIssuanceModule;
   hysiBatchInteraction: HysiBatchInteraction;
   faucet: Faucet;
@@ -83,7 +88,7 @@ const CURVE_ADDRESS_PROVIDER_ADDRESS =
 const CURVE_FACTORY_METAPOOL_DEPOSIT_ZAP_ADDRESS =
   "0xA79828DF1850E8a3A3064576f380D90aECDD3359";
 
-const componentMap = {
+const componentMap: ComponentMap = {
   [YDUSD_TOKEN_ADDRESS]: {
     name: "yDUSD",
     metaPool: undefined,
@@ -269,6 +274,7 @@ async function deployContracts(): Promise<Contracts> {
     yUSDN,
     yUST,
     hysi,
+    setToken: hysi,
     basicIssuanceModule,
     hysiBatchInteraction,
     faucet,
@@ -317,56 +323,6 @@ const getMinAmountOfHYSIToMint = async (): Promise<BigNumber> => {
     parseEther("1")
   );
   return minAmountToMint;
-};
-
-const getMinAmountOf3CrvToReceive = async (
-  slippage: number = 0.005
-): Promise<BigNumber> => {
-  const batchId = await contracts.hysiBatchInteraction.currentRedeemBatchId();
-
-  // get expected units of HYSI given 3crv amount:
-  const HYSIInBatch = (await contracts.hysiBatchInteraction.batches(batchId))
-    .suppliedTokenBalance;
-
-  const components = await contracts.basicIssuanceModule.getRequiredComponentUnitsForIssue(
-    SET_TOKEN_ADDRESS,
-    HYSIInBatch
-  );
-  const componentAddresses = components[0];
-  const componentAmounts = components[1];
-
-  const componentVirtualPrices = await Promise.all(
-    componentAddresses.map(async (component) => {
-      const metapool = componentMap[component.toLowerCase()]
-        .metaPool as CurveMetapool;
-      const yPool = componentMap[component.toLowerCase()]
-        .yPool as MockYearnV2Vault;
-      const yPoolPricePerShare = await yPool.pricePerShare();
-      const metapoolPrice = await metapool.get_virtual_price();
-      return yPoolPricePerShare.mul(metapoolPrice).div(parseEther("1"));
-    })
-  );
-
-  const componentValuesInUSD = componentVirtualPrices.reduce(
-    (sum, componentPrice, i) => {
-      return sum.add(
-        componentPrice.mul(componentAmounts[i]).div(parseEther("1"))
-      );
-    },
-    parseEther("0")
-  );
-
-  // 50 bps slippage tolerance
-  const slippageTolerance = 1 - Number(slippage);
-  const minAmountToReceive = componentValuesInUSD
-    .mul(parseEther(slippageTolerance.toString()))
-    .div(parseEther("1"));
-
-  //console.log({
-  //  componentValuesInUSD: formatEther(componentValuesInUSD),
-  //  minAmountToReceive: formatEther(minAmountToReceive),
-  //});
-  return minAmountToReceive;
 };
 
 async function depositForHysiMint(
@@ -435,7 +391,7 @@ describe("HysiBatchInteraction Network Test", function () {
         {
           forking: {
             jsonRpcUrl: process.env.FORKING_RPC_URL,
-            blockNumber: 12780680,
+            blockNumber: 13206601,
           },
         },
       ],
@@ -630,18 +586,45 @@ describe("HysiBatchInteraction Network Test", function () {
           ] = await contracts.hysiBatchInteraction.getAccountBatches(
             depositor.address
           );
+          const amountToWithdraw = parseEther("50");
+
+          const suppliedTokenBalanceBefore = (
+            await contracts.hysiBatchInteraction.batches(batchId)
+          ).suppliedTokenBalance;
+          const expectedSuppliedTokenAfter = suppliedTokenBalanceBefore.sub(
+            parseEther("50")
+          );
+          const claimableTokenBalanceBefore = (
+            await contracts.hysiBatchInteraction.batches(batchId)
+          ).claimableTokenBalance;
           expect(
             await contracts.hysiBatchInteraction
               .connect(depositor)
-              .withdrawFromBatch(batchId, parseEther("50"))
+              .withdrawFromBatch(batchId, amountToWithdraw)
           ).to.emit(contracts.hysiBatchInteraction, "WithdrawnFromBatch");
+
+          const suppliedTokenBalanceAfter = (
+            await contracts.hysiBatchInteraction.batches(batchId)
+          ).suppliedTokenBalance;
+
+          expect(
+            suppliedTokenBalanceAfter.sub(suppliedTokenBalanceBefore)
+          ).to.equal(expectedSuppliedTokenAfter);
+          expect(
+            suppliedTokenBalanceAfter.lt(suppliedTokenBalanceBefore)
+          ).to.be.true;
+
           await provider.send("evm_increaseTime", [2500]);
           await provider.send("evm_mine", []);
           await contracts.hysiBatchInteraction.batchMint(0);
+
+          const claimableTokenBalanceAfter = (
+            await contracts.hysiBatchInteraction.batches(batchId)
+          ).claimableTokenBalance;
+
           expect(
-            (await contracts.hysiBatchInteraction.batches(batchId))
-              .claimableTokenBalance
-          ).to.equal(parseEther("0.203467536239448413"));
+            claimableTokenBalanceBefore.sub(claimableTokenBalanceAfter)
+          ).to.equal(amountToWithdraw);
         });
       });
     });
@@ -804,7 +787,7 @@ describe("HysiBatchInteraction Network Test", function () {
       });
     });
   });
-  describe("redeem", function () {
+  describe.only("redeem", function () {
     beforeEach(async function () {
       await distributeHysiToken();
     });
@@ -933,6 +916,12 @@ describe("HysiBatchInteraction Network Test", function () {
           ] = await contracts.hysiBatchInteraction.getAccountBatches(
             depositor.address
           );
+          const suppliedTokenBalanceBefore = await contracts.hysiBatchInteraction.batches(
+            batchId
+          );
+          const unclaimedSharesBefore = (
+            await contracts.hysiBatchInteraction.batches(batchId)
+          ).unclaimedShares;
           expect(
             await contracts.hysiBatchInteraction
               .connect(depositor)
@@ -940,11 +929,18 @@ describe("HysiBatchInteraction Network Test", function () {
           ).to.emit(contracts.hysiBatchInteraction, "WithdrawnFromBatch");
           await provider.send("evm_increaseTime", [2500]);
           await provider.send("evm_mine", []);
-          await contracts.hysiBatchInteraction.batchRedeem(0);
-          expect(
-            (await contracts.hysiBatchInteraction.batches(batchId))
-              .claimableTokenBalance
-          ).to.equal(parseEther("100.118378471882628797"));
+          const unclaimedSharesAfter = (
+            await contracts.hysiBatchInteraction.batches(batchId)
+          ).unclaimedShares;
+
+          expect(unclaimedSharesBefore.gt(unclaimedSharesAfter)).to.be.true;
+          expect(unclaimedSharesBefore.sub(unclaimedSharesAfter)).to.equal(
+            hysiBalance.div(2)
+          );
+          expect(await contracts.hysiBatchInteraction.batchRedeem(0)).to.emit(
+            contracts.hysiBatchInteraction,
+            "BatchRedeemed"
+          );
         });
       });
     });
@@ -971,14 +967,107 @@ describe("HysiBatchInteraction Network Test", function () {
 
           await provider.send("evm_increaseTime", [2500]);
           await provider.send("evm_mine", []);
-          const minAmount = await getMinAmountOf3CrvToReceive(0.0001);
+
+          const minAmount = await HysiBatchInteractionAdapter.getMinAmountOf3CrvToReceiveForBatchRedeem(
+            0.0001,
+            contracts,
+            componentMap
+          );
+
           await expect(
             contracts.hysiBatchInteraction.connect(owner).batchRedeem(minAmount)
           ).to.be.revertedWith("slippage too high");
         });
       });
       context("success", function () {
-        it("batch redeems", async function () {
+        it("batch emits a BatchRedeemedEvent", async function () {
+          const batchId = await contracts.hysiBatchInteraction.currentRedeemBatchId();
+          const balanceBefore = await contracts.threeCrv.balanceOf(
+            owner.address
+          );
+          await contracts.hysiBatchInteraction
+            .connect(depositor)
+            .depositForRedeem(hysiBalance);
+          await provider.send("evm_increaseTime", [2500]);
+          await provider.send("evm_mine", []);
+
+          const min3Crv = await HysiBatchInteractionAdapter.getMinAmountOf3CrvToReceiveForBatchRedeem(
+            0.0046,
+            contracts,
+            componentMap
+          );
+          const result = await contracts.hysiBatchInteraction
+            .connect(owner)
+            .batchRedeem(min3Crv);
+          expect(result).to.emit(
+            contracts.hysiBatchInteraction,
+            "BatchRedeemed"
+          );
+        });
+
+        it("transfers a minimum amount of 3crv to the contract", async function () {
+          const batchId = await contracts.hysiBatchInteraction.currentRedeemBatchId();
+          const contractBalanceBefore = await contracts.threeCrv.balanceOf(
+            contracts.hysiBatchInteraction.address
+          );
+          await contracts.hysiBatchInteraction
+            .connect(depositor)
+            .depositForRedeem(hysiBalance);
+          await provider.send("evm_increaseTime", [2500]);
+          await provider.send("evm_mine", []);
+
+          const min3Crv = await HysiBatchInteractionAdapter.getMinAmountOf3CrvToReceiveForBatchRedeem(
+            0.0046,
+            contracts,
+            componentMap
+          );
+
+          const result = await contracts.hysiBatchInteraction
+            .connect(owner)
+            .batchRedeem(min3Crv);
+
+          const contractBalanceAfter = await contracts.threeCrv.balanceOf(
+            contracts.hysiBatchInteraction.address
+          );
+          const received3crv = contractBalanceAfter.sub(contractBalanceBefore);
+
+          expect(received3crv.gte(min3Crv)).to.be.true;
+        });
+
+        it("increments claimableTokenBalance by an amount equal to amount transfered", async function () {
+          const batchId = await contracts.hysiBatchInteraction.currentRedeemBatchId();
+          const contractBalanceBefore = await contracts.threeCrv.balanceOf(
+            contracts.hysiBatchInteraction.address
+          );
+          await contracts.hysiBatchInteraction
+            .connect(depositor)
+            .depositForRedeem(hysiBalance);
+          await provider.send("evm_increaseTime", [2500]);
+          await provider.send("evm_mine", []);
+
+          const min3Crv = await HysiBatchInteractionAdapter.getMinAmountOf3CrvToReceiveForBatchRedeem(
+            0.0046,
+            contracts,
+            componentMap
+          );
+
+          const result = await contracts.hysiBatchInteraction
+            .connect(owner)
+            .batchRedeem(min3Crv);
+
+          const contractBalanceAfter = await contracts.threeCrv.balanceOf(
+            contracts.hysiBatchInteraction.address
+          );
+          const received3crv = contractBalanceAfter.sub(contractBalanceBefore);
+          expect(
+            (
+              await contracts.hysiBatchInteraction.batches(batchId)
+            ).claimableTokenBalance.eq(received3crv)
+          ).to.be.true;
+          expect(received3crv.gte(min3Crv)).to.be.true;
+        });
+
+        it("transfers to a claimant an amount equal to their share in batch", async function () {
           const batchId = await contracts.hysiBatchInteraction.currentRedeemBatchId();
           await contracts.hysiBatchInteraction
             .connect(depositor)
@@ -986,23 +1075,37 @@ describe("HysiBatchInteraction Network Test", function () {
           await provider.send("evm_increaseTime", [2500]);
           await provider.send("evm_mine", []);
 
-          // todo: why is slippage so high for this redemption ?
-          const min3Crv = await getMinAmountOf3CrvToReceive(0.016);
+          const min3Crv = await HysiBatchInteractionAdapter.getMinAmountOf3CrvToReceiveForBatchRedeem(
+            0.0046,
+            contracts,
+            componentMap
+          );
+
           const result = await contracts.hysiBatchInteraction
             .connect(owner)
             .batchRedeem(min3Crv);
-          expect(result)
-            .to.emit(contracts.hysiBatchInteraction, "BatchRedeemed")
-            .withArgs(
-              batchId,
-              hysiBalance,
-              parseEther("100.118372107732572178")
-            );
-          expect(
-            await contracts.threeCrv.balanceOf(
-              contracts.hysiBatchInteraction.address
-            )
-          ).to.equal(parseEther("100.118372107732572178"));
+          const accountBalanceBefore = await contracts.threeCrv.balanceOf(
+            contracts.hysiBatchInteraction.address
+          );
+
+          const adapter = new HysiBatchInteractionAdapter(
+            contracts.hysiBatchInteraction
+          );
+
+          const amountToReceive = await adapter.calculateAmountToReceiveForClaim(
+            batchId,
+            owner.address
+          );
+
+          await contracts.hysiBatchInteraction.claim(batchId);
+
+          const accountBalanceAfter = await contracts.threeCrv.balanceOf(
+            contracts.hysiBatchInteraction.address
+          );
+
+          expect(amountToReceive).to.equal(
+            accountBalanceAfter.sub(accountBalanceBefore)
+          );
         });
 
         it("mints early when redeemThreshold is met", async function () {
@@ -1058,6 +1161,9 @@ describe("HysiBatchInteraction Network Test", function () {
         ).to.be.revertedWith("not yet claimable");
       });
       it("claim batch successfully", async function () {
+        const threeCrvBalanceBefore = await contracts.threeCrv.balanceOf(
+          depositor.address
+        );
         await contracts.hysiBatchInteraction
           .connect(depositor)
           .depositForRedeem(hysiBalance);
@@ -1070,6 +1176,10 @@ describe("HysiBatchInteraction Network Test", function () {
         ] = await contracts.hysiBatchInteraction.getAccountBatches(
           depositor.address
         );
+        const amountToReceive = await new HysiBatchInteractionAdapter(
+          contracts.hysiBatchInteraction
+        ).calculateAmountToReceiveForClaim(batchId, depositor.address);
+
         expect(
           await contracts.hysiBatchInteraction.connect(depositor).claim(batchId)
         )
@@ -1078,10 +1188,16 @@ describe("HysiBatchInteraction Network Test", function () {
             depositor.address,
             BatchType.Redeem,
             hysiBalance,
-            parseEther("100.118365809814081730")
+            amountToReceive
           );
-        expect(await contracts.threeCrv.balanceOf(depositor.address)).to.equal(
-          parseEther("17918070.419958836114104665")
+
+        const threeCrvBalanceAfter = await contracts.threeCrv.balanceOf(
+          depositor.address
+        );
+
+        expect(threeCrvBalanceAfter.gt(threeCrvBalanceBefore)).to.be.true;
+        expect(threeCrvBalanceAfter.sub(threeCrvBalanceBefore)).to.equal(
+          amountToReceive
         );
         const batch = await contracts.hysiBatchInteraction.batches(batchId);
         expect(batch.unclaimedShares).to.equal(0);
