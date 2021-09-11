@@ -107,10 +107,6 @@ export class HysiBatchInteractionAdapter {
       .mul(parseEther(slippageTolerance.toString()))
       .div(parseEther("1"));
 
-    //console.log({
-    //  componentValuesInUSD: formatEther(componentValuesInUSD),
-    //  minAmountToReceive: formatEther(minAmountToReceive),
-    //});
     return minAmountToReceive;
   }
 }
