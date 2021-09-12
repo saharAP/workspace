@@ -28,7 +28,6 @@ interface Contracts {
   randomNumberConsumer: Contract;
   grantElections: Contract;
   beneficiaryVaults: Contract;
-  rewardsEscrow: Contract;
   rewardsManager: Contract;
   mock3CRV: Contract;
   uniswapFactory: Contract;
@@ -36,6 +35,7 @@ interface Contracts {
   uniswapPair: Contract;
   beneficiaryGovernance: Contract;
   region: Contract;
+  rewardsEscrow: Contract;
 }
 
 enum Vote {
@@ -903,6 +903,8 @@ ADDR_BENEFICIARY_VAULT=${contracts.beneficiaryVaults.address}
 ADDR_REWARDS_MANAGER=${contracts.rewardsManager.address}
 ADDR_UNISWAP_ROUTER=${contracts.uniswapRouter.address}
 ADDR_3CRV=${contracts.mock3CRV.address}
+ADDR_REGION=${contracts.region.address}
+ADDR_REWARDS_ESCROW=${contracts.rewardsEscrow.address}
     `);
   };
 
