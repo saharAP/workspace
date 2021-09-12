@@ -1,5 +1,4 @@
-import { IpfsClient } from '@popcorn/utils';
-import { UploadResult } from '@popcorn/utils';
+import { IpfsClient, UploadResult } from '@popcorn/utils';
 import ProgressBar from 'components/ProgressBar';
 import React, { useEffect, useState } from 'react';
 import { useDropzone } from 'react-dropzone';
@@ -49,7 +48,8 @@ async function uploadMultipleFiles(
     setLocalState(uploadResults.map((result) => result.hash));
     toast.dismiss();
     success(
-      `${fileType === 'image/*' ? 'Images' : 'Files'
+      `${
+        fileType === 'image/*' ? 'Images' : 'Files'
       } successfully uploaded to IPFS`,
     );
   } else if (uploadResults.every(isFailedUpload)) {
@@ -63,14 +63,57 @@ async function uploadMultipleFiles(
     const unsuccessfulUploads = uploadResults.filter(isFailedUpload);
     setLocalState(successfulUploads.map((result) => result.hash));
     success(
-      `${successfulUploads.length} ${fileType === 'image/*' ? 'images' : 'files'
+      `${successfulUploads.length} ${
+        fileType === 'image/*' ? 'images' : 'files'
       } were successfully upload to IPFS`,
     );
     uploadError(
-      `${successfulUploads.length} ${fileType === 'image/*' ? 'images' : 'files'
+      `${successfulUploads.length} ${
+        fileType === 'image/*' ? 'images' : 'files'
       } were unsuccessfully uploaded to IPFS 
-      with status ${unsuccessfulUploads[0].status}: ${unsuccessfulUploads[0].errorDetails
+      with status ${unsuccessfulUploads[0].status}: ${
+        unsuccessfulUploads[0].errorDetails
       }`,
+    );
+  }
+}
+
+async function uploadMultiplePDFs(
+  files: File[],
+  setLocalState: (input: string[]) => void,
+  fileType: string,
+) {
+  loading();
+  const uploadResults = await Promise.all(
+    files.map((file) => {
+      return IpfsClient.upload(file);
+    }),
+  );
+  if (uploadResults.every(isSuccessfulUpload)) {
+    setLocalState(
+      uploadResults.map((uploadResult) =>
+        JSON.stringify({
+          reportCid: uploadResult.hash,
+          fileName: uploadResult.fileName,
+        }),
+      ),
+    );
+    toast.dismiss();
+    success(`${uploadResults.length} files successfully uploaded to IPFS`);
+  } else if (uploadResults.every(isFailedUpload)) {
+    toast.dismiss();
+    uploadError(
+      `Uploads were unsuccessful with status ${uploadResults[0].status}: 
+      ${uploadResults[0].errorDetails}`,
+    );
+  } else {
+    const successfulUploads = uploadResults.filter(isSuccessfulUpload);
+    const unsuccessfulUploads = uploadResults.filter(isFailedUpload);
+    setLocalState(successfulUploads.map((result) => result.hash));
+    success(`${successfulUploads.length} files successfully uploaded to IPFS`);
+    uploadError(
+      `${unsuccessfulUploads.length} files were unsuccessfully uploaded to IPFS 
+      with status ${unsuccessfulUploads[0].status}: ${unsuccessfulUploads[0].errorDetails}`,
     );
   }
 }
@@ -156,8 +199,10 @@ const IpfsUpload: React.FC<IpfsProps> = ({
           uploadSingleFile(acceptedFiles, setLocalState);
         } else if (fileType === 'video/*') {
           uploadSingleFile(acceptedFiles, setLocalState, setUploadProgress);
-        } else {
+        } else if (fileType === 'image/*') {
           uploadMultipleFiles(acceptedFiles, setLocalState, fileType);
+        } else if (fileType === '.pdf') {
+          uploadMultiplePDFs(acceptedFiles, setLocalState, fileType);
         }
       }
       setFiles(

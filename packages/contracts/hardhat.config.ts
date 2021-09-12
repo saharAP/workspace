@@ -235,6 +235,7 @@ module.exports = {
       accounts: [process.env.PRIVATE_KEY],
     },
     hardhat: {
+      initialBaseFeePerGas: 0,
       forking:
         process.env.FORKING_ENABLED == "true"
           ? {
@@ -258,6 +259,9 @@ module.exports = {
     currency: "USD",
     gasPrice: 100,
     enabled: false,
+  },
+  mocha: {
+    timeout: 120000,
   },
   /*contractSizer: {
     alphaSort: true,
