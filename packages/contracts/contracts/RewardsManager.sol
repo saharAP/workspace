@@ -143,17 +143,17 @@ contract RewardsManager is
 
     //@todo check edge case precision overflow
     uint256 _stakingAmount = _availableReward
-    .mul(rewardSplits[uint8(RewardTargets.Staking)])
-    .div(100e18);
+      .mul(rewardSplits[uint8(RewardTargets.Staking)])
+      .div(100e18);
     uint256 _treasuryAmount = _availableReward
-    .mul(rewardSplits[uint8(RewardTargets.Treasury)])
-    .div(100e18);
+      .mul(rewardSplits[uint8(RewardTargets.Treasury)])
+      .div(100e18);
     uint256 _insuranceAmount = _availableReward
-    .mul(rewardSplits[uint8(RewardTargets.Insurance)])
-    .div(100e18);
+      .mul(rewardSplits[uint8(RewardTargets.Insurance)])
+      .div(100e18);
     uint256 _beneficiaryVaultsAmount = _availableReward
-    .mul(rewardSplits[uint8(RewardTargets.BeneficiaryVaults)])
-    .div(100e18);
+      .mul(rewardSplits[uint8(RewardTargets.BeneficiaryVaults)])
+      .div(100e18);
 
     _distributeToStaking(_stakingAmount);
     _distributeToTreasury(_treasuryAmount);
