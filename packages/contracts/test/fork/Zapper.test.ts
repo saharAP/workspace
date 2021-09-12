@@ -116,7 +116,8 @@ async function deployContracts(): Promise<Contracts> {
   };
 }
 
-describe("Zapper", function () {
+
+describe("Zapper [ @skip-on-coverage ]", function () {
   beforeEach(async function () {
     await network.provider.request({
       method: "hardhat_reset",

@@ -99,7 +99,8 @@ async function deployContracts(): Promise<Contracts> {
   };
 }
 
-describe("Pool", function () {
+
+describe("Pool  [ @skip-on-coverage ]", function () {
   beforeEach(async function () {
     await network.provider.request({
       method: "hardhat_reset",
