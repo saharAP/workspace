@@ -99,8 +99,10 @@ async function deployContracts(): Promise<Contracts> {
   };
 }
 
+
 describe("Pool  [ @skip-on-coverage ]", function () {
   before(async function () {
+
     await network.provider.request({
       method: "hardhat_reset",
       params: [
@@ -227,11 +229,11 @@ describe("Pool  [ @skip-on-coverage ]", function () {
         vault
       );
       expect(await contracts.pool.totalAssets()).to.equal(
-        parseEther("60999408.137282241316695585")
+        parseEther("60816537.476459094009822741")
       );
 
       expect(await contracts.pool.pricePerPoolToken()).to.equal(
-        parseEther("1.003057618041216767")
+        parseEther("1.003329337405364577")
       );
     });
 
@@ -250,7 +252,7 @@ describe("Pool  [ @skip-on-coverage ]", function () {
           .zapIn(contracts.pool.address, DAI_TOKEN_ADDRESS, parseEther("10000"))
       )
         .to.emit(contracts.pool, "PerformanceFee")
-        .withArgs(parseEther("1100.983056583287815747"));
+        .withArgs(parseEther("1264.077679044279017257"));
     });
 
     it("Withdrawals", async function () {
@@ -276,22 +278,22 @@ describe("Pool  [ @skip-on-coverage ]", function () {
         .zapOut(contracts.pool.address, USDC_TOKEN_ADDRESS, balance);
       await expect(withdrawal)
         .to.emit(contracts.pool, "PerformanceFee")
-        .withArgs(parseEther("937.687996779245867097"));
+        .withArgs(parseEther("1264.077679044279017257"));
       await expect(withdrawal)
         .to.emit(contracts.pool, "WithdrawalFee")
-        .withArgs(rewardsManager.address, parseEther("50.644642591218971714"));
+        .withArgs(rewardsManager.address, parseEther("50.977519693235940036"));
       await expect(withdrawal)
         .to.emit(contracts.pool, "Withdrawal")
         .withArgs(
           contracts.zapper.address,
-          parseEther("10078.283875652575371340")
+          parseEther("10144.526418953952067404")
         );
       expect(await contracts.pool.balanceOf(depositor.address)).to.equal(0);
       expect(
         (await contracts.usdc.balanceOf(depositor.address)).sub(
           initialUsdcBalance
         )
-      ).to.equal(parseUnits("10138.956224", 6));
+      ).to.equal(parseUnits("10204.615974", 6));
     });
   });
 });

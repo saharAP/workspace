@@ -19,12 +19,7 @@ interface Contracts {
 }
 
 const DepositorInitial = parseEther("100000");
-let owner: SignerWithAddress,
-  depositor: SignerWithAddress,
-  depositor1: SignerWithAddress,
-  depositor2: SignerWithAddress,
-  depositor3: SignerWithAddress,
-  rewardsManager: SignerWithAddress;
+let depositor: SignerWithAddress, rewardsManager: SignerWithAddress;
 let contracts: Contracts;
 
 const UNISWAP_ROUTER_ADDRESS = "0x7a250d5630B4cF539739dF2C5dAcb4c659F2488D";
@@ -121,8 +116,9 @@ async function deployContracts(): Promise<Contracts> {
   };
 }
 
+
 describe("Zapper [ @skip-on-coverage ]", function () {
-  before(async function () {
+  beforeEach(async function () {
     await network.provider.request({
       method: "hardhat_reset",
       params: [
@@ -134,50 +130,18 @@ describe("Zapper [ @skip-on-coverage ]", function () {
         },
       ],
     });
-  });
-
-  beforeEach(async function () {
-    [
-      owner,
-      depositor,
-      depositor1,
-      depositor2,
-      depositor3,
-      rewardsManager,
-    ] = await ethers.getSigners();
+    [depositor, rewardsManager] = await ethers.getSigners();
     contracts = await deployContracts();
-    [depositor, depositor1, depositor2, depositor3].forEach(async (account) => {
-      await contracts.faucet.sendTokens(
-        DAI_TOKEN_ADDRESS,
-        100,
-        account.address
-      );
-      await contracts.faucet.sendTokens(
-        USDC_TOKEN_ADDRESS,
-        100,
-        account.address
-      );
-      await contracts.faucet.sendTokens(
-        USDT_TOKEN_ADDRESS,
-        100,
-        account.address
-      );
-      await contracts.faucet.sendTokens(
-        FRAX_TOKEN_ADDRESS,
-        100,
-        account.address
-      );
-      await contracts.faucet.sendTokens(
-        USDN_TOKEN_ADDRESS,
-        100,
-        account.address
-      );
-    });
   });
 
   describe("Factory metapools", function () {
     describe("Zapping in", function () {
       it("Depositor can zap in with DAI", async function () {
+        await contracts.faucet.sendTokens(
+          DAI_TOKEN_ADDRESS,
+          100,
+          depositor.address
+        );
         await contracts.dai
           .connect(depositor)
           .approve(contracts.zapper.address, parseEther("10000"));
@@ -194,6 +158,11 @@ describe("Zapper [ @skip-on-coverage ]", function () {
       });
 
       it("Depositor can zap in with USDC", async function () {
+        await contracts.faucet.sendTokens(
+          USDC_TOKEN_ADDRESS,
+          100,
+          depositor.address
+        );
         await contracts.usdc
           .connect(depositor)
           .approve(contracts.zapper.address, parseUnits("10000", 6));
@@ -205,11 +174,16 @@ describe("Zapper [ @skip-on-coverage ]", function () {
             parseUnits("10000", 6)
           );
         expect(await contracts.fraxPool.balanceOf(depositor.address)).to.equal(
-          parseEther("9934.971807099795502637")
+          parseEther("9934.976636686223712802")
         );
       });
 
       it("Depositor can zap in with USDT", async function () {
+        await contracts.faucet.sendTokens(
+          USDT_TOKEN_ADDRESS,
+          100,
+          depositor.address
+        );
         await contracts.usdt
           .connect(depositor)
           .approve(contracts.zapper.address, parseUnits("10000", 6));
@@ -221,11 +195,16 @@ describe("Zapper [ @skip-on-coverage ]", function () {
             parseUnits("10000", 6)
           );
         expect(await contracts.fraxPool.balanceOf(depositor.address)).to.equal(
-          parseEther("9934.470278015205908927")
+          parseEther("9934.479996488267047595")
         );
       });
 
       it("Depositor can zap in with FRAX", async function () {
+        await contracts.faucet.sendTokens(
+          FRAX_TOKEN_ADDRESS,
+          100,
+          depositor.address
+        );
         await contracts.frax
           .connect(depositor)
           .approve(contracts.zapper.address, parseEther("10000"));
@@ -237,13 +216,18 @@ describe("Zapper [ @skip-on-coverage ]", function () {
             parseEther("10000")
           );
         expect(await contracts.fraxPool.balanceOf(depositor.address)).to.equal(
-          parseEther("9958.708106800095587291")
+          parseEther("9958.690283369401794807")
         );
       });
     });
 
     describe("Zapping out", function () {
       it("Depositor can zap out to DAI", async function () {
+        await contracts.faucet.sendTokens(
+          DAI_TOKEN_ADDRESS,
+          100,
+          depositor.address
+        );
         await contracts.dai
           .connect(depositor)
           .approve(contracts.zapper.address, parseEther("10000"));
@@ -273,10 +257,15 @@ describe("Zapper [ @skip-on-coverage ]", function () {
           (await contracts.dai.balanceOf(depositor.address)).sub(
             initialDaiBalance
           )
-        ).to.equal(parseEther("9941.407180039095760315"));
+        ).to.equal(parseEther("9941.406795702917224952"));
       });
 
       it("Depositor can zap out to USDC", async function () {
+        await contracts.faucet.sendTokens(
+          DAI_TOKEN_ADDRESS,
+          100,
+          depositor.address
+        );
         await contracts.dai
           .connect(depositor)
           .approve(contracts.zapper.address, parseEther("10000"));
@@ -306,10 +295,15 @@ describe("Zapper [ @skip-on-coverage ]", function () {
           (await contracts.usdc.balanceOf(depositor.address)).sub(
             initialUsdcBalance
           )
-        ).to.equal(parseUnits("9950.383052", 6));
+        ).to.equal(parseUnits("9950.383047", 6));
       });
 
       it("Depositor can zap out to USDT", async function () {
+        await contracts.faucet.sendTokens(
+          DAI_TOKEN_ADDRESS,
+          100,
+          depositor.address
+        );
         await contracts.dai
           .connect(depositor)
           .approve(contracts.zapper.address, parseEther("10000"));
@@ -339,10 +333,15 @@ describe("Zapper [ @skip-on-coverage ]", function () {
           (await contracts.usdt.balanceOf(depositor.address)).sub(
             initialUsdtBalance
           )
-        ).to.equal(parseUnits("9951.193335", 6));
+        ).to.equal(parseUnits("9951.194004", 6));
       });
 
       it("Depositor can zap out to FRAX", async function () {
+        await contracts.faucet.sendTokens(
+          DAI_TOKEN_ADDRESS,
+          100,
+          depositor.address
+        );
         await contracts.dai
           .connect(depositor)
           .approve(contracts.zapper.address, parseEther("10000"));
@@ -372,7 +371,7 @@ describe("Zapper [ @skip-on-coverage ]", function () {
           (await contracts.frax.balanceOf(depositor.address)).sub(
             initialFraxBalance
           )
-        ).to.equal(parseEther("9929.450615103144171455"));
+        ).to.equal(parseEther("9929.471788644983599557"));
       });
     });
   });
@@ -380,6 +379,11 @@ describe("Zapper [ @skip-on-coverage ]", function () {
   describe("Metapools", function () {
     describe("Zapping in", function () {
       it("Depositor can zap in with DAI", async function () {
+        await contracts.faucet.sendTokens(
+          DAI_TOKEN_ADDRESS,
+          100,
+          depositor.address
+        );
         await contracts.dai
           .connect(depositor)
           .approve(contracts.zapper.address, parseEther("10000"));
@@ -391,11 +395,16 @@ describe("Zapper [ @skip-on-coverage ]", function () {
             parseEther("10000")
           );
         expect(await contracts.usdnPool.balanceOf(depositor.address)).to.equal(
-          parseEther("9701.086137495979113995")
+          parseEther("9701.088107402129264147")
         );
       });
 
       it("Depositor can zap in with USDC", async function () {
+        await contracts.faucet.sendTokens(
+          USDC_TOKEN_ADDRESS,
+          100,
+          depositor.address
+        );
         await contracts.usdc
           .connect(depositor)
           .approve(contracts.zapper.address, parseUnits("10000", 6));
@@ -407,11 +416,16 @@ describe("Zapper [ @skip-on-coverage ]", function () {
             parseUnits("10000", 6)
           );
         expect(await contracts.usdnPool.balanceOf(depositor.address)).to.equal(
-          parseEther("9693.704963887318151957")
+          parseEther("9693.707893080267260826")
         );
       });
 
       it("Depositor can zap in with USDT", async function () {
+        await contracts.faucet.sendTokens(
+          USDT_TOKEN_ADDRESS,
+          100,
+          depositor.address
+        );
         await contracts.usdt
           .connect(depositor)
           .approve(contracts.zapper.address, parseUnits("10000", 6));
@@ -423,11 +437,16 @@ describe("Zapper [ @skip-on-coverage ]", function () {
             parseUnits("10000", 6)
           );
         expect(await contracts.usdnPool.balanceOf(depositor.address)).to.equal(
-          parseEther("9693.217161059190638029")
+          parseEther("9693.223313831703922700")
         );
       });
 
       it("Depositor can zap in with USDN", async function () {
+        await contracts.faucet.sendTokens(
+          USDN_TOKEN_ADDRESS,
+          100,
+          depositor.address
+        );
         await contracts.usdn
           .connect(depositor)
           .approve(contracts.zapper.address, parseEther("10000"));
@@ -439,13 +458,18 @@ describe("Zapper [ @skip-on-coverage ]", function () {
             parseEther("10000")
           );
         expect(await contracts.usdnPool.balanceOf(depositor.address)).to.equal(
-          parseEther("9697.747403378125533200")
+          parseEther("9697.737755605884658207")
         );
       });
     });
 
     describe("Zapping out", function () {
       it("Depositor can zap out to DAI", async function () {
+        await contracts.faucet.sendTokens(
+          DAI_TOKEN_ADDRESS,
+          100,
+          depositor.address
+        );
         await contracts.dai
           .connect(depositor)
           .approve(contracts.zapper.address, parseEther("10000"));
@@ -475,10 +499,15 @@ describe("Zapper [ @skip-on-coverage ]", function () {
           (await contracts.dai.balanceOf(depositor.address)).sub(
             initialDaiBalance
           )
-        ).to.equal(parseEther("9941.008444868773821254"));
+        ).to.equal(parseEther("9941.008181183273885117"));
       });
 
       it("Depositor can zap out to USDC", async function () {
+        await contracts.faucet.sendTokens(
+          DAI_TOKEN_ADDRESS,
+          100,
+          depositor.address
+        );
         await contracts.dai
           .connect(depositor)
           .approve(contracts.zapper.address, parseEther("10000"));
@@ -508,10 +537,15 @@ describe("Zapper [ @skip-on-coverage ]", function () {
           (await contracts.usdc.balanceOf(depositor.address)).sub(
             initialUsdcBalance
           )
-        ).to.equal(parseUnits("9949.981497", 6));
+        ).to.equal(parseUnits("9949.984073", 6));
       });
 
       it("Depositor can zap out to USDT", async function () {
+        await contracts.faucet.sendTokens(
+          DAI_TOKEN_ADDRESS,
+          100,
+          depositor.address
+        );
         await contracts.dai
           .connect(depositor)
           .approve(contracts.zapper.address, parseEther("10000"));
@@ -541,10 +575,15 @@ describe("Zapper [ @skip-on-coverage ]", function () {
           (await contracts.usdt.balanceOf(depositor.address)).sub(
             initialUsdtBalance
           )
-        ).to.equal(parseUnits("9950.791709", 6));
+        ).to.equal(parseUnits("9950.794997", 6));
       });
 
       it("Depositor can zap out to USDN", async function () {
+        await contracts.faucet.sendTokens(
+          DAI_TOKEN_ADDRESS,
+          100,
+          depositor.address
+        );
         await contracts.dai
           .connect(depositor)
           .approve(contracts.zapper.address, parseEther("10000"));
@@ -574,7 +613,7 @@ describe("Zapper [ @skip-on-coverage ]", function () {
           (await contracts.usdn.balanceOf(depositor.address)).sub(
             initialUsdnBalance
           )
-        ).to.equal(parseEther("9949.424950655893925018"));
+        ).to.equal(parseEther("9949.442017859495072171"));
       });
     });
   });
