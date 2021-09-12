@@ -367,26 +367,71 @@ describe("Staking", function () {
   });
 
   describe("getVoiceCredits", function () {
+    const timeTravel = async (time?: number) => {
+      ethers.provider.send("evm_increaseTime", [time || 1 * DAY]);
+      ethers.provider.send("evm_mine", []);
+    };
+    const getExpectedVoiceCredits = async (address) => {
+      const timestamp = (
+        await ethers.provider.getBlock(ethers.provider.getBlockNumber())
+      ).timestamp;
+      const { _end, _balance } = await staking.lockedBalances(address);
+      if (_end.eq(0) || _end.lt(timestamp) || _balance.eq(0)) {
+        return BigNumber.from(0);
+      }
+      const timeTillEnd = _end
+        .sub(timestamp)
+        .div(60 * 60)
+        .mul(60 * 60);
+      return _balance.mul(timeTillEnd).div(4 * 365 * DAY);
+    };
+
     it("should return decayed voice credits", async function () {
-      const timeTravelOneDay = async () => {
-        ethers.provider.send("evm_increaseTime", [1 * DAY]);
-        ethers.provider.send("evm_mine", []);
-      };
       await staking.connect(owner).stake(parseEther("1"), 7 * DAY);
+
       const voiceCredits0 = await staking.getVoiceCredits(owner.address);
       //1 days passes
-      await timeTravelOneDay();
+      await timeTravel(1 * DAY);
       const voiceCredits1 = await staking.getVoiceCredits(owner.address);
       expect(voiceCredits1.lt(voiceCredits0)).to.be.true;
+      expect(voiceCredits1).to.equal(
+        await getExpectedVoiceCredits(owner.address)
+      );
+      await timeTravel(1 * DAY);
+      const voiceCredits2 = await staking.getVoiceCredits(owner.address);
+      expect(voiceCredits2.lt(voiceCredits1)).to.be.true;
+      expect(voiceCredits2).to.equal(
+        await getExpectedVoiceCredits(owner.address)
+      );
+      await timeTravel(1 * DAY);
+      const voiceCredits3 = await staking.getVoiceCredits(owner.address);
+      expect(voiceCredits3.lt(voiceCredits2)).to.be.true;
+      expect(voiceCredits3).to.equal(
+        await getExpectedVoiceCredits(owner.address)
+      );
+      await timeTravel(1 * DAY);
+      const voiceCredits4 = await staking.getVoiceCredits(owner.address);
+      expect(voiceCredits4.lt(voiceCredits3)).to.be.true;
+      expect(voiceCredits4).to.equal(
+        await getExpectedVoiceCredits(owner.address)
+      );
     });
     it("decays voice credits linearly on large time scales as well", async function () {
       await staking.connect(owner).stake(parseEther("10"), 7 * DAY * 78);
       const voiceCredits0 = await staking.getVoiceCredits(owner.address);
-      ethers.provider.send("evm_increaseTime", [7 * DAY * 79]);
-      ethers.provider.send("evm_mine", []);
-      const voiceCredits3 = await staking.getVoiceCredits(owner.address);
-      expect(voiceCredits3.lt(voiceCredits0)).to.be.true;
-      expect(voiceCredits3).to.equal(0);
+
+      await timeTravel(7 * DAY * 39);
+      const voiceCredits1 = await staking.getVoiceCredits(owner.address);
+      expect(voiceCredits1.lt(voiceCredits0)).to.be.true;
+      expect(voiceCredits1.gt(0)).to.be.true;
+      expect(voiceCredits1).to.equal(
+        await getExpectedVoiceCredits(owner.address)
+      );
+
+      await timeTravel(7 * DAY * 79);
+      const voiceCredits2 = await staking.getVoiceCredits(owner.address);
+      expect(voiceCredits2.lt(voiceCredits1)).to.be.true;
+      expect(voiceCredits2).to.equal(0);
     });
     it("should return 0 voice credits after lockperiod ended", async function () {
       await staking.connect(owner).stake(parseEther("1"), 7 * DAY);
