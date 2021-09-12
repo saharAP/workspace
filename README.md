@@ -1,5 +1,7 @@
 # Popcorn
 
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/8af04768693b48bb9c84120bfde78d92)](https://app.codacy.com/gh/popcorndao/workspace?utm_source=github.com&utm_medium=referral&utm_content=popcorndao/workspace&utm_campaign=Badge_Grade_Settings)
+
 - [Popcorn](#popcorn)
   - [Technology Used](#technology-used)
   - [Directory structure](#directory-structure)
