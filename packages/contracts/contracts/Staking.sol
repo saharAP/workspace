@@ -20,7 +20,6 @@ contract Staking is IStaking, Owned, ReentrancyGuard, Defended {
 
   struct LockedBalance {
     uint256 _balance;
-    uint256 _duration;
     uint256 _end;
   }
 
@@ -34,6 +33,7 @@ contract Staking is IStaking, Owned, ReentrancyGuard, Defended {
   uint256 public lastUpdateTime;
   uint256 public rewardPerTokenStored;
   uint256 public totalLocked;
+  uint256 public totalVoiceCredits;
   mapping(address => uint256) public voiceCredits;
   mapping(address => uint256) public userRewardPerTokenPaid;
   mapping(address => uint256) public rewards;
@@ -57,27 +57,30 @@ contract Staking is IStaking, Owned, ReentrancyGuard, Defended {
 
   /* ========== VIEWS ========== */
 
+  /**
+   * @notice this returns the current voice credit balance of an address. voice credits decays over time. the amount returned is up to date, whereas the amount stored in `public voiceCredits` is saved only during some checkpoints.
+   * @dev todo - check if multiplier is needed for calculating square root of smaller balances
+   * @param _address address to get voice credits for
+   */
   function getVoiceCredits(address _address)
     public
     view
     override
     returns (uint256)
   {
-    uint256 _currentTime = block.timestamp;
-    if (
-      lockedBalances[_address]._end == 0 ||
-      lockedBalances[_address]._end < _currentTime
-    ) {
+    uint256 lockEndTime = lockedBalances[_address]._end;
+    uint256 balance = lockedBalances[_address]._balance;
+    uint256 currentTime = block.timestamp;
+
+    if (lockEndTime == 0 || lockEndTime < currentTime || balance == 0) {
       return 0;
     }
-    uint256 timeTillEnd = (
-      (lockedBalances[_address]._end.sub(_currentTime)).div(1 hours)
-    )
-    .mul(1 hours);
-    uint256 slope = voiceCredits[_address].div(
-      lockedBalances[_address]._duration
+
+    uint256 timeTillEnd = ((lockEndTime.sub(currentTime)).div(1 hours)).mul(
+      1 hours
     );
-    return timeTillEnd.mul(slope);
+
+    return balance.mul(timeTillEnd).div(4 * 365 days);
   }
 
   function getWithdrawableBalance(address _address)
@@ -153,7 +156,7 @@ contract Staking is IStaking, Owned, ReentrancyGuard, Defended {
 
     totalLocked = totalLocked.add(amount);
     _lockTokens(amount, lengthOfTime);
-    _recalculateVoiceCredits();
+    recalculateVoiceCredits(msg.sender);
     emit StakingDeposited(msg.sender, amount);
   }
 
@@ -169,12 +172,10 @@ contract Staking is IStaking, Owned, ReentrancyGuard, Defended {
       lockedBalances[msg.sender]._end > _currentTime,
       "withdraw balance first"
     );
-    lockedBalances[msg.sender]._duration = lockedBalances[msg.sender]
-    ._duration
-    .add(lengthOfTime);
     lockedBalances[msg.sender]._end = lockedBalances[msg.sender]._end.add(
       lengthOfTime
     );
+    recalculateVoiceCredits(msg.sender);
   }
 
   function increaseStake(uint256 amount) external {
@@ -189,9 +190,9 @@ contract Staking is IStaking, Owned, ReentrancyGuard, Defended {
     POP.safeTransferFrom(msg.sender, address(this), amount);
     totalLocked = totalLocked.add(amount);
     lockedBalances[msg.sender]._balance = lockedBalances[msg.sender]
-    ._balance
-    .add(amount);
-    _recalculateVoiceCredits();
+      ._balance
+      .add(amount);
+    recalculateVoiceCredits(msg.sender);
   }
 
   function withdraw(uint256 amount)
@@ -208,7 +209,7 @@ contract Staking is IStaking, Owned, ReentrancyGuard, Defended {
 
     totalLocked = totalLocked.sub(amount);
     _clearWithdrawnFromLocked(amount);
-    _recalculateVoiceCredits();
+    recalculateVoiceCredits(msg.sender);
     emit StakingWithdrawn(msg.sender, amount);
   }
 
@@ -240,12 +241,11 @@ contract Staking is IStaking, Owned, ReentrancyGuard, Defended {
     initialised = true;
   }
 
-  // todo: multiply voice credits by 10000 to deal with exponent math
-  function _recalculateVoiceCredits() internal {
-    voiceCredits[msg.sender] = lockedBalances[msg.sender]
-    ._balance
-    .mul(lockedBalances[msg.sender]._duration)
-    .div(365 days * 4);
+  function recalculateVoiceCredits(address _address) public {
+    uint256 previousVoiceCredits = voiceCredits[_address];
+    totalVoiceCredits = totalVoiceCredits.sub(previousVoiceCredits);
+    voiceCredits[_address] = getVoiceCredits(_address);
+    totalVoiceCredits = totalVoiceCredits.add(voiceCredits[_address]);
   }
 
   function _lockTokens(uint256 amount, uint256 lengthOfTime) internal {
@@ -253,13 +253,11 @@ contract Staking is IStaking, Owned, ReentrancyGuard, Defended {
     if (_currentTime > lockedBalances[msg.sender]._end) {
       lockedBalances[msg.sender] = LockedBalance({
         _balance: lockedBalances[msg.sender]._balance.add(amount),
-        _duration: lengthOfTime,
         _end: _currentTime.add(lengthOfTime)
       });
     } else {
       lockedBalances[msg.sender] = LockedBalance({
         _balance: lockedBalances[msg.sender]._balance.add(amount),
-        _duration: lockedBalances[msg.sender]._duration.add(lengthOfTime),
         _end: lockedBalances[msg.sender]._end.add(lengthOfTime)
       });
     }
@@ -272,8 +270,8 @@ contract Staking is IStaking, Owned, ReentrancyGuard, Defended {
         delete lockedBalances[msg.sender];
       } else {
         lockedBalances[msg.sender]._balance = lockedBalances[msg.sender]
-        ._balance
-        .sub(_amount);
+          ._balance
+          .sub(_amount);
       }
     }
   }
