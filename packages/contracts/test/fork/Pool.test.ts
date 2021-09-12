@@ -101,8 +101,7 @@ async function deployContracts(): Promise<Contracts> {
 
 
 describe("Pool  [ @skip-on-coverage ]", function () {
-  before(async function () {
-
+  beforeEach(async function () {
     await network.provider.request({
       method: "hardhat_reset",
       params: [
@@ -114,9 +113,6 @@ describe("Pool  [ @skip-on-coverage ]", function () {
         },
       ],
     });
-  });
-
-  beforeEach(async function () {
     [
       owner,
       depositor,
