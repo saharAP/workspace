@@ -54,8 +54,6 @@ export default function LockPop() {
     const lockedBalance = await contracts.staking.lockedBalances(account);
     const currentTime = parseInt(`${(new Date().getTime() / 1000)}`);
     setExpired(lockedBalance._end.lt(currentTime));
-    console.log('Lokk down ', lockedBalance._duration.toNumber());
-    console.log('possible valuess ', lockPeriods);
     setLockedPop(
       Number(utils.formatEther(await contracts.staking.balanceOf(account))),
     );
