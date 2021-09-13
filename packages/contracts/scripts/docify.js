@@ -8,6 +8,7 @@ const NODE_DIR = path.resolve(__dirname, "../node_modules");
 const INPUT_DIR = path.resolve(__dirname, "../contracts");
 const CONFIG_DIR = path.resolve(__dirname, "../docgen");
 const OUTPUT_DIR = path.resolve(__dirname, "../docgen/docs");
+const SUMMARY_FILE = path.resolve(__dirname, "../docgen/SUMMARY.md")
 const EXCLUDE_FILE = path.resolve(__dirname, "../docgen/exclude.txt");
 
 const excludeList = lines(EXCLUDE_FILE).map((line) => INPUT_DIR + "/" + line);
