@@ -9,5 +9,5 @@ interface YearnVault is IERC20 {
 
   function withdraw(uint256 amount) external;
 
-  function getPricePerFullShare() external view returns (uint256);
+  function pricePerShare() external view returns (uint256);
 }

@@ -79,7 +79,6 @@ contract Staking is IStaking, Owned, ReentrancyGuard, Defended {
     uint256 timeTillEnd = ((lockEndTime.sub(currentTime)).div(1 hours)).mul(
       1 hours
     );
-
     return balance.mul(timeTillEnd).div(4 * 365 days);
   }
 
@@ -241,6 +240,7 @@ contract Staking is IStaking, Owned, ReentrancyGuard, Defended {
     initialised = true;
   }
 
+  // todo: multiply voice credits by 10000 to deal with exponent math- is it needed?
   function recalculateVoiceCredits(address _address) public {
     uint256 previousVoiceCredits = voiceCredits[_address];
     totalVoiceCredits = totalVoiceCredits.sub(previousVoiceCredits);

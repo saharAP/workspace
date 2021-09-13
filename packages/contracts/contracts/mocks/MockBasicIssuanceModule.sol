@@ -3,55 +3,65 @@ pragma solidity >=0.7.0 <0.8.0;
 import "@openzeppelin/contracts/token/ERC20/SafeERC20.sol";
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
-import "@openzeppelin/contracts/math/SafeMath.sol";
-import "../Interfaces/Integrations/ISetToken.sol";
+import "./MockERC20.sol";
 
 contract MockBasicIssuanceModule {
-  using SafeERC20 for IERC20;
+  using SafeERC20 for MockERC20;
   using SafeMath for uint256;
 
-  IERC20[] public underlying;
+  address[] public underlying;
   uint256[] public quantities;
 
-  event SetIssued(ISetToken setToken, uint256 amount, address to);
-  event SetRedeemed(ISetToken setToken, uint256 amount, address to);
+  event SetIssued(address setToken, uint256 amount, address to);
+  event SetRedeemed(address setToken, uint256 amount, address to);
 
-  constructor(IERC20[] memory underlying_, uint256[] memory quantities_) {
-    for (uint256 i; i < underlying_.length; i++) {
-      underlying.push(underlying_[i]);
-    }
+  constructor(address[] memory underlying_, uint256[] memory quantities_) {
+    underlying = underlying_;
     quantities = quantities_;
   }
 
   function issue(
-    ISetToken _setToken,
+    address _setToken,
     uint256 _quantity,
     address _to
   ) external {
     for (uint256 i; i < underlying.length; i++) {
       uint256 amount = _quantity.mul(quantities[i]);
       require(
-        underlying[i].balanceOf(msg.sender) >= amount,
+        MockERC20(underlying[i]).balanceOf(msg.sender) >= amount,
         "not enough underlying token"
       );
-      underlying[i].transferFrom(msg.sender, address(this), amount);
+      MockERC20(underlying[i]).transferFrom(msg.sender, address(this), amount);
     }
-    ISetToken(_setToken).mint(_to, _quantity);
+    MockERC20(_setToken).mint(_to, _quantity);
     emit SetIssued(_setToken, _quantity, _to);
   }
 
   function redeem(
-    ISetToken _setToken,
+    address _setToken,
     uint256 _quantity,
     address _to
   ) external {
-    require(_setToken.balanceOf(msg.sender) >= _quantity);
-    _setToken.transferFrom(msg.sender, address(this), _quantity);
+    require(MockERC20(_setToken).balanceOf(msg.sender) >= _quantity);
+    MockERC20(_setToken).transferFrom(msg.sender, address(this), _quantity);
     for (uint256 i; i < underlying.length; i++) {
       uint256 amount = _quantity.mul(quantities[i]);
-      underlying[i].approve(address(this), amount);
-      underlying[i].transfer(_to, amount);
+      MockERC20(underlying[i]).approve(address(this), amount);
+      MockERC20(underlying[i]).transfer(_to, amount);
     }
     emit SetRedeemed(_setToken, _quantity, msg.sender);
+  }
+
+  function getRequiredComponentUnitsForIssue(
+    address _setToken,
+    uint256 _quantity
+  ) public view returns (address[] memory, uint256[] memory) {
+    uint256[] memory notionalUnits = new uint256[](underlying.length);
+
+    for (uint256 i = 0; i < underlying.length; i++) {
+      notionalUnits[i] = _quantity.mul(quantities[i]);
+    }
+
+    return (underlying, notionalUnits);
   }
 }

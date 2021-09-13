@@ -58,6 +58,14 @@ contract MockCurveMetapool {
     return virtualPrice;
   }
 
+  function calc_withdraw_one_coin(uint256 _token_amount, int128 i)
+    external
+    view
+    returns (uint256)
+  {
+    return _token_amount;
+  }
+
   function add_liquidity(uint256[2] calldata amounts, uint256 min_mint_amounts)
     external
     returns (uint256)
