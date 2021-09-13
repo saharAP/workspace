@@ -8,8 +8,6 @@ const NODE_DIR = path.resolve(__dirname, "../node_modules");
 const INPUT_DIR = path.resolve(__dirname, "../contracts");
 const CONFIG_DIR = path.resolve(__dirname, "../docgen");
 const OUTPUT_DIR = path.resolve(__dirname, "../docgen/docs");
-const README_FILE = path.resolve(__dirname, "../docgen/README.md");
-const SUMMARY_FILE = path.resolve(__dirname, "../docgen/SUMMARY.md");
 const EXCLUDE_FILE = path.resolve(__dirname, "../docgen/exclude.txt");
 
 const excludeList = lines(EXCLUDE_FILE).map((line) => INPUT_DIR + "/" + line);
@@ -68,8 +66,8 @@ function fix(pathName) {
 fs.writeFileSync(SUMMARY_FILE, "# Summary\n");
 fs.writeFileSync(".gitbook.yaml", "root: ./\n");
 fs.appendFileSync(".gitbook.yaml", "structure:\n");
-fs.appendFileSync(".gitbook.yaml", "  readme: " + README_FILE + "\n");
-fs.appendFileSync(".gitbook.yaml", "  summary: " + SUMMARY_FILE + "\n");
+fs.appendFileSync(".gitbook.yaml", "  readme: docgen/README.md\n");
+fs.appendFileSync(".gitbook.yaml", "  summary: docgen/SUMMARY.md\n");
 
 scan(INPUT_DIR, "");
 
