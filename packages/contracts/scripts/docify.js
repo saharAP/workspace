@@ -74,10 +74,10 @@ fs.appendFileSync(".gitbook.yaml", "  summary: " + SUMMARY_FILE + "\n");
 scan(INPUT_DIR, "");
 
 const args = [
-  GLOBAL_NODE_DIR + "/solidity-docgen/dist/cli.js",
+  GLOBAL_NODE_DIR + "/@anthonymartin/solidity-docgen/dist/cli.js",
   "--input=" + INPUT_DIR,
   "--output=" + OUTPUT_DIR,
-  "--helpers=" + GLOBAL_NODE_DIR + "/solidity-docgen/dist/handlebars",
+  "--helpers=" + GLOBAL_NODE_DIR + "/@anthonymartin/solidity-docgen/dist/handlebars",
   "--templates=" + CONFIG_DIR,
   "--exclude=" + excludeListPathName.toString(),
   "--solc-module=" + NODE_DIR + "/solc",
