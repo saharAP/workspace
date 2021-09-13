@@ -1,0 +1,39 @@
+# This workflow will automatically generate documentation for develop branch
+
+name: Contracts Docgen
+
+on:
+  push:
+    branches:
+      - develop
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [14.x]
+        # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
+    steps:
+      - uses: actions/checkout@v2
+      - uses: canastro/copy-file-action@master
+        name: "copy env file"
+        with:
+          source: .env.example
+          target: .env
+      - uses: borales/actions-yarn@v2.3.0
+        name: "yarn install"
+        with:
+          cmd: install # will run `yarn install` command
+      - uses: borales/actions-yarn@v2.3.0
+        name: "generate documentation"
+        with:
+          cmd: lerna run --scope @popcorn/contracts docify # will run `yarn lerna run --scope @popcorn/contracts docify` command
+      - name: deploy
+        uses: s0/git-publish-subdir-action@develop
+        env:
+          REPO: self
+          BRANCH: develop
+          FOLDER: packages/contracts/
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          MESSAGE: "Build: ({sha}) {msg}" # The commit message
