@@ -18,7 +18,7 @@
     "prettify": "yarn lint-staged --allow-empty"
   },
   "lint-staged": {
-    "*.{sol}": "prettier --write"
+    "*.{sol,ts,tsx}": "prettier --write"
   },
   "devDependencies": {
     "@float-capital/solidity-coverage": "^0.7.17",
