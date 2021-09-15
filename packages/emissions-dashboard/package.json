@@ -6,7 +6,11 @@
     "build": "yarn next build",
     "export": "yarn next export",
     "jest": "jest",
-    "prettier": "prettier"
+    "prettier": "prettier",
+    "prettify": "yarn lint-staged --allow-empty"
+  },
+  "lint-staged": {
+    "*.{tsx,ts}": "prettier --write"
   },
   "dependencies": {
     "@ethersproject/contracts": "^5.0.12",

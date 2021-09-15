@@ -75,7 +75,7 @@ contract Staking is IStaking, Owned, ReentrancyGuard, Defended {
     if (lockEndTime == 0 || lockEndTime < currentTime || balance == 0) {
       return 0;
     }
-    
+
     uint256 timeTillEnd = ((lockEndTime.sub(currentTime)).div(1 hours)).mul(
       1 hours
     );

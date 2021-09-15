@@ -28,6 +28,9 @@
   "[typescriptreact]": {
     "editor.formatOnSave": true,
   },
+  "[solidity]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
   "editor.tabCompletion": "on",
   "editor.tabSize": 2,
   "prettier.eslintIntegration": true,
