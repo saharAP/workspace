@@ -1,9 +1,9 @@
 import { BigNumber } from "@ethersproject/bignumber";
 import { parseEther } from "@ethersproject/units";
-import { HysiBatchInteraction } from "../../typechain/HysiBatchInteraction";
+import { CurveMetapool, MockYearnV2Vault } from "packages/contracts/typechain";
 import { BasicIssuanceModule } from "../../lib/SetToken/vendor/set-protocol/types/BasicIssuanceModule";
 import { SetToken } from "../../lib/SetToken/vendor/set-protocol/types/SetToken";
-import { CurveMetapool, MockYearnV2Vault } from "packages/contracts/typechain";
+import { HysiBatchInteraction } from "../../typechain/HysiBatchInteraction";
 export enum BatchType {
   Mint,
   Redeem,
@@ -30,6 +30,7 @@ export interface ComponentMap {
 }
 export class HysiBatchInteractionAdapter {
   constructor(private contract: HysiBatchInteraction) {}
+
   async getBatch(batchId: string): Promise<Batch> {
     const batch = await this.contract.batches(batchId);
     return {
@@ -43,6 +44,7 @@ export class HysiBatchInteractionAdapter {
       claimableTokenAddress: batch.claimableTokenAddress,
     };
   }
+
   async calculateAmountToReceiveForClaim(batchId, address): Promise<BigNumber> {
     const batch = await this.contract.batches(batchId);
     const unclaimedShares = batch.unclaimedShares;
@@ -53,11 +55,12 @@ export class HysiBatchInteractionAdapter {
       batchId,
       address
     );
-    const amountToReceive = accountBalance
-      .div(unclaimedShares)
-      .mul(claimableTokenBalance);
+    const amountToReceive = claimableTokenBalance
+      .mul(accountBalance)
+      .div(unclaimedShares);
     return amountToReceive;
   }
+
   static async getMinAmountOf3CrvToReceiveForBatchRedeem(
     slippage: number = 0.005,
     contracts: {
@@ -73,10 +76,11 @@ export class HysiBatchInteractionAdapter {
     const HYSIInBatch = (await contracts.hysiBatchInteraction.batches(batchId))
       .suppliedTokenBalance;
 
-    const components = await contracts.basicIssuanceModule.getRequiredComponentUnitsForIssue(
-      contracts.setToken.address,
-      HYSIInBatch
-    );
+    const components =
+      await contracts.basicIssuanceModule.getRequiredComponentUnitsForIssue(
+        contracts.setToken.address,
+        HYSIInBatch
+      );
     const componentAddresses = components[0];
     const componentAmounts = components[1];
 
