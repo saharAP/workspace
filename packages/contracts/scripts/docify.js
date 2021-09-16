@@ -2,6 +2,7 @@ const fs = require("fs");
 const path = require("path");
 const spawnSync = require("child_process").spawnSync;
 const readline = require("readline");
+const { exec } = require('child_process');
 
 const GLOBAL_NODE_DIR = path.resolve(__dirname, "../../../node_modules");
 const NODE_DIR = path.resolve(__dirname, "../node_modules");
@@ -94,6 +95,33 @@ fix(OUTPUT_DIR);
 
 console.log("\n\nDocify Report:");
 
+async function generateGraphs(docPathNameList) {
+  let count = 0;
+  const re = new RegExp("Missing `(.*?)` for (.*?) `(.*?)`");
+  for (const docPathName of docPathNameList) {
+    const originalName = path.basename(docPathName).slice(0, -3) + ".sol";
+	const inputContractPathName = INPUT_DIR + "/" + originalName
+	const outputGraphPathName = docPathName.slice(0, -3) + "_graph.png"
+	const outputInheritancePathName = docPathName.slice(0, -3) + "_inheritance.png"
+	
+	exec('surya graph ' + inputContractPathName + ' | dot -Tpng > ' + outputGraphPathName, (err, stdout, stderr) => {
+		if (err) {
+    //some err occurred
+			console.error(err)
+		}
+		});
+	exec('surya inheritance ' + inputContractPathName + ' | dot -Tpng > ' + outputInheritancePathName, (err, stdout, stderr) => {
+		if (err) {
+			//some err occurred
+			console.error(err)
+		}
+        });
+  }
+  console.log(`Total of ${count} missing documentations for contracts.`);
+}
+
+generateGraphs(postCheckPathNameList).then((_) => {});
+
 async function generateDocReport(docPathNameList) {
   let count = 0;
   const re = new RegExp("Missing `(.*?)` for (.*?) `(.*?)`");
@@ -119,3 +147,4 @@ async function generateDocReport(docPathNameList) {
 }
 
 generateDocReport(postCheckPathNameList).then((_) => {});
+
