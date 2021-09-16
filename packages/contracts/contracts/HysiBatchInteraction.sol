@@ -223,7 +223,7 @@ contract HysiBatchInteraction is Owned {
    * @notice Claims funds after the batch has been processed (get HYSI from a mint batch and 3CRV from a redeem batch)
    * @param batchId_ Id of batch to claim from
    */
-  function claim(bytes32 batchId_) external {
+  function claim(bytes32 batchId_) external returns (uint256) {
     Batch storage batch = batches[batchId_];
     require(batch.claimable, "not yet claimable");
 
@@ -259,6 +259,8 @@ contract HysiBatchInteraction is Owned {
       accountBalance,
       tokenAmountToClaim
     );
+
+    return tokenAmountToClaim;
   }
 
   /**
