@@ -72,6 +72,7 @@ contract HysiBatchInteraction is Owned {
   IERC20 public threeCrv;
   BasicIssuanceModule public setBasicIssuanceModule;
   ISetToken public setToken;
+  address public zapper;
   mapping(address => CurvePoolTokenPair) public curvePoolTokenPairs;
 
   /**
@@ -170,7 +171,7 @@ contract HysiBatchInteraction is Owned {
    * @param recipient_ User that gets the shares attributed to (for use in zapper contract)
    * @dev Should this be secured we nonReentrant?
    */
-  function depositForMint(uint256 amount_ address recipient_) external {
+  function depositForMint(uint256 amount_, address recipient_) external {
     require(threeCrv.balanceOf(msg.sender) >= amount_, "insufficent balance");
     threeCrv.transferFrom(msg.sender, address(this), amount_);
     _deposit(amount_, currentMintBatchId, recipient_);
@@ -194,9 +195,19 @@ contract HysiBatchInteraction is Owned {
    * @param amountToWithdraw_ Amount of HYSI or 3CRV to be withdrawn from the queue (depending on mintBatch / redeemBatch)
    * @param account_ User that gets the shares attributed to (for use in zapper contract)
    */
-  function withdrawFromBatch(bytes32 batchId_, uint256 amountToWithdraw_, address account_)
-    external
-  {
+  function withdrawFromBatch(
+    bytes32 batchId_,
+    uint256 amountToWithdraw_,
+    address account_
+  ) external {
+    require(
+      msg.sender == zapper || msg.sender == account_,
+      "you cant transfer other funds"
+    );
+    address recipient = account_;
+    if (msg.sender == zapper) {
+      recipient = msg.sender;
+    }
     Batch storage batch = batches[batchId_];
     uint256 accountBalance = accountBalances[batchId_][account_];
     require(batch.claimable == false, "already processed");
@@ -206,18 +217,16 @@ contract HysiBatchInteraction is Owned {
     );
 
     //At this point the share balance is equal to the supplied token and can be used interchangeably
-    accountBalances[batchId_][account_] = accountBalance.sub(
-      amountToWithdraw_
-    );
+    accountBalances[batchId_][account_] = accountBalance.sub(amountToWithdraw_);
     batch.suppliedTokenBalance = batch.suppliedTokenBalance.sub(
       amountToWithdraw_
     );
     batch.unclaimedShares = batch.unclaimedShares.sub(amountToWithdraw_);
 
     if (batch.batchType == BatchType.Mint) {
-      threeCrv.safeTransfer(account_, amountToWithdraw_);
+      threeCrv.safeTransfer(recipient, amountToWithdraw_);
     } else {
-      setToken.safeTransfer(account_, amountToWithdraw_);
+      setToken.safeTransfer(recipient, amountToWithdraw_);
     }
     emit WithdrawnFromBatch(batchId_, amountToWithdraw_, account_);
   }
@@ -227,9 +236,21 @@ contract HysiBatchInteraction is Owned {
    * @param batchId_ Id of batch to claim from
    * @param account_ User that gets the shares attributed to (for use in zapper contract)
    */
-  function claim(bytes32 batchId_, address account_) external returns (uint256) {
+  function claim(bytes32 batchId_, address account_)
+    external
+    returns (uint256)
+  {
     Batch storage batch = batches[batchId_];
     require(batch.claimable, "not yet claimable");
+
+    require(
+      msg.sender == zapper || msg.sender == account_,
+      "you cant transfer other funds"
+    );
+    address recipient = account_;
+    if (msg.sender == zapper) {
+      recipient = msg.sender;
+    }
 
     uint256 accountBalance = accountBalances[batchId_][account_];
     require(
@@ -252,17 +273,12 @@ contract HysiBatchInteraction is Owned {
 
     //Transfer token
     if (batch.batchType == BatchType.Mint) {
-      setToken.safeTransfer(account_, tokenAmountToClaim);
+      setToken.safeTransfer(recipient, tokenAmountToClaim);
     } else {
-      threeCrv.safeTransfer(account_, tokenAmountToClaim);
+      threeCrv.safeTransfer(recipient, tokenAmountToClaim);
     }
 
-    emit Claimed(
-      account_,
-      batch.batchType,
-      accountBalance,
-      tokenAmountToClaim
-    );
+    emit Claimed(account_, batch.batchType, accountBalance, tokenAmountToClaim);
 
     return tokenAmountToClaim;
   }
@@ -310,11 +326,11 @@ contract HysiBatchInteraction is Owned {
     require(totalAmount > 0, "totalAmount must be larger 0");
 
     if (BatchType.Mint == batchType) {
-      _deposit(totalAmount, currentRedeemBatchId);
+      _deposit(totalAmount, currentRedeemBatchId, msg.sender);
     }
 
     if (BatchType.Redeem == batchType) {
-      _deposit(totalAmount, currentMintBatchId);
+      _deposit(totalAmount, currentMintBatchId, msg.sender);
     }
 
     emit MovedUnclaimedDepositsIntoCurrentBatch(
@@ -594,7 +610,11 @@ contract HysiBatchInteraction is Owned {
    * @param recipient_ User that gets the shares attributed to (for use in zapper contract)
    * @dev This function will be called by depositForMint or depositForRedeem and simply reduces code duplication
    */
-  function _deposit(uint256 amount_, bytes32 currentBatchId_, address recipient_) internal {
+  function _deposit(
+    uint256 amount_,
+    bytes32 currentBatchId_,
+    address recipient_
+  ) internal {
     Batch storage batch = batches[currentBatchId_];
 
     //Add the new funds to the batch
@@ -741,5 +761,13 @@ contract HysiBatchInteraction is Owned {
    */
   function setRedeemThreshold(uint256 threshold_) external onlyOwner {
     redeemThreshold = threshold_;
+  }
+
+  /**
+   * @notice Set the address of HysiBatchZapper to allow the zapper to deposit and claim for user
+   * @param zapper_ Address of the HysiBatchZapper
+   */
+  function setZapper(address zapper_) external onlyOwner {
+    zapper = zapper_;
   }
 }

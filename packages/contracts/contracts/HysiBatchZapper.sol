@@ -21,17 +21,19 @@ contract HysiBatchZapper {
 
   /* ========== EVENTS ========== */
 
-  event ZappedIntoQueue(uint256 triCurveAmount, address account);
+  event ZappedIntoQueue(uint256 threeCurveAmount, address account);
   event ZappedOutOfQueue(
-    uint256 triCurveAmount,
     bytes32 batchId,
     uint8 stableCoinIndex,
+    uint256 threeCurveAmount,
+    uint256 stableCoinAmount,
     address account
   );
   event ClaimedIntoStable(
-    uint256 triCurveAmount,
     bytes32 batchId,
     uint8 stableCoinIndex,
+    uint256 threeCurveAmount,
+    uint256 stableCoinAmount,
     address account
   );
 
@@ -71,6 +73,7 @@ contract HysiBatchZapper {
       threeCrvAmount
     );
     hysiBatchInteraction.depositForMint(threeCrvAmount, msg.sender);
+    emit ZappedIntoQueue(threeCrvAmount, msg.sender);
   }
 
   function zapOutOfQueue(
@@ -84,20 +87,17 @@ contract HysiBatchZapper {
       amountToWithdraw_,
       msg.sender
     );
-    threeCrv.safeTransferFrom(msg.sender, address(this), amounts_[0]);
-    curve3Pool.remove_liquidity_one_coin(
+    uint256 stableBalance = _swapAndTransfer3Crv(
       amountToWithdraw_,
       stableCoinIndex_,
       min_amount_
     );
-    uint256 stableBalance = stablecoins[stableCoinIndex_].balanceOf(
-      address(this)
-    );
-    stablecoins[stableCoinIndex_].safeTransfer(stableBalance, msg.sender);
+
     emit ZappedOutOfQueue(
-      amountToWithdraw_,
       batchId_,
       stableCoinIndex_,
+      amountToWithdraw_,
+      stableBalance,
       msg.sender
     );
   }
@@ -107,22 +107,37 @@ contract HysiBatchZapper {
     uint8 stableCoinIndex_,
     uint256 min_amount_
   ) public {
-    //TODO check if batch will return threeCrv or hysi -> error if it returns hysi
-    uint256 triCurveAmount = hysiBatchInteraction.claim(batchId_);
+    uint256 threeCurveAmount = hysiBatchInteraction.claim(batchId_, msg.sender);
+    uint256 stableBalance = _swapAndTransfer3Crv(
+      threeCurveAmount,
+      stableCoinIndex_,
+      min_amount_
+    );
+
+    emit ClaimedIntoStable(
+      batchId_,
+      stableCoinIndex_,
+      threeCurveAmount,
+      stableBalance,
+      msg.sender
+    );
+  }
+
+  function _swapAndTransfer3Crv(
+    uint256 threeCurveAmount_,
+    uint8 stableCoinIndex_,
+    uint256 min_amount_
+  ) internal returns (uint256) {
+    threeCrv.safeIncreaseAllowance(address(curve3Pool), threeCurveAmount_);
     curve3Pool.remove_liquidity_one_coin(
-      triCurveAmount,
+      threeCurveAmount_,
       stableCoinIndex_,
       min_amount_
     );
     uint256 stableBalance = stablecoins[stableCoinIndex_].balanceOf(
       address(this)
     );
-    stablecoins[stableCoinIndex_].safeTransfer(stableBalance, msg.sender);
-    emit ClaimedIntoStable(
-      triCurveAmount,
-      batchId_,
-      stableCoinIndex_,
-      msg.sender
-    );
+    stablecoins[stableCoinIndex_].safeTransfer(msg.sender, stableBalance);
+    return stableBalance;
   }
 }
