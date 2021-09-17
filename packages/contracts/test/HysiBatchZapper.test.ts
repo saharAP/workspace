@@ -1,7 +1,9 @@
 import { SignerWithAddress } from "@nomiclabs/hardhat-ethers/signers";
+import { expect } from "chai";
 import { parseEther } from "ethers/lib/utils";
 import { ethers, waffle } from "hardhat";
 import {
+  HysiBatchZapper,
   MockCurveMetapool,
   MockCurveThreepool,
   MockERC20,
@@ -32,7 +34,7 @@ interface Contracts {
 
 const DAY = 60 * 60 * 24;
 
-const DepositorInitial = parseEther("100000");
+const DepositorInitial = parseEther("100");
 let owner: SignerWithAddress, depositor: SignerWithAddress;
 let contracts: Contracts;
 
@@ -53,7 +55,6 @@ async function deployContracts(): Promise<Contracts> {
   const mockBasicCoin = await (
     await MockERC20.deploy("Basic", "Basic", 18)
   ).deployed();
-  await mockDAI.mint(depositor.address, DepositorInitial);
 
   const mockCrvUSDX = await (
     await MockERC20.deploy("crvUSDX", "crvUSDX", 18)
@@ -63,7 +64,6 @@ async function deployContracts(): Promise<Contracts> {
   ).deployed();
 
   const mockSetToken = await await MockERC20.deploy("setToken", "setToken", 18);
-  await contracts.mockSetToken.mint(depositor.address, parseEther("100"));
 
   const MockYearnV2Vault = await ethers.getContractFactory("MockYearnV2Vault");
   const mockYearnVaultUSDX = await (
@@ -144,25 +144,36 @@ async function deployContracts(): Promise<Contracts> {
   const hysiBatchZapper = await (
     await (
       await ethers.getContractFactory("HysiBatchZapper")
-    ).deploy(hysiBatchInteraction.address, mockCurveThreePool.address)
+    ).deploy(
+      hysiBatchInteraction.address,
+      mockCurveThreePool.address,
+      mockDAI.address
+    )
   ).deployed();
 
-  await contracts.mockYearnVaultUSDX.mint(
-    contracts.mockBasicIssuanceModule.address,
+  await mockYearnVaultUSDX.mint(
+    mockBasicIssuanceModule.address,
     parseEther("20000")
   );
-  await contracts.mockYearnVaultUST.mint(
-    contracts.mockBasicIssuanceModule.address,
+  await mockYearnVaultUST.mint(
+    mockBasicIssuanceModule.address,
     parseEther("20000")
   );
-  await contracts.mockCrvUSDX.mint(
-    contracts.mockYearnVaultUSDX.address,
-    parseEther("20000")
-  );
-  await contracts.mockCrvUST.mint(
-    contracts.mockYearnVaultUST.address,
-    parseEther("20000")
-  );
+  await mockCrvUSDX.mint(mockYearnVaultUSDX.address, parseEther("20000"));
+  await mockCrvUST.mint(mockYearnVaultUST.address, parseEther("20000"));
+
+  await mockDAI.mint(depositor.address, DepositorInitial);
+  await mockDAI
+    .connect(depositor)
+    .approve(hysiBatchZapper.address, DepositorInitial);
+  await mockDAI
+    .connect(depositor)
+    .approve(mockCurveThreePool.address, DepositorInitial);
+
+  await mockSetToken.mint(depositor.address, DepositorInitial);
+  await mockSetToken
+    .connect(depositor)
+    .approve(hysiBatchZapper.address, DepositorInitial);
 
   return {
     mock3Crv,
@@ -183,11 +194,6 @@ async function deployContracts(): Promise<Contracts> {
   };
 }
 
-const timeTravel = async (time: number) => {
-  await provider.send("evm_increaseTime", [time]);
-  await provider.send("evm_mine", []);
-};
-
 const deployAndAssignContracts = async () => {
   [owner, depositor] = await ethers.getSigners();
   contracts = await deployContracts();
@@ -196,13 +202,69 @@ const deployAndAssignContracts = async () => {
     .approve(contracts.hysiBatchInteraction.address, parseEther("100000000"));
 };
 
-describe("HysiBatchInteraction", function () {
+describe("HysiBatchZapper", function () {
   beforeEach(async function () {
     await deployAndAssignContracts();
   });
   describe("zapIntoQueue", function () {
-    it("zaps into a mint queue", async function () {
-      await contracts.hysiBatchZapper.zapIntoQueue();
+    // it("zaps into a mint queue", async function () {
+    //   console.log(
+    //     await (await contracts.mockDAI.balanceOf(depositor.address))
+    //       .div(parseEther("1"))
+    //       .toString()
+    //   );
+    //   const result = await contracts.hysiBatchZapper
+    //     .connect(depositor)
+    //     .zapIntoQueue([parseEther("1"), 0, 0], 0);
+
+    //   expect(result)
+    //     .to.emit(contracts.hysiBatchZapper, "ZappedIntoQueue")
+    //     .withArgs(parseEther("1"), depositor.address);
+
+    //   expect(result)
+    //     .to.emit(contracts.hysiBatchInteraction, "Deposit")
+    //     .withArgs(depositor.address, parseEther("1"));
+    // });
+    it("echoes", async function () {
+      const result = await contracts.hysiBatchZapper.echo(
+        [parseEther("1"), 0, 0],
+        0
+      );
+      expect(result).to.emit(contracts.hysiBatchZapper, "Echo");
+      expect(result)
+        .to.emit(contracts.mockCurveThreePool, "EchoValues")
+        .withArgs(0);
+    });
+    it.skip("tests", async function () {
+      console.log(
+        await (await contracts.mockDAI.balanceOf(depositor.address)).toString()
+      );
+
+      const result0 = await contracts.mockCurveThreePool
+        .connect(depositor)
+        .add_liquidity([parseEther("1"), 0, 0], 0);
+      const result = await contracts.hysiBatchZapper
+        .connect(depositor)
+        .testPool([parseEther("1"), 0, 0], 0);
+      const result1 = await contracts.hysiBatchZapper
+        .connect(depositor)
+        .testPoolForContract([parseEther("1"), 0, 0], 0);
+
+      expect(result)
+        .to.emit(contracts.mockCurveThreePool, "LiquidityAdded")
+        .withArgs(parseEther("1"), depositor.address);
+
+      console.log(
+        await (await contracts.mockDAI.balanceOf(depositor.address)).toString()
+      );
+      console.log(
+        await (await contracts.mock3Crv.balanceOf(depositor.address)).toString()
+      );
+      console.log(
+        await (
+          await contracts.mock3Crv.balanceOf(contracts.hysiBatchZapper.address)
+        ).toString()
+      );
     });
   });
 });

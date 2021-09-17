@@ -16,6 +16,8 @@ contract HysiBatchZapper {
 
   IHysiBatchInteraction private hysiBatchInteraction;
   Curve3Pool private curve3Pool;
+  IERC20 private threeCrv;
+  IERC20[3] private stablecoins;
 
   /* ========== EVENTS ========== */
 
@@ -33,27 +35,42 @@ contract HysiBatchZapper {
     address account
   );
 
+  event Echo(uint256 amount);
+
   /* ========== CONSTRUCTOR ========== */
 
   constructor(
     IHysiBatchInteraction hysiBatchInteraction_,
-    Curve3Pool curve3Pool_
+    Curve3Pool curve3Pool_,
+    IERC20 threeCrv_,
+    IERC20[3] memory stablecoins_
   ) {
     hysiBatchInteraction = hysiBatchInteraction_;
     curve3Pool = curve3Pool_;
+    threeCrv = threeCrv_;
+    stablecoins = stablecoins_;
   }
 
   /* ========== MUTATIVE FUNCTIONS ========== */
 
-  function zapIntoQueue(uint256[3] calldata amount_, uint256 min_mint_amounts_)
+  function zapIntoQueue(uint256[3] memory amounts_, uint256 min_mint_amounts_)
     public
   {
-    uint256 triCurveAmount = curve3Pool.add_liquidity(
-      amount_,
+    for (uint8 i; i < amounts_.length; i++) {
+      if (amounts_[i] > 0) {
+        stablecoins[i].safeTransferFrom(msg.sender, address(this), amounts_[0]);
+        stablecoins[i].safeIncreaseAllowance(address(curve3Pool), amounts_[0]);
+      }
+    }
+    uint256 threeCrvAmount = curve3Pool.add_liquidity(
+      amounts_,
       min_mint_amounts_
     );
-    hysiBatchInteraction.depositForMint(triCurveAmount);
-    emit ZappedIntoQueue(triCurveAmount, msg.sender);
+    threeCrv.safeIncreaseAllowance(
+      address(hysiBatchInteraction),
+      threeCrvAmount
+    );
+    hysiBatchInteraction.depositForMint(threeCrvAmount, msg.sender);
   }
 
   function zapOutOfQueue(
@@ -62,12 +79,21 @@ contract HysiBatchZapper {
     uint8 stableCoinIndex_,
     uint256 min_amount_
   ) public {
-    hysiBatchInteraction.withdrawFromBatch(batchId_, amountToWithdraw_);
-    Curve3Pool.remove_liquidity_one_coin(
+    hysiBatchInteraction.withdrawFromBatch(
+      batchId_,
+      amountToWithdraw_,
+      msg.sender
+    );
+    threeCrv.safeTransferFrom(msg.sender, address(this), amounts_[0]);
+    curve3Pool.remove_liquidity_one_coin(
       amountToWithdraw_,
       stableCoinIndex_,
       min_amount_
     );
+    uint256 stableBalance = stablecoins[stableCoinIndex_].balanceOf(
+      address(this)
+    );
+    stablecoins[stableCoinIndex_].safeTransfer(stableBalance, msg.sender);
     emit ZappedOutOfQueue(
       amountToWithdraw_,
       batchId_,
@@ -81,12 +107,17 @@ contract HysiBatchZapper {
     uint8 stableCoinIndex_,
     uint256 min_amount_
   ) public {
+    //TODO check if batch will return threeCrv or hysi -> error if it returns hysi
     uint256 triCurveAmount = hysiBatchInteraction.claim(batchId_);
-    Curve3Pool.remove_liquidity_one_coin(
+    curve3Pool.remove_liquidity_one_coin(
       triCurveAmount,
       stableCoinIndex_,
       min_amount_
     );
+    uint256 stableBalance = stablecoins[stableCoinIndex_].balanceOf(
+      address(this)
+    );
+    stablecoins[stableCoinIndex_].safeTransfer(stableBalance, msg.sender);
     emit ClaimedIntoStable(
       triCurveAmount,
       batchId_,

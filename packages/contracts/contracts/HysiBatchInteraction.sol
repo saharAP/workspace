@@ -167,35 +167,38 @@ contract HysiBatchInteraction is Owned {
   /**
    * @notice Deposits funds in the current mint batch
    * @param  amount_ Amount of 3cr3CRV to use for minting
+   * @param recipient_ User that gets the shares attributed to (for use in zapper contract)
    * @dev Should this be secured we nonReentrant?
    */
-  function depositForMint(uint256 amount_) external {
+  function depositForMint(uint256 amount_ address recipient_) external {
     require(threeCrv.balanceOf(msg.sender) >= amount_, "insufficent balance");
     threeCrv.transferFrom(msg.sender, address(this), amount_);
-    _deposit(amount_, currentMintBatchId);
+    _deposit(amount_, currentMintBatchId, recipient_);
   }
 
   /**
    * @notice deposits funds in the current redeem batch
    * @param  amount_ amount of HYSI to be redeemed
+   * @param recipient_ User that gets the shares attributed to (for use in zapper contract)
    * @dev Should this be secured we nonReentrant?
    */
-  function depositForRedeem(uint256 amount_) external {
+  function depositForRedeem(uint256 amount_, address recipient_) external {
     require(setToken.balanceOf(msg.sender) >= amount_, "insufficient balance");
     setToken.transferFrom(msg.sender, address(this), amount_);
-    _deposit(amount_, currentRedeemBatchId);
+    _deposit(amount_, currentRedeemBatchId, recipient_);
   }
 
   /**
    * @notice This function allows a user to withdraw their funds from a batch before that batch has been processed
    * @param batchId_ From which batch should funds be withdrawn from
    * @param amountToWithdraw_ Amount of HYSI or 3CRV to be withdrawn from the queue (depending on mintBatch / redeemBatch)
+   * @param account_ User that gets the shares attributed to (for use in zapper contract)
    */
-  function withdrawFromBatch(bytes32 batchId_, uint256 amountToWithdraw_)
+  function withdrawFromBatch(bytes32 batchId_, uint256 amountToWithdraw_, address account_)
     external
   {
     Batch storage batch = batches[batchId_];
-    uint256 accountBalance = accountBalances[batchId_][msg.sender];
+    uint256 accountBalance = accountBalances[batchId_][account_];
     require(batch.claimable == false, "already processed");
     require(
       accountBalance >= amountToWithdraw_,
@@ -203,7 +206,7 @@ contract HysiBatchInteraction is Owned {
     );
 
     //At this point the share balance is equal to the supplied token and can be used interchangeably
-    accountBalances[batchId_][msg.sender] = accountBalance.sub(
+    accountBalances[batchId_][account_] = accountBalance.sub(
       amountToWithdraw_
     );
     batch.suppliedTokenBalance = batch.suppliedTokenBalance.sub(
@@ -212,22 +215,23 @@ contract HysiBatchInteraction is Owned {
     batch.unclaimedShares = batch.unclaimedShares.sub(amountToWithdraw_);
 
     if (batch.batchType == BatchType.Mint) {
-      threeCrv.safeTransfer(msg.sender, amountToWithdraw_);
+      threeCrv.safeTransfer(account_, amountToWithdraw_);
     } else {
-      setToken.safeTransfer(msg.sender, amountToWithdraw_);
+      setToken.safeTransfer(account_, amountToWithdraw_);
     }
-    emit WithdrawnFromBatch(batchId_, amountToWithdraw_, msg.sender);
+    emit WithdrawnFromBatch(batchId_, amountToWithdraw_, account_);
   }
 
   /**
    * @notice Claims funds after the batch has been processed (get HYSI from a mint batch and 3CRV from a redeem batch)
    * @param batchId_ Id of batch to claim from
+   * @param account_ User that gets the shares attributed to (for use in zapper contract)
    */
-  function claim(bytes32 batchId_) external returns (uint256) {
+  function claim(bytes32 batchId_, address account_) external returns (uint256) {
     Batch storage batch = batches[batchId_];
     require(batch.claimable, "not yet claimable");
 
-    uint256 accountBalance = accountBalances[batchId_][msg.sender];
+    uint256 accountBalance = accountBalances[batchId_][account_];
     require(
       accountBalance <= batch.unclaimedShares,
       "claiming too many shares"
@@ -244,17 +248,17 @@ contract HysiBatchInteraction is Owned {
       tokenAmountToClaim
     );
     batch.unclaimedShares = batch.unclaimedShares.sub(accountBalance);
-    accountBalances[batchId_][msg.sender] = 0;
+    accountBalances[batchId_][account_] = 0;
 
     //Transfer token
     if (batch.batchType == BatchType.Mint) {
-      setToken.safeTransfer(msg.sender, tokenAmountToClaim);
+      setToken.safeTransfer(account_, tokenAmountToClaim);
     } else {
-      threeCrv.safeTransfer(msg.sender, tokenAmountToClaim);
+      threeCrv.safeTransfer(account_, tokenAmountToClaim);
     }
 
     emit Claimed(
-      msg.sender,
+      account_,
       batch.batchType,
       accountBalance,
       tokenAmountToClaim
@@ -586,23 +590,24 @@ contract HysiBatchInteraction is Owned {
   /**
    * @notice Deposit either HYSI or 3CRV in their respective batches
    * @param amount_ The amount of 3CRV or HYSI a user is depositing
-   * @param currentBatchId The current reedem or mint batch id to place the funds in the next batch to be processed
+   * @param currentBatchId_ The current reedem or mint batch id to place the funds in the next batch to be processed
+   * @param recipient_ User that gets the shares attributed to (for use in zapper contract)
    * @dev This function will be called by depositForMint or depositForRedeem and simply reduces code duplication
    */
-  function _deposit(uint256 amount_, bytes32 currentBatchId) internal {
-    Batch storage batch = batches[currentBatchId];
+  function _deposit(uint256 amount_, bytes32 currentBatchId_, address recipient_) internal {
+    Batch storage batch = batches[currentBatchId_];
 
     //Add the new funds to the batch
     batch.suppliedTokenBalance = batch.suppliedTokenBalance.add(amount_);
     batch.unclaimedShares = batch.unclaimedShares.add(amount_);
-    accountBalances[currentBatchId][msg.sender] = accountBalances[
-      currentBatchId
-    ][msg.sender].add(amount_);
+    accountBalances[currentBatchId_][recipient_] = accountBalances[
+      currentBatchId_
+    ][recipient_].add(amount_);
 
     //Save the batchId for the user so they can be retrieved to claim the batch
-    accountBatches[msg.sender].push(currentBatchId);
+    accountBatches[recipient_].push(currentBatchId_);
 
-    emit Deposit(msg.sender, amount_);
+    emit Deposit(recipient_, amount_);
   }
 
   /**
