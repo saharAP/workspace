@@ -3,7 +3,9 @@ import { SignerWithAddress } from "@nomiclabs/hardhat-ethers/signers";
 import { expect } from "chai";
 import { parseEther } from "ethers/lib/utils";
 import { ethers, network, waffle } from "hardhat";
-import { ComponentMap } from "../../adapters/HYSIBatchInteraction/HYSIBatchInteractionAdapter";
+import HysiBatchInteractionAdapter, {
+  ComponentMap,
+} from "../../adapters/HYSIBatchInteraction/HYSIBatchInteractionAdapter";
 import CurveMetapoolAbi from "../../lib/Curve/CurveMetapoolAbi.json";
 import BasicIssuanceModuleAbi from "../../lib/SetToken/vendor/set-protocol/artifacts/BasicIssuanceModule.json";
 import SetTokenAbi from "../../lib/SetToken/vendor/set-protocol/artifacts/SetToken.json";
@@ -418,8 +420,6 @@ describe("HysiBatchZapper Network Test", function () {
   });
   describe("claimAndSwapToStable", function () {
     it("claims batch and swaps into stablecoin", async function () {
-      const claimableAmount = parseEther("2595.765185520976600094");
-      const expectedStableAmount = parseEther("2643.970135884790360710");
       //Create Batch
       await contracts.hysiBatchInteraction
         .connect(depositor)
@@ -431,6 +431,12 @@ describe("HysiBatchZapper Network Test", function () {
       timeTravel(1800);
       await contracts.hysiBatchInteraction.connect(owner).batchRedeem(0);
 
+      const amountToReceive = await new HysiBatchInteractionAdapter(
+        contracts.hysiBatchInteraction
+      ).calculateAmountToReceiveForClaim(batchId, depositor.address);
+      const expectedStableAmount =
+        await contracts.threePool.calc_withdraw_one_coin(amountToReceive, 0);
+
       //Actual Test
       const result = await contracts.hysiBatchZapper
         .connect(depositor)
@@ -441,7 +447,7 @@ describe("HysiBatchZapper Network Test", function () {
         .withArgs(
           batchId,
           0,
-          claimableAmount,
+          amountToReceive,
           expectedStableAmount,
           depositor.address
         );
@@ -452,7 +458,7 @@ describe("HysiBatchZapper Network Test", function () {
           depositor.address,
           BatchType.Redeem,
           parseEther("10"),
-          claimableAmount
+          amountToReceive
         );
 
       expect(await contracts.dai.balanceOf(depositor.address)).to.equal(
