@@ -56,7 +56,7 @@ contract HysiBatchZapper {
   /* ========== MUTATIVE FUNCTIONS ========== */
 
   function zapIntoQueue(uint256[3] memory amounts_, uint256 min_mint_amounts_)
-    public
+    external
   {
     for (uint8 i; i < amounts_.length; i++) {
       if (amounts_[i] > 0) {
@@ -64,10 +64,8 @@ contract HysiBatchZapper {
         stablecoins[i].safeIncreaseAllowance(address(curve3Pool), amounts_[0]);
       }
     }
-    uint256 threeCrvAmount = curve3Pool.add_liquidity(
-      amounts_,
-      min_mint_amounts_
-    );
+    curve3Pool.add_liquidity(amounts_, min_mint_amounts_);
+    uint256 threeCrvAmount = threeCrv.balanceOf(address(this));
     threeCrv.safeIncreaseAllowance(
       address(hysiBatchInteraction),
       threeCrvAmount
@@ -81,7 +79,7 @@ contract HysiBatchZapper {
     uint256 amountToWithdraw_,
     uint8 stableCoinIndex_,
     uint256 min_amount_
-  ) public {
+  ) external {
     hysiBatchInteraction.withdrawFromBatch(
       batchId_,
       amountToWithdraw_,
@@ -106,7 +104,7 @@ contract HysiBatchZapper {
     bytes32 batchId_,
     uint8 stableCoinIndex_,
     uint256 min_amount_
-  ) public {
+  ) external {
     uint256 threeCurveAmount = hysiBatchInteraction.claim(batchId_, msg.sender);
     uint256 stableBalance = _swapAndTransfer3Crv(
       threeCurveAmount,
