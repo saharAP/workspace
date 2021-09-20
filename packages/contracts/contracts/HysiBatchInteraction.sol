@@ -13,6 +13,7 @@ import "./Interfaces/Integrations/YearnVault.sol";
 import "./Interfaces/Integrations/BasicIssuanceModule.sol";
 import "./Interfaces/Integrations/ISetToken.sol";
 import "./Interfaces/Integrations/CurveContracts.sol";
+import "./KeeperIncentive.sol";
 
 /*
 This Contract allows smaller depositors to mint and redeem HYSI without needing to through all the steps necessary on their own...
@@ -21,7 +22,7 @@ The HYSI is created from 4 different yToken which in turn need each a deposit of
 This means 12 approvals and 9 deposits are necessary to mint one HYSI.
 We Batch this process and allow users to pool their funds. Than we pay keeper to Mint or Redeem HYSI regularly.
 */
-contract HysiBatchInteraction is Owned {
+contract HysiBatchInteraction is Owned, KeeperIncentive {
   using SafeMath for uint256;
   using SafeERC20 for YearnVault;
   using SafeERC20 for ISetToken;
@@ -325,7 +326,7 @@ contract HysiBatchInteraction is Owned {
    * @dev This process leaves some leftovers which are partially used in the next mint batches.
    * @dev In order to get 3CRV we can implement a zap to move stables into the curve tri-pool
    */
-  function batchMint(uint256 minAmountToMint_) external {
+  function batchMint(uint256 minAmountToMint_) external keeperIncentive(0) {
     Batch storage batch = batches[currentMintBatchId];
 
     //Check if there was enough time between the last batch minting and this attempt...
@@ -466,7 +467,7 @@ contract HysiBatchInteraction is Owned {
    * @dev This function reedeems HYSI for the underlying yToken and deposits these yToken in curve Metapools for 3CRV
    * @dev In order to get stablecoins from 3CRV we can use a zap to redeem 3CRV for stables in the curve tri-pool
    */
-  function batchRedeem(uint256 min3crvToReceive_) external {
+  function batchRedeem(uint256 min3crvToReceive_) external keeperIncentive(0) {
     Batch storage batch = batches[currentRedeemBatchId];
 
     //Check if there was enough time between the last batch redemption and this attempt...
