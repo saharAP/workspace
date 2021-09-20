@@ -129,8 +129,10 @@ contract HysiBatchInteraction is Owned, KeeperIncentive {
     CurvePoolTokenPair[] memory curvePoolTokenPairs_,
     uint256 batchCooldown_,
     uint256 mintThreshold_,
-    uint256 redeemThreshold_
-  ) Owned(msg.sender) {
+    uint256 redeemThreshold_,
+    address governance_,
+    IERC20 pop_
+  ) Owned(msg.sender) KeeperIncentive(governance_, pop_) {
     require(address(threeCrv_) != address(0));
     require(address(setToken_) != address(0));
     require(address(basicIssuanceModule_) != address(0));

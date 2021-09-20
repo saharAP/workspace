@@ -17,12 +17,14 @@ import {
   ERC20,
   Faucet,
   HysiBatchInteraction,
+  MockERC20,
   MockYearnV2Vault,
 } from "../../typechain";
 
 const provider = waffle.provider;
 
 interface Contracts {
+  mockPop: MockERC20;
   threeCrv: ERC20;
   crvDUSD: ERC20;
   crvFRAX: ERC20;
@@ -124,6 +126,12 @@ async function deployContracts(): Promise<Contracts> {
     faucet.address,
     "0x152d02c7e14af6800000", // 100k ETH
   ]);
+
+  const mockPop = await (
+    await (
+      await ethers.getContractFactory("MockERC20")
+    ).deploy("POP", "POP", 18)
+  ).deployed();
 
   //Deploy Curve Token
   const threeCrv = (await ethers.getContractAt(
@@ -253,11 +261,14 @@ async function deployContracts(): Promise<Contracts> {
       ],
       2500,
       parseEther("200"),
-      parseEther("1")
+      parseEther("1"),
+      owner.address,
+      mockPop.address
     )
   ).deployed();
 
   return {
+    mockPop,
     threeCrv,
     crvDUSD,
     crvFRAX,
@@ -630,6 +641,19 @@ describe("HysiBatchInteraction Network Test", function () {
             contracts.hysiBatchInteraction.connect(owner).batchMint(0)
           ).to.be.revertedWith("can not execute batch action yet");
         });
+        it("reverts when called by someone other the keeper", async function () {
+          await contracts.threeCrv
+            .connect(depositor)
+            .approve(contracts.hysiBatchInteraction.address, parseEther("100"));
+          await contracts.hysiBatchInteraction
+            .connect(depositor)
+            .depositForMint(parseEther("100"));
+          await provider.send("evm_increaseTime", [2500]);
+
+          await expect(
+            contracts.hysiBatchInteraction.connect(depositor).batchMint(0)
+          ).to.be.revertedWith("you are not approved as a keeper");
+        });
       });
       context("success", function () {
         it("batch mints", async function () {
@@ -942,6 +966,19 @@ describe("HysiBatchInteraction Network Test", function () {
           await expect(
             contracts.hysiBatchInteraction.connect(owner).batchRedeem(0)
           ).to.be.revertedWith("can not execute batch action yet");
+        });
+        it("reverts when called by someone other the keeper", async function () {
+          await contracts.hysi
+            .connect(depositor)
+            .approve(contracts.hysiBatchInteraction.address, hysiBalance);
+          await contracts.hysiBatchInteraction
+            .connect(depositor)
+            .depositForRedeem(hysiBalance);
+          await provider.send("evm_increaseTime", [2500]);
+
+          await expect(
+            contracts.hysiBatchInteraction.connect(depositor).batchRedeem(0)
+          ).to.be.revertedWith("you are not approved as a keeper");
         });
         it("reverts when amount of 3crv to receive is less than slippage tolerance", async function () {
           this.timeout(25000);
