@@ -327,6 +327,7 @@ contract HysiBatchInteraction is Owned, KeeperIncentive {
    * @dev This function deposits 3CRV in the underlying Metapool and deposits these LP token to get yToken which in turn are used to mint HYSI
    * @dev This process leaves some leftovers which are partially used in the next mint batches.
    * @dev In order to get 3CRV we can implement a zap to move stables into the curve tri-pool
+   * @dev keeperIncentive(0) checks if the msg.sender is a permissioned keeper and pays them a reward for calling this function (see KeeperIncentive.sol)
    */
   function batchMint(uint256 minAmountToMint_) external keeperIncentive(0) {
     Batch storage batch = batches[currentMintBatchId];
@@ -468,6 +469,7 @@ contract HysiBatchInteraction is Owned, KeeperIncentive {
    * @param min3crvToReceive_ sets minimum amount of 3crv to redeem HYSI for, otherwise the transaction will revert
    * @dev This function reedeems HYSI for the underlying yToken and deposits these yToken in curve Metapools for 3CRV
    * @dev In order to get stablecoins from 3CRV we can use a zap to redeem 3CRV for stables in the curve tri-pool
+   * @dev keeperIncentive(0) checks if the msg.sender is a permissioned keeper and pays them a reward for calling this function (see KeeperIncentive.sol)
    */
   function batchRedeem(uint256 min3crvToReceive_) external keeperIncentive(0) {
     Batch storage batch = batches[currentRedeemBatchId];

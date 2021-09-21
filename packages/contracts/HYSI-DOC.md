@@ -3,13 +3,18 @@
 ## Intro
 The contract in question is ./contracts/HysiBatchInteraction.sol.
 
+It inherits ./contracts/KeeperIncentives.sol which handles permissions and payouts for Keeper. 
+
+Additionally ./contracts/HysiBatchZapper.sol allows user to interact with stablecoins directly without needing to use 3CRV. Some of the functions in HysiBatchInteraction were build with this contract in mind.
 
 In order to run tests copy .env.example into .env in the root folder.
 In .env set FORKING_RPC_URL to your rpc-url (We used alchemy since we encountered some issues with Infura) and FORKING_BLOCK_NUMBER to 12780680. Afterwards run ```yarn``` in root to install all dependencies.
 
 The tests are ./test/HysiBatchInteraction.test.ts and ./test/fork/BatchHysi.test.ts
 
-Run the tests with ```yarn hardhat test ./test/HysiBatchInteraction.test.ts``` or ```yarn hardhat test ./test/fork/BatchHysi.test.ts```
+Run the tests with ```yarn hardhat test ./test/HysiBatchInteraction.test.ts``` and ```yarn hardhat test ./test/fork/BatchHysi.test.ts```
+
+Run the KeeperIncentive test with ```yarn hardhat test ./test/HysiBatchInteraction.test.ts```.
 
 ## Business Logic
 HysiBatchInteraction was created to allow users to pool ressources and save on gas when minting or redeeming HYSI directly with stablecoins.
@@ -72,3 +77,16 @@ It is possible that a user has minted HYSI in the past and not claimed it yet. I
    5. Update claimableToken, unclaimedShares and shareBalance of the user
    6. Add the amount of token to the total amount of token that will be used
 3. Deposit the total amounts of token into either a new mint or redeem batch.
+
+
+### KeeperIncentive
+The inherited contract KeeperIncentive is taking care of permissions for keeper and paying incentives to keeper when they call BatchMint or BatchRedeem. It does not add any core business logic to the main contract. 
+
+If BatchMint or BatchRedeem get called by someone other than the keeper it reverts the function call. 
+
+When the keeperIncentive is enabled and the contract has a sufficient POP balance it will pay the keeper for calling the batchMint or BatchRedeem function. If this is not the case the function will still be executed but no rewards will be payed.
+
+
+
+
+

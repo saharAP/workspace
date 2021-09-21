@@ -65,13 +65,13 @@ async function deployContracts(): Promise<Contracts> {
     await (await ethers.getContractFactory("WETH9")).deploy()
   ).deployed()) as WETH9;
 
-  const Insurance = await (
+  const Insurance = (await (
     await (await ethers.getContractFactory("MockInsurance")).deploy()
-  ).deployed();
+  ).deployed()) as unknown as Contract;
 
-  const Treasury = await (
+  const Treasury = (await (
     await (await ethers.getContractFactory("MockTreasury")).deploy()
-  ).deployed();
+  ).deployed()) as unknown as Contract;
 
   const BeneficiaryVaults = await (
     await (
@@ -144,12 +144,12 @@ async function deployContracts(): Promise<Contracts> {
     WETHPairAddress,
     JSON.stringify(UniswapV2PairJSON.abi),
     owner
-  ) as IUniswapV2Pair;
+  ) as unknown as IUniswapV2Pair;
   const TestERC20Pair = new Contract(
     TestERC20PairAddress,
     JSON.stringify(UniswapV2PairJSON.abi),
     owner
-  ) as IUniswapV2Pair;
+  ) as unknown as IUniswapV2Pair;
   return {
     POP,
     TestERC20,
