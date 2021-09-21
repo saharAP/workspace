@@ -41,7 +41,7 @@ let contracts: Contracts;
 
 async function deployContracts(): Promise<Contracts> {
   const MockERC20 = await ethers.getContractFactory("MockERC20");
-
+  const mockPop = await (await MockERC20.deploy("POP", "POP", 18)).deployed();
   const mock3Crv = await (
     await MockERC20.deploy("3Crv", "3Crv", 18)
   ).deployed();
@@ -138,7 +138,9 @@ async function deployContracts(): Promise<Contracts> {
       ],
       1800,
       parseEther("20000"),
-      parseEther("200")
+      parseEther("200"),
+      owner.address,
+      mockPop.address
     )
   ).deployed()) as HysiBatchInteraction;
 
@@ -178,7 +180,7 @@ async function deployContracts(): Promise<Contracts> {
     .connect(depositor)
     .approve(hysiBatchInteraction.address, DepositorInitial);
 
-  await hysiBatchInteraction.setZapper(hysiBatchZapper.address);
+  await hysiBatchInteraction.connect(owner).setZapper(hysiBatchZapper.address);
 
   return {
     mock3Crv,
@@ -309,7 +311,7 @@ describe("HysiBatchZapper", function () {
       //Create Batch
       await contracts.hysiBatchInteraction
         .connect(depositor)
-        .depositForRedeem(parseEther("10"), depositor.address);
+        .depositForRedeem(parseEther("10"));
       const [batchId] = await contracts.hysiBatchInteraction.getAccountBatches(
         depositor.address
       );

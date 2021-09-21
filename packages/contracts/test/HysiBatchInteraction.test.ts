@@ -38,8 +38,7 @@ let owner: SignerWithAddress,
   depositor1: SignerWithAddress,
   depositor2: SignerWithAddress,
   depositor3: SignerWithAddress,
-  depositor4: SignerWithAddress,
-  depositor5: SignerWithAddress;
+  zapper: SignerWithAddress;
 let contracts: Contracts;
 
 async function deployContracts(): Promise<Contracts> {
@@ -55,8 +54,6 @@ async function deployContracts(): Promise<Contracts> {
   await mock3Crv.mint(depositor1.address, DepositorInitial);
   await mock3Crv.mint(depositor2.address, DepositorInitial);
   await mock3Crv.mint(depositor3.address, DepositorInitial);
-  await mock3Crv.mint(depositor4.address, DepositorInitial);
-  await mock3Crv.mint(depositor5.address, DepositorInitial);
 
   const mockCrvUSDX = await (
     await MockERC20.deploy("crvUSDX", "crvUSDX", 18)
@@ -153,15 +150,8 @@ const timeTravel = async (time: number) => {
 };
 
 const deployAndAssignContracts = async () => {
-  [
-    owner,
-    depositor,
-    depositor1,
-    depositor2,
-    depositor3,
-    depositor4,
-    depositor5,
-  ] = await ethers.getSigners();
+  [owner, depositor, depositor1, depositor2, depositor3, zapper] =
+    await ethers.getSigners();
   contracts = await deployContracts();
   await contracts.mock3Crv
     .connect(depositor)
@@ -205,6 +195,13 @@ describe("HysiBatchInteraction", function () {
           BigNumber.from("52414")
         );
       });
+      it("should revert if not owner", async function () {
+        await expect(
+          contracts.hysiBatchInteraction
+            .connect(depositor)
+            .setBatchCooldown(52414)
+        ).to.be.revertedWith("Only the contract owner may perform this action");
+      });
     });
     describe("setMintThreshold", () => {
       it("sets mint threshold", async () => {
@@ -215,6 +212,13 @@ describe("HysiBatchInteraction", function () {
           parseEther("100342312")
         );
       });
+      it("should revert if not owner", async function () {
+        await expect(
+          contracts.hysiBatchInteraction
+            .connect(depositor)
+            .setMintThreshold(parseEther("100342312"))
+        ).to.be.revertedWith("Only the contract owner may perform this action");
+      });
     });
     describe("setRedeemThreshold", () => {
       it("sets redeem threshold", async () => {
@@ -224,6 +228,40 @@ describe("HysiBatchInteraction", function () {
         expect(await contracts.hysiBatchInteraction.redeemThreshold()).to.equal(
           parseEther("100342312")
         );
+      });
+      it("should revert if not owner", async function () {
+        await expect(
+          contracts.hysiBatchInteraction
+            .connect(depositor)
+            .setRedeemThreshold(parseEther("100342312"))
+        ).to.be.revertedWith("Only the contract owner may perform this action");
+      });
+    });
+    describe("setZapper", () => {
+      it("sets zapper", async () => {
+        await contracts.hysiBatchInteraction.setRedeemThreshold(
+          parseEther("100342312")
+        );
+        expect(await contracts.hysiBatchInteraction.redeemThreshold()).to.equal(
+          parseEther("100342312")
+        );
+      });
+      it("should revert if not owner", async function () {
+        await expect(
+          contracts.hysiBatchInteraction
+            .connect(depositor)
+            .setZapper(zapper.address)
+        ).to.be.revertedWith("Only the contract owner may perform this action");
+      });
+      it("should revert if zapper is already set", async function () {
+        await contracts.hysiBatchInteraction
+          .connect(owner)
+          .setZapper(zapper.address);
+        await expect(
+          contracts.hysiBatchInteraction
+            .connect(owner)
+            .setZapper(zapper.address)
+        ).to.be.revertedWith("zapper already set");
       });
     });
   });
@@ -478,7 +516,7 @@ describe("HysiBatchInteraction", function () {
             );
           await contracts.hysiBatchInteraction
             .connect(depositor)
-            .depositForMint(parseEther("10000"));
+            .depositForMint(parseEther("10000"), depositor.address);
           await provider.send("evm_increaseTime", [1800]);
 
           await expect(
@@ -657,10 +695,7 @@ describe("HysiBatchInteraction", function () {
         const deposit = async (amount?: number) => {
           await contracts.hysiBatchInteraction
             .connect(depositor)
-            .depositForRedeem(
-              parseEther(amount ? amount.toString() : "10"),
-              depositor.address
-            );
+            .depositForRedeem(parseEther(amount ? amount.toString() : "10"));
         };
 
         const subject = async (batchId) => {
@@ -731,7 +766,7 @@ describe("HysiBatchInteraction", function () {
           .approve(contracts.hysiBatchInteraction.address, parseEther("100"));
         const result = await contracts.hysiBatchInteraction
           .connect(depositor)
-          .depositForRedeem(parseEther("100"), depositor.address);
+          .depositForRedeem(parseEther("100"));
         expect(result)
           .to.emit(contracts.hysiBatchInteraction, "Deposit")
           .withArgs(depositor.address, parseEther("100"));
@@ -754,7 +789,7 @@ describe("HysiBatchInteraction", function () {
           .approve(contracts.hysiBatchInteraction.address, parseEther("100"));
         await contracts.hysiBatchInteraction
           .connect(depositor)
-          .depositForRedeem(parseEther("100"), depositor.address);
+          .depositForRedeem(parseEther("100"));
 
         const currentRedeemBatchId =
           await contracts.hysiBatchInteraction.currentRedeemBatchId();
@@ -771,22 +806,22 @@ describe("HysiBatchInteraction", function () {
           .approve(contracts.hysiBatchInteraction.address, parseEther("100"));
         await contracts.hysiBatchInteraction
           .connect(depositor)
-          .depositForRedeem(parseEther("100"), depositor.address);
+          .depositForRedeem(parseEther("100"));
         await contracts.mockSetToken
           .connect(depositor1)
           .approve(contracts.hysiBatchInteraction.address, parseEther("100"));
         await contracts.hysiBatchInteraction
           .connect(depositor1)
-          .depositForRedeem(parseEther("100"), depositor1.address);
+          .depositForRedeem(parseEther("100"));
         await contracts.mockSetToken
           .connect(depositor2)
           .approve(contracts.hysiBatchInteraction.address, parseEther("100"));
         await contracts.hysiBatchInteraction
           .connect(depositor2)
-          .depositForRedeem(parseEther("50"), depositor2.address);
+          .depositForRedeem(parseEther("50"));
         await contracts.hysiBatchInteraction
           .connect(depositor2)
-          .depositForRedeem(parseEther("50"), depositor2.address);
+          .depositForRedeem(parseEther("50"));
         const currentRedeemBatchId =
           await contracts.hysiBatchInteraction.currentRedeemBatchId();
         const currentBatch = await contracts.hysiBatchInteraction.batches(
@@ -846,7 +881,7 @@ describe("HysiBatchInteraction", function () {
             .approve(contracts.hysiBatchInteraction.address, parseEther("100"));
           await contracts.hysiBatchInteraction
             .connect(depositor)
-            .depositForRedeem(parseEther("100"), depositor.address);
+            .depositForRedeem(parseEther("100"));
           await expect(
             contracts.hysiBatchInteraction.connect(owner).batchRedeem(0)
           ).to.be.revertedWith("can not execute batch action yet");
@@ -875,7 +910,7 @@ describe("HysiBatchInteraction", function () {
             .approve(contracts.hysiBatchInteraction.address, parseEther("100"));
           await contracts.hysiBatchInteraction
             .connect(depositor)
-            .depositForRedeem(parseEther("100"), depositor.address);
+            .depositForRedeem(parseEther("100"));
           await provider.send("evm_increaseTime", [1800]);
 
           const result = await contracts.hysiBatchInteraction
@@ -896,13 +931,13 @@ describe("HysiBatchInteraction", function () {
             .approve(contracts.hysiBatchInteraction.address, parseEther("100"));
           await contracts.hysiBatchInteraction
             .connect(depositor)
-            .depositForRedeem(parseEther("100"), depositor.address);
+            .depositForRedeem(parseEther("100"));
           await contracts.mockSetToken
             .connect(depositor1)
             .approve(contracts.hysiBatchInteraction.address, parseEther("100"));
           await contracts.hysiBatchInteraction
             .connect(depositor1)
-            .depositForRedeem(parseEther("100"), depositor1.address);
+            .depositForRedeem(parseEther("100"));
           const result = await contracts.hysiBatchInteraction
             .connect(owner)
             .batchRedeem(0);
@@ -917,7 +952,7 @@ describe("HysiBatchInteraction", function () {
             .approve(contracts.hysiBatchInteraction.address, parseEther("100"));
           await contracts.hysiBatchInteraction
             .connect(depositor)
-            .depositForRedeem(parseEther("100"), depositor.address);
+            .depositForRedeem(parseEther("100"));
           await provider.send("evm_increaseTime", [1800]);
 
           const previousRedeemBatchId =
@@ -942,25 +977,25 @@ describe("HysiBatchInteraction", function () {
           .approve(contracts.hysiBatchInteraction.address, parseEther("100"));
         await contracts.hysiBatchInteraction
           .connect(depositor)
-          .depositForRedeem(parseEther("100"), depositor.address);
+          .depositForRedeem(parseEther("100"));
         await contracts.mockSetToken
           .connect(depositor1)
           .approve(contracts.hysiBatchInteraction.address, parseEther("100"));
         await contracts.hysiBatchInteraction
           .connect(depositor1)
-          .depositForRedeem(parseEther("100"), depositor1.address);
+          .depositForRedeem(parseEther("100"));
         await contracts.mockSetToken
           .connect(depositor2)
           .approve(contracts.hysiBatchInteraction.address, parseEther("100"));
         await contracts.hysiBatchInteraction
           .connect(depositor2)
-          .depositForRedeem(parseEther("100"), depositor2.address);
+          .depositForRedeem(parseEther("100"));
         await contracts.mockSetToken
           .connect(depositor3)
           .approve(contracts.hysiBatchInteraction.address, parseEther("100"));
         await contracts.hysiBatchInteraction
           .connect(depositor3)
-          .depositForRedeem(parseEther("100"), depositor3.address);
+          .depositForRedeem(parseEther("100"));
         await contracts.mockCrvUSDX.mint(
           contracts.mockYearnVaultUSDX.address,
           parseEther("20000")
@@ -1064,7 +1099,7 @@ describe("HysiBatchInteraction", function () {
             .approve(contracts.hysiBatchInteraction.address, parseEther("100"));
           await contracts.hysiBatchInteraction
             .connect(depositor)
-            .depositForRedeem(parseEther("100"), depositor.address);
+            .depositForRedeem(parseEther("100"));
           await contracts.mockCrvUSDX.mint(
             contracts.mockYearnVaultUSDX.address,
             parseEther("20000")
@@ -1340,7 +1375,7 @@ describe("HysiBatchInteraction", function () {
           .approve(contracts.hysiBatchInteraction.address, parseEther("100"));
         await contracts.hysiBatchInteraction
           .connect(depositor)
-          .depositForRedeem(parseEther("100"), depositor.address);
+          .depositForRedeem(parseEther("100"));
         const batchId = await contracts.hysiBatchInteraction.accountBatches(
           depositor.address,
           0

@@ -126,6 +126,11 @@ async function deployContracts(): Promise<Contracts> {
     )
   ).deployed();
 
+  const pop = await (
+    await (
+      await ethers.getContractFactory("MockERC20")
+    ).deploy("POP", "POP", 18)
+  ).deployed();
   const dai = (await ethers.getContractAt("ERC20", DAI_ADDRESS)) as ERC20;
 
   const usdc = (await ethers.getContractAt("ERC20", USDC_ADDRESS)) as ERC20;
@@ -260,7 +265,9 @@ async function deployContracts(): Promise<Contracts> {
       ],
       2500,
       parseEther("200"),
-      parseEther("1")
+      parseEther("1"),
+      owner.address,
+      pop.address
     )
   ).deployed();
 
@@ -418,7 +425,7 @@ describe("HysiBatchZapper Network Test", function () {
       //Create Batch
       await contracts.hysiBatchInteraction
         .connect(depositor)
-        .depositForRedeem(parseEther("10"), depositor.address);
+        .depositForRedeem(parseEther("10"));
       const [, batchId] =
         await contracts.hysiBatchInteraction.getAccountBatches(
           depositor.address
