@@ -211,12 +211,12 @@ async function deployContracts(): Promise<Contracts> {
   const hysi = (await ethers.getContractAt(
     SetTokenAbi.abi,
     HYSI_TOKEN_ADDRESS
-  )) as SetToken;
+  )) as unknown as SetToken;
 
   const basicIssuanceModule = (await ethers.getContractAt(
     BasicIssuanceModuleAbi.abi,
     SET_BASIC_ISSUANCE_MODULE_ADDRESS
-  )) as BasicIssuanceModule;
+  )) as unknown as BasicIssuanceModule;
 
   //Deploy HysiBatchInteraction
   const HysiBatchInteraction = await ethers.getContractFactory(

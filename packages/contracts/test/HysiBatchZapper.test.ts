@@ -148,8 +148,7 @@ async function deployContracts(): Promise<Contracts> {
     ).deploy(
       hysiBatchInteraction.address,
       mockCurveThreePool.address,
-      mock3Crv.address,
-      [mockDAI.address, mockUSDC.address, mockUSDT.address]
+      mock3Crv.address
     )
   ).deployed();
 
@@ -217,14 +216,14 @@ describe("HysiBatchZapper", function () {
   beforeEach(async function () {
     await deployAndAssignContracts();
   });
-  describe("zapIntoQueue", function () {
+  describe("zapIntoBatch", function () {
     it("zaps into a mint queue with one stablecoin", async function () {
       const result = await contracts.hysiBatchZapper
         .connect(depositor)
-        .zapIntoQueue([DepositorInitial, 0, 0], 0);
+        .zapIntoBatch([DepositorInitial, 0, 0], 0);
 
       expect(result)
-        .to.emit(contracts.hysiBatchZapper, "ZappedIntoQueue")
+        .to.emit(contracts.hysiBatchZapper, "ZappedIntoBatch")
         .withArgs(DepositorInitial, depositor.address);
 
       expect(result)
@@ -237,10 +236,10 @@ describe("HysiBatchZapper", function () {
     it("zaps into a mint queue with multiple stablecoins", async function () {
       const result = await contracts.hysiBatchZapper
         .connect(depositor)
-        .zapIntoQueue([DepositorInitial, DepositorInitial, 0], 0);
+        .zapIntoBatch([DepositorInitial, DepositorInitial, 0], 0);
 
       expect(result)
-        .to.emit(contracts.hysiBatchZapper, "ZappedIntoQueue")
+        .to.emit(contracts.hysiBatchZapper, "ZappedIntoBatch")
         .withArgs(DepositorInitial.mul(2), depositor.address);
 
       expect(result)
@@ -251,23 +250,23 @@ describe("HysiBatchZapper", function () {
       expect(await contracts.mockUSDC.balanceOf(depositor.address)).to.equal(0);
     });
   });
-  describe("zapOutOfQueue", function () {
+  describe("zapOutOfBatch", function () {
     it("zaps out of the queue into a stablecoin", async function () {
       const expectedStableAmount = parseEther("99.9");
       //Create Batch
       await contracts.hysiBatchZapper
         .connect(depositor)
-        .zapIntoQueue([DepositorInitial, 0, 0], 0);
+        .zapIntoBatch([DepositorInitial, 0, 0], 0);
       const [batchId] = await contracts.hysiBatchInteraction.getAccountBatches(
         depositor.address
       );
       //Actual Test
       const result = await contracts.hysiBatchZapper
         .connect(depositor)
-        .zapOutOfQueue(batchId, DepositorInitial, 0, 0);
+        .zapOutOfBatch(batchId, DepositorInitial, 0, 0);
 
       expect(result)
-        .to.emit(contracts.hysiBatchZapper, "ZappedOutOfQueue")
+        .to.emit(contracts.hysiBatchZapper, "ZappedOutOfBatch")
         .withArgs(
           batchId,
           0,
@@ -286,6 +285,24 @@ describe("HysiBatchZapper", function () {
     });
   });
   describe("claimAndSwapToStable", function () {
+    it("reverts when claiming a mint batch", async function () {
+      await contracts.hysiBatchZapper
+        .connect(depositor)
+        .zapIntoBatch([DepositorInitial, 0, 0], 0);
+      const [batchId] = await contracts.hysiBatchInteraction.getAccountBatches(
+        depositor.address
+      );
+      timeTravel(1800);
+      await contracts.hysiBatchInteraction.connect(owner).batchMint(0);
+
+      await expect(
+        contracts.hysiBatchZapper.claimAndSwapToStable(
+          batchId,
+          0,
+          parseEther("1")
+        )
+      ).to.be.revertedWith("needs to return 3crv");
+    });
     it("claims batch and swaps into stablecoin", async function () {
       const claimableAmount = parseEther("999");
       const expectedStableAmount = parseEther("998.001");

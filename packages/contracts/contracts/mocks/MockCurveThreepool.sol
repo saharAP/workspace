@@ -33,13 +33,8 @@ contract MockCurveThreepool {
     tokens = [dai, usdc, usdt];
   }
 
-  function coins() external view returns (address[3] memory) {
-    address[3] memory coinAddresses = [
-      address(dai),
-      address(usdc),
-      address(usdt)
-    ];
-    return coinAddresses;
+  function coins(uint256 i) external view returns (address) {
+    return address(tokens[i]);
   }
 
   function get_virtual_price() external view returns (uint256) {

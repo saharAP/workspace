@@ -218,12 +218,12 @@ async function deployContracts(): Promise<Contracts> {
   const hysi = (await ethers.getContractAt(
     SetTokenAbi.abi,
     HYSI_TOKEN_ADDRESS
-  )) as SetToken;
+  )) as unknown as SetToken;
 
   const basicIssuanceModule = (await ethers.getContractAt(
     BasicIssuanceModuleAbi.abi,
     SET_BASIC_ISSUANCE_MODULE_ADDRESS
-  )) as BasicIssuanceModule;
+  )) as unknown as BasicIssuanceModule;
 
   //Deploy HysiBatchInteraction
   const HysiBatchInteraction = await ethers.getContractFactory(
@@ -267,12 +267,7 @@ async function deployContracts(): Promise<Contracts> {
   const hysiBatchZapper = await (
     await (
       await ethers.getContractFactory("HysiBatchZapper")
-    ).deploy(
-      hysiBatchInteraction.address,
-      threePool.address,
-      threeCrv.address,
-      [dai.address, usdc.address, usdt.address]
-    )
+    ).deploy(hysiBatchInteraction.address, threePool.address, threeCrv.address)
   ).deployed();
 
   return {
@@ -367,14 +362,14 @@ describe("HysiBatchZapper Network Test", function () {
   beforeEach(async function () {
     await deployAndAssignContracts();
   });
-  describe("zapIntoQueue", function () {
+  describe("zapIntoBatch", function () {
     it("zaps into a mint queue with one stablecoin", async function () {
       const result = await contracts.hysiBatchZapper
         .connect(depositor)
-        .zapIntoQueue([DepositorInitial, 0, 0], 0);
+        .zapIntoBatch([DepositorInitial, 0, 0], 0);
 
       expect(result)
-        .to.emit(contracts.hysiBatchZapper, "ZappedIntoQueue")
+        .to.emit(contracts.hysiBatchZapper, "ZappedIntoBatch")
         .withArgs(parseEther("12852.524944794116252972"), depositor.address);
 
       expect(result)
@@ -384,13 +379,13 @@ describe("HysiBatchZapper Network Test", function () {
       expect(await contracts.dai.balanceOf(depositor.address)).to.equal(0);
     });
   });
-  describe("zapOutOfQueue", function () {
+  describe("zapOutOfBatch", function () {
     it("zaps out of the queue into a stablecoin", async function () {
       const expectedStableAmount = parseEther("12871.730619629678368476");
       //Create Batch
       await contracts.hysiBatchZapper
         .connect(depositor)
-        .zapIntoQueue([DepositorInitial, 0, 0], 0);
+        .zapIntoBatch([DepositorInitial, 0, 0], 0);
 
       const [, batchId] =
         await contracts.hysiBatchInteraction.getAccountBatches(
@@ -403,10 +398,10 @@ describe("HysiBatchZapper Network Test", function () {
       //Actual Test
       const result = await contracts.hysiBatchZapper
         .connect(depositor)
-        .zapOutOfQueue(batchId, shares, 0, 0);
+        .zapOutOfBatch(batchId, shares, 0, 0);
 
       expect(result)
-        .to.emit(contracts.hysiBatchZapper, "ZappedOutOfQueue")
+        .to.emit(contracts.hysiBatchZapper, "ZappedOutOfBatch")
         .withArgs(batchId, 0, shares, expectedStableAmount, depositor.address);
 
       expect(result)
