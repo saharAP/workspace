@@ -13,6 +13,7 @@ const provider = waffle.provider;
 
 interface Contracts {
   mock3Crv: MockERC20;
+  mockPop: MockERC20;
   mockCrvUSDX: MockERC20;
   mockCrvUST: MockERC20;
   mockSetToken: MockERC20;
@@ -49,6 +50,7 @@ async function deployContracts(): Promise<Contracts> {
   const mockBasicCoin = await (
     await MockERC20.deploy("Basic", "Basic", 18)
   ).deployed();
+  const mockPop = await (await MockERC20.deploy("POP", "POP", 18)).deployed();
   await mock3Crv.mint(depositor.address, DepositorInitial);
   await mock3Crv.mint(depositor1.address, DepositorInitial);
   await mock3Crv.mint(depositor2.address, DepositorInitial);
@@ -124,12 +126,15 @@ async function deployContracts(): Promise<Contracts> {
       ],
       1800,
       parseEther("20000"),
-      parseEther("200")
+      parseEther("200"),
+      owner.address,
+      mockPop.address
     )
   ).deployed()) as HysiBatchInteraction;
 
   return {
     mock3Crv,
+    mockPop,
     mockCrvUSDX,
     mockCrvUST,
     mockSetToken,
@@ -175,15 +180,17 @@ describe("HysiBatchInteraction", function () {
           "0x890f4e345B1dAED0367A877a1612f86A1f86985f";
         const CRV_UST_TOKEN_ADDRESS =
           "0x94e131324b6054c0D789b190b2dAC504e4361b53";
-        await contracts.hysiBatchInteraction.setCurvePoolTokenPairs(
-          [YUST_TOKEN_ADDRESS],
-          [
-            {
-              curveMetaPool: UST_METAPOOL_ADDRESS,
-              crvLPToken: CRV_UST_TOKEN_ADDRESS,
-            },
-          ]
-        );
+        await contracts.hysiBatchInteraction
+          .connect(owner)
+          .setCurvePoolTokenPairs(
+            [YUST_TOKEN_ADDRESS],
+            [
+              {
+                curveMetaPool: UST_METAPOOL_ADDRESS,
+                crvLPToken: CRV_UST_TOKEN_ADDRESS,
+              },
+            ]
+          );
         expect(
           await contracts.hysiBatchInteraction.curvePoolTokenPairs(
             YUST_TOKEN_ADDRESS
@@ -461,6 +468,22 @@ describe("HysiBatchInteraction", function () {
           await expect(
             contracts.hysiBatchInteraction.connect(owner).batchMint(0)
           ).to.be.revertedWith("can not execute batch action yet");
+        });
+        it("reverts when called by someone other the keeper", async function () {
+          await contracts.mock3Crv
+            .connect(depositor)
+            .approve(
+              contracts.hysiBatchInteraction.address,
+              parseEther("10000")
+            );
+          await contracts.hysiBatchInteraction
+            .connect(depositor)
+            .depositForMint(parseEther("10000"));
+          await provider.send("evm_increaseTime", [1800]);
+
+          await expect(
+            contracts.hysiBatchInteraction.connect(depositor).batchMint(0)
+          ).to.be.revertedWith("you are not approved as a keeper");
         });
       });
       context("success", function () {
@@ -827,6 +850,19 @@ describe("HysiBatchInteraction", function () {
           await expect(
             contracts.hysiBatchInteraction.connect(owner).batchRedeem(0)
           ).to.be.revertedWith("can not execute batch action yet");
+        });
+        it("reverts when called by someone other the keeper", async function () {
+          await contracts.mockSetToken
+            .connect(depositor)
+            .approve(contracts.hysiBatchInteraction.address, parseEther("100"));
+          await contracts.hysiBatchInteraction
+            .connect(depositor)
+            .depositForRedeem(parseEther("100"));
+          await provider.send("evm_increaseTime", [1800]);
+
+          await expect(
+            contracts.hysiBatchInteraction.connect(depositor).batchRedeem(0)
+          ).to.be.revertedWith("you are not approved as a keeper");
         });
       });
       context("success", function () {
