@@ -200,14 +200,8 @@ contract HysiBatchInteraction is Owned {
     uint256 amountToWithdraw_,
     address account_
   ) external {
-    require(
-      msg.sender == zapper || msg.sender == account_,
-      "you cant transfer other funds"
-    );
-    address recipient = account_;
-    if (msg.sender == zapper) {
-      recipient = msg.sender;
-    }
+    address recipient = _getRecipient(account_);
+
     Batch storage batch = batches[batchId_];
     uint256 accountBalance = accountBalances[batchId_][account_];
     require(batch.claimable == false, "already processed");
@@ -243,15 +237,7 @@ contract HysiBatchInteraction is Owned {
     Batch storage batch = batches[batchId_];
     require(batch.claimable, "not yet claimable");
 
-    require(
-      msg.sender == zapper || msg.sender == account_,
-      "you cant transfer other funds"
-    );
-    address recipient = account_;
-    if (msg.sender == zapper) {
-      recipient = msg.sender;
-    }
-
+    address recipient = _getRecipient(account_);
     uint256 accountBalance = accountBalances[batchId_][account_];
     require(
       accountBalance <= batch.unclaimedShares,
@@ -580,6 +566,18 @@ contract HysiBatchInteraction is Owned {
 
   /* ========== RESTRICTED FUNCTIONS ========== */
 
+  function _getRecipient(address account_) internal returns (address) {
+    require(
+      msg.sender == zapper || msg.sender == account_,
+      "you cant transfer other funds"
+    );
+    address recipient = account_;
+    if (msg.sender == zapper) {
+      recipient = msg.sender;
+    }
+    return recipient;
+  }
+
   function _generateNextBatch(bytes32 _currentBatchId, BatchType _batchType)
     internal
     returns (bytes32)
@@ -768,6 +766,7 @@ contract HysiBatchInteraction is Owned {
    * @param zapper_ Address of the HysiBatchZapper
    */
   function setZapper(address zapper_) external onlyOwner {
+    require(zapper == address(0), "zapper already set");
     zapper = zapper_;
   }
 }

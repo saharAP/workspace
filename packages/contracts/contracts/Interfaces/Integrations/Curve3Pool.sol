@@ -16,4 +16,6 @@ interface Curve3Pool {
     external
     view
     returns (uint256);
+
+  function coins(uint256 i) external view returns (address);
 }

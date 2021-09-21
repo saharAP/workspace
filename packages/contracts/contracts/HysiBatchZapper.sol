@@ -5,7 +5,7 @@ pragma experimental ABIEncoderV2;
 
 import "@openzeppelin/contracts/math/SafeMath.sol";
 import "@openzeppelin/contracts/token/ERC20/SafeERC20.sol";
-import "./Interfaces/IHysiBatchInteraction.sol";
+import {BatchType, Batch, IHysiBatchInteraction} from "./Interfaces/IHysiBatchInteraction.sol";
 import "./Interfaces/Integrations/Curve3Pool.sol";
 
 contract HysiBatchZapper {
@@ -17,12 +17,11 @@ contract HysiBatchZapper {
   IHysiBatchInteraction private hysiBatchInteraction;
   Curve3Pool private curve3Pool;
   IERC20 private threeCrv;
-  IERC20[3] private stablecoins;
 
   /* ========== EVENTS ========== */
 
-  event ZappedIntoQueue(uint256 threeCurveAmount, address account);
-  event ZappedOutOfQueue(
+  event ZappedIntoBatch(uint256 threeCurveAmount, address account);
+  event ZappedOutOfBatch(
     bytes32 batchId,
     uint8 stableCoinIndex,
     uint256 threeCurveAmount,
@@ -44,24 +43,29 @@ contract HysiBatchZapper {
   constructor(
     IHysiBatchInteraction hysiBatchInteraction_,
     Curve3Pool curve3Pool_,
-    IERC20 threeCrv_,
-    IERC20[3] memory stablecoins_
+    IERC20 threeCrv_
   ) {
     hysiBatchInteraction = hysiBatchInteraction_;
     curve3Pool = curve3Pool_;
     threeCrv = threeCrv_;
-    stablecoins = stablecoins_;
   }
 
   /* ========== MUTATIVE FUNCTIONS ========== */
 
-  function zapIntoQueue(uint256[3] memory amounts_, uint256 min_mint_amounts_)
+  function zapIntoBatch(uint256[3] memory amounts_, uint256 min_mint_amounts_)
     external
   {
     for (uint8 i; i < amounts_.length; i++) {
       if (amounts_[i] > 0) {
-        stablecoins[i].safeTransferFrom(msg.sender, address(this), amounts_[0]);
-        stablecoins[i].safeIncreaseAllowance(address(curve3Pool), amounts_[0]);
+        IERC20(curve3Pool.coins(i)).safeTransferFrom(
+          msg.sender,
+          address(this),
+          amounts_[0]
+        );
+        IERC20(curve3Pool.coins(i)).safeIncreaseAllowance(
+          address(curve3Pool),
+          amounts_[0]
+        );
       }
     }
     curve3Pool.add_liquidity(amounts_, min_mint_amounts_);
@@ -71,10 +75,10 @@ contract HysiBatchZapper {
       threeCrvAmount
     );
     hysiBatchInteraction.depositForMint(threeCrvAmount, msg.sender);
-    emit ZappedIntoQueue(threeCrvAmount, msg.sender);
+    emit ZappedIntoBatch(threeCrvAmount, msg.sender);
   }
 
-  function zapOutOfQueue(
+  function zapOutOfBatch(
     bytes32 batchId_,
     uint256 amountToWithdraw_,
     uint8 stableCoinIndex_,
@@ -91,7 +95,7 @@ contract HysiBatchZapper {
       min_amount_
     );
 
-    emit ZappedOutOfQueue(
+    emit ZappedOutOfBatch(
       batchId_,
       stableCoinIndex_,
       amountToWithdraw_,
@@ -105,6 +109,10 @@ contract HysiBatchZapper {
     uint8 stableCoinIndex_,
     uint256 min_amount_
   ) external {
+    require(
+      hysiBatchInteraction.batches(batchId_).batchType == BatchType.Redeem,
+      "needs to return 3crv"
+    );
     uint256 threeCurveAmount = hysiBatchInteraction.claim(batchId_, msg.sender);
     uint256 stableBalance = _swapAndTransfer3Crv(
       threeCurveAmount,
@@ -132,10 +140,12 @@ contract HysiBatchZapper {
       stableCoinIndex_,
       min_amount_
     );
-    uint256 stableBalance = stablecoins[stableCoinIndex_].balanceOf(
-      address(this)
+    uint256 stableBalance = IERC20(curve3Pool.coins(stableCoinIndex_))
+      .balanceOf(address(this));
+    IERC20(curve3Pool.coins(stableCoinIndex_)).safeTransfer(
+      msg.sender,
+      stableBalance
     );
-    stablecoins[stableCoinIndex_].safeTransfer(msg.sender, stableBalance);
     return stableBalance;
   }
 }
