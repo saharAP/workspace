@@ -47,10 +47,9 @@ export class HysiBatchInteractionAdapter {
 
   async calculateAmountToReceiveForClaim(batchId, address): Promise<BigNumber> {
     const batch = await this.contract.batches(batchId);
+
     const unclaimedShares = batch.unclaimedShares;
-
     const claimableTokenBalance = batch.claimableTokenBalance;
-
     const accountBalance = await this.contract.accountBalances(
       batchId,
       address

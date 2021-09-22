@@ -120,7 +120,7 @@ contract KeeperIncentive is Governed {
           "you are not approved as a keeper"
         );
       }
-      if (incentive.reward <= incentiveBudget) {
+      if (incentive.enabled && incentive.reward <= incentiveBudget) {
         incentiveBudget = incentiveBudget.sub(incentive.reward);
         POP.approve(address(this), incentive.reward);
         POP.safeTransferFrom(address(this), msg.sender, incentive.reward);
