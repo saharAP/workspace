@@ -10,9 +10,9 @@ const ProgressBar: React.FC<ProgressbarProps> = ({
   height = 'h-4',
 }) => {
   return (
-    <div className={`w-full bg-gray-200 rounded ${height}`}>
+    <div className={`w-full bg-red-400 rounded ${height}`}>
       <div
-        className={`h-full rounded ${progressColor}`}
+        className={`h-full rounded-l ${progressColor}`}
         style={{
           width: `${progress.toFixed(2)}%`,
         }}
