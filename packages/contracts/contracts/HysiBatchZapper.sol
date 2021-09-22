@@ -40,8 +40,6 @@ contract HysiBatchZapper {
     address account
   );
 
-  event Echo(uint256 amount);
-
   /* ========== CONSTRUCTOR ========== */
 
   constructor(
