@@ -9,6 +9,7 @@ const NODE_DIR = path.resolve(__dirname, "../node_modules");
 const INPUT_DIR = path.resolve(__dirname, "../contracts");
 const CONFIG_DIR = path.resolve(__dirname, "../docgen");
 const OUTPUT_DIR = path.resolve(__dirname, "../docgen/docs");
+const OUTPUT_IMAGES_DIR = path.resolve(__dirname, "../docgen/docs/images");
 const SUMMARY_FILE = path.resolve(__dirname, "../docgen/SUMMARY.md")
 const EXCLUDE_FILE = path.resolve(__dirname, "../docgen/exclude.txt");
 
@@ -64,6 +65,16 @@ function fix(pathName) {
     );
   }
 }
+function checkDir(pathName){
+
+  if (!fs.existsSync(pathName)) {
+	fs.mkdirSync(pathName, {
+		recursive: true
+	});
+  }
+
+}
+checkDir(OUTPUT_IMAGES_DIR);
 
 fs.writeFileSync(SUMMARY_FILE, "# Summary\n");
 fs.writeFileSync(".gitbook.yaml", "root: ./\n");
@@ -82,7 +93,7 @@ const args = [
   "--exclude=" + excludeListPathName.toString(),
   "--solc-module=" + NODE_DIR + "/solc",
   "--solc-settings=" +
-    JSON.stringify({ optimizer: { enabled: true, runs: 200 } }),
+  JSON.stringify({ optimizer: { enabled: true, runs: 200 } }),
   "--output-structure=" + "contracts",
 ];
 
@@ -93,34 +104,35 @@ if (result.stderr.length > 0) throw new Error(result.stderr);
 
 fix(OUTPUT_DIR);
 
+
 console.log("\n\nDocify Report:");
 
 async function generateGraphs(docPathNameList) {
   let count = 0;
   const re = new RegExp("Missing `(.*?)` for (.*?) `(.*?)`");
   for (const docPathName of docPathNameList) {
-    const originalName = path.basename(docPathName).slice(0, -3) + ".sol";
-	const inputContractPathName = INPUT_DIR + "/" + originalName
-	const outputGraphPathName = docPathName.slice(0, -3) + "_graph.png"
-	const outputInheritancePathName = docPathName.slice(0, -3) + "_inheritance.png"
-	
-	exec('surya graph ' + inputContractPathName + ' | dot -Tpng > ' + outputGraphPathName, (err, stdout, stderr) => {
-		if (err) {
-    //some err occurred
-			console.error(err)
-		}
-		});
-	exec('surya inheritance ' + inputContractPathName + ' | dot -Tpng > ' + outputInheritancePathName, (err, stdout, stderr) => {
-		if (err) {
-			//some err occurred
-			console.error(err)
-		}
-        });
+    const contractName = path.basename(docPathName).slice(0, -3);
+    const inputContractPathName = INPUT_DIR + "/" + contractName + ".sol"
+    const outputGraphPathName = OUTPUT_IMAGES_DIR + "/" + contractName + "_dependency_graph.png"
+    const outputInheritancePathName = OUTPUT_IMAGES_DIR + "/" + contractName + "_inheritance_graph.png"
+
+    exec('surya graph ' + inputContractPathName + ' | dot -Tpng > ' + outputGraphPathName, (err, stdout, stderr) => {
+      if (err) {
+        //some err occurred
+        console.error(err)
+      }
+    });
+    exec('surya inheritance ' + inputContractPathName + ' | dot -Tpng > ' + outputInheritancePathName, (err, stdout, stderr) => {
+      if (err) {
+        //some err occurred
+        console.error(err)
+      }
+    });
   }
   console.log(`Total of ${count} missing documentations for contracts.`);
 }
 
-generateGraphs(postCheckPathNameList).then((_) => {});
+generateGraphs(postCheckPathNameList).then((_) => { });
 
 async function generateDocReport(docPathNameList) {
   let count = 0;
@@ -146,5 +158,5 @@ async function generateDocReport(docPathNameList) {
   console.log(`Total of ${count} missing documentations for contracts.`);
 }
 
-generateDocReport(postCheckPathNameList).then((_) => {});
+generateDocReport(postCheckPathNameList).then((_) => { });
 
