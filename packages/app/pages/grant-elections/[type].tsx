@@ -11,7 +11,7 @@ import { BigNumber, utils } from 'ethers';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import React, { useContext, useEffect, useState } from 'react';
-import toast from 'react-hot-toast';
+import toast, { Toaster } from 'react-hot-toast';
 import NavBar from '../../components/NavBar/NavBar';
 import {
   setDualActionModal,
@@ -248,12 +248,7 @@ export default function AllGrants() {
   }
 
   const submitVotes = async (grantTerm: ElectionTerm) => {
-    dispatch(
-      setDualActionModal({
-        visible: true,
-        progress: true,
-      }),
-    );
+    toast.loading('Submitting Votes...');
 
     const txArgs = Object.keys(pendingVotes[grantTerm].votes).reduce<
       [string[], BigNumber[], number]
@@ -268,21 +263,29 @@ export default function AllGrants() {
       [[], [], grantTerm],
     );
 
-    try {
-      toast.loading('Submitting Votes...');
-      await contracts.election
-        .connect(library.getSigner())
-        .vote(txArgs[0], txArgs[1], txArgs[2]);
-      toast.success('Voted sucessfully!');
-      // setup listener for confirmation
-    } catch (err) {
-      toast.error(err.data.message.split("'")[1]);
-    }
+    await contracts.election
+      .connect(library.getSigner())
+      .vote(txArgs[0], txArgs[1], txArgs[2])
+      .then((res) => {
+        res.wait().then((res) => {
+          toast.dismiss();
+          toast.success('Votes submitted!');
+        });
+      })
+      .catch((err) => {
+        toast.dismiss();
+        if (err.data === undefined) {
+          toast.error('An error occured');
+        } else {
+          toast.error(err.data.message.split("'")[1]);
+        }
+      });
   };
 
   return (
     <div className="w-full bg-gray-900 pb-16">
       <NavBar />
+      <Toaster position="top-right" />
       <div className="bg-indigo-200 bg-opacity-100 pt-20 pb-20">
         <div className="max-w-7xl mx-auto py-16 px-4 sm:py-24 sm:px-6 lg:px-8">
           <div className="lg:grid lg:grid-cols-2 lg:gap-8">
@@ -341,6 +344,7 @@ export default function AllGrants() {
                       label: 'Confirm Vote',
                       onClick: () => {
                         submitVotes(grantTerm);
+                        dispatch(setDualActionModal(false));
                       },
                     },
                     onDismiss: {

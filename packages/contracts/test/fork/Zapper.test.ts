@@ -1,8 +1,8 @@
 import { SignerWithAddress } from "@nomiclabs/hardhat-ethers/signers";
-import { MockERC20, Faucet, Zapper, Pool } from "../../typechain";
 import { expect } from "chai";
-import { waffle, ethers, network } from "hardhat";
 import { parseEther, parseUnits } from "ethers/lib/utils";
+import { ethers, network, waffle } from "hardhat";
+import { Faucet, MockERC20, Pool, Zapper } from "../../typechain";
 
 const provider = waffle.provider;
 
@@ -115,7 +115,6 @@ async function deployContracts(): Promise<Contracts> {
     usdnPool,
   };
 }
-
 
 describe("Zapper [ @skip-on-coverage ]", function () {
   beforeEach(async function () {

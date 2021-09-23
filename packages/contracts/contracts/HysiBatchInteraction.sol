@@ -13,6 +13,7 @@ import "./Interfaces/Integrations/YearnVault.sol";
 import "./Interfaces/Integrations/BasicIssuanceModule.sol";
 import "./Interfaces/Integrations/ISetToken.sol";
 import "./Interfaces/Integrations/CurveContracts.sol";
+import "./KeeperIncentive.sol";
 
 /*
 This Contract allows smaller depositors to mint and redeem HYSI without needing to through all the steps necessary on their own...
@@ -21,7 +22,7 @@ The HYSI is created from 4 different yToken which in turn need each a deposit of
 This means 12 approvals and 9 deposits are necessary to mint one HYSI.
 We Batch this process and allow users to pool their funds. Than we pay keeper to Mint or Redeem HYSI regularly.
 */
-contract HysiBatchInteraction is Owned {
+contract HysiBatchInteraction is Owned, KeeperIncentive {
   using SafeMath for uint256;
   using SafeERC20 for YearnVault;
   using SafeERC20 for ISetToken;
@@ -72,6 +73,7 @@ contract HysiBatchInteraction is Owned {
   IERC20 public threeCrv;
   BasicIssuanceModule public setBasicIssuanceModule;
   ISetToken public setToken;
+  address public zapper;
   mapping(address => CurvePoolTokenPair) public curvePoolTokenPairs;
 
   /**
@@ -128,8 +130,10 @@ contract HysiBatchInteraction is Owned {
     CurvePoolTokenPair[] memory curvePoolTokenPairs_,
     uint256 batchCooldown_,
     uint256 mintThreshold_,
-    uint256 redeemThreshold_
-  ) Owned(msg.sender) {
+    uint256 redeemThreshold_,
+    address governance_,
+    IERC20 pop_
+  ) Owned(msg.sender) KeeperIncentive(governance_, pop_) {
     require(address(threeCrv_) != address(0));
     require(address(setToken_) != address(0));
     require(address(basicIssuanceModule_) != address(0));
@@ -166,36 +170,46 @@ contract HysiBatchInteraction is Owned {
 
   /**
    * @notice Deposits funds in the current mint batch
-   * @param  amount_ Amount of 3cr3CRV to use for minting
+   * @param amount_ Amount of 3cr3CRV to use for minting
+   * @param depositFor_ User that gets the shares attributed to (for use in zapper contract)
    * @dev Should this be secured we nonReentrant?
    */
-  function depositForMint(uint256 amount_) external {
+  function depositForMint(uint256 amount_, address depositFor_) external {
+    require(
+      msg.sender == zapper || msg.sender == depositFor_,
+      "you cant transfer other funds"
+    );
     require(threeCrv.balanceOf(msg.sender) >= amount_, "insufficent balance");
     threeCrv.transferFrom(msg.sender, address(this), amount_);
-    _deposit(amount_, currentMintBatchId);
+    _deposit(amount_, currentMintBatchId, depositFor_);
   }
 
   /**
    * @notice deposits funds in the current redeem batch
-   * @param  amount_ amount of HYSI to be redeemed
+   * @param amount_ amount of HYSI to be redeemed
    * @dev Should this be secured we nonReentrant?
    */
   function depositForRedeem(uint256 amount_) external {
     require(setToken.balanceOf(msg.sender) >= amount_, "insufficient balance");
     setToken.transferFrom(msg.sender, address(this), amount_);
-    _deposit(amount_, currentRedeemBatchId);
+    _deposit(amount_, currentRedeemBatchId, msg.sender);
   }
 
   /**
    * @notice This function allows a user to withdraw their funds from a batch before that batch has been processed
    * @param batchId_ From which batch should funds be withdrawn from
    * @param amountToWithdraw_ Amount of HYSI or 3CRV to be withdrawn from the queue (depending on mintBatch / redeemBatch)
+   * @param withdrawFor_ User that gets the shares attributed to (for use in zapper contract)
    */
-  function withdrawFromBatch(bytes32 batchId_, uint256 amountToWithdraw_)
-    external
-  {
+  function withdrawFromBatch(
+    bytes32 batchId_,
+    uint256 amountToWithdraw_,
+    address withdrawFor_
+  ) external {
+    address recipient = _getRecipient(withdrawFor_);
+
     Batch storage batch = batches[batchId_];
-    uint256 accountBalance = accountBalances[batchId_][msg.sender];
+    uint256 accountBalance = accountBalances[batchId_][withdrawFor_];
     require(batch.claimable == false, "already processed");
     require(
       accountBalance >= amountToWithdraw_,
@@ -203,7 +217,7 @@ contract HysiBatchInteraction is Owned {
     );
 
     //At this point the share balance is equal to the supplied token and can be used interchangeably
-    accountBalances[batchId_][msg.sender] = accountBalance.sub(
+    accountBalances[batchId_][withdrawFor_] = accountBalance.sub(
       amountToWithdraw_
     );
     batch.suppliedTokenBalance = batch.suppliedTokenBalance.sub(
@@ -212,22 +226,27 @@ contract HysiBatchInteraction is Owned {
     batch.unclaimedShares = batch.unclaimedShares.sub(amountToWithdraw_);
 
     if (batch.batchType == BatchType.Mint) {
-      threeCrv.safeTransfer(msg.sender, amountToWithdraw_);
+      threeCrv.safeTransfer(recipient, amountToWithdraw_);
     } else {
-      setToken.safeTransfer(msg.sender, amountToWithdraw_);
+      setToken.safeTransfer(recipient, amountToWithdraw_);
     }
-    emit WithdrawnFromBatch(batchId_, amountToWithdraw_, msg.sender);
+    emit WithdrawnFromBatch(batchId_, amountToWithdraw_, withdrawFor_);
   }
 
   /**
    * @notice Claims funds after the batch has been processed (get HYSI from a mint batch and 3CRV from a redeem batch)
    * @param batchId_ Id of batch to claim from
+   * @param claimFor_ User that gets the shares attributed to (for use in zapper contract)
    */
-  function claim(bytes32 batchId_) external {
+  function claim(bytes32 batchId_, address claimFor_)
+    external
+    returns (uint256)
+  {
     Batch storage batch = batches[batchId_];
     require(batch.claimable, "not yet claimable");
 
-    uint256 accountBalance = accountBalances[batchId_][msg.sender];
+    address recipient = _getRecipient(claimFor_);
+    uint256 accountBalance = accountBalances[batchId_][claimFor_];
     require(
       accountBalance <= batch.unclaimedShares,
       "claiming too many shares"
@@ -244,21 +263,23 @@ contract HysiBatchInteraction is Owned {
       tokenAmountToClaim
     );
     batch.unclaimedShares = batch.unclaimedShares.sub(accountBalance);
-    accountBalances[batchId_][msg.sender] = 0;
+    accountBalances[batchId_][claimFor_] = 0;
 
     //Transfer token
     if (batch.batchType == BatchType.Mint) {
-      setToken.safeTransfer(msg.sender, tokenAmountToClaim);
+      setToken.safeTransfer(recipient, tokenAmountToClaim);
     } else {
-      threeCrv.safeTransfer(msg.sender, tokenAmountToClaim);
+      threeCrv.safeTransfer(recipient, tokenAmountToClaim);
     }
 
     emit Claimed(
-      msg.sender,
+      claimFor_,
       batch.batchType,
       accountBalance,
       tokenAmountToClaim
     );
+
+    return tokenAmountToClaim;
   }
 
   /**
@@ -304,11 +325,11 @@ contract HysiBatchInteraction is Owned {
     require(totalAmount > 0, "totalAmount must be larger 0");
 
     if (BatchType.Mint == batchType) {
-      _deposit(totalAmount, currentRedeemBatchId);
+      _deposit(totalAmount, currentRedeemBatchId, msg.sender);
     }
 
     if (BatchType.Redeem == batchType) {
-      _deposit(totalAmount, currentMintBatchId);
+      _deposit(totalAmount, currentMintBatchId, msg.sender);
     }
 
     emit MovedUnclaimedDepositsIntoCurrentBatch(
@@ -324,8 +345,9 @@ contract HysiBatchInteraction is Owned {
    * @dev This function deposits 3CRV in the underlying Metapool and deposits these LP token to get yToken which in turn are used to mint HYSI
    * @dev This process leaves some leftovers which are partially used in the next mint batches.
    * @dev In order to get 3CRV we can implement a zap to move stables into the curve tri-pool
+   * @dev keeperIncentive(0) checks if the msg.sender is a permissioned keeper and pays them a reward for calling this function (see KeeperIncentive.sol)
    */
-  function batchMint(uint256 minAmountToMint_) external {
+  function batchMint(uint256 minAmountToMint_) external keeperIncentive(0) {
     Batch storage batch = batches[currentMintBatchId];
 
     //Check if there was enough time between the last batch minting and this attempt...
@@ -465,8 +487,9 @@ contract HysiBatchInteraction is Owned {
    * @param min3crvToReceive_ sets minimum amount of 3crv to redeem HYSI for, otherwise the transaction will revert
    * @dev This function reedeems HYSI for the underlying yToken and deposits these yToken in curve Metapools for 3CRV
    * @dev In order to get stablecoins from 3CRV we can use a zap to redeem 3CRV for stables in the curve tri-pool
+   * @dev keeperIncentive(0) checks if the msg.sender is a permissioned keeper and pays them a reward for calling this function (see KeeperIncentive.sol)
    */
-  function batchRedeem(uint256 min3crvToReceive_) external {
+  function batchRedeem(uint256 min3crvToReceive_) external keeperIncentive(0) {
     Batch storage batch = batches[currentRedeemBatchId];
 
     //Check if there was enough time between the last batch redemption and this attempt...
@@ -558,6 +581,35 @@ contract HysiBatchInteraction is Owned {
 
   /* ========== RESTRICTED FUNCTIONS ========== */
 
+  /**
+   * @notice makes sure only zapper or user can withdraw from accout_ and returns the recipient of the withdrawn token
+   * @param account_ is the address which gets withdrawn from
+   * @dev returns recipient of the withdrawn funds
+   * @dev By default a user should set account_ to their address
+   * @dev If zapper is used to withdraw and swap for a user the msg.sender will be zapper and account_ is the user which we withdraw from. The zapper than sends the swapped funds afterwards to the user
+   */
+  function _getRecipient(address account_) internal returns (address) {
+    //Make sure that only zapper can withdraw from someone else
+    require(
+      msg.sender == zapper || msg.sender == account_,
+      "you cant transfer other funds"
+    );
+
+    //Set recipient per default to account_
+    address recipient = account_;
+
+    //set the recipient to zapper if its called by the zapper
+    if (msg.sender == zapper) {
+      recipient = msg.sender;
+    }
+    return recipient;
+  }
+
+  /**
+   * @notice Generates the next batch id for new deposits
+   * @param _currentBatchId takes the current mint or redeem batch id
+   * @param _batchType BatchType of the newly created id
+   */
   function _generateNextBatch(bytes32 _currentBatchId, BatchType _batchType)
     internal
     returns (bytes32)
@@ -584,23 +636,28 @@ contract HysiBatchInteraction is Owned {
   /**
    * @notice Deposit either HYSI or 3CRV in their respective batches
    * @param amount_ The amount of 3CRV or HYSI a user is depositing
-   * @param currentBatchId The current reedem or mint batch id to place the funds in the next batch to be processed
+   * @param currentBatchId_ The current reedem or mint batch id to place the funds in the next batch to be processed
+   * @param depositFor_ User that gets the shares attributed to (for use in zapper contract)
    * @dev This function will be called by depositForMint or depositForRedeem and simply reduces code duplication
    */
-  function _deposit(uint256 amount_, bytes32 currentBatchId) internal {
-    Batch storage batch = batches[currentBatchId];
+  function _deposit(
+    uint256 amount_,
+    bytes32 currentBatchId_,
+    address depositFor_
+  ) internal {
+    Batch storage batch = batches[currentBatchId_];
 
     //Add the new funds to the batch
     batch.suppliedTokenBalance = batch.suppliedTokenBalance.add(amount_);
     batch.unclaimedShares = batch.unclaimedShares.add(amount_);
-    accountBalances[currentBatchId][msg.sender] = accountBalances[
-      currentBatchId
-    ][msg.sender].add(amount_);
+    accountBalances[currentBatchId_][depositFor_] = accountBalances[
+      currentBatchId_
+    ][depositFor_].add(amount_);
 
     //Save the batchId for the user so they can be retrieved to claim the batch
-    accountBatches[msg.sender].push(currentBatchId);
+    accountBatches[depositFor_].push(currentBatchId_);
 
-    emit Deposit(msg.sender, amount_);
+    emit Deposit(depositFor_, amount_);
   }
 
   /**
@@ -734,5 +791,15 @@ contract HysiBatchInteraction is Owned {
    */
   function setRedeemThreshold(uint256 threshold_) external onlyOwner {
     redeemThreshold = threshold_;
+  }
+
+  /**
+   * @notice Set the address of HysiBatchZapper to allow the zapper to deposit and claim for user
+   * @param zapper_ Address of the HysiBatchZapper
+   * @dev This should only be called once after deployment to mitigate the risk of changing this to a malicious contract
+   */
+  function setZapper(address zapper_) external onlyOwner {
+    require(zapper == address(0), "zapper already set");
+    zapper = zapper_;
   }
 }
