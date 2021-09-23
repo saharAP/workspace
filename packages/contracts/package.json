@@ -47,7 +47,6 @@
     "dotenv": "^10.0.0",
     "ethereum-waffle": "^3.2.2",
     "ethers": "^5.4.1",
-    "graphviz": "0.0.9",
     "hardhat": "^2.4.3",
     "merkle-tree-solidity": "^1.0.8",
     "mocha": "^8.4.0",
