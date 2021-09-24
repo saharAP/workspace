@@ -65,12 +65,12 @@ function fix(pathName) {
     );
   }
 }
-function checkDir(pathName){
+function checkDir(pathName) {
 
   if (!fs.existsSync(pathName)) {
-	fs.mkdirSync(pathName, {
-		recursive: true
-	});
+    fs.mkdirSync(pathName, {
+      recursive: true
+    });
   }
 
 }
@@ -108,7 +108,7 @@ fix(OUTPUT_DIR);
 console.log("\n\nDocify Report:");
 
 async function generateGraphs(docPathNameList) {
-  let count = 0;
+
   const re = new RegExp("Missing `(.*?)` for (.*?) `(.*?)`");
   for (const docPathName of docPathNameList) {
     const contractName = path.basename(docPathName).slice(0, -3);
@@ -116,20 +116,33 @@ async function generateGraphs(docPathNameList) {
     const outputGraphPathName = OUTPUT_IMAGES_DIR + "/" + contractName + "_dependency_graph.png"
     const outputInheritancePathName = OUTPUT_IMAGES_DIR + "/" + contractName + "_inheritance_graph.png"
 
-    exec('surya graph ' + inputContractPathName + ' | dot -Tpng > ' + outputGraphPathName, (err, stdout, stderr) => {
+    child = exec('surya graph ' + inputContractPathName + ' | dot -Tpng > ' + outputGraphPathName, (err, stdout, stderr) => {
+
+      if (stderr) {
+        //some err occurred
+        console.log('Err!: an error occured wile generating graph images using surya:');
+        console.log('stderr: ' + stderr);
+      }
       if (err) {
         //some err occurred
         console.error(err)
       }
     });
-    exec('surya inheritance ' + inputContractPathName + ' | dot -Tpng > ' + outputInheritancePathName, (err, stdout, stderr) => {
+    child();
+    child = exec('surya inheritance ' + inputContractPathName + ' | dot -Tpng > ' + outputInheritancePathName, (err, stdout, stderr) => {
+      if (stderr) {
+        //some err occurred
+        console.log('Error: an error occured wile generating graph images using surya:');
+        console.log('stderr: ' + stderr);
+      }
       if (err) {
         //some err occurred
         console.error(err)
       }
     });
+    child();
   }
-  console.log(`Total of ${count} missing documentations for contracts.`);
+
 }
 
 generateGraphs(postCheckPathNameList).then((_) => { });
