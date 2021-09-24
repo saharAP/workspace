@@ -25,6 +25,8 @@ jobs:
         name: "yarn install"
         with:
           cmd: install # will run `yarn install` command
+      - name: Install graphviz
+        run: sudo apt install graphviz
       - uses: borales/actions-yarn@v2.3.0
         name: "generate documentation"
         with:
