@@ -29,7 +29,9 @@
 - [`{{name}}()`](#{{name}}_)
 {{/ownModifiers}}
 {{/if}}
-
+## Graphs:
+- [`Dependency Graph`](#dependencyGraph)
+- [`Inheritance Graph`](#inheritanceGraph)
 ***
 
 ## Function Definitions:
@@ -50,7 +52,7 @@
 | Parameter Name | Type | Description |
 |------------|-----| -------|
 {{#natspec.params}}
-| `{{param}}`| {{#lookup ../args.types @index}}{{/lookup}}| {{strip description}}| 
+| `{{param}}`| {{#lookup ../args.types @index}}{{/lookup}}| {{strip description}}|
 {{/natspec.params}}
 
 
@@ -111,3 +113,10 @@
 {{/if}}
 {{/ownModifiers}}
 {{/if}}
+
+## Graphs
+
+### <a name="dependencyGraph"></a> `Dependency Graph` {#dependencyGraph}
+![Dependency Graph](images/{{name}}_dependency_graph.png)
+### <a name="inheritanceGraph"></a> `Inheritance Graph` {#inheritanceGraph}
+![Inheritance Graph](images/{{name}}_inheritance_graph.png)
