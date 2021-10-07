@@ -4,8 +4,6 @@ name: Contracts Docgen
 
 on:
   push:
-    branches:
-      - develop
 
 jobs:
   build:
