@@ -1,0 +1,122 @@
+# {{name}}
+
+
+{{{natspec.userdoc}}}
+
+***
+
+{{{natspec.devdoc}}}
+
+{{#if ownFunctions}}
+## Functions:
+{{#ownFunctions}}
+{{#if (or (eq visibility "public") (eq visibility "external"))}}
+- [`{{name}}()`](#{{name}}_)
+{{/if}}
+{{/ownFunctions}}
+{{/if}}
+
+{{#if ownEvents}}
+## Events:
+{{#ownEvents}}
+- [`{{name}}`](#{{name}}_)
+{{/ownEvents}}
+{{/if}}
+
+{{#if ownModifiers}}
+## Modifiers:
+{{#ownModifiers}}
+- [`{{name}}()`](#{{name}}_)
+{{/ownModifiers}}
+{{/if}}
+## Graphs:
+- [`Dependency Graph`](#dependencyGraph)
+- [`Inheritance Graph`](#inheritanceGraph)
+***
+
+## Function Definitions:
+{{#ownFunctions}}
+
+{{#if (or (eq visibility "public") (eq visibility "external"))}}
+
+### <a name="{{name}}_"></a> {{name}}() {#{{name}}_}
+
+```
+{{name}}({{args}}) {{visibility}} {{#if outputs}} returns ({{outputs}}){{/if}}
+```
+
+{{#if natspec.devdoc}}{{natspec.devdoc}}{{/if}}
+
+{{#if natspec.params}}
+
+| Parameter Name | Type | Description |
+|------------|-----| -------|
+{{#natspec.params}}
+| `{{param}}`| {{#lookup ../args.types @index}}{{/lookup}}| {{strip description}}|
+{{/natspec.params}}
+
+
+{{/if}}
+
+
+{{#if natspec.returns}}
+#### Return Values:
+| Return Name | Type | Description |
+|-------------|-------|------------|
+{{#natspec.returns}}
+|{{param}}| {{#lookup ../args.types @index}}{{/lookup}}|{{description}}|
+{{/natspec.returns}}
+
+{{/if}}
+{{/if}}
+{{/ownFunctions}}
+
+## Events
+{{#ownEvents}}
+### <a name="{{name}}_"></a> {{name}} {#{{name}}_}
+```
+{{name}}({{args}})
+```
+
+{{#if natspec.devdoc}}
+{{natspec.devdoc}}
+`
+{{/if}}
+{{#if natspec.params}}
+## Parameters:
+{{#natspec.params}}
+- `{{param}}`: {{description}}
+{{/natspec.params}}
+
+{{/if}}
+{{/ownEvents}}
+
+
+{{#if ownModifiers}}
+## Modifiers
+{{#ownModifiers}}
+### <a name="{{name}}_"></a> `{{name}}()` {#{{name}}_}
+```
+{{name}}({{args}})
+```
+
+{{#if natspec.devdoc}}
+{{natspec.devdoc}}
+
+{{/if}}
+{{#if natspec.params}}
+## Parameters:
+{{#natspec.params}}
+- `{{param}}`: {{description}}
+{{/natspec.params}}
+
+{{/if}}
+{{/ownModifiers}}
+{{/if}}
+
+## Graphs
+
+### <a name="dependencyGraph"></a> `Dependency Graph` {#dependencyGraph}
+![Dependency Graph](images/{{name}}_dependency_graph.png)
+### <a name="inheritanceGraph"></a> `Inheritance Graph` {#inheritanceGraph}
+![Inheritance Graph](images/{{name}}_inheritance_graph.png)

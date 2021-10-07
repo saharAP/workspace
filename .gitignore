@@ -1,0 +1,9 @@
+.env
+cache/
+typechain
+coverage/
+coverage.json
+
+docgen/docs
+docgen/SUMMARY.md
+.gitbook.yaml
