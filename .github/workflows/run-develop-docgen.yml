@@ -25,8 +25,6 @@ jobs:
           cmd: install # will run `yarn install` command
       - name: Install graphviz
         run: sudo apt-get install -y graphviz
-      - name: Run DOT
-        run: dot -Tpng > MyContract.png
       - uses: borales/actions-yarn@v2.3.0
         name: "generate documentation"
         with:
@@ -39,3 +37,5 @@ jobs:
           FOLDER: packages/contracts/
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           MESSAGE: "Build: ({sha}) {msg}" # The commit message
+      - name: List images
+        run: ls -la ./docgen/docs/images
