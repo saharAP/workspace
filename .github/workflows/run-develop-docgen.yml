@@ -38,4 +38,4 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           MESSAGE: "Build: ({sha}) {msg}" # The commit message
       - name: List images
-        run: ls -la ./docgen/docs/images
+        run: ls -la /github/workspace/docgen/docs
