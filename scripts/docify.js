@@ -115,8 +115,15 @@ async function generateGraphs(docPathNameList) {
     const inputContractPathName = INPUT_DIR + "/" + contractName + ".sol"
     const outputGraphPathName = OUTPUT_IMAGES_DIR + "/" + contractName + "_dependency_graph.png"
     const outputInheritancePathName = OUTPUT_IMAGES_DIR + "/" + contractName + "_inheritance_graph.png"
+    
+    const surya = spawnSync("surya", ["graph",inputContractPathName]);
+    if (surya.stderr.length > 0) throw new Error(surya.stderr);
+    const dot = spawnSync("dot", ["-Tpng",'>',outputGraphPathName]);
 
-    child = exec('surya graph ' + inputContractPathName + ' | dot -Tpng > ' + outputGraphPathName, (err, stdout, stderr) => {
+     surya.stdout.pipe(dot.stdin);
+     if (dot.stderr.length > 0) throw new Error(dot.stderr);
+
+   /* child = exec('surya graph ' + inputContractPathName + ' | dot -Tpng > ' + outputGraphPathName, (err, stdout, stderr) => {
 
       if (stderr) {
         //some err occurred
@@ -140,7 +147,7 @@ async function generateGraphs(docPathNameList) {
         console.error(err)
       }
     });
-    child();
+    child();*/
   }
 
 }
