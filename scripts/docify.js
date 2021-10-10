@@ -117,12 +117,21 @@ async function generateGraphs(docPathNameList) {
     const outputInheritancePathName = OUTPUT_IMAGES_DIR + "/" + contractName + "_inheritance_graph.png"
     
     const surya = spawnSync("surya", ["graph",inputContractPathName]);
+    surya.stdout.on("data", data => {
+    console.log(`surya stdout: ${data}`);
+    });
     if (surya.stderr.length > 0) throw new Error(surya.stderr);
-    const dot = spawnSync("dotj", ["-Tpng",'>',outputGraphPathName]);
+    const dot = spawnSync("dot", ["-Tpng",'>',outputGraphPathName]);
 
      surya.stdout.pipe(dot.stdin);
      if (dot.stderr.length > 0) throw new Error(dot.stderr);
+    dot.stderr.on("data", data => {
+    console.log(`stderr: ${data}`);
+    });
 
+  dot.on('error', (error) => {
+    console.log(`error: ${error.message}`);
+  });
    /* child = exec('surya graph ' + inputContractPathName + ' | dot -Tpng > ' + outputGraphPathName, (err, stdout, stderr) => {
 
       if (stderr) {
