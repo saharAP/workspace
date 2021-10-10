@@ -118,7 +118,7 @@ async function generateGraphs(docPathNameList) {
     
     const surya = spawnSync("surya", ["graph",inputContractPathName]);
     if (surya.stderr.length > 0) throw new Error(surya.stderr);
-    const dot = spawnSync("dot", ["-Tpng",'>',outputGraphPathName]);
+    const dot = spawnSync("dotj", ["-Tpng",'>',outputGraphPathName]);
 
      surya.stdout.pipe(dot.stdin);
      if (dot.stderr.length > 0) throw new Error(dot.stderr);
